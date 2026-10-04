@@ -5,7 +5,7 @@ root; launch from any directory. Skill metadata has name/description only. No sh
 preprocessing, @ imports, Claude tool grants or automatic memory injection exists.
 
 `python <project-root>/.game-studio/runtime/studio.py <command> --root <project-root>`
-supports config, recover, artifacts, stories, dependencies, coherence, gdd-structure,
+supports config, recover, artifacts, stories, dependencies, coherence, engine-reference, gdd-structure,
 review-scope, receipts, checkpoint, settings, run and hooks. Use `--help` for actual
 arguments. Bash-prefixed examples in older engine references require a compatible
 shell or translation to the local command tool; they are never auto-executed.
@@ -14,8 +14,8 @@ Repository skills are `$gs-<name>` or an ordinary natural-language request. Slas
 commands in historical reports are aliases in prose. Native roles are `gs-<role>`;
 expertise-role examples are delegation briefs, not a tool schema. Use the available
 host delegation tool only after authorization. If it cannot select custom roles,
-pass the role's developer_instructions in the brief. No project task record/available native collaboration tools/team
-runtime is required. Track real work in a project artifact or the host's actual tools.
+pass the role's developer_instructions in the brief. Track real work in a project
+artifact or the host's actual tools; a task/team runtime is optional.
 
 Configuration: local whitelisted leaves → project leaves → legacy stage/review mirror
 → rigor expansion → defaults. Invalid enums fall back with notes; invalid YAML,

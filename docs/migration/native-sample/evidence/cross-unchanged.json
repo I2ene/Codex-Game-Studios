@@ -1,0 +1,77 @@
+{
+  "status": "OBSERVED",
+  "baseline": "design/gdd/gdd-cross-review-2026-10-05.receipt.json",
+  "baseline_reason": "Linked report and context compared",
+  "freshness": {
+    "algorithm": "sha256",
+    "kind": "files",
+    "hashes": {
+      "design/gdd/counter.md": "13ecf2edfea9c67c9e0969b332b6c1a51967a5eed622d2d5c0d72577000f480e",
+      "design/gdd/limits.md": "2143319d708a4dcef31af8aa27e2c121db488694b39491d60f9303d5aa05cf99",
+      "design/gdd/game-concept.md": "5b46e23e9303c1ad42254f5a2ac4ff41b0c1f92d05c4bf525bb340092964b993",
+      "design/gdd/systems-index.md": "2f2d063505c11dbe44f10e0c867e03a778c0e3c182f268c20da285a25e417543",
+      "design/registry/entities.yaml": "5d166f7335289778db8989d0a81fc709376d6c61e5e0bb8bc050014cc4e3540e",
+      "project.yaml": "ebc9e6d2428c70c9711178343674018cd6483b0cb45b5f5e984e9541ff417470",
+      "design/gdd/gdd-cross-review-2026-10-05.md": "9e5596b79825bdb1bcb80d9810da6f37f482617b7c35cab0b8261541d0499d73"
+    },
+    "observations": [
+      {
+        "path": "design/gdd/counter.md",
+        "hash": "13ecf2edfea9c67c9e0969b332b6c1a51967a5eed622d2d5c0d72577000f480e",
+        "status": "UNCHANGED"
+      },
+      {
+        "path": "design/gdd/limits.md",
+        "hash": "2143319d708a4dcef31af8aa27e2c121db488694b39491d60f9303d5aa05cf99",
+        "status": "UNCHANGED"
+      },
+      {
+        "path": "design/gdd/game-concept.md",
+        "hash": "5b46e23e9303c1ad42254f5a2ac4ff41b0c1f92d05c4bf525bb340092964b993",
+        "status": "UNCHANGED"
+      },
+      {
+        "path": "design/gdd/systems-index.md",
+        "hash": "2f2d063505c11dbe44f10e0c867e03a778c0e3c182f268c20da285a25e417543",
+        "status": "UNCHANGED"
+      },
+      {
+        "path": "design/registry/entities.yaml",
+        "hash": "5d166f7335289778db8989d0a81fc709376d6c61e5e0bb8bc050014cc4e3540e",
+        "status": "UNCHANGED"
+      },
+      {
+        "path": "project.yaml",
+        "hash": "ebc9e6d2428c70c9711178343674018cd6483b0cb45b5f5e984e9541ff417470",
+        "status": "UNCHANGED"
+      },
+      {
+        "path": "design/gdd/gdd-cross-review-2026-10-05.md",
+        "hash": "9e5596b79825bdb1bcb80d9810da6f37f482617b7c35cab0b8261541d0499d73",
+        "status": "NEW"
+      }
+    ],
+    "patterns": [
+      "design/gdd/counter.md",
+      "design/gdd/limits.md",
+      "design/gdd/game-concept.md",
+      "design/gdd/systems-index.md",
+      "design/registry/entities.yaml",
+      "project.yaml",
+      "design/gdd/*.md"
+    ],
+    "unresolved": [],
+    "previous_unresolved": [],
+    "baseline_status": "PRESENT",
+    "report": "design/gdd/gdd-cross-review-2026-10-05.md",
+    "report_hash": "9e5596b79825bdb1bcb80d9810da6f37f482617b7c35cab0b8261541d0499d73",
+    "report_status": "UNCHANGED",
+    "unchanged_inputs": false,
+    "status": "OBSERVED"
+  },
+  "changed": [],
+  "scope": [],
+  "missing": [],
+  "unresolved_dependencies": [],
+  "note": "Without a native receipt, conservative full scope. Confirm declared dependencies in the review."
+}

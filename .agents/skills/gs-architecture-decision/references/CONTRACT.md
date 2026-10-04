@@ -14,10 +14,10 @@ nothing is indistinguishable from a check that passed.
 ### Files That Must Exist
 | File | Required Fields / Sections | Read-Only? |
 |------|---------------------------|-----------|
-| `.game-studio/resources/engine-reference/[engine]/VERSION.md` | Engine name + version, LLM knowledge cutoff date, post-cutoff risk levels per domain | Yes |
-| `.game-studio/resources/engine-reference/[engine]/modules/[domain].md` | Domain-specific API reference (read if exists for the decision's domain) | Yes |
-| `.game-studio/resources/engine-reference/[engine]/breaking-changes.md` | Post-cutoff breaking changes in the relevant domain | Yes |
-| `.game-studio/resources/engine-reference/[engine]/deprecated-apis.md` | APIs that must not be referenced in the new ADR | Yes |
+| `<project-engine-reference>/VERSION.md` | Engine name + version, LLM knowledge cutoff date, post-cutoff risk levels per domain | Yes |
+| `<project-engine-reference>/modules/[domain].md` | Domain-specific API reference (read if exists for the decision's domain) | Yes |
+| `<project-engine-reference>/breaking-changes.md` | Post-cutoff breaking changes in the relevant domain | Yes |
+| `<project-engine-reference>/deprecated-apis.md` | APIs that must not be referenced in the new ADR | Yes |
 | `docs/registry/architecture.yaml` | All existing architectural stances (state ownership, interface contracts, forbidden patterns, performance budgets) — checked for conflicts before the design begins | Yes |
 | `docs/architecture/` (existing ADRs) | Scanned to determine the next sequential ADR number | Yes |
 | `design/gdd/[system].md` (GDDs relevant to the decision) | Specific rules, formulas, performance constraints, or integration points that motivate the decision | Yes |
@@ -25,7 +25,7 @@ nothing is indistinguishable from a check that passed.
 | `docs/project-reference/technical-preferences.md` | `Engine Specialists` section — legacy fallback, used only when `engine.name` is absent or empty in `project.yaml` | Yes — required only when `engine.name` is absent |
 
 ### Preconditions
-- An engine must be configured (`.game-studio/resources/engine-reference/[engine]/VERSION.md` must exist) — if not, the skill prompts to run `$gs-setup-engine` first
+- An engine must be configured (`<project-engine-reference>/VERSION.md` must exist) — if not, the skill prompts to run `$gs-setup-engine` first
 - The title or subject of the decision must be provided by the user before Step 0 proceeds (if no argument is given, the skill asks)
 - If in **retrofit mode** (`retrofit [path]` argument), the target ADR file must already exist on disk
 - Any conflict with a registered architectural stance in `docs/registry/architecture.yaml` must be resolved or explicitly accepted as an exception before the ADR is drafted (Step 3a is a BLOCKING gate)
@@ -57,7 +57,7 @@ nothing is indistinguishable from a check that passed.
 - **Acceptance authority: the user, or `technical-director` on the user's explicit confirmation — no other agent, and not this skill on its own.** Recorded here because every consumer enforces the consequences of acceptance, and without this line nothing would say who can produce it. This narrows *who* may set the field; it does not relax the confirmation rule above.
 - Never assigns an ADR number that is already in use — always scan `docs/architecture/` first and use the next sequential number
 - Never proceeds past the architectural stance conflict check (Step 3a) if a conflict exists — surface the conflict and require resolution or explicit exception acknowledgment before drafting
-- Never references APIs listed in `.game-studio/resources/engine-reference/[engine]/deprecated-apis.md` in the Decision or Key Interfaces sections
+- Never references APIs listed in `<project-engine-reference>/deprecated-apis.md` in the Decision or Key Interfaces sections
 - Never writes the ADR file without asking: "May I write this ADR to docs/architecture/adr-NNNN-[slug].md?"
 - Never writes to `docs/registry/architecture.yaml` without a separate ask: "May I update docs/registry/architecture.yaml with these N new stances?"
 - In retrofit mode: never modifies any existing section — only appends absent sections

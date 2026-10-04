@@ -28,3 +28,7 @@ tools/** text eol=lf
 tests/** text eol=lf
 fixtures/** text eol=lf
 *.md text eol=lf
+
+# Retained execution evidence includes byte hashes and linked report digests.
+# Keep these exact retained bytes on every OS; normalization is recorded separately.
+docs/migration/native-sample/** -text

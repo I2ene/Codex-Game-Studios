@@ -1,3 +1,22 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -42,8 +61,8 @@ before committing to Production, run `$gs-vertical-slice` instead.
 
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **Check for spike mode:** If `--spike` was passed, skip to the **Spike Mode** section
 at the bottom of this skill.
@@ -270,9 +289,9 @@ If scope covers more than one mechanic, cut it down. When in doubt, cut more.
 
 Present this plan to the user before building. Get confirmation before proceeding.
 Name the checkpoint file in that confirmation: "May I record this plan in
-`production/session-state/active.md`?"
+`<resolved-checkpoint>`?"
 
-Once confirmed, write a session checkpoint to `production/session-state/active.md`
+Once confirmed, write a session checkpoint to `<resolved-checkpoint>`
 (create `production/session-state/` if it does not exist). Include: concept name,
 hypothesis, path chosen, scope bullet points, and current phase ("Phase 5 —
 Implement"). This lets the next session resume without starting over if the session
@@ -590,12 +609,12 @@ gate implications. Hard cap: ~4 hours.
 
 5. **Observe and decide** — no formal playtest debrief. Ask: "Did the spike answer the question? YES or NO, and why in one sentence."
 
-6. **Write a spike note** (not a full report) to `prototypes/[concept-name]-spike-[date]/SPIKE-NOTE.md` — first ask once for this step and the next, naming both files: "May I write `prototypes/[concept-name]-spike-[date]/SPIKE-NOTE.md` and clear the spike from `production/session-state/active.md`?" The note holds:
+6. **Write a spike note** (not a full report) to `prototypes/[concept-name]-spike-[date]/SPIKE-NOTE.md` — first ask once for this step and the next, naming both files: "May I write `prototypes/[concept-name]-spike-[date]/SPIKE-NOTE.md` and clear the spike from `<resolved-checkpoint>`?" The note holds:
    - Question tested
    - Result (YES it works / NO it doesn't / PARTIAL — needs more investigation)
    - What to do next (add to current sprint / investigate further / abandon the idea)
 
-7. **Update `production/session-state/active.md`** to clear the spike and return to the current sprint state.
+7. **Update `<resolved-checkpoint>`** to clear the spike and return to the current sprint state.
 
 **No CD gate. No phase gate. No PROCEED/PIVOT/KILL.** Spike results inform decisions; they don't make them. The developer decides whether to add the mechanic/approach to the sprint backlog based on what the spike revealed.
 

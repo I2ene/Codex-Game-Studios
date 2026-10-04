@@ -1,0 +1,20 @@
+{
+  "root": "<fixture-root>",
+  "values": {
+    "engine.name": "Godot",
+    "engine.reference_root": "records/toolchain/godot",
+    "engine.version": "4.3",
+    "modes.rigor": "standard",
+    "modes.workflow": "standard",
+    "modes.review_mode": "lean"
+  },
+  "sources": {
+    "engine.name": "project.yaml",
+    "engine.reference_root": "project.yaml",
+    "engine.version": "project.yaml",
+    "modes.rigor": "project.yaml",
+    "modes.workflow": "rigor:standard",
+    "modes.review_mode": "rigor:standard"
+  },
+  "notes": []
+}

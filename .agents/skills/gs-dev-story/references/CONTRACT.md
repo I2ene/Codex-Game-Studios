@@ -1,3 +1,14 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
 # $gs-dev-story — Handoff Contract
 
 ## Role in Pipeline
@@ -14,8 +25,8 @@ Bridges planning and code by loading the full context for a single story (story 
 | `docs/architecture/control-manifest.md` | `Manifest Version:` header, layer rules (required patterns, forbidden patterns, performance guardrails) | Yes |
 | `project.yaml` | `engine.name`, `engine.version`, `naming.*`, `performance.*` — the primary source for each of these fields | Yes |
 | `docs/project-reference/technical-preferences.md` | Legacy fallback for any field above that is absent or empty in `project.yaml`; **sole** source for forbidden patterns and allowed libraries (deliberately never migrated), plus the `Engine Specialists` section | Yes — required only for fields absent from `project.yaml`, and always for forbidden patterns |
-| `.game-studio/resources/engine-reference/[engine]/VERSION.md` | Engine version, LLM knowledge cutoff, post-cutoff risk levels | Yes |
-| `production/session-state/active.md` | (read to find active story when no argument given; created if absent) | No |
+| `<project-engine-reference>/VERSION.md` | Engine version, LLM knowledge cutoff, post-cutoff risk levels | Yes |
+| `<resolved-checkpoint>` | (read to find active story when no argument given; created if absent) | No |
 
 > **Tier.** SKILL.md Phase 2 decides by `workflow`: the TR registry is required at
 > `full`, optional at `standard` and not expected at `minimal`; a missing control
@@ -37,7 +48,7 @@ Bridges planning and code by loading the full context for a single story (story 
 |------|------------------------------|-------|
 | `<code root>/[system]/[file].[ext]` | Doc-commented public APIs; no hardcoded gameplay values; follows ADR Implementation Guidelines and control-manifest required patterns | created or modified by sub-agent; code root resolved per `.game-studio/resources/docs/code-root-resolution.md` |
 | `tests/unit/[system]/[story-slug]_test.[ext]` OR `tests/integration/[system]/[story-slug]_test.[ext]` | One test function per acceptance criterion (Logic/Integration stories only); naming per engine (`.game-studio/resources/rules/test-standards.md`); no random seeds; no external I/O | created by sub-agent; path matches `## Test Evidence` in story |
-| `production/session-state/active.md` | `<!-- CHECKPOINT -->` block: current task (story path), next step, blocker, files in progress, run result | block overwritten, never appended (file created from `.game-studio/resources/docs/templates/session-state.md` if absent) |
+| `<resolved-checkpoint>` | `<!-- CHECKPOINT -->` block: current task (story path), next step, blocker, files in progress, run result | block overwritten, never appended (file created from `.game-studio/resources/docs/templates/session-state.md` if absent) |
 
 ### Output Guarantees
 - All source files follow the naming conventions in `project.yaml` (`naming.*`), falling back to `docs/project-reference/technical-preferences.md` for any convention absent there
@@ -52,10 +63,10 @@ Bridges planning and code by loading the full context for a single story (story 
 - **Completion is not assumed.** If the programmer agent stopped early or its output fails to parse, the story is reported **INCOMPLETE** with the specific breakage named, and `Implementation Complete` is not emitted
 
 ## Immutability Rules
-- READS but does NOT modify: `project.yaml`, `docs/architecture/tr-registry.yaml`, `docs/architecture/adr-NNNN-[slug].md`, all GDD files in `design/gdd/`, `docs/architecture/control-manifest.md`, `docs/project-reference/technical-preferences.md` (legacy fallback), `.game-studio/resources/engine-reference/[engine]/VERSION.md`
+- READS but does NOT modify: `project.yaml`, `docs/architecture/tr-registry.yaml`, `docs/architecture/adr-NNNN-[slug].md`, all GDD files in `design/gdd/`, `docs/architecture/control-manifest.md`, `docs/project-reference/technical-preferences.md` (legacy fallback), `<project-engine-reference>/VERSION.md`
 - MODIFIES, via sub-agent: `<code root>/**` (new/updated source files; code root resolved per `.game-studio/resources/docs/code-root-resolution.md`) and the engine's test root (the new test file; `tests/` on Godot)
 - MODIFIES, itself, each after an ask that names the file (in `collaborative` mode; `.game-studio/resources/docs/automation-modes.md` governs the others): the story file's `Status:`, `Last Updated:`, `ADR Version`, `**ADR Decision Summary**`, `## Implementation Notes`, `Manifest Version:` and `Manifest-Note:` (see the story row above); the story's entry in `production/sprint-status.yaml` (`status: in-progress`, top-level `updated`); a dependency story's `Status:` (dependency option `[C]` only); a Config/Data story's data file; on Unity, `Assets/Scripts/ScreenshotOnArg.cs`, written verbatim from `.game-studio/resources/docs/run-and-observe.md` when the project has none
-- MODIFIES without an ask: `production/session-state/active.md` — its `<!-- CHECKPOINT -->` block is overwritten, never appended
+- MODIFIES without an ask: `<resolved-checkpoint>` — its `<!-- CHECKPOINT -->` block is overwritten, never appended
 - Sets the story file's own `Status` field to `In Progress` only (Phase 2, before
   spawning any agent). Closing the story being implemented is the exclusive
   responsibility of `$gs-story-done`; the one other `Status` this skill writes is a
@@ -75,7 +86,7 @@ Bridges planning and code by loading the full context for a single story (story 
 **Next skill:** `$gs-story-done`
 - It will read: the story file (to check `Status`, `## Acceptance Criteria`, `## Test Evidence` path, `Type:`, referenced ADR, TR-ID)
 - It assumes: the test file declared in `## Test Evidence` already exists on disk (for Logic/Integration stories)
-- It assumes: `production/session-state/active.md` records the story path and files changed (used to locate the in-progress story when no argument is given)
+- It assumes: `<resolved-checkpoint>` records the story path and files changed (used to locate the in-progress story when no argument is given)
 - It assumes: source files under the resolved code root are present and match the criterion descriptions, so Grep-based deviation checks can run
 
 ## Known Fragile Points

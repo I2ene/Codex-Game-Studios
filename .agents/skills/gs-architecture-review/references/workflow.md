@@ -1,3 +1,32 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
+## Native review evidence contract
+
+Read .game-studio/resources/docs/review-receipts.md before freshness/scope decisions. It replaces old text-line
+or embedded-hash consumption below. Choose a real report/companion pair explicitly;
+first/missing/legacy JSON means fresh full review. Consume baseline_status,
+report_status and unchanged_inputs plus observations/unresolved. Prior failures stay
+failures. After actual review, write the human report then generate a linked JSON
+with receipts hash --report <report> --output <companion> for inputs actually read.
+Scope/mode/required coverage must be the same before prior-verdict reuse.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -37,8 +66,8 @@ and Pre-Production.
 ---
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **`workflow`** (see `.game-studio/resources/docs/workflow-modes.md`):
 - `full` — full traceability matrix across all GDDs and all ADRs.
@@ -49,34 +78,36 @@ Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.
 
 ### Phase 1a — L0: Summary Scan (fast, low tokens)
 
-**Freshness check before any scan.** Locate the latest prior report — Glob
-`docs/architecture/architecture-review-*.md` and take the newest — then:
+Select the actual report/JSON companion pair explicitly. Read the prior report,
+including verdict, mode and covered inputs. Run receipts check with that companion
+and exactly the input patterns previously reviewed, including dependencies/context
+actually read. Use .game-studio/resources/docs/review-receipts.md.
 
-```
-Bash: python .game-studio/runtime/studio.py receipts --root <project-root> check --receipt "[latest-report]" docs/architecture/adr-*.md design/gdd/*.md
-```
+- baseline_status=MISSING, legacy/non-native JSON, report_status=UNLINKED/ABSENT/
+  CHANGED, changed scope/mode, or unavailable required input: fresh review. A legacy
+  JSON error is a baseline problem; retain the old report and create a native pair.
+- unchanged_inputs=true with report_status=UNCHANGED and complete required coverage:
+  surface the actual prior date/verdict. A failed verdict still fails. Reuse an
+  approved verdict only within the requested scope; an explicit request to re-review
+  takes precedence. Do not ask again when that choice was already authorized.
+- observations NEW/CHANGED/REMOVED or changed unresolved: read/review affected inputs.
+  For design-review read the target fully; registry-only changes require rechecking
+  all registry-sourced facts and full review if conflicts appear. For architecture
+  review reconcile affected systems/dependencies; structural/deleted ADR changes need
+  full coverage analysis. Report unresolved required inputs as NOT ASSESSED, never
+  silently reduce the denominator or offer an unsupported unchanged verdict.
+- Optional inputs absent in both snapshots are named, rather than silently omitted.
+  Their appearance/deletion changes freshness. Empty observations never prove reuse.
 
-- **Any `UNRESOLVED`** — check this FIRST; it disqualifies every option
-  below. One of the two globs matched no file, so that whole document class
-  was never examined and the comparison covered less than it appears to.
-  Say which pattern came back unresolved and stop: an ADR or GDD directory
-  that is empty, renamed or misspelled is a finding about the project, not a
-  reason to stand on a prior report. Never read a set of `UNCHANGED` lines as
-  "everything is current" while an `UNRESOLVED` line is present — the set
-  compared was not the set requested.
-- **Everything `UNCHANGED`** (and no `UNRESOLVED`) — nothing this review
-  reads has changed since that report; re-running reproduces it. Surface the
-  prior report's date and verdict and offer via `ask the user`: `[A] Stand
-  on the prior report (Recommended)` / `[B] Re-run the full review anyway` —
-  `guided` proceeds with [A] and notes it; `autonomous` logs via
-  `log_decision` and stands on the prior report.
-- **Some `CHANGED`/`NEW`** — name them, then scope instead of re-running
-  everything: recommend `$gs-architecture-review [system]` (single-system mode)
-  for just the changed systems. A full re-run stays available on request,
-  and structural changes (a `NEW` ADR, a deleted file) warrant one.
-- **`RECEIPT: NONE`** — no prior report, or one written before receipts
-  existed. Proceed with the full review; this run's report will carry the
-  first stamps.
+Snapshot the actual inputs before reviewing and reconcile any input drift before
+publication. After writing the real Markdown report/log, generate its companion with
+receipts hash <actual-reviewed-patterns...> --root <project-root> --report <report.md>
+--output <companion.json>. Re-run check to confirm the link and input snapshot. Hashes
+record bytes; they never supply a professional approval or independent participant.
+
+
+Report: docs/architecture/architecture-review-YYYY-MM-DD.md.
+Companion: the same report stem + .receipt.json.
 
 Before reading any full document, use Grep to extract `## Summary` sections
 from all GDDs and ADRs:
@@ -160,9 +191,9 @@ reasoning (Phase 4) — that is a per-ADR decision, not a blanket load.
 - `docs/architecture/architecture.md` if it exists
 
 ### Engine Reference
-- `.game-studio/resources/engine-reference/[engine]/VERSION.md`
-- `.game-studio/resources/engine-reference/[engine]/breaking-changes.md`
-- `.game-studio/resources/engine-reference/[engine]/deprecated-apis.md`
+- `<project-engine-reference>/VERSION.md`
+- `<project-engine-reference>/breaking-changes.md`
+- `<project-engine-reference>/deprecated-apis.md`
 - **Only the module docs the in-scope ADRs actually name** — take the union of
   each ADR's `References Consulted` and `Post-Cutoff APIs Used` fields (already
   captured by the `## Engine Compatibility` scan above) and read those files.
@@ -395,32 +426,14 @@ After conflict detection, analyse the dependency graph across all ADRs.
 Bash: python .game-studio/runtime/studio.py dependencies --root <project-root>
 ```
 
-It collects every `Depends On` edge, runs Kahn's algorithm, and emits
-`ADRS:` / `EDGES:` / `NO_DEPS_SECTION:` / `CYCLE:`. A model tracing A→B→C→A across
-a dozen ADRs eventually misses an edge; the algorithm cannot. It reports
-observations, not a verdict — you apply the meaning below.
+Consume dependencies JSON nodes/graph/missing/cycles/missing_sections/order.
+missing_sections names absent, empty, UNKNOWN or structurally unparseable dependency
+declarations; never call the graph clean while those gaps remain. order is a Kahn
+topological order for declared valid edges, not an inferred Foundation layer.
+Cross graph edges with actual ADR Status values and flag unaccepted/missing targets.
+Report every cycle path from cycles; do not substitute old ADRS/EDGES/CYCLE labels.
+No ADR input means NOT ASSESSED, not a clean dependency result.
 
-**`NO_DEPS_SECTION` is load-bearing**: it makes "no cycles because the graph is
-clean" distinguishable from "no cycles because half the ADRs declare no
-dependencies". Report the second case as a structural gap, never as a clean graph.
-
-Then interpret:
-
-1. **Topological sort**: the emitted order — ADRs with no
-   dependencies come first (Foundation), ADRs that depend on those come next, etc.
-2. **Flag unresolved dependencies**: cross the `EDGES:` list against the `## Status`
-   values already scanned in Phase 1b. If ADR-A depends on an ADR that is still
-   `Proposed` or does not exist, flag it:
-   ```
-   ⚠️  ADR-0005 depends on ADR-0002 — but ADR-0002 is still Proposed.
-       ADR-0005 cannot be safely implemented until ADR-0002 is Accepted.
-   ```
-3. **Cycle detection**: every `CYCLE:` line the script emitted is a
-   `DEPENDENCY CYCLE` — report each one. Do not re-derive them by hand:
-   ```
-   🔴 DEPENDENCY CYCLE: ADR-0003 → ADR-0006 → ADR-0003
-      This cycle must be broken before either can be implemented.
-   ```
 4. **Output recommended implementation order**:
    ```
    ### Recommended ADR Implementation Order (topologically sorted)
@@ -567,9 +580,7 @@ Engine: [name + version]
 GDDs Reviewed: [N]
 ADRs Reviewed: [M]
 
-[output of: Bash: python .game-studio/runtime/studio.py receipts --root <project-root> hash docs/architecture/adr-*.md design/gdd/*.md
- — one Reviewed-Content-Hash line per file reviewed; Phase 1a's freshness
- check reads these on the next run to skip or scope an unchanged re-review]
+Receipt: docs/architecture/architecture-review-[date].receipt.json (linked JSON generated after this actual report)
 
 ---
 
@@ -762,7 +773,7 @@ append when it already exists.
 ### Session State Update
 
 After writing all approved files, silently append to
-`production/session-state/active.md`:
+`<resolved-checkpoint>`:
 
     ## Session Extract — $gs-architecture-review [date]
     - Verdict: [PASS / NOT ASSESSED / CONCERNS / FAIL]

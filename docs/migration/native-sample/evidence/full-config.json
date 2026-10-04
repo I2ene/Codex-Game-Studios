@@ -1,0 +1,14 @@
+{
+  "root": "<fixture-root>",
+  "values": {
+    "modes.rigor": "full",
+    "modes.workflow": "full",
+    "modes.review_mode": "full"
+  },
+  "sources": {
+    "modes.rigor": "project.yaml",
+    "modes.workflow": "rigor:full",
+    "modes.review_mode": "rigor:full"
+  },
+  "notes": []
+}

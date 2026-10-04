@@ -1,3 +1,6 @@
+> Historical packaged reference from upstream; not project version authority.
+> Read project-owned records through engine-reference-resolution.md and verify current official sources. Do not edit this packaged file during project setup.
+
 # Unity 6.3 LTS — Current Best Practices
 
 **Last verified:** 2026-02-13

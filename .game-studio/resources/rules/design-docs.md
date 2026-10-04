@@ -3,6 +3,14 @@ paths:
   - "design/gdd/**"
 ---
 
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 # Design Document Rules
 
 - The 8 GDD sections are: Overview, Player Fantasy, Detailed Rules, Formulas, Edge Cases, Dependencies, Tuning Knobs, Acceptance Criteria

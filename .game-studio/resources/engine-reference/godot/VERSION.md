@@ -1,9 +1,12 @@
+> Historical packaged reference from upstream; not project version authority.
+> Read project-owned records through engine-reference-resolution.md and verify current official sources. Do not edit this packaged file during project setup.
+
 # Godot Engine — Version Reference
 
 | Field | Value |
 |-------|-------|
 | **Engine Version** | Godot 4.6 |
-| **Installed at pin time** | NOT DETERMINED — `$gs-setup-engine` §3 probes the installed editor and records the result here. |
+| **Installed at pin time** | NOT DETERMINED — `$gs-setup-engine` §3 probes the installed editor and records the result in the project-owned VERSION.md. |
 | **Release Date** | January 2026 |
 | **Project Pinned** | 2026-02-12 |
 | **Last Docs Verified** | 2026-02-12 |

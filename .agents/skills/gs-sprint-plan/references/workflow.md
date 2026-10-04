@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -31,12 +39,12 @@ Phase 1 rather than re-globbing.
 
 Extract the mode argument (`new`, `update`, or `status`).
 
-See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the spawned agent reads its own gate file; do not read it in the parent session.
+See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the actual reviewer reads its gate file; read it in the parent when applying the role yourself.
 
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **`story_granularity`** — it sets how
 many stories to allocate per sprint, scaled by velocity: **2–4** at `coarse` (the default, via `rigor: minimal`),
@@ -44,7 +52,7 @@ many stories to allocate per sprint, scaled by velocity: **2–4** at `coarse` (
 smaller than the range is planned whole — never padded with invented stories.
 
 **Review mode check** (before gates run):
-- Use the review mode from the resolved block above (`--review` overrides it
+- Use the review mode from the explicitly resolved config JSON (`--review` overrides it
   for this run) — do not re-resolve it, and do not ask for it. With nothing
   configured it follows `modes.rigor`: `solo` at `minimal`, `lean` at `standard`.
 - **Never write a review mode** — not to `project.yaml`, not to
@@ -351,7 +359,7 @@ After the sprint plan is written and QA plan status is resolved:
 - `$gs-sprint-status` — check progress mid-sprint
 - `$gs-scope-check [epic]` — verify no scope creep before implementation begins
 
-**Review mode configuration:** All director gates (producer feasibility, QA review, code review) respect the project review mode, resolved in the block at the top of this skill (`--review` flag → `project.local.yaml` → `modes.review_mode` in `project.yaml` → `production/review-mode.txt` → the `modes.rigor` expansion, which yields `lean` at standard rigor and `solo` at minimal). This skill never asks for it or writes it; Phase 0 says where to point a user who wants a different depth. The mode is one of:
+**Review mode configuration:** All director gates (producer feasibility, QA review, code review) respect the project review mode, resolved by explicitly invoking config (`--review` flag → `project.local.yaml` → `modes.review_mode` in `project.yaml` → `production/review-mode.txt` → the `modes.rigor` expansion, which yields `lean` at standard rigor and `solo` at minimal). This skill never asks for it or writes it; Phase 0 says where to point a user who wants a different depth. The mode is one of:
 - `lean` — skip non-phase-gate director gates (the `rigor: standard` value)
 - `full` — run all director gates as spawned sub-agents
 - `solo` — skip all gate spawning unconditionally (single developer, no review)

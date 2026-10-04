@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -33,8 +41,8 @@ status. Re-run whenever new ADRs are accepted or existing ADRs are revised.
 ---
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 ## 1. Load All Inputs
 
@@ -65,10 +73,10 @@ Interpret against N:
   `docs/project-reference/technical-preferences.md` (not migrated to project.yaml)
 
 ### Engine Reference
-- Read `.game-studio/resources/engine-reference/[engine]/VERSION.md` for engine + version
-- Read `.game-studio/resources/engine-reference/[engine]/deprecated-apis.md` — these become
+- Read `<project-engine-reference>/VERSION.md` for engine + version
+- Read `<project-engine-reference>/deprecated-apis.md` — these become
   forbidden API entries
-- Read `.game-studio/resources/engine-reference/[engine]/current-best-practices.md` if it exists
+- Read `<project-engine-reference>/current-best-practices.md` if it exists
 
 ### Existing Artifacts
 - Glob `docs/architecture/control-manifest.md` (present → this run is a
@@ -322,7 +330,7 @@ rule, see the referenced ADR.
 ### Forbidden APIs ([engine version])
 These APIs are deprecated or unverified for [engine + version]:
 - `[api name]` — deprecated since [version] / unverified post-cutoff
-- Source: `.game-studio/resources/engine-reference/[engine]/deprecated-apis.md`
+- Source: `<project-engine-reference>/deprecated-apis.md`
 
 ### Cross-Cutting Constraints
 - [constraint that applies everywhere, regardless of layer] — source: [ADR-NNNN, preference key or engine-reference file]

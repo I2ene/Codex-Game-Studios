@@ -1,3 +1,22 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -24,12 +43,12 @@ When this skill is invoked:
 ## 1. Parse Arguments & Validate
 
 
-See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the spawned agent reads its own gate file; do not read it in the parent session.
+See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the actual reviewer reads its gate file; read it in the parent when applying the role yourself.
 
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **`docs.density`** — it controls per-section *depth*, where `workflow`
 controls which sections exist. `modes.rigor` sets both together; set
@@ -292,10 +311,10 @@ which you picked.
 
 **Step 2 — Read engine context (if available):**
 - Identify the engine and version: read `engine.name` and `engine.version` from `project.yaml`. Resolve each field independently — if its key is absent or empty (including when `project.yaml` has no `engine:` block), fall back to `docs/project-reference/technical-preferences.md` (a `[TO BE CONFIGURED]` value means not set)
-- If engine is configured, read `.game-studio/resources/engine-reference/[engine]/VERSION.md`
-- Read `.game-studio/resources/engine-reference/[engine]/modules/[domain].md` if it exists.
+- If engine is configured, read `<project-engine-reference>/VERSION.md`
+- Read `<project-engine-reference>/modules/[domain].md` if it exists.
   **If it does not exist, say so by name** — *"no engine reference for `[domain]`
-  under `.game-studio/resources/engine-reference/[engine]/modules/`; feasibility not checked against
+  under `<project-engine-reference>/modules/`; feasibility not checked against
   the pinned engine"* — and carry that into §5-pre. A silent skip here is
   indistinguishable from a feasibility check that ran and found nothing wrong,
   which is the failure `.game-studio/resources/rules/skill-authoring.md` obligation 3 exists to
@@ -310,7 +329,7 @@ which you picked.
   > hit the absent branch every time, and `if it exists` turned that into
   > silence. Either the reference gains those two files or the check reports it;
   > until the former, do the latter.
-- Read `.game-studio/resources/engine-reference/[engine]/breaking-changes.md` for domain-relevant entries
+- Read `<project-engine-reference>/breaking-changes.md` for domain-relevant entries
 - Find the domain-matching ADRs without reading every ADR to learn the field you
   filter on — grep the Domain field first, then read only the matches:
   ```
@@ -473,7 +492,7 @@ If the user declines: Stop with the following message:
 > "Verdict: **BLOCKED** — skeleton creation declined. The design session cannot proceed without the skeleton file, as all subsequent phases use it as the base. Re-run `$gs-design-system [system]` when ready to create the file."
 Do not proceed to Section A.
 
-After writing, update `production/session-state/active.md`:
+After writing, update `<resolved-checkpoint>`:
 - Use Glob to check if the file exists.
 - If it **does not exist**: use the **Write** tool to create it. Never attempt Edit on a file that may not exist.
 - If it **already exists**: use the **Edit** tool to update the relevant fields.
@@ -538,7 +557,7 @@ Context  ->  Questions  ->  Options  ->  Decision  ->  Draft  ->  Approval  ->  
    the multi-section authoring rule (no per-section confirmation) applies.
 
    **In `autonomous` mode**: Write the section directly and call
-   `log_decision` with `Decision point: Approve [Section Name] section`,
+   an authored decision record (not a tool or shell function) with `Decision point: Approve [Section Name] section`,
    `Chosen: [A] Approve`, `Category: minor`.
 
 7. **Write**: Use the Edit tool to replace the placeholder with the approved content.
@@ -562,7 +581,7 @@ Context  ->  Questions  ->  Options  ->  Decision  ->  Draft  ->  Approval  ->  
    - If new (not in registry): flag it as a candidate for registry registration
      (will be handled in Phase 5).
 
-After writing each section, update `production/session-state/active.md` with the
+After writing each section, update `<resolved-checkpoint>` with the
 completed section name. Use Glob to check if the file exists — use Write to create
 it if absent, Edit to update it if present.
 
@@ -652,7 +671,7 @@ quote the relevant pillar text.
 - `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without the agent.
 - `full` → spawn as described below.
 
-**Agent delegation (MANDATORY)**: After the framing answer is given but before drafting,
+**Professional expertise review (required; delegation optional)**: After the framing answer is given but before drafting,
 spawn `creative-director` via native delegation when authorized:
 - Provide: system name, framing answer (direct/indirect/both), game pillars, any reference games the user mentioned, the game concept summary
 - Ask: "Shape the Player Fantasy for this system. What emotion or power fantasy should it serve? What player moment should we anchor to? What tone and language fits the game's established feeling? Be specific — give me 2-3 candidate framings."
@@ -687,7 +706,7 @@ This is usually the largest section. Break it into sub-sections:
 - `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without the agent.
 - `full` → spawn as described below.
 
-**Agent delegation (MANDATORY)**: Before drafting Section C, spawn specialist agents via native delegation when authorized in parallel:
+**Professional expertise review (required; delegation optional)**: Before drafting Section C, apply relevant specialist expertise in the parent, or delegate independent reviews only when authorized and available:
 - Look up the system category in the routing table (Section 6 of this skill)
 - Spawn the Primary Agent AND Supporting Delegation brief (s) listed for this category
 - Provide each agent: system name, game concept summary, pillar set, dependency GDD excerpts, the specific section being worked on
@@ -747,7 +766,7 @@ table. A formula without defined variables cannot be implemented without guesswo
 - `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without the agent.
 - `full` → spawn as described below.
 
-**Agent delegation (MANDATORY)**: Before proposing any formulas or balance values, spawn specialist agents via native delegation when authorized in parallel:
+**Professional expertise review (required; delegation optional)**: Before proposing any formulas or balance values, apply relevant specialist expertise in the parent, or delegate independent reviews only when authorized and available:
 - **Always spawn `systems-designer`**: provide Core Rules from Section C, tuning goals from user, balance context from dependency GDDs. Ask them to propose formulas with variable tables and output ranges.
 - **For economy/cost systems, also spawn `economy-designer`**: provide placement costs, upgrade cost intent, and progression goals. Ask them to validate cost curves and ratios.
 - Present the specialists' proposals to the user for review via `ask the user`
@@ -784,7 +803,7 @@ design question, not a specification.
 - `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without the agent.
 - `full` → spawn as described below.
 
-**Agent delegation (MANDATORY)**: Spawn `systems-designer` via native delegation when authorized before finalising edge cases. Provide: the completed Sections C and D, and ask them to identify edge cases from the formula and rule space that the main session may have missed. For narrative systems, also spawn `narrative-director`. Present their findings and ask the user which to include.
+**Professional expertise review (required; delegation optional)**: Spawn `systems-designer` via native delegation when authorized before finalising edge cases. Provide: the completed Sections C and D, and ask them to identify edge cases from the formula and rule space that the main session may have missed. For narrative systems, also spawn `narrative-director`. Present their findings and ask the user which to include.
 
 **Cross-reference**: Check edge cases against dependency GDDs. If a dependency
 defines a floor, cap, or resolution rule that this system could violate, flag it.
@@ -874,7 +893,7 @@ be independently verifiable by a QA tester without reading the GDD.
 - `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without the agent.
 - `full` → spawn as described below.
 
-**Agent delegation (MANDATORY)**: Spawn `qa-lead` via native delegation when authorized before finalising acceptance criteria. Provide: the completed GDD sections C, D, E, and ask them to validate that the criteria are independently testable and cover all core rules and formulas. Surface any gaps or untestable criteria to the user.
+**Professional expertise review (required; delegation optional)**: Spawn `qa-lead` via native delegation when authorized before finalising acceptance criteria. Provide: the completed GDD sections C, D, E, and ask them to validate that the criteria are independently testable and cover all core rules and formulas. Surface any gaps or untestable criteria to the user.
 
 **Questions to ask**:
 - What's the minimum set of tests that prove this works?
@@ -1154,7 +1173,7 @@ Ask: "May I update the systems index at `design/gdd/systems-index.md`?"
 
 ### 5e: Update Session State
 
-Update `production/session-state/active.md` with:
+Update `<resolved-checkpoint>` with:
 - Task: [system-name] GDD
 - Status: Complete (or In Review if design-review was run)
 - File: design/gdd/[system-name].md
@@ -1233,7 +1252,7 @@ If two rows fit, spawn the union of their Primary agents and say why.
 
 If the session is interrupted (compaction, crash, new session):
 
-1. Read `production/session-state/active.md` — it records the current system and
+1. Read `<resolved-checkpoint>` — it records the current system and
    which sections are complete
 2. Read `design/gdd/[system-name].md` — sections with real content are done;
    sections with `[To be designed]` still need work

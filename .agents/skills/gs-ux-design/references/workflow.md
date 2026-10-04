@@ -1,3 +1,22 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -21,8 +40,8 @@ Resolve settings explicitly with the native config command; retain its values an
 When this skill is invoked:
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **Authoring guidance**: the skeletons below are self-contained — author from them
 directly. When a section needs depth (worked examples, pattern catalogs,
@@ -615,7 +634,7 @@ the template gains or loses a section, this skeleton follows it, not the reverse
 
 ---
 
-After writing the skeleton, update `production/session-state/active.md` with:
+After writing the skeleton, update `<resolved-checkpoint>` with:
 - Task: Designing [screen/flow name] UX spec
 - Current section: Starting (skeleton created)
 - File: design/ux/[filename].md (or `design/accessibility-requirements.md` in `accessibility` mode)
@@ -647,7 +666,7 @@ Context  ->  Questions  ->  Options  ->  Decision  ->  Draft  ->  Approval  ->  
    - Options: "Yes, write it", "Wait — one more change"
    Once confirmed, use `Edit` to replace the `[To be designed]` placeholder with approved content.
 
-After writing each section, update `production/session-state/active.md`.
+After writing each section, update `<resolved-checkpoint>`.
 
 ---
 
@@ -714,7 +733,7 @@ When all sections are approved and written:
 
 ### 6a: Update Session State
 
-Update `production/session-state/active.md` with:
+Update `<resolved-checkpoint>` with:
 - Task: [screen-name] UX spec
 - Status: Complete (or In Review)
 - File: design/ux/[filename].md
@@ -752,7 +771,7 @@ this spec. Do not edit those files without asking — just name them.
 
 If the session is interrupted (compaction, crash, new session):
 
-1. Read `production/session-state/active.md` — it records the current screen
+1. Read `<resolved-checkpoint>` — it records the current screen
    and which sections are complete.
 2. Read `design/ux/[filename].md` — sections with real content are done;
    sections with `[To be designed]` still need work.

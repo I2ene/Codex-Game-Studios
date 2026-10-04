@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -44,37 +52,12 @@ at `balanced` (`rigor: standard`), **AC-sized** at `fine`.
   - **At `workflow: minimal` there are no sprints by design** — the brief's
     build order is the plan and the story files carry it. Report progress
     through it instead, then stop:
-    1. The list below was printed by `.game-studio/runtime/studio.py stories`
-       before you read this skill: one line per unfinished story, already in
-       the route's order (`IN_REVIEW`, `IN_PROGRESS`, then `TODO` — a `Ready`
-       or `Not Started` story — in build order), then `BLOCKED`, `OTHER`,
-       `NO_STATUS` and the `COMPLETE` count:
-
-
-    2. Print, in under 15 lines: `Build order: [N] of [M] stories complete`
-       from the `COMPLETE` line (count only `Complete` and `Done` stories —
-       `In Review` is not complete), then **Next**: the story on the first
-       `IN_REVIEW`, `IN_PROGRESS` or `TODO` line. The list is already
-       current; do not run the script again, and do not re-rank the story files — an `In Review` story is closed before an
-       `In Progress` one continues: its work is written. Recommend
-       `$gs-story-done [path]` for `IN_REVIEW`, `$gs-dev-story [path]` for
-       `IN_PROGRESS` or `TODO`. Name any `BLOCKED` story with its blocker; it is
-       never Next.
-    3. Every story `Complete` (or `Done`) → "Build order done: [M] of [M]
-       stories complete." Offer three ways on: play the build; add the next
-       stories from the brief with `$gs-create-stories`; or `$gs-settings` to raise
-       `modes.rigor` if the game has outgrown a one-page brief.
-    4. `STORIES none` — no story files at all → "No stories yet. Run
-       `$gs-create-stories` to turn the brief's build order into stories."
-    5. No `IN_REVIEW`, `IN_PROGRESS` or `TODO` line, yet the `COMPLETE` line
-       is short of the total — every unfinished story is `BLOCKED`, `OTHER`
-       (such as `Draft`) or `NO_STATUS`. There is **no Next**, and the build
-       order is **not** done: never say it is. Print the `Build order` line,
-       then name each `BLOCKED` story with its blocker — read from its story
-       file, usually a `BLOCKED:` note — and each other story with its status
-       as written. Recommend one step: what the first blocker needs, or else
-       finishing the first `Draft` or unstatused story and setting its Status
-       to `Ready`.
+    Run `python .game-studio/runtime/studio.py stories --root <project-root>` now.
+    Read .game-studio/resources/docs/story-routing.md. Print `Build order: complete of count stories complete`
+    using the JSON fields, then next.action/path. For story-done/dev-story recommend
+    that exact skill/path; for COMPLETE offer play/add stories/raise rigor; for NO
+    STORIES require the brief then create-stories; for BLOCKED/REVIEW STATUS name
+    unfinished rows and actual blockers, never claim done. Nothing is pre-injected.
   - **At `standard` or `full`**, report: "No sprint files found. Start a sprint
     with `$gs-sprint-plan new`." Then stop.
 

@@ -1,0 +1,60 @@
+{
+  "algorithm": "sha256",
+  "kind": "files",
+  "hashes": {
+    "design/gdd/counter.md": "13ecf2edfea9c67c9e0969b332b6c1a51967a5eed622d2d5c0d72577000f480e",
+    "design/gdd/limits.md": "807fd840d9c8cbadbb96985054b8e71fbe355270d50f2b0bc85c69dae864c137",
+    "design/gdd/game-concept.md": "5b46e23e9303c1ad42254f5a2ac4ff41b0c1f92d05c4bf525bb340092964b993",
+    "design/gdd/systems-index.md": "2f2d063505c11dbe44f10e0c867e03a778c0e3c182f268c20da285a25e417543",
+    "design/registry/entities.yaml": "5d166f7335289778db8989d0a81fc709376d6c61e5e0bb8bc050014cc4e3540e",
+    "project.yaml": "abad7c2e39de17660a0f7ead0c7f7d34d77de8c980cde11a639456d207db4e20"
+  },
+  "observations": [
+    {
+      "path": "design/gdd/counter.md",
+      "hash": "13ecf2edfea9c67c9e0969b332b6c1a51967a5eed622d2d5c0d72577000f480e",
+      "status": "NEW"
+    },
+    {
+      "path": "design/gdd/limits.md",
+      "hash": "807fd840d9c8cbadbb96985054b8e71fbe355270d50f2b0bc85c69dae864c137",
+      "status": "NEW"
+    },
+    {
+      "path": "design/gdd/game-concept.md",
+      "hash": "5b46e23e9303c1ad42254f5a2ac4ff41b0c1f92d05c4bf525bb340092964b993",
+      "status": "NEW"
+    },
+    {
+      "path": "design/gdd/systems-index.md",
+      "hash": "2f2d063505c11dbe44f10e0c867e03a778c0e3c182f268c20da285a25e417543",
+      "status": "NEW"
+    },
+    {
+      "path": "design/registry/entities.yaml",
+      "hash": "5d166f7335289778db8989d0a81fc709376d6c61e5e0bb8bc050014cc4e3540e",
+      "status": "NEW"
+    },
+    {
+      "path": "project.yaml",
+      "hash": "abad7c2e39de17660a0f7ead0c7f7d34d77de8c980cde11a639456d207db4e20",
+      "status": "NEW"
+    }
+  ],
+  "patterns": [
+    "design/gdd/counter.md",
+    "design/gdd/limits.md",
+    "design/gdd/game-concept.md",
+    "design/gdd/systems-index.md",
+    "design/registry/entities.yaml",
+    "project.yaml"
+  ],
+  "unresolved": [],
+  "previous_unresolved": [],
+  "baseline_status": "MISSING",
+  "report": "design/gdd/gdd-cross-review-2026-10-05.md",
+  "report_hash": "3c105d8f85fa5ca1c537bb3d5ee1d210ccf2b07898a41cb1cf1fea8af0b6c0be",
+  "report_status": "RECORDED",
+  "unchanged_inputs": false,
+  "status": "OBSERVED"
+}

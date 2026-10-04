@@ -1,3 +1,22 @@
+## Native coherence consumption
+
+Run coherence --root <project-root> and consume observations/counts JSON. It compares
+declared engine facts with project-owned VERSION records and actual project settings,
+rendering/2D physics usage, explicit test/script entries and export preset names.
+Installed binary is NOT ASSESSED by default; only after inspecting/authorizing
+commands.engine_probe may coherence --probe run it and retain an execution receipt.
+Missing/unimplemented checks remain named NOT ASSESSED. Resolve every DIFFERS;
+no empty/successful helper output proves engine consistency or a game build.
+Read .game-studio/resources/docs/engine-reference-resolution.md; project records, not packaged examples, govern.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 # Native engine setup boundary
 
 Inspect and preserve the consumer engine/version. Choose only when requested or
@@ -11,7 +30,7 @@ guidance; any old host setup step is replaced by this boundary.
 When this skill is invoked:
 
 
-**Tier awareness.** The `workflow` tier resolved above governs which design
+**Tier awareness.** The `workflow` tier from the explicit config JSON governs which design
 artifact this skill expects and the finish path it recommends in §12:
 - **`minimal`** — the design artifact is the one-page `design/game-brief.md`
   (no GDDs, systems decomposition, or per-system design at this tier).
@@ -541,7 +560,7 @@ the language:
 > ```yaml
 > naming:
 >   constants: SCREAMING_SNAKE   # UNVERIFIED — not sourceable from
->                                # docs/engine-reference/<engine>/; confirm before relying on it
+>                                # <project-engine-reference>/; confirm before relying on it
 > ```
 > Without it, a value the skill *knows* is unsourced is recorded as flatly as
 > `classes: PascalCase`, which is sourced, and the reader of the primary config
@@ -623,15 +642,14 @@ Inform the user which category they're in and why.
 
 ### First: does a reference set already exist for this engine?
 
-**Check before doing anything else.** The template ships
-`docs/engine-reference/godot/`, `unity/` and `unreal/` **already populated**, so
-"the directory exists and pins a version" is the state of *every* fresh project,
-not an edge case. Both branches below say "create", and following either one
-literally on a pre-populated directory either overwrites curated content or
-leaves `project.yaml` and the AGENTS.md-imported reference disagreeing.
-
-Read `docs/engine-reference/<engine>/VERSION.md` and compare its
-**Engine Version** to the version chosen in Section 3:
+Run engine-reference --root <project-root> and use project.root/documents. The
+installer ships historical examples under .game-studio/resources only; it does not
+populate project-owned reference records. Compare project.documents.VERSION.md
+(if present) with the actual chosen engine/version. Missing project records remain
+unknown; create them from current verified official sources and confirmed probes.
+Preserve and update an existing project's records, including prior version spans.
+Use engine.reference_root when configured; <project-engine-reference> below means
+the resolved exact folder. Packaged examples never establish installed versions.
 
 - **No directory, or no `VERSION.md`** → create, using the risk branch below.
 - **Same version** → nothing to regenerate. Refresh `Last Docs Verified` only if you
@@ -639,10 +657,10 @@ Read `docs/engine-reference/<engine>/VERSION.md` and compare its
   not check. The one row still written is `Installed at pin time`, from
   Section 3 — its probe result is recorded whatever the outcome, after asking
   "May I record `Installed at pin time: [result]` in
-  `docs/engine-reference/<engine>/VERSION.md`?" (it is a tracked file).
+  `<project-engine-reference>/VERSION.md`?" (it is a tracked file).
 - **Directory pins an OLDER version than the one chosen** → **update, do not
   replace.** This is the common case. Show the changes below, then ask "May I
-  update the `docs/engine-reference/<engine>/` files for [version]?" before editing.
+  update the `<project-engine-reference>/` files for [version]?" before editing.
   1. Edit `VERSION.md` in place: new **Engine Version**, new **Project Pinned**
      and **Last Docs Verified**, the `Installed at pin time` row from Section 3,
      and a new row in the post-cutoff timeline for each version added.
@@ -674,7 +692,7 @@ produces work that looks verified and is not.
 
 ### If WITHIN training data (LOW RISK):
 
-Ask: "May I create `docs/engine-reference/<engine>/VERSION.md`?" Wait for
+Ask: "May I create `<project-engine-reference>/VERSION.md`?" Wait for
 confirmation, then create this minimal file:
 
 ```markdown
@@ -714,13 +732,13 @@ Create the full reference doc set by searching the web:
    - Deprecated APIs with replacements
    - New features and best practices
 
-Ask: "May I create the engine reference docs under `docs/engine-reference/<engine>/`?"
+Ask: "May I create the engine reference docs under `<project-engine-reference>/`?"
 
 Wait for confirmation before writing any files.
 
 3. **Create the full reference directory**:
    ```
-   docs/engine-reference/<engine>/
+   <project-engine-reference>/
    ├── VERSION.md              # Version pin + knowledge gap analysis
    ├── breaking-changes.md     # Version-by-version breaking changes
    ├── deprecated-apis.md      # "Don't use X → Use Y" tables
@@ -840,17 +858,13 @@ files after writing them:
 python .game-studio/runtime/studio.py coherence --root <project-root>
 ```
 
-It compares `project.yaml` against `docs/engine-reference/<engine>/VERSION.md`,
-against `project.godot`, and against the engine binary actually on PATH, and it
-checks that the files `commands.build` and `commands.test` name exist.
-
-**Report every `[DIFFERS]` line to the user and resolve it before finishing.**
-Each one means two files this skill just wrote disagree, or describe something
-that is not there.
-
-**`[NOT CHECKED]` is not a pass.** Each such line names why a comparison could
-not be made -- an absent binary, a missing `project.godot`. Say which ones
-applied. A comparison that could not run has not established agreement.
+Consume observations/counts JSON. Local comparisons cover project VERSION and
+recorded installed pin, engine project version/settings, Godot rendering/2D physics,
+configured runner script paths and export presets. Every DIFFERS needs reconciliation
+before setup is called coherent. Every NOT ASSESSED needs its reason in the report.
+The default command never probes a binary. Inspect commands.engine_probe first; run
+coherence --probe only within authorization and retain actual exit/output. An absent
+probe or engine project file cannot establish agreement or a working engine build.
 
 The script emits observations and never a verdict, per the convention in
 AGENTS.md. The judgement is yours and the user's.
@@ -867,7 +881,7 @@ packaged agents, pin models or claim that selection launches a participant.
 
 If invoked as `$gs-setup-engine refresh`:
 
-1. Read the existing `docs/engine-reference/<engine>/VERSION.md` to get
+1. Read the existing `<project-engine-reference>/VERSION.md` to get
    the current engine and version
 2. Use WebSearch to check for:
    - New engine releases since last verification
@@ -885,7 +899,7 @@ If invoked as `$gs-setup-engine upgrade [old-version] [new-version]`:
 
 ### Step 1 — Read Current Version State
 
-Read `docs/engine-reference/<engine>/VERSION.md` to confirm the current pinned
+Read `<project-engine-reference>/VERSION.md` to confirm the current pinned
 version, risk level, and any migration note URLs already recorded. If
 `old-version` was not provided as an argument, use the pinned version from this
 file.
@@ -952,7 +966,7 @@ Wait for explicit confirmation before continuing.
 
 After confirmation:
 
-1. Update `docs/engine-reference/<engine>/VERSION.md`:
+1. Update `<project-engine-reference>/VERSION.md`:
    - `Engine Version` → `[new-version]`
    - `Project Pinned` → today's date
    - `Last Docs Verified` → today's date
@@ -1005,7 +1019,7 @@ project.yaml:    [created/updated]
 Agent Config:    [verified]
 
 Next Steps:
-1. Review docs/engine-reference/<engine>/VERSION.md
+1. Review <project-engine-reference>/VERSION.md
 ```
 
 Then print **one** Next-Steps list, matching the resolved `workflow` tier:

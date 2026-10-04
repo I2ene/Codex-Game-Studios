@@ -16,11 +16,11 @@ ID in lowercase.
 **Scope**: All 7 production stages (Concept → Release), all 3 Tier 1 directors,
 all key Tier 2 leads. Any skill, team orchestrator, or workflow may invoke these gates.
 
-**When a skill spawns a director for a gate, it must NOT read the gate definition
-file itself. Include the gate definition file path in the delegation brief and instruct
-the director agent to read it first, then pass only the context fields that gate's
-row requires. Gate definitions are read by the spawned agent, in the agent's own
-context window.**
+The actual reviewer reads the gate definition and relevant context. When the parent
+applies the role, read its definition here. When useful delegation is authorized and
+available, pass the file path plus a bounded context brief and require the actual
+participant to read it. Label parent work and independent work separately; a panel
+definition never implies that multiple participants ran or independently signed off.
 
 ---
 
@@ -29,7 +29,7 @@ context window.**
 Agent by prefix: `CD-` creative-director · `TD-` technical-director ·
 `PR-` producer · `AD-` art-director · `LP-` lead-programmer · `QL-` qa-lead ·
 `ND-` narrative-director. Definition files below are in
-`.game-studio/resources/docs/director-gates/`; each one's header names its agent's model tier.
+`.game-studio/resources/docs/director-gates/`; each header names the professional reviewer; all inherit session settings.
 
 | Gate ID | Purpose | Definition file |
 |---------|---------|-----------------|

@@ -1,3 +1,22 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -48,12 +67,12 @@ whether the core idea is worth designing, run `$gs-prototype` (concept prototype
 ## Phase 1: Resolve Review Mode and Load Context
 
 
-See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the spawned agent reads its own gate file; do not read it in the parent session.
+See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the actual reviewer reads its gate file; read it in the parent when applying the role yourself.
 
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 Read the following files to understand the full design intent:
 - `AGENTS.md` — tech stack and engine
@@ -107,9 +126,9 @@ Define in bullet points:
 - Hard time limit: [X] days. If exceeded, scope was wrong — stop and reassess.
 
 Ask the user to confirm scope before building. Name the checkpoint file in that
-confirmation: "May I record this plan in `production/session-state/active.md`?"
+confirmation: "May I record this plan in `<resolved-checkpoint>`?"
 
-Once confirmed, write a session checkpoint to `production/session-state/active.md`
+Once confirmed, write a session checkpoint to `<resolved-checkpoint>`
 (create `production/session-state/` if it does not exist). Include: concept name,
 validation question, systems in scope, art quality level, and current phase ("Phase
 4 — Implement"). Update this file at the end of each build day with what was
@@ -397,7 +416,7 @@ Ask: "May I append this to `prototypes/GRAVEYARD.md`?" If yes, add one entry:
 **If NOT ASSESSED:**
 
 The slice is built but not validated. Say which reason applied, then finish the
-Phase 5 playthrough and debrief — the `production/session-state/active.md`
+Phase 5 playthrough and debrief — the `<resolved-checkpoint>`
 checkpoint is where to resume — and, after asking, update REPORT.md and its
 `prototypes/index.md` row with the verdict. Do not take the slice to
 `$gs-gate-check production` as if it had passed: NOT ASSESSED is not a PROCEED.

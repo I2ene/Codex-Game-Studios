@@ -1,3 +1,22 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -37,8 +56,8 @@ catches too late.
 ---
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **`workflow`** (see `.game-studio/resources/docs/workflow-modes.md`), applied per GDD at its
 **effective** tier — the `system_overrides` row for that GDD's system (its
@@ -330,7 +349,7 @@ Then append the new conflict entries. Never skip logging on your own — a missi
 
 ## Phase 7: Session State and Closing
 
-Silently append to `production/session-state/active.md` (create the file if it does not exist):
+Save the current authored snapshot through checkpoint --save to `<resolved-checkpoint>` (create the file if it does not exist):
 
 ```
 <!-- CONSISTENCY-CHECK: [date] | GDDs checked: [N] | Conflicts found: [N] | Log: docs/consistency-failures.md -->
@@ -352,7 +371,7 @@ Then close with an `ask the user` widget:
 
 In collaborative and guided modes, never end the skill with plain text — always
 close with this widget. In autonomous mode, print the findings and recommended
-next step, then record via `log_decision` (no widget).
+next step, then record via an authored decision record (not a tool or shell function) (no widget).
 
 ---
 

@@ -2,8 +2,7 @@
 
 > ## READ ONE SECTION, NEVER THIS WHOLE FILE
 >
-> This document is **~31,000 tokens** — roughly **four times an entire turn's
-> context budget**, which sits near 8,300. It is organised as **36 sections of
+> This document is **a large policy reference** — Read only the requested setting section; token budgets belong to the actual host. It is organised as **36 sections of
 > ~900 tokens each**, one per setting, headed `## <key>`.
 >
 > **So opening it costs 36× what you need.** To look up a setting:
@@ -293,7 +292,7 @@ This is intentional and important:
 
 | Setting | Local default for fast iteration | CI default (`project.yaml`) |
 |---------|----------------------------------|------------------------------|
-| `modes.review_mode` (locally overridable) | `solo` for one developer | `lean` (a team's usual choice — phase gates always run) |
+| `modes.review_mode` (locally overridable) | `solo` for one developer | `lean` (a team's usual choice — required phase checks still apply without implying delegated sign-off) |
 | `testing.strict.logic` (locally overridable) | `false` for fast WIP commits | `true` (failing tests block CI) |
 | `modes.automation` (locally overridable) | `autonomous` for solo flow | `collaborative` (the team's collab protocol, but CI doesn't ask questions anyway — this is mostly a no-op on CI) |
 
@@ -374,7 +373,7 @@ behavior: strict project defaults for CI, looser developer overrides for local w
 | Skill | full | lean | solo |
 |-------|------|------|------|
 | **design-review** | 5–15 specialist agents spawned in Phase 3b | No specialist agents — single-session analysis only | Phases 1–4 only, no delegation, no next-steps prompt |
-| **gate-check** | Director panel runs in parallel — **width set by `modes.workflow`**, not by this axis | Director panel runs in parallel — same width rule; phase gates always run | Artifact existence checks only, no directors spawned |
+| **gate-check** | Director expertise applied by the parent, or authorized independent participants — **width set by `modes.workflow`**, not by this axis | Director expertise applied by the parent, or authorized independent participants — same width rule; required phase checks still apply without implying delegated sign-off | Artifact existence checks only, no directors spawned |
 | **design-system** | All section specialists + CD-GDD-ALIGN sign-off gate | Specialists for Sections D and H only (+ G when its knobs interact, + Visual/Audio when visual feedback is central); CD-GDD-ALIGN skipped | No section specialists; CD-GDD-ALIGN skipped |
 | **art-bible** | All section specialists + AD-ART-BIBLE sign-off gate | All section specialists, AD-ART-BIBLE skipped | All section specialists, AD-ART-BIBLE skipped |
 | **architecture-decision** | Engine specialist + TD-ADR gate | Engine specialist; TD-ADR skipped | Engine specialist; TD-ADR skipped |
@@ -423,7 +422,7 @@ pipeline's own review steps run in every mode.
 ### Special cases and notes
 
 - **gate-check** is the only skill where `full` and `lean` behave identically —
-  phase gates always run. Only `solo` skips them. This is intentional: phase
+  required phase checks still apply without implying delegated sign-off. Only `solo` skips them. This is intentional: phase
   gates are the minimum quality bar, not optional extras. **How many directors
   run is a separate axis** — `modes.workflow` sets panel width (`minimal` → PR
   only, `standard` → TD + PR, `full` → all four), because a fixed four-director
@@ -772,213 +771,27 @@ workflow_overrides:
 
 ## modes.automation
 
-**Controls:** Whether skills ask for decisions and approval before acting, or
-recommend and proceed — the tradeoff between user control and speed
-**Values:** `collaborative` | `guided` | `autonomous`
-**Default:** `collaborative`
-**Set by:** `$gs-start`, `$gs-settings`
-**Read by:** All 68 skills that use `ask the user` or write files
-
-**Priority chain:** `modes.automation` in `project.yaml` → hardcoded default
-
-> **Unlike review_mode and workflow, this setting is not a per-skill table.**
-> It defines universal interaction rules that apply across all skills. A
-> per-skill breakdown would repeat the same answer 68 times.
-
-> **Overrides COLLABORATIVE-DESIGN-PRINCIPLE.md:** `guided` and `autonomous`
-> modes intentionally relax the Q→O→D→Draft→Approval protocol defined in that
-> document. This is opt-in. `collaborative` preserves the protocol exactly.
-
-> **Safety net — `automation_always_ask`:** Even in `autonomous` mode, certain
-> categories of decision can be configured to always prompt. See next section.
-
----
-
-### Value intent
-
-| Value | Speed | Control | What changes |
-|-------|-------|---------|--------------|
-| `collaborative` | Slowest | Full — every decision is the user's | Current behavior. Q→O→D→Draft→Approval strictly followed. |
-| `guided` | Balanced | High — major decisions are the user's, minor ones proceed automatically | AI states recommendation and proceeds for minor decisions. ask the user reserved for major/irreversible decisions. |
-| `autonomous` | Fastest | Low — AI decides, logs, and proceeds | No ask the user (except categories in `automation_always_ask`). No draft review. No write approval. All decisions logged to decision log. |
-
----
-
-### Universal rules per mode
-
-#### collaborative (current behavior — no change)
-
-- `ask the user` called for every multi-option decision
-- 2–4 options presented with pros/cons for every design choice
-- Full draft shown and approved before every file write
-- use the existing task authorization; ask only for an unapproved material action
-- "May I create [filepath] with skeleton?" asked before skeleton creation
-- Section-by-section approval in multi-section authoring skills
-- Multi-file changes require explicit approval of the full changeset
-
-#### guided
-
-- `ask the user` called for **major decisions only** (see classification below)
-- Minor decisions: AI states recommendation inline and proceeds — e.g.
-  *"Going with a static utility pattern here — it fits the existing architecture.
-  Continuing unless you want to change direction."*
-- Draft shown briefly before writing — proceeds after a short summary, does not
-  wait for explicit "yes"
-- "May I write?" asked for **new files only** — updates to existing files proceed
-  directly
-- Still presents options for major decisions but caps at 2 choices with a clear
-  recommendation
-- Multi-section authoring: writes each approved section immediately, no per-section
-  confirmation prompt
-
-#### autonomous
-
-- No `ask the user` calls **except** for categories listed in `automation_always_ask`
-- No draft review
-- No "May I write?" prompts — writes directly
-- Picks the recommended option for every decision without presenting alternatives
-- All decisions logged immediately to `production/session-logs/decision-log.md`
-  with: timestamp, skill, decision point, option chosen, reasoning
-- User reviews decision log post-session to audit choices made
-
----
-
-### Major vs minor decision classification (guided mode)
-
-**Major — always use ask the user in guided mode:**
-
-| Decision type | Example |
-|---------------|---------|
-| Choosing a system name or document path | "What should we call this system?" |
-| Mutually exclusive design directions | "Real-time or turn-based?" |
-| Any choice that gates downstream work | Engine choice, architecture approach |
-| Scope changes | "Cut this feature or slip the deadline?" |
-| Any decision that can't be changed without significant rework | Core loop mechanic |
-
-**Minor — AI recommends and proceeds in guided mode:**
-
-| Decision type | Example |
-|---------------|---------|
-| Which section to work on next | "Moving to Edge Cases next" |
-| Optional section inclusion | "Adding a Visual Notes section — fits the system" |
-| Formatting and structure choices | Heading levels, table vs prose |
-| Adding detail to an already-decided direction | Sub-options within an approved approach |
-| Next-step routing after a phase completes | "Running design-review now" |
-
----
-
-### Affected skills by category
-
-**Authoring skills — highest impact.** Each pauses 10–15 times per document in
-`collaborative`. Drops to 2–3 in `guided`, zero in `autonomous`.
-
-`brainstorm`, `design-system`, `art-bible`, `create-architecture`, `ux-design`,
-`map-systems`, `architecture-decision`, `create-epics`, `create-stories`,
-`sprint-plan`, `prototype`
-
-**Review skills — medium impact.** Pause after presenting findings to ask what
-to do next. In `guided` routing decisions proceed automatically. In `autonomous`
-the recommended path is taken and logged.
-
-`design-review`, `architecture-review`, `gate-check`, `review-all-gdds`,
-`story-readiness`, `story-done`, `milestone-review`, `playtest-report`
-
-**Team orchestration skills — medium impact.** Pause between phases for
-check-in. In `guided` the pipeline advances automatically unless BLOCKED. In
-`autonomous` the full pipeline runs end to end.
-
-`team-combat`, `team-ui`, `team-audio`, `team-qa`, `team-release`,
-`team-narrative`, `team-polish`, `team-level`, `team-live-ops`
-
-**Implementation skills — lower impact.** Pause for architectural questions
-before writing code. In `guided` only genuinely ambiguous decisions stop. In
-`autonomous` the conventional approach is picked and logged.
-
-`dev-story`, `code-review`
-
-**Setup and utility skills — lowest impact.** Pause for initial configuration
-or routing questions. In `guided` defaults are applied automatically. In
-`autonomous` recommended defaults are taken without prompting.
-
-`start`, `adopt`, `setup-engine`, `retrospective`, `localize`, `propagate-design-change`,
-`asset-spec`, `smoke-check`, `qa-plan`, `story-readiness`
-
----
-
-### Exemptions — skills that ignore the automation setting
-
-These skills always behave as `collaborative` regardless of the setting.
-The reasons are noted.
-
-| Skill | Why always collaborative |
-|-------|--------------------------|
-| **hotfix** | Emergency decisions — user must approve scope and risk before any action |
-| **gate-check** | Results must be reviewed — a gate verdict without user acknowledgement defeats the purpose |
-| **day-one-patch** | Release-critical — every action needs explicit sign-off |
-| **setup-engine** | One-time irreversible choice that affects the entire project |
-
----
-
-### Decision log format (autonomous mode)
-
-Written to `production/session-logs/decision-log.md` — append-only.
-
-```markdown
-## [timestamp] — [skill-name]
-
-**Decision point:** [what was being decided]
-**Options considered:** [list of options that would have been presented]
-**Chosen:** [what was picked]
-**Reason:** [one-line rationale]
-**Category:** [scope_changes | file_deletions | schema_changes | etc., or "minor"]
-```
-
-If the file does not exist, it is created. It is never truncated — each session
-appends to the existing log.
-
----
+Values collaborative/guided/autonomous, default collaborative; local whitelist applies.
+These are preferences for unresolved decisions, not permissions or authorization.
+Collaborative presents material open options, guided asks for major open decisions,
+autonomous makes justified choices within the authorized scope and records them.
+Existing user decisions/actions remain authorized in every mode. Use actual host
+input capabilities when a decision is missing; do not invent a widget/API or require
+another per-file approval. Continue independent work while waiting for needed input.
+Professional vision, budget, architecture, QA and release requirements still apply.
+See .game-studio/resources/docs/automation-modes.md.
 
 ## modes.automation_always_ask
 
-**Controls:** Decision categories that ALWAYS trigger ask the user regardless of automation mode
-**Values:** list of category names
-**Default:** `[scope_changes, file_deletions, schema_changes]`
-**Set by:** `$gs-settings`
-**Read by:** All skills that respect `modes.automation`
+List of user-defined decision categories, default scope_changes/file_deletions/
+schema_changes. Local override allowed. Categories include architecture_decisions,
+version_bumps and external_calls when configured. Ask when an action in a configured
+category is outside existing authorization; do not revoke authorization already given.
+Native permissions still apply to commands, writes and external services. Record
+actual consequential choices/options/reasons/evidence in production/session-logs/
+decision-log.md when useful; no shell log_decision function exists. A saved checkpoint
+or another agent's message supplies no new human consent.
 
-> **Makes `autonomous` safe.** Without this, `autonomous` is "AI does literally
-> everything, no questions asked." With it, AI does most things but stops on
-> destructive or irreversible decisions you specifically named.
-
----
-
-### Recognized categories
-
-| Category | Examples of decisions in this category |
-|----------|----------------------------------------|
-| `scope_changes` | Cutting a feature, slipping a deadline, splitting/merging an epic, removing acceptance criteria |
-| `file_deletions` | Removing a story, deleting a GDD, removing a system, removing a test file |
-| `schema_changes` | Changes to project.yaml, story template, control manifest, ADR template, GDD template |
-| `architecture_decisions` | New ADR creation, ADR replacement, system boundary changes |
-| `version_bumps` | Engine version change, framework version bump, dependency major version change |
-| `external_calls` | Invoking external APIs (asset gen, AI services) when in autonomous mode |
-
-The list is a YAML list of these strings. Skills check whether the current decision falls into one of the configured categories and prompt regardless of `automation` value.
-
----
-
-### Affected skills
-
-| Skill | Categories typically triggered |
-|-------|--------------------------------|
-| **scope-check** | `scope_changes` |
-| **propagate-design-change** | `schema_changes`, `architecture_decisions` |
-| **architecture-decision** | `architecture_decisions` |
-| **setup-engine** | `version_bumps`, `schema_changes` |
-| **story-done** | `file_deletions` (when removing/replacing test files) |
-| **asset-spec** | `external_calls` (when calling external generators) |
-
----
 
 ## modes.story_granularity
 
@@ -1614,12 +1427,7 @@ validates and what artifacts are expected to exist
 > verdict whose risks the user explicitly accepts (they are recorded); a FAIL never advances it.
 > Never write it manually mid-session except to correct an incorrect auto-detect.
 
-> **Legacy fallback + dual-write.** Stage is read from `project.stage` in
-> `project.yaml` first, then legacy `production/stage.txt`, then artifact
-> auto-detection. When `$gs-gate-check` advances the stage it dual-writes BOTH
-> `project.yaml` and `production/stage.txt`, so hooks that have not migrated
-> still resolve correctly. `$gs-start` also dual-writes the initial stage. The
-> legacy `.txt` file is retired at `manual legacy preference reconciliation`.
+> **Native stage resolution.** Explicit project.stage wins; legacy production/stage.txt is fallback data only. start/gate-check update the authorized project leaf, never create a new mirror. Stale mirrors are reported by config.
 
 ---
 
@@ -1734,7 +1542,7 @@ implementation, review, and architecture validation
 |-------|------------------------|
 | **dev-story** | Routes code stories to language specialist. Spawns engine specialist alongside for HIGH engine-risk stories or engine-specific API usage. |
 | **code-review** | Routes review to language, shader, or UI specialist based on file type being reviewed. |
-| **architecture-decision** | Loads `.game-studio/resources/engine-reference/[engine]/VERSION.md` before authoring. Spawns engine specialist to validate ADR for API correctness and post-cutoff compatibility. |
+| **architecture-decision** | Loads `<project-engine-reference>/VERSION.md` before authoring. Spawns engine specialist to validate ADR for API correctness and post-cutoff compatibility. |
 | **create-architecture** | Includes engine-specific constraints and patterns in architecture doc based on engine choice. |
 | **team-combat / team-ui / team-audio** | Spawn the engine specialist their pipeline names: team-combat the primary engine specialist (from `team.size: small`), team-ui the engine UI specialist (`specialists.ui`, at `studio`), team-audio the primary engine specialist (at `studio`). The other six `team-*` skills spawn none. |
 
@@ -1831,7 +1639,7 @@ engine reference in this repo can source it. See `$gs-setup-engine` §"The Godot
 
 The Unreal row is Windows'. `$gs-setup-engine` writes the Linux block (`Engine/Build/BatchFiles/RunUAT.sh`,
 `Engine/Binaries/Linux/UnrealEditor`) on Linux, and on macOS only `build`, leaving `test`, `run` and
-`smoke` as TODOs — see `.game-studio/resources/engine-reference/unreal/current-best-practices.md`, "Command Line".
+`smoke` as TODOs — see `<project-engine-reference>/current-best-practices.md`, "Command Line".
 
 > **`<PRESET>` and `<TARGET>` are placeholders, not values to copy.** A Godot
 > export preset is whatever string the operator typed into `export_presets.cfg`;
@@ -1930,219 +1738,14 @@ No skill or hook validates code *against* these conventions — see the note abo
 
 ## features.session_state
 
-> ⚠️ **`active.yaml` does not exist and nothing writes it — anywhere in this
-> document.** It is deferred design. What ships is
-> `production/session-state/**active.md**`, whose `<!-- CHECKPOINT -->` region
-> `session-start.sh` and `pre-compact.sh` both read, and whose
-> `<!-- STATUS -->` block `statusline.sh` parses. **Read every `active.yaml` and
-> `status:` mention in this file — above and below — as the deferred design, and
-> substitute `active.md` (and its STATUS block).** This scope note is
-> document-wide on purpose: the equivalent warning under *Status line behavior*
-> scoped itself to mentions "below", which left this section's own Controls line
-> and Hook behavior table describing a file that does not exist.
+on enables explicit recover/checkpoint helpers and optional trusted hook recovery.
+off disables checkpoint recovery/saving. Resolve .game-studio/context.json checkpoint
+and records through recover; default production/session-state/active.md. Custom paths
+and bounded records are confined to the repository. Skills author current snapshots
+via checkpoint --save; the runtime keeps a hash-named prior snapshot. Hooks cannot
+infer work, scrape transcripts, rotate unseen state or complete a task. See
+.game-studio/resources/docs/context-management.md and templates/session-state.md.
 
-**Controls:** Whether the harness runs a full session tracking pipeline (hooks,
-log files, `active.yaml` checkpoint — see the scope note above) or relies on
-skeleton-first output files for recovery
-**Values:** `off` | `on`
-**Default:** `on`
-**Set by:** `$gs-settings`
-**Read by:** Six hooks — `session-start.sh` (its recovery preview only),
-`pre-compact.sh`, `post-compact.sh`, `session-stop.sh`, `log-agent.sh` and
-`log-agent-stop.sh`. No skill reads it, and neither does `statusline.sh`.
-
-> **`on` is the recommended setting.** Long-form skills write self-describing
-> skeleton files upfront, which covers much of mid-task recovery on its own; the
-> session pipeline adds the checkpoint preview at session start, the session
-> archive and the subagent tally. Turn it `off` only to save that preview's
-> tokens.
-
-> **Priority chain:** `features.session_state` in `project.local.yaml` →
-> `project.yaml` → hardcoded default of **`on`**. Hooks read it via
-> `session_state_enabled()` in `native config resolver` and exit early when `off`.
-> Skills do not read it: `$gs-dev-story` and `$gs-story-done` update the checkpoint in
-> `active.md` whatever its value.
-
-> **The default is `on`, deliberately.** `.game-studio/resources/docs/context-management.md`
-> tells you to rely on `production/session-state/active.md` as your
-> crash-recovery checkpoint, so defaulting this off would quietly take away
-> recovery, the session archive and the subagent tally. What `off` saves — the
-> checkpoint preview, at most ~750 tokens per session start — is an explicit
-> opt-out (`$gs-settings features.session_state=off`), never a silent default.
-
-> **`session-start.sh` is gated per-block, not at the top.** Its sprint,
-> milestone and git context is not part of the session-state pipeline; only the
-> `active.md` recovery preview is gated. Its check also fails OPEN — that hook
-> sources `native config resolver` conditionally, and an undefined function is falsey,
-> which would suppress the recovery checkpoint invisibly.
-
----
-
-### Value intent
-
-| Value | Intent |
-|-------|--------|
-| `off` | Recovery via skeleton-first output files. Long-form skills write a complete skeleton (all section headers, empty bodies) before starting. If context clears or compacts, the agent reads the skeleton + relevant docs and resumes. The six session-state hooks do nothing, so no logs; skills still update the checkpoint in `active.md`, but session start does not show it. Saves at most ~750 tokens per session start. |
-| `on` | Full session tracking. Session-stop archival, compaction log and agent audit log all active. Adds the checkpoint preview to each session start, capped at 25 lines or 3,000 characters (at most ~750 tokens). Compaction hooks log to disk and add nothing to Claude's context. |
-
----
-
-### Hook behavior
-
-> **Implementation note:** The feature flag check lives inside each hook script,
-> not at the harness level. Every session-state-aware hook calls
-> `session_state_enabled()` from `native config resolver` at its top (an awk read of
-> `project.local.yaml`, then `project.yaml`) and exits silently with no output if
-> the value is `off` — except `session-start.sh`, which skips only its recovery
-> preview. This ensures
-> the harness always fires the hook — the hook decides whether to act.
-
-| Hook | session_state: off | session_state: on |
-|------|--------------------|-------------------|
-| **session-start.sh** | Runs normally (git/sprint context) — skips active.yaml preview block | Runs fully including active.yaml preview |
-| **detect-gaps.sh** | Runs unchanged — gap detection is independent of session state | Runs unchanged |
-| **pre-compact.sh** | No-op — exits silently (no compaction-log append) | The CHECKPOINT block (and any STATUS lines) from `active.md`, changed and untracked file names and design docs with WIP markers — each list capped at 20 — then a compaction-log append; the output goes to the debug log, since PreCompact output never reaches Claude |
-| **post-compact.sh** | No-op — exits silently | Runs: prints a re-read reminder to the debug log (PostCompact output never reaches Claude; `session-start.sh` restores context) |
-| **session-stop.sh** | No-op — exits silently | Archives active.yaml to session-log, appends commits and diffs |
-| **log-agent.sh** | No-op — exits silently | Appends to agent-audit.log |
-| **log-agent-stop.sh** | No-op — exits silently | Appends to agent-audit.log |
-
----
-
-### File existence by mode
-
-| File | session_state: off | session_state: on |
-|------|--------------------|-------------------|
-| `production/session-state/active.md` | Still written by skills; session start does not show it | Written by skills; session start shows its checkpoint |
-| `production/session-logs/session-log.md` | Not written | Append-only archive of each session's active.yaml |
-| `production/session-logs/compaction-log.txt` | Not written | Append-only timestamp log of compaction events |
-| `production/session-logs/agent-audit.log` | Not written | Append-only log of agent spawn/complete events |
-
----
-
-### Skeleton-first pattern (session_state: off recovery mechanism)
-
-Long-form skills must write a skeleton file as their first action — before any
-section discussion begins. The skeleton contains all section headers with empty
-bodies and a `<!-- STATUS: incomplete -->` marker per section.
-
-```markdown
-# Combat System — GDD
-
-## Overview
-<!-- STATUS: incomplete -->
-
-## Player Fantasy
-<!-- STATUS: incomplete -->
-
-## Detailed Rules
-<!-- STATUS: incomplete -->
-...
-```
-
-As each section is approved and written, the marker changes to `<!-- STATUS: done -->`.
-On recovery (after /clear or compaction), the agent reads the skeleton, identifies
-which sections are `done` vs `incomplete`, reads relevant ADRs and the systems index,
-and resumes at the first `incomplete` section. No active.yaml needed.
-
-**Skills required to implement skeleton-first:**
-
-| Skill | Output file | Skeleton written when |
-|-------|-------------|----------------------|
-| **design-system** | `design/gdd/[system].md` | Before Phase 1 (section discussion) |
-| **art-bible** | `design/art/art-bible.md` | From `.game-studio/resources/docs/templates/art-bible.md`, after asking, when section 1 is approved |
-| **create-architecture** | `docs/architecture/architecture.md` | Not skeleton-first: written once at Phase 7 after its ask (an existing document is updated in place) |
-| **ux-design** | `design/ux/[screen].md` | Before screen discussion |
-| **create-stories** | `production/epics/[epic-slug]/story-NNN-[slug].md` | Not skeleton-first: written in Step 6, after the ask names every file |
-| **create-epics** | `production/epics/[epic-slug]/EPIC.md` | Not skeleton-first: written after its per-epic "May I write `production/epics/[epic-slug]/EPIC.md` and add its row to `production/epics/index.md`" ask |
-| **map-systems** | `design/gdd/systems-index.md` | Before system enumeration |
-| **brainstorm** | `design/gdd/game-concept.md` (`standard`/`full`) · `design/game-brief.md` (`minimal`) | Before concept discussion |
-
-> **Note on agents:** `world-builder` and `narrative-director` are agents, not
-> invocable skills — they do not have SKILL.md files. Long-form output from these
-> agents is produced via the skills above (design-system, art-bible, etc.) which
-> are responsible for skeleton-first enforcement.
-
----
-
-### Status line behavior
-
-> ⚠️ **The table below describes POST-YAML-EXPANSION behavior, which is NOT
-> IMPLEMENTED.** `active.yaml` does not exist and nothing writes it. What ships
-> today: `statusline.sh` parses the `<!-- STATUS --> ... <!-- /STATUS -->`
-> markdown comment block inside `production/session-state/active.md`. Substitute
-> "the STATUS block in `active.md`" for every `active.yaml` / `status:` mention
-> here. **The same substitution applies document-wide, not just below this
-> point** — see the scope note under `## features.session_state`.
-
-> **Stage detection is always independent of session state.** `statusline.sh`
-> auto-detects stage from `project.yaml` `project.stage` or artifact heuristics regardless
-> of `session_state` value, and so is the breadcrumb: `statusline.sh` never reads
-> `session_state`. (At `workflow: minimal` the status line shows the story count
-> instead of the stage.)
-
-| Feature | session_state: off | session_state: on |
-|---------|--------------------|-------------------|
-| Context % display | Always shown | Always shown |
-| Model display | Always shown | Always shown |
-| Stage display | From project.yaml or heuristics — except at `workflow: minimal`, where `Minimal · <done>/<total> stories` (or `Minimal · brief` before any story exists) replaces it | Same |
-| Epic/Feature/Task breadcrumb | Parsed from `status:` block in `active.yaml` (not gated) | Parsed from `status:` block in `active.yaml` |
-
----
-
-### Affected skills
-
-Skills interact with session state in two ways: **inference** (reading active.yaml
-to resolve a missing argument) and **extraction** (appending a SESSION EXTRACT
-block after completing work). Neither is gated: no skill reads `session_state`,
-so both happen whatever its value.
-
-#### Inference — skills that read active.yaml to fill in missing arguments
-
-When active.yaml holds nothing to infer from, these skills must receive the
-argument explicitly. If called without an argument, they should prompt the user
-rather than fail silently.
-
-| Skill | What it infers from active.yaml | Fallback when nothing is found |
-|-------|----------------------------------|---------------------|
-| **dev-story** | Active story path (when no arg given) | Prompt user for story path |
-| **story-done** | In-progress story path (when no arg given) | Prompt user for story path |
-| **team-release** | Target version (when no arg given) | Prompt user for version |
-| **team-qa** | Active sprint (when no arg given) | Prompt user for sprint file |
-| **help** | Current task and STATUS block for context-aware suggestions | Responds without session context — surfaces next steps from sprint/epics only |
-
-#### Extraction — skills that write session state to active.md
-
-These skills write a structured block after completing work, whatever
-`session_state` is. `$gs-dev-story` and `$gs-story-done` overwrite
-the `<!-- CHECKPOINT -->` block; the others append a SESSION EXTRACT.
-
-| Skill | What it writes to active.md |
-|-------|-----------------------------|
-| **dev-story** | Checkpoint: story path, next step, blockers, files changed, run result |
-| **story-done** | Checkpoint: verdict, story path, next story, tech debt count |
-| **architecture-review** | Verdict, TR coverage counts, new TR-IDs, GDD flags, ADR gaps, report path |
-| **prototype** | Prototype scope, current phase, key decisions |
-| **vertical-slice** | Slice concept, current phase, blocked items |
-| **team-qa** | QA phase comment, blocking issues |
-| **map-systems** | Task record: systems enumerated, current phase |
-
----
-
-### Token cost summary
-
-| Scenario | session_state: off | session_state: on |
-|----------|--------------------|-------------------|
-| Per session start | ~500 tokens (git/sprint context only) | ~500–1,250 tokens (+ checkpoint preview, at most ~750) |
-| Per compaction event | 0 (compaction hook output never reaches Claude) | 0 (logged to disk only) |
-| Per session end | 0 | File I/O only (no conversation tokens) |
-| Recovery after /clear | Read skeleton + 2–3 docs (~1,000–3,000 tokens) | Read active.yaml (~200–500 tokens) |
-
-> **Note:** The `off` recovery cost (reading skeleton + docs) is paid only when
-> recovery is actually needed. The `on` session-start cost is paid every session
-> whether recovery is needed or not.
-
----
 
 ## features.token_budget_warn_at
 
@@ -2178,142 +1781,24 @@ the `<!-- CHECKPOINT -->` block; the others append a SESSION EXTRACT.
 
 ---
 
-## schema_version
+## schema_version and framework metadata
 
-**Controls:** Which version of the project.yaml schema this file conforms to
-**Values:** integer
-**Default:** `1` (for v1.1 of CCGS)
-**Set by:** `$gs-start`, `$gs-adopt`
-**Read by:** All skills and hooks that parse project.yaml (for migration safety)
+schema_version is project metadata, not an automatic migration trigger. Unknown
+optional project leaves are retained by config resolution; malformed YAML is rejected.
+Installer state/release manifest supplies the installed framework version. framework
+version/date fields in project.yaml are informational and are never used to skip
+manifest integrity/conflict checks. No skills run legacy migration or --finalize.
 
-> Lets future CCGS versions detect and migrate old project.yaml files. The
-> migration logic compares `schema_version` in the file against the current
-> CCGS's expected version. If newer, warn. If older, run migrations.
+## Legacy preference reconciliation
 
----
+Use gs-adopt to explicitly inspect old stage/review/technical-preference records,
+propose a mapping to current project.yaml and review the resulting diff. Preserve
+unknown/custom values for human reconciliation. Runtime supports only stage/review
+text fallbacks when the current leaf is absent; an explicit project leaf wins and a
+stale mirror is reported. It never converts Markdown, refuses split-brain wholesale,
+deletes legacy files, or claims a conversion report was executed. Keep old files
+until their contents are actually reconciled and deletion is authorized.
 
-### Migration behavior
-
-| project.yaml schema_version | Current CCGS expects | Behavior |
-|----------------------------|---------------------|----------|
-| Matches expected | — | Normal operation |
-| Lower than expected | — | `$gs-adopt` warns and offers migration; skills run with deprecation warnings |
-| Higher than expected | — | All skills warn: "This project.yaml was created by a newer CCGS version. Some settings may be ignored." |
-| Missing | — | Treated as legacy (pre-v1.1); migration prompted on next `$gs-start` or `$gs-adopt` |
-
----
-
-## framework
-
-**Controls:** Tracks which CCGS version created or last touched this project
-**Values:** `framework.version` (semver string) + `framework.last_upgraded` (ISO date)
-**Default:** stamped in the template's `project.yaml` at each release
-**Set by:** the template; `$gs-start` (Phase 3c), `$gs-setup-engine` and `$gs-gate-check` write the block into a `project.yaml` they create, and explicit reviewed legacy preference reconciliation via `$gs-adopt` writes `framework.version` into the one it builds
-  *(The four skills above were verified to name it; whether each reads it or merely emits it was NOT separated, so this says 'appears in', not 'read by'.)*
-
----
-
-### Fields
-
-```yaml
-framework:
-  version: "1.1.0"
-  last_upgraded: "2026-05-14"
-```
-
-| Field | Purpose |
-|-------|---------|
-| `version` | The CCGS version that created the project (or was last updated to — see `UPGRADING.md`). |
-| `last_upgraded` | ISO date of the most recent template update. |
-
----
-
-### Affected skills
-
-None. No skill or hook reads `framework.version` or `last_upgraded` — `$gs-adopt`
-does not consult them and no hook checks their age. They record which template
-version the project came from; `UPGRADING.md` is the upgrade path.
-
----
-
-## Migration from v1.0 → v1.1
-
-When a v1.0 CCGS project upgrades to v1.1, migration tooling (run via `$gs-adopt`)
-converts legacy files to `project.yaml`. This section specifies the intended
-behavior.
-
-### Detection
-
-A project is detected as needing migration when:
-- `project.yaml` does **NOT** exist at the repo root, AND
-- One or more legacy files exists:
-  - `production/stage.txt`
-  - `production/review-mode.txt`
-  - `docs/project-reference/technical-preferences.md`
-
-### Preservation
-
-| Legacy source | Migrates to |
-|---------------|-------------|
-| `production/stage.txt` (single line) | `project.stage` |
-| `production/review-mode.txt` (single line) | `modes.review_mode` |
-| `docs/project-reference/technical-preferences.md` → "Engine & Language" section | `engine.name`, `engine.version`, `engine.language`, `engine.rendering`, `engine.physics` |
-| `technical-preferences.md` → "Input & Platform" section | `platform.targets`, `platform.primary_input`, `platform.gamepad_support`, `platform.touch_support` |
-| `technical-preferences.md` → "Naming Conventions" section | `naming.classes`, `naming.variables`, `naming.constants`, `naming.signals`, `naming.files`, `naming.scenes` |
-| `technical-preferences.md` → "Performance Budgets" section | `performance.target_framerate`, `performance.frame_budget_ms`, `performance.draw_call_limit`, `performance.memory_ceiling_mb` |
-| `technical-preferences.md` → "Testing" section | `testing.framework`, `qa.coverage_minimum` (bare number only — prose is reported for manual entry) |
-| `technical-preferences.md` → "Engine Specialists" section | `specialists.code`, `specialists.shader`, `specialists.ui`, `specialists.additional` |
-
-**Value rename — `review_mode: none` → `solo`.** v1.0 used `none` for the "no
-director reviews" tier; v1.1 renamed that tier to `solo` (the enum is
-`full | lean | solo`). Migration **coerces** a legacy `none` to `solo` and reports
-the rename in the migration report's Warnings. This is the one documented value
-rename, so it is mapped-and-flagged rather than preserved raw: writing `none`
-verbatim would produce an enum-invalid `project.yaml` that `explicit config command` rejects
-and falls back to the `modes.rigor` value — at `standard` that is `lean`, reviews *on* —
-inverting the user's intent. The
-`--finalize` preservation check applies the same mapping so it does not falsely
-refuse. Every *other* non-v1.1 stage/review value is a fork, not a rename:
-preserved raw and flagged for manual resolution, never coerced.
-
-Settings absent from the legacy files (new v1.1 settings like `qa.level`,
-`docs.density`, `team.size`, etc.) get hardcoded defaults from the v1.1 schema.
-
-### Cleanup (deferred, non-destructive)
-
-Migration is **non-destructive in v1.1**: legacy files are NOT auto-deleted.
-Migration produces `project.yaml` and leaves the legacy files in place. Hooks
-and skills read `project.yaml` first; they fall back to the legacy file if a
-specific key is missing.
-
-Legacy files are deleted only when the user runs
-`manual legacy preference reconciliation` (driven by `$gs-adopt`, which
-detects a v1.0 project automatically at Phase 2g). The cleanup step verifies
-that every legacy file's content has been preserved in `project.yaml` before
-deleting.
-
-### Failure modes
-
-| Problem | Behavior |
-|---------|----------|
-| Legacy file is malformed (can't parse) | Migration emits warning per file, leaves it untouched, continues with the others. `project.yaml` gets the parseable values + defaults for the rest. |
-| Parsed value doesn't match v1.1 enum (e.g. `stage: Alpha` from a fork) | Migration writes the raw value with a `_migration_warning` comment in `project.yaml`. User resolves manually. |
-| Both `project.yaml` AND a legacy file exist (split-brain) | Migration tooling refuses to run. Error: "Both project.yaml and legacy files exist — resolve which is authoritative before migrating." |
-| Custom sections in forked `technical-preferences.md` | Custom content logged to `production/migration-report.md` as "not migrated — please integrate manually." |
-
-### Migration report
-
-Every migration run writes `production/migration-report.md`:
-
-- Source files detected
-- Values preserved (per file → per setting)
-- Defaults applied (for v1.1-new settings)
-- Warnings encountered (malformed, mismatched enums, etc.)
-- Manual review items
-
-User reads the report before running `--finalize`.
-
----
 
 ## Complete example `project.yaml`
 
@@ -2338,7 +1823,7 @@ modes:
   review_mode: lean          # full | lean | solo
   workflow: standard         # minimal | standard | full
   automation: collaborative  # collaborative | guided | autonomous
-  automation_always_ask:     # decision categories that always prompt regardless of mode
+  automation_always_ask:     # decision categories that prompt only when existing authorization does not cover the material action
     - scope_changes
     - file_deletions
     - schema_changes

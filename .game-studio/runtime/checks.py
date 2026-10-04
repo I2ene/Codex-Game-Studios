@@ -74,9 +74,33 @@ def stories(root):
     rows = []
     for p in files(root, 'production/epics/**/story-*.md'):
         text = p.read_text(encoding='utf-8-sig')
-        status = re.search(r'(?im)^\s*\*{0,2}Status\*{0,2}:\*{0,2}\s*(.+)', text)
-        rows.append({'path': p.relative_to(root).as_posix(), 'status': status.group(1).strip() if status else 'UNKNOWN'})
-    return {'status': 'OBSERVED' if rows else NO_DATA, 'count': len(rows), 'stories': rows}
+        status = None
+        for line in text.splitlines():
+            line = re.sub(r'^\s*(?:>\s*)?(?:[-+]\s+)?', '', line).replace('*', '')
+            match = re.match(r'(?i)^Status:\s*(.*)$', line)
+            if match:
+                status = match.group(1).strip()
+                break
+        categories = [('COMPLETE', r'(complete|done)(?![a-z])'), ('IN_REVIEW', r'in review(?![a-z])'),
+                      ('IN_PROGRESS', r'in progress(?![a-z])'), ('TODO', r'(ready|not started)(?![a-z])'),
+                      ('BLOCKED', r'blocked(?![a-z])')]
+        category = next((key for key, expr in categories if status and re.match(expr, status, re.I)),
+                        'NO_STATUS' if status is None else 'OTHER')
+        rows.append({'path': p.relative_to(root).as_posix(), 'status': status if status is not None else 'UNKNOWN', 'category': category})
+    order = {'IN_REVIEW': 0, 'IN_PROGRESS': 1, 'TODO': 2, 'BLOCKED': 3, 'OTHER': 4, 'NO_STATUS': 4, 'COMPLETE': 5}
+    rows.sort(key=lambda row: (order[row['category']], row['path']))
+    unfinished = [row for row in rows if row['category'] != 'COMPLETE']
+    counts = {key: sum(row['category'] == key for row in rows) for key in order}
+    candidate = next((row for row in unfinished if row['category'] in {'IN_REVIEW', 'IN_PROGRESS', 'TODO'}), None)
+    if candidate:
+        action = 'story-done' if candidate['category'] == 'IN_REVIEW' else 'dev-story'
+        routing = {'action': action, 'skill': '$gs-' + action, 'path': candidate['path']}
+    else:
+        action = 'NO STORIES' if not rows else 'COMPLETE' if not unfinished else 'BLOCKED' if all(row['category'] == 'BLOCKED' for row in unfinished) else 'REVIEW STATUS'
+        routing = {'action': action, 'path': None}
+    return {'status': 'OBSERVED' if rows else NO_DATA, 'count': len(rows), 'complete': counts['COMPLETE'],
+            'counts': counts, 'stories': rows, 'unfinished': unfinished, 'next': routing,
+            'note': 'Status/routing observations; closure still requires applicable actual acceptance/review evidence.'}
 
 
 def sections(text):
@@ -93,18 +117,21 @@ def sections(text):
     return result
 
 
-def receipts(root, action, patterns, receipt=None):
+def receipts(root, action, patterns, receipt=None, report=None):
     root = plain(root)
     if action not in {'hash', 'check', 'sections-hash', 'sections-check'}:
         raise ValueError('Unknown receipt action')
-    old, observations, unresolved = {}, [], []
+    old, observations, unresolved, baseline = {}, [], [], {}
     if action.endswith('check') and receipt:
         p = confined(root, receipt)
         if p.exists():
             data = json.loads(p.read_text(encoding='utf-8'))
             if not isinstance(data, dict) or data.get('algorithm') != 'sha256' or not isinstance(data.get('hashes'), dict):
                 raise ValueError('Receipt must be native sha256 JSON; legacy stamps require a fresh review')
+            if data.get('kind') not in {None, 'sections' if action.startswith('sections-') else 'files'}:
+                raise ValueError('Receipt kind differs from the requested comparison')
             old = data['hashes']
+            baseline = data
             for key, sha in old.items():
                 confined(root, key.split('#', 1)[0] if action.startswith('sections-') else key)
                 if not isinstance(sha, str) or len(sha) != 64:
@@ -129,21 +156,40 @@ def receipts(root, action, patterns, receipt=None):
             relative = key.split('#', 1)[0] if action.startswith('sections-') else key
             if key not in current and any(Path(relative).match(p) for p in patterns):
                 observations.append({'path': key, 'status': 'REMOVED'})
-    return {'algorithm': 'sha256', 'hashes': current, 'observations': observations,
-            'unresolved': unresolved, 'status': 'OBSERVED' if current else NO_DATA}
+    linked_report = report if action.endswith('hash') else baseline.get('report')
+    report_hash, report_status = None, 'UNLINKED'
+    if linked_report:
+        path = confined(root, linked_report)
+        if not path.is_file():
+            if action.endswith('hash'):
+                raise ValueError('Write the actual review report before generating its companion receipt')
+            report_status = 'ABSENT'
+        else:
+            report_hash = digest(path.read_bytes())
+            report_status = 'RECORDED' if action.endswith('hash') else 'UNCHANGED' if report_hash == baseline.get('report_hash') else 'CHANGED'
+    return {'algorithm': 'sha256', 'kind': 'sections' if action.startswith('sections-') else 'files',
+            'hashes': current, 'observations': observations, 'patterns': list(patterns),
+            'unresolved': unresolved, 'previous_unresolved': baseline.get('unresolved', []),
+            'baseline_status': 'PRESENT' if baseline else 'MISSING',
+            'report': linked_report, 'report_hash': report_hash, 'report_status': report_status,
+            'unchanged_inputs': bool(baseline and current and current == old and unresolved == baseline.get('unresolved', [])
+                                     and list(patterns) == baseline.get('patterns') and report_status == 'UNCHANGED'),
+            'status': 'OBSERVED' if current else NO_DATA}
 
 
 def dependencies(root):
     root = plain(root)
     adrs = files(root, 'docs/architecture/adr-*.md')
     lookup = {p.stem.lower(): p.relative_to(root).as_posix() for p in adrs}
-    graph, missing = {}, []
+    graph, missing, missing_sections = {}, [], []
     for p in adrs:
         rel = p.relative_to(root).as_posix()
         text = p.read_text(encoding='utf-8-sig')
         match = re.search(r'(?ims)^## ADR Dependencies\s*\n(.*?)(?=^## |\Z)', text)
         dependency_text = match.group(1) if match else ''
         depends_row = re.search(r'(?im)^.*\*\*Depends On\*\*.*$', dependency_text)
+        if not dependency_text.strip() or re.search(r'\bUNKNOWN\b', dependency_text, re.I) or '|' in dependency_text and not depends_row:
+            missing_sections.append(rel)
         if depends_row:
             dependency_text = depends_row.group()
         elif '|' in dependency_text:
@@ -170,7 +216,20 @@ def dependencies(root):
 
     for node in graph:
         visit(node, [])
-    return {'status': 'OBSERVED' if adrs else NO_DATA, 'nodes': len(adrs), 'graph': graph, 'missing': missing, 'cycles': cycles}
+    pending = {node: len(set(edges)) for node, edges in graph.items()}
+    order, ready = [], sorted(node for node, count in pending.items() if not count)
+    while ready:
+        node = ready.pop(0)
+        order.append(node)
+        for other, edges in graph.items():
+            if node in edges:
+                pending[other] -= 1
+                if pending[other] == 0:
+                    ready.append(other)
+                    ready.sort()
+    return {'status': 'OBSERVED' if adrs else NO_DATA, 'nodes': len(adrs), 'graph': graph, 'missing': missing, 'cycles': cycles,
+            'missing_sections': missing_sections, 'order': order,
+            'note': 'Order covers declared edges only. Missing/unknown declarations and absent targets are gaps, not a clean dependency verdict.'}
 
 
 def gdd_structure(root, patterns):
@@ -194,15 +253,34 @@ def review_scope(root, receipt=None):
     excluded = {'game-concept', 'systems-index', 'game-pillars', 'gameplay-tags', 'fixture-swap-ledger', 'entity-registry', 'sound-bible'}
     names = [p.relative_to(root).as_posix() for p in files(root, 'design/gdd/*.md')
              if p.stem not in excluded and not p.stem.startswith('gdd-cross-review-')]
-    if receipt:
-        observations = receipts(root, 'check', ['design/gdd/*.md'], receipt)
+    baseline_reason, observations = 'No native baseline', None
+    if receipt and confined(root, receipt).is_file():
+        try:
+            baseline = json.loads(confined(root, receipt).read_text(encoding='utf-8'))
+        except json.JSONDecodeError:
+            baseline = {}
+        if isinstance(baseline, dict) and baseline.get('algorithm') == 'sha256' and baseline.get('kind') == 'files':
+            patterns = baseline.get('patterns', [])
+            if not isinstance(patterns, list) or not all(isinstance(p, str) for p in patterns):
+                raise ValueError('Receipt patterns must be a list of strings')
+            observations = receipts(root, 'check', list(dict.fromkeys([*patterns, 'design/gdd/*.md'])), receipt)
+            baseline_reason = 'Linked report and context compared'
+        else:
+            baseline_reason = 'Legacy/non-native baseline; full scope'
+    if observations:
         changed = [r['path'] for r in observations['observations'] if r['status'] != 'UNCHANGED'
                    and Path(r['path']).stem not in excluded and not Path(r['path']).stem.startswith('gdd-cross-review-')]
+        context_changed = any(not r['path'].startswith('design/gdd/') or Path(r['path']).stem in excluded
+                              for r in observations['observations'] if r['status'] != 'UNCHANGED')
+        if observations['report_status'] != 'UNCHANGED' or context_changed or observations['unresolved']:
+            changed = sorted(set(changed) | set(names))
+            baseline_reason = 'Report/context drift or unresolved inputs; full scope'
     else:
         changed = names
     scoped = set(changed)
-    queue = list(changed)
-    missing, unresolved = [], []
+    queue = list(names)
+    missing = [rel for rel in changed if rel not in names and rel.startswith('design/gdd/')]
+    unresolved, graph = [], {}
     while queue:
         rel = queue.pop()
         p = confined(root, rel)
@@ -226,26 +304,28 @@ def review_scope(root, receipt=None):
                 unresolved.append({'from': rel, 'dependency': name})
         if declared.strip() and not found and not re.fullmatch(r'(?is)[\s*|`-]*(none|n/a)[\s*|`-]*', declared.strip()):
             unresolved.append({'from': rel, 'dependency': 'Unparsed dependency declaration'})
-        for dep in found - scoped:
-            scoped.add(dep)
-            queue.append(dep)
+        graph[rel] = found
+    # A changed dependency affects both its dependants and its own dependencies.
+    while True:
+        previous = set(scoped)
+        for rel, edges in graph.items():
+            if rel in scoped or edges & scoped:
+                scoped.add(rel)
+                scoped.update(edges)
+        if scoped == previous:
+            break
     if unresolved:
         scoped.update(names)  # Unknown declarations cannot safely narrow review.
     return {'status': 'OBSERVED' if names else NO_DATA, 'baseline': receipt,
-            'changed': sorted(changed), 'scope': sorted(scoped), 'missing': missing,
+            'baseline_reason': baseline_reason, 'freshness': observations,
+            'changed': sorted(changed), 'scope': sorted(rel for rel in scoped if rel.startswith('design/gdd/')), 'missing': sorted(set(missing)),
             'unresolved_dependencies': unresolved,
             'note': 'Without a native receipt, conservative full scope. Confirm declared dependencies in the review.'}
 
 
-def coherence(root):
-    root = plain(root)
-    result = resolve(root)
-    engine = result['values'].get('engine.name')
-    markers = {'Godot': list(Path(root).glob('project.godot')), 'Unity': list(Path(root).glob('ProjectSettings/ProjectVersion.txt')),
-               'Unreal': list(Path(root).glob('*.uproject'))}
-    return {'settings': result, 'engine_markers': {k: [p.relative_to(root).as_posix() for p in v] for k, v in markers.items()},
-            'configured_engine': engine, 'status': 'OBSERVED' if engine else NO_DATA,
-            'note': 'No engine setup or version inference performed.'}
+def coherence(root, probe=False):
+    from engine import coherence as compare
+    return compare(root, probe)
 
 
 def run_command(root, name, timeout=300):

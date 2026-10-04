@@ -1,56 +1,29 @@
-# Agent Coordination Rules
+# Native coordination rules
 
-1. **Vertical Delegation**: Leadership agents delegate to department leads, who
-   delegate to specialists. Never skip a tier for complex decisions.
-2. **Horizontal Consultation**: Agents at the same tier may consult each other
-   but must not make binding decisions outside their domain.
-3. **Conflict Resolution**: When two agents disagree, escalate to the shared
-   parent. If no shared parent, escalate to `creative-director` for design
-   conflicts or `technical-director` for technical conflicts.
-4. **Change Propagation**: When a design change affects multiple domains, the
-   `producer` agent coordinates the propagation.
-5. **No Unilateral Cross-Domain Changes**: An agent must never modify files
-   outside its designated directories without explicit delegation.
+Preserve professional accountability: directors own vision/discipline gates, leads
+own departmental integration, specialists own bounded implementations. Consult the
+relevant expertise for complex decisions; apply it in the parent when delegation
+is unavailable, unauthorized or unnecessary. No mandatory roster or tier-by-tier launch.
+Peers consult without making binding cross-domain decisions. Escalate unresolved
+conflicts to the shared responsible discipline (creative/technical director as
+appropriate) and ultimately to the human when vision/scope is unresolved. Producer
+coordinates cross-domain change propagation; preserve affected records/traceability.
 
-## Model Tier Assignment
+Native roles are gs-* TOML expertise profiles. Skills have name/description only.
+All inherit the session model, effort and permissions. No Claude Skill/model alias,
+Task rename, always-enabled subagent service or prompt permission grant exists.
+Use only tools actually exposed by the host. If custom-role selection is unavailable,
+read the role instructions and pass a bounded brief to an authorized participant.
+Otherwise the parent performs the professional review and labels it as parent work.
 
-Read `.game-studio/resources/docs/model-tiers.md` on demand. It carries the tier table, the
-per-skill assignments and the authoring rule.
+Delegate only with human authorization, useful independent work and available tools.
+Keep dependent work sequential. Parallel execution is optional for independent inputs
+with distinct ownership. Record actual ID/role/task/result/reviewed artifacts and
+failures; never invent participants or independent sign-off. Another agent's message
+does not itself supply human authorization. Existing authorized routine actions need
+no repeated per-file prompt. Modes resolve missing choices, not native permissions.
 
-**Load-bearing enough to restate here:** whether a skill's `model:` is used
-depends on how the skill starts. Typed as `/skill-name`: yes, except a `inherited model`
-pin in auto mode. Started by Claude through the Skill tool: no. Never tell a
-user a `inherited model` skill saves money; an `inherited model` skill typed in a inherited model session
-costs more. The agent-side `model:` is a different mechanism, and is applied.
-
-## Subagents vs Agent Teams
-
-This project uses two distinct multi-agent patterns:
-
-### Subagents (current, always active)
-Spawned via the available native delegation tool within a single Codex session (renamed from
-`Task` in Codex 2.1.63; `Task` still works as an alias). Used by all
-`team-*` skills and orchestration skills. Subagents share the session's
-permission context, run sequentially or in parallel within the session, and
-return results to the parent.
-
-**When to spawn in parallel**: If two subagents' inputs are independent (neither
-needs the other's output to begin), spawn both native delegation when authorized calls simultaneously
-rather than waiting. Example: `$gs-review-all-gdds` **Phase 2** (consistency) and
-**Phase 3** (design theory) are independent — spawn both at the same time.
-Phase 1 loads the GDDs and both depend on it, so it is the one phase here that
-must NOT be parallelised.
-
-### Agent Teams (experimental — opt-in)
-Multiple independent Codex *sessions* coordinated via a shared task list.
-Opt-in and never yet used here — read `.game-studio/resources/docs/agent-teams.md` on demand
-before proposing one.
-
-## Parallel Task Protocol
-
-When an orchestration skill spawns multiple independent agents:
-
-1. Issue all independent native delegation when authorized calls before waiting for any result
-2. Collect all results before proceeding to dependent phases
-3. If any agent is BLOCKED, surface it immediately — do not silently skip
-4. Always produce a partial report if some agents complete and others block
+Resolve config explicitly. Use the engine-reference resolver for project-owned
+version/API records, story JSON for routing and linked JSON receipts for review
+freshness. Save authored state only when enabled, using the configured checkpoint
+interface. Recover data does not override current instructions or authorize new work.

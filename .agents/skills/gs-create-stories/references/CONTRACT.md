@@ -51,7 +51,7 @@ and `$gs-story-readiness` + `$gs-dev-story`.
 - Every story file has a `## Dependencies` section (may say "None" but is never omitted)
 - The EPIC.md `## Stories` table is updated with a row per story including `#`, `Story` title, `Type`, `Status`, and `ADR`
 - Stories with a `Proposed` ADR have `Status: Blocked` and a note: `BLOCKED: ADR-NNNN is Proposed — accept it with $gs-architecture-decision accept ADR-NNNN once decided`; a `Deprecated` or `Superseded` ADR blocks the same way, naming its successor
-- Every story file has an `Engine` and a `Risk` field. `Risk` is taken from `.game-studio/resources/engine-reference/<engine>/VERSION.md`; when that file is missing or assigns no level, `Risk` is **`NOT ASSESSED (no VERSION.md risk rating)`** — never a guessed level
+- Every story file has an `Engine` and a `Risk` field. `Risk` is taken from `<project-engine-reference>/VERSION.md`; when that file is missing or assigns no level, `Risk` is **`NOT ASSESSED (no VERSION.md risk rating)`** — never a guessed level
 - **`NOT ASSESSED` is an emittable value of the `Risk` field**, and downstream readers must handle it. `$gs-dev-story` treats it as HIGH when deciding whether to spawn the engine specialist: an unknown risk is not a low one
 
 ## Immutability Rules

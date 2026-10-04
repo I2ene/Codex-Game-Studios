@@ -11,7 +11,7 @@
 - [ ] Art bible exists at `design/art/art-bible.md` with at least Sections 1–4 (Visual Identity Foundation)
 - [ ] At least 3 Architecture Decision Records in `docs/architecture/` covering
       Foundation-layer systems (scene management, event architecture, save/load)
-- [ ] Engine reference docs exist in `.game-studio/resources/engine-reference/[engine]/`
+- [ ] Engine reference docs exist in `<project-engine-reference>/`
 - [ ] Test framework initialized: the engine's test root exists — `tests/unit/` and `tests/integration/` (Godot), `Assets/Tests/EditMode/` and `Assets/Tests/PlayMode/` (Unity), or `Source/<Module>/Private/Tests/` (Unreal); see `.game-studio/resources/docs/directory-structure.md`
 - [ ] CI/CD test workflow exists at `.github/workflows/tests.yml` (or equivalent)
 - [ ] At least one example test file exists to confirm the framework is functional
@@ -28,7 +28,7 @@
 - [ ] At least one screen's UX spec started (often the main menu or core HUD is designed during Technical Setup)
 - [ ] All ADRs have an **Engine Compatibility section** with engine version stamped
 - [ ] All ADRs have a **GDD Requirements Addressed section** with explicit GDD linkage
-- [ ] No ADR references APIs listed in `.game-studio/resources/engine-reference/[engine]/deprecated-apis.md`
+- [ ] No ADR references APIs listed in `<project-engine-reference>/deprecated-apis.md`
 - [ ] All HIGH RISK engine domains (per VERSION.md) have been explicitly addressed
       in the architecture document or flagged as open questions
 - [ ] Architecture traceability matrix has **zero Foundation layer gaps**
@@ -40,17 +40,9 @@ eventually misses an edge; the script cannot:
 ```
 Bash: python .game-studio/runtime/studio.py dependencies --root <project-root>
 ```
-It prints `ADRS`, `EDGES` (one `adr-A -> adr-B` per Depends-On reference),
-`NO_DEPS_SECTION` (ADRs with no Depends On), and a `CYCLE:` line per node in any
-dependency cycle.
-- **Any `CYCLE:` lines → FAIL**: "Circular ADR dependency: [the nodes on the
-  `CYCLE:` lines]. Neither can reach Accepted while the cycle exists. Remove one
-  'Depends On' edge to break the cycle."
-- No `CYCLE:` lines → this check passes. But the acyclic result is only as
-  trustworthy as the dependency sections are complete: if `NO_DEPS_SECTION` lists
-  many ADRs, surface that as a CONCERNS note rather than a clean pass.
+Consume dependencies JSON nodes, graph, missing and cycles. A missing target/cycle is a finding; empty input is NOT ASSESSED, not proof of valid dependency ordering.
 
-**Engine Validation** (read `.game-studio/resources/engine-reference/[engine]/VERSION.md` first):
+**Engine Validation** (read `<project-engine-reference>/VERSION.md` first):
 - [ ] ADRs that touch post-cutoff engine APIs are flagged with Knowledge Risk: HIGH/MEDIUM
 - [ ] `$gs-architecture-review` engine audit shows no deprecated API usage
 - [ ] All ADRs agree on the same engine version (no stale version references)

@@ -13,7 +13,7 @@ SCRIPTS = {
     'story-status': ('stories', 'Real status enumeration; missing inputs never pass'),
     'review-receipts': ('receipts', 'SHA-256 whole-file/section changes and deletions'),
     'review-scope': ('review-scope', 'Declared GDD dependencies and conservative unresolved scope'),
-    'project-coherence': ('coherence', 'Resolved config and engine markers only; engine executable/preset validation not assessed'),
+    'project-coherence': ('coherence/engine-reference', 'Executed project-first version/render/physics/runner/export comparisons; explicit fixture version probe tested; real engine execution not assessed'),
     'gdd-structure-check': ('gdd-structure', 'Eight-section headings; quality/tier verdict remains professional review'),
     'rotate-session-state': ('checkpoint --save', 'Explicit authored checkpoint and hash-named backup; no inferred work/pruning'),
 }
@@ -77,6 +77,8 @@ def main():
             if name in SCRIPTS:
                 command, reason = SCRIPTS[name]
                 targets, status = ['.game-studio/runtime/checks.py' if name != 'rotate-session-state' else '.game-studio/runtime/studio.py'], 'EXECUTED'
+                if name == 'project-coherence':
+                    targets += ['.game-studio/runtime/engine.py', '.game-studio/resources/docs/engine-reference-resolution.md']
                 row['native_interface'] = command
             elif name == 'migrate-v1-config':
                 disposition, installed, targets, status = 'unsupported', False, ['.agents/skills/gs-adopt/SKILL.md', 'UPGRADING.md'], 'NOT ASSESSED'

@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -18,8 +26,8 @@ project; engine reference versions are examples and require current verification
 Resolve settings explicitly with the native config command; retain its values and provenance.
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 ## Insufficient input — check this before producing any report
 
@@ -68,7 +76,7 @@ Only `warn`, `block` and `off` are recognized. Surface any other value to the
 user and fall back to `warn` rather than guessing.
 
 > The value is locally overridable (`$gs-settings --local performance.enforce=block`),
-> so use the resolved block above rather than reading `project.yaml` — a
+> so use the explicitly resolved config JSON rather than reading `project.yaml` — a
 > teammate's stricter local setting is meant to bite on their machine only.
 
 ## Phase 1: Determine Scope

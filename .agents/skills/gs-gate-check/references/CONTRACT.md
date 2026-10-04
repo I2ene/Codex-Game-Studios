@@ -10,7 +10,7 @@ Validates whether the project is ready to advance from one development phase to 
 |------|---------------------------|-----------|
 | `project.yaml` (`project.stage`, fallback `production/stage.txt`) | Stage name (used when no argument provided, to auto-detect current stage) | Yes |
 | `project.yaml` (`modes.workflow`, which follows `modes.rigor` — `minimal` by default; `workflow_overrides.system_overrides.*`, `workflow_overrides.art_bible_strict`) | Workflow tier — selects the per-gate artifact checklist (Section 2b); per-system overrides resolved when validating MVP GDDs | Yes |
-| `.game-studio/resources/engine-reference/[engine]/VERSION.md` | Engine version, post-cutoff risk levels (read during engine validation checks) | Yes |
+| `<project-engine-reference>/VERSION.md` | Engine version, post-cutoff risk levels (read during engine validation checks) | Yes |
 | `docs/project-reference/technical-preferences.md` | Legacy fallback for `engine.*`, `naming.*` and `performance.*` when those keys are absent or empty in `project.yaml`; sole source for forbidden patterns (never migrated). Referenced in quality checks | Yes — required only for keys absent from `project.yaml` |
 | `docs/consistency-failures.md` | Domain-tagged entries surfaced as increased-scrutiny context (read if exists; skip if absent) | Yes |
 
@@ -19,7 +19,7 @@ Validates whether the project is ready to advance from one development phase to 
 |-------------|------------------|
 | Concept → Systems Design | `design/gdd/game-concept.md`; pillars either inside it **or** in an optional `design/gdd/game-pillars.md` — at the `minimal` tier, `design/game-brief.md` instead (pillars check drops) |
 | Systems Design → Technical Setup | `design/gdd/systems-index.md`, all MVP GDDs in `design/gdd/`, cross-GDD review report |
-| Technical Setup → Pre-Production | `docs/architecture/` ADRs (≥3), `.game-studio/resources/engine-reference/[engine]/deprecated-apis.md`, `docs/architecture/architecture.md`, `docs/architecture/requirements-traceability.md`, `design/accessibility-requirements.md`, `design/ux/interaction-patterns.md` |
+| Technical Setup → Pre-Production | `docs/architecture/` ADRs (≥3), `<project-engine-reference>/deprecated-apis.md`, `docs/architecture/architecture.md`, `docs/architecture/requirements-traceability.md`, `design/accessibility-requirements.md`, `design/ux/interaction-patterns.md` |
 | Pre-Production → Production | `production/sprints/` (first sprint plan), `docs/architecture/control-manifest.md`, `production/epics/` (Foundation + Core layer epics), `design/ux/hud.md`, `design/ux/` key screen specs; recommended, not blocking: `prototypes/*-vertical-slice/REPORT.md` and its playtest in `production/qa/playtests/` — at the `minimal` tier, only a filled `design/game-brief.md` with its build order and stories under `production/epics/` (no sprint plan; the rest drops, the Vertical Slice items included — two checks on the current build replace them: the core loop is fun, and it runs end to end) |
 | Production → Polish | code-root subsystems (resolve per `.game-studio/resources/docs/code-root-resolution.md`), the engine's test root — `tests/unit/` + `tests/integration/` (Godot), `Assets/Tests/` (Unity), `Source/<Module>/Private/Tests/` (Unreal) — with all Logic stories covered, `production/qa/smoke-*.md` (PASS or PASS WITH WARNINGS), `production/qa/playtests/` (≥3 sessions) |
 | Polish → Release | Full story test evidence for all Must Have stories, QA sign-off report, localization check, `production/qa/` QA plan, release checklist output, changelog, the newest full-scope `production/security/security-audit-*.md` (plus any later `quick` re-run) |
@@ -34,7 +34,7 @@ Validates whether the project is ready to advance from one development phase to 
 | File | Guaranteed Fields / Sections | Notes |
 |------|------------------------------|-------|
 | `production/gate-checks/gate-[phase]-[date].md` (or path chosen by user) | Full checklist with per-item status, Blockers list, Recommendations, Verdict, Chain-of-Verification note | written only after user approves ("May I write this gate check report to production/gate-checks/?") |
-| `project.yaml` (`project.stage`) + legacy `production/stage.txt` | New stage name (dual-write for backward compat) | written ONLY when the verdict is PASS and the user explicitly confirms, or the verdict is CONCERNS and the user explicitly accepts the listed risks; never written on FAIL or NOT ASSESSED |
+| `project.yaml` (`project.stage`) | New stage name; legacy text is read-only fallback, never a new mirror | written ONLY when the verdict is PASS and the user explicitly confirms, or the verdict is CONCERNS and the user explicitly accepts the listed risks; never written on FAIL or NOT ASSESSED |
 
 ### Output Guarantees
 - The gate report always contains: artifact checklist (with file sizes or "MISSING"), quality check results, list of blockers (empty if PASS), recommendations, and the Chain-of-Verification note — plus an `### Accepted Risks` section (each concern, accepted by the user, dated) when the user advanced on CONCERNS
@@ -42,7 +42,7 @@ Validates whether the project is ready to advance from one development phase to 
 - Any item that cannot be automatically verified is marked `MANUAL CHECK NEEDED` and the user is asked before the verdict is finalized
 
 ## Immutability Rules
-- READS but does NOT modify: all GDDs in `design/gdd/`, all ADRs in `docs/architecture/`, `docs/architecture/control-manifest.md`, `docs/architecture/tr-registry.yaml`, `docs/project-reference/technical-preferences.md` (legacy fallback), `.game-studio/resources/engine-reference/[engine]/VERSION.md`, `.game-studio/resources/engine-reference/[engine]/deprecated-apis.md`, all story files in `production/epics/`, all sprint files in `production/sprints/`, all playtest files in `production/qa/playtests/`, source files in the code root (Grep only), test files under the engine's test root (run via Bash)
+- READS but does NOT modify: all GDDs in `design/gdd/`, all ADRs in `docs/architecture/`, `docs/architecture/control-manifest.md`, `docs/architecture/tr-registry.yaml`, `docs/project-reference/technical-preferences.md` (legacy fallback), `<project-engine-reference>/VERSION.md`, `<project-engine-reference>/deprecated-apis.md`, all story files in `production/epics/`, all sprint files in `production/sprints/`, all playtest files in `production/qa/playtests/`, source files in the code root (Grep only), test files under the engine's test root (run via Bash)
 - MODIFIES: `project.yaml` (`project.stage` only) + legacy `production/stage.txt` (both on a confirmed PASS or an accepted CONCERNS override only), `production/gate-checks/[report].md` (new file, with user approval)
 - Does NOT modify story files, ADRs, GDDs, or any source/test code
 

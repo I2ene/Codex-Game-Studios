@@ -1,0 +1,20 @@
+{
+  "command": "test",
+  "argv": [
+    "<fixture-python>",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "cwd": "<fixture-root>",
+  "timestamp": "2026-10-04T21:37:16.435527+00:00",
+  "status": "EXECUTED",
+  "exit_code": 0,
+  "seconds": 0.10999999999876309,
+  "stdout": "",
+  "stderr": "test_increment_and_cap (test_counter.CounterTests.test_increment_and_cap) ... ok\ntest_reject_invalid_inputs (test_counter.CounterTests.test_reject_invalid_inputs) ... ok\ntest_all_invalid_type_positions (test_native_acceptance.AcceptanceTests.test_all_invalid_type_positions) ... ok\ntest_exact_story_examples (test_native_acceptance.AcceptanceTests.test_exact_story_examples) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+  "output_truncated": false
+}

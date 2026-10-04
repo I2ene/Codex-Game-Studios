@@ -1,3 +1,22 @@
+## Native coherence consumption
+
+Run coherence --root <project-root> and consume observations/counts JSON. It compares
+declared engine facts with project-owned VERSION records and actual project settings,
+rendering/2D physics usage, explicit test/script entries and export preset names.
+Installed binary is NOT ASSESSED by default; only after inspecting/authorizing
+commands.engine_probe may coherence --probe run it and retain an execution receipt.
+Missing/unimplemented checks remain named NOT ASSESSED. Resolve every DIFFERS;
+no empty/successful helper output proves engine consistency or a game build.
+Read .game-studio/resources/docs/engine-reference-resolution.md; project records, not packaged examples, govern.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -30,8 +49,8 @@ Handing a broken build to QA wastes their time and demoralises the team.
 ---
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **`qa.level`**: at `minimal`, smoke-check is **optional** — if
 run, a FAIL is advisory and never blocks hand-off, and a project with no game
@@ -67,16 +86,13 @@ Before running anything, understand the environment:
 
 0. **Config coherence**: run `python .game-studio/runtime/studio.py coherence --root <project-root>`.
 
-   It compares what `project.yaml` declares against the real project file, the
-   installed engine binary, and the files `commands.*` name. This runs first
-   because two of its checks are about *this skill's own inputs*: a
-   `commands.test` naming a runner that does not exist, or a `commands.build`
-   naming an export preset with no `export_presets.cfg`, will fail here and read
-   as a broken build rather than as broken config.
-
-   Report any `[DIFFERS]` lines in the report's Environment section. They do not
-   by themselves decide the verdict -- but a smoke check run against a project
-   whose declared engine is not the installed one is worth saying out loud.
+   Consume observations/counts JSON. Compare declared engine/version with project
+   records/settings, runner script paths and named export presets before using those
+   commands. Report each DIFFERS and NOT ASSESSED in Environment. The binary is NOT
+   ASSESSED by default; an inspected, authorized commands.engine_probe may be run
+   through coherence --probe, with actual exit/output retained. Missing engine/probe
+   data cannot establish either agreement or an engine build failure. Resolve local
+   contradictions before a smoke verdict; apply the quality tier below to evidence.
 
 1. **Test framework check**: verify that **game** test files exist — not merely
    that `tests/` does. Check the engine's **test root** (from step 3; the table
@@ -249,7 +265,7 @@ nothing changed; a failed build is a FAIL.
 **Pick the commands for this machine** with `uname -s`: `Linux` → Linux,
 `Darwin` → macOS, anything else (`MINGW*`, `MSYS*`, `CYGWIN*`) → Windows. The
 Windows forms below were run on UE 5.7; the Linux and macOS forms come from
-Epic's documentation — `.game-studio/resources/engine-reference/unreal/current-best-practices.md`,
+Epic's documentation — `<project-engine-reference>/current-best-practices.md`,
 "Command Line", has them with their sources. On Windows use
 `UnrealBuildTool.exe`, not `Build.bat`: run from bash, `Build.bat` fails on an
 engine path with spaces.
@@ -661,7 +677,7 @@ blocks hand-off). Otherwise:
 
 **Resolve the gate enforcement level.** A FAIL verdict either *blocks* QA
 hand-off or is *flagged while hand-off proceeds*, governed by the
-`testing.strict` block **resolved in the resolved-config block at the top of this skill** (which merges
+`testing.strict` block **resolved in the JSON returned by an explicit config command** (which merges
 `project.local.yaml` over `project.yaml` — read that block, not the file, or a
 developer's local override is silently ignored):
 

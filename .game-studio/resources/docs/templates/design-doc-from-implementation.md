@@ -201,7 +201,7 @@ and mark it `[inferred — confirm]` until they do.]
 
 | Date | Author | Changes |
 |------|--------|---------|
-| [Date] | Claude (reverse-doc) | Initial reverse-documentation from `[source path]` |
+| [Date] | [actual Codex author ID] (reverse-doc) | Initial reverse-documentation from `[source path]` |
 | [Date] | [User] | Clarified design intent, corrected [X] |
 
 ---

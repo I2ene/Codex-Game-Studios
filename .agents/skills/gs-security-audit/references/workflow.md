@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -18,8 +26,8 @@ project; engine reference versions are examples and require current verification
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
 `project.yaml` → default `collaborative`). Every `ask the user` call and
 every file write follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **`workflow`** (explicitly resolved) decides only what Phase 7 tells you about the
 release gate: at `standard` and `full` it requires this report; at `minimal` it
@@ -166,8 +174,8 @@ shipped anyway. Use the table for `engine.name` resolved in Phase 1.
 | 5, 6 | judgement and manifests, not greps — no engine set needed | | |
 
 The Unity and Unreal names above are **sourced from this repo's pinned
-references** (`.game-studio/resources/engine-reference/unity/modules/{networking,input}.md`,
-`.game-studio/resources/engine-reference/unreal/modules/{networking,input}.md`), not from recall.
+references** (`<project-engine-reference>/modules/{networking,input}.md`,
+`<project-engine-reference>/modules/{networking,input}.md`), not from recall.
 Verify them against the pin before use and add what the reference documents that
 this table omits — it is a floor, not a complete set.
 
@@ -178,7 +186,7 @@ this table omits — it is a floor, not a complete set.
 > other: it produces a scan that looks thorough, finds nothing, and reads as a
 > pass. Where the table says NOT SOURCEABLE, that category is **`NOT ASSESSED`**
 > for this engine — see Phase 5. To close it properly, add a save/serialization
-> module, sourced like the others, to `.game-studio/resources/engine-reference/<engine>/modules/`;
+> module, sourced like the others, to `<project-engine-reference>/modules/`;
 > when one is there, take the category's pattern names from it, cite it in the
 > report, and the category runs.
 
@@ -197,8 +205,8 @@ Grep patterns — **check the pinned engine reference before trusting this list*
 
 > **API names are version-specific and this list is a starting point, not a
 > complete set.** `File.open` is **Godot 3.x**; Godot 4 renamed the class to
-> `FileAccess` (`.game-studio/resources/engine-reference/godot/breaking-changes.md`). Before relying
-> on these patterns, read `.game-studio/resources/engine-reference/<engine>/` for the version this
+> `FileAccess` (`<project-engine-reference>/breaking-changes.md`). Before relying
+> on these patterns, read `<project-engine-reference>/` for the version this
 > project pins and add the names it documents. A grep for a class that no longer
 > exists returns zero hits, and **zero hits in this category renders the report
 > clean** — which is the most dangerous possible failure for a security audit.
@@ -221,7 +229,7 @@ Grep for: `recv`, `receive`, `PacketPeer`, `socket`, `MultiplayerPeer`,
 
 > Same version caveat as Category 1. `NetworkedMultiplayerPeer` is **Godot 3.x**;
 > Godot 4 uses `ENetMultiplayerPeer`
-> (`.game-studio/resources/engine-reference/godot/modules/networking.md`). The bare substring
+> (`<project-engine-reference>/modules/networking.md`). The bare substring
 > `MultiplayerPeer` matches both and is the safer probe.
 
 ### Category 3: Input Validation
@@ -431,7 +439,7 @@ If it is **NOT ASSESSED**:
 > Name the missing input for each category: `engine.name`, the code root, the
 > multiplayer scope (`$gs-settings platform.multiplayer=…`), or — for a category the
 > Phase 3 table marks NOT SOURCEABLE on this engine, the usual cause on Unity and
-> Unreal — a save/serialization module in `.game-studio/resources/engine-reference/<engine>/modules/`
+> Unreal — a save/serialization module in `<project-engine-reference>/modules/`
 > (Phase 3), naming that category.
 
 If it is **CLEAR TO SHIP**:

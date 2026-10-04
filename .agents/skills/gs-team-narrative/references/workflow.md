@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -25,8 +33,8 @@ full analysis in conversation, then capture the decision with concise labels.
 In `collaborative` mode, the user must approve before moving to the next phase.
 In `guided` mode the pipeline advances automatically unless a phase is BLOCKED;
 in `autonomous` mode it runs end to end, recording each phase outcome via
-`log_decision`. Decisions in `automation_always_ask` categories
-(`is_always_ask_category` helper) always prompt regardless of mode. See
+an authored decision record (not a tool or shell function). Decisions in `automation_always_ask` categories
+(check modes.automation_always_ask in config JSON against existing authorization) prompt only when existing authorization does not cover the material action. See
 `.game-studio/resources/docs/automation-modes.md`.
 
 ## Phase 0: Resolve Config
@@ -51,7 +59,7 @@ still decides who runs it — see Phase 4).
 - **`individual`** (default): `writer` only; `narrative-director` invoked only on an explicit pillar conflict. Other agents consulted via the writer, not spawned separately.
 - **`small`**: `narrative-director` + `writer`, plus `localization-lead` and `world-builder` when `review_mode` is `full` (at `lean` and `solo` they are consulted through the writer).
 - **`studio`**: all six Team Composition agents, whatever the `review_mode` (the full pipeline as documented).
-A non-core agent needed at `individual` routes through the nearest active core agent with an informational note. **"Phase gate" means any phase that ends in an `ask the user` decision point this pipeline itself lists** — a transition under Decision Points above, or a **Gate** step written into the pipeline below — **whatever the `automation` mode.** `guided` and `autonomous` change how a gate is passed (it auto-advances, or is recorded with `log_decision`), not whether it is one, so bounded-exception condition (3) below holds at it in every mode. An agent restricted to "phase gates only" is spawned at those points and no others. This active-set scoping applies throughout the pipeline below: any phase that names an agent outside the active set routes through the nearest core agent rather than spawning it.
+Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no bounded exception infers consent from a path or another agent's message.
 
 **Announce the active set before Phase 1 — never let the collapse be silent.**
 Before spawning anything, state in one line which agents this run will actually
@@ -88,7 +96,7 @@ enforced.**
 
 ## How to Delegate
 
-Use the available native delegation tool to spawn each team member as a subagent:
+Apply the following professional responsibilities in the parent; delegate useful independent tasks only when authorized and available:
 - `expertise role: narrative-director` — Story arcs, character design, narrative vision
 - `expertise role: writer` — Dialogue writing, lore entries, in-game text
 - `expertise role: world-builder` — World rules, faction design, history, geography
@@ -100,7 +108,7 @@ Use the available native delegation tool to spawn each team member as a subagent
 
 **Brief each agent — do not dump context.** Read the shared inputs **once** and pass a distilled brief inline: the lines each agent actually needs, never a file path for a document you have already read (an agent handed a path re-reads the whole file). Pass a path only for a document you have not read and only that agent needs.
 
-**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is your write authorisation under the bounded exception below, so write it without a separate approval prompt. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session.
+**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session.
 
 **Substitute a real path for `[path]`.** Agents write drafts under
 `production/narrative/[content-slug]/` — inside the bounded exception below. The
@@ -149,7 +157,7 @@ Delegate in parallel — issue all three native delegation when authorized calls
 **Phase gate:** collect all three Phase 2 outputs, then apply the Decision Points
 rule before starting Phase 3 — present the lore, dialogue, and visual direction
 summaries and capture approval via `ask the user` in `collaborative` mode
-(auto-advance in `guided` unless a result is BLOCKED; `log_decision` in
+(auto-advance in `guided` unless a result is BLOCKED; an authored decision record (not a tool or shell function) in
 `autonomous`).
 
 ### Phase 3: Level Narrative Integration

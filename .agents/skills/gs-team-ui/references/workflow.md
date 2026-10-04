@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -25,8 +33,8 @@ full analysis in conversation, then capture the decision with concise labels.
 In `collaborative` mode, the user must approve before moving to the next phase.
 In `guided` mode the pipeline advances automatically unless a phase is BLOCKED;
 in `autonomous` mode it runs end to end, recording each phase outcome via
-`log_decision`. Decisions in `automation_always_ask` categories
-(`is_always_ask_category` helper) always prompt regardless of mode. See
+an authored decision record (not a tool or shell function). Decisions in `automation_always_ask` categories
+(check modes.automation_always_ask in config JSON against existing authorization) prompt only when existing authorization does not cover the material action. See
 `.game-studio/resources/docs/automation-modes.md`.
 
 ## Phase 0: Resolve Config
@@ -47,7 +55,7 @@ below), and the agents that work at them are team members, not director gates.
 - **`individual`** (default): `ui-programmer` + `ux-designer`. Other agents consulted via these two, not spawned separately.
 - **`small`**: + `accessibility-specialist` + `art-director`.
 - **`studio`**: + engine UI specialist + an adversarial review pass: Phase 4's reviewers are told "your job is not to confirm this matches the spec — find where it fails it", and the report says the pass ran.
-A non-core agent needed at `individual` routes through the nearest active core agent with an informational note. **"Phase gate" means any phase that ends in an `ask the user` decision point this pipeline itself lists** — a transition under Decision Points above, or a **Gate** step written into the pipeline below — **whatever the `automation` mode.** `guided` and `autonomous` change how a gate is passed (it auto-advances, or is recorded with `log_decision`), not whether it is one, so bounded-exception condition (3) below holds at it in every mode. An agent restricted to "phase gates only" is spawned at those points and no others. This active-set scoping applies throughout the pipeline below: any phase that names an agent outside the active set routes through the nearest core agent rather than spawning it.
+Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no bounded exception infers consent from a path or another agent's message.
 
 **Announce the active set before Step 1 — never let the collapse be silent.**
 Before spawning anything, state in one line which agents this run will actually
@@ -96,7 +104,7 @@ enforced.**
 
 ## How to Delegate
 
-Use the available native delegation tool to spawn each team member as a subagent:
+Apply the following professional responsibilities in the parent; delegate useful independent tasks only when authorized and available:
 - `expertise role: ux-designer` — User flows, wireframes, accessibility, input handling
 - `expertise role: ui-programmer` — UI framework, screens, widgets, data binding
 - `expertise role: art-director` — Visual style, layout polish, art bible consistency
@@ -105,7 +113,7 @@ Use the available native delegation tool to spawn each team member as a subagent
 
 **Brief each agent — do not dump context.** Read the shared inputs **once** and pass a distilled brief inline: the lines each agent actually needs, never a file path for a document you have already read (an agent handed a path re-reads the whole file). Pass a path only for a document you have not read and only that agent needs.
 
-**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is your write authorisation under the bounded exception below, so write it without a separate approval prompt. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session. **Implementation files are the exception:** an agent writing code or assets first returns the files it will create or change, and its return contract names them only after you have asked once for the set and the user said yes (File Write Protocol) — that answer, not the bounded exception, authorises those writes.
+**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session. **Implementation files are the exception:** an agent writing code or assets first returns the files it will create or change, and its return contract names them only after you have asked once for the set and the user said yes (File Write Protocol) — that answer, not the bounded exception, authorises those writes.
 
 **Substitute a real path for `[path]`.** Working artifacts go under
 `production/ui/[feature-name]/`, the slug Phase 1b's `design/ux/[feature-name].md`

@@ -136,7 +136,7 @@ That line is Windows'. On Linux the same arguments go to
 `"<UE root>/Engine/Binaries/Linux/UnrealEditor"` (no `MSYS_NO_PATHCONV` needed);
 on macOS Epic documents only the `UnrealEditor.app` bundle, so run the map from
 the editor or a command you have confirmed (see
-`.game-studio/resources/engine-reference/unreal/current-best-practices.md`, "Command Line").
+`<project-engine-reference>/current-best-practices.md`, "Command Line").
 
 `-game` runs standalone without the editor UI. The map is a **positional URL
 immediately after the `.uproject`** — not a console command. **The
@@ -226,6 +226,6 @@ engine on this machine". Absence of a path is not absence of an engine.
 
 *Commands above were run on Windows with Godot 4.6.1 (gdUnit4 6.1.3), Unity
 6000.3.23f1 and Unreal Engine 5.7; the Unreal Linux and macOS notes come from
-Epic's documentation. `.game-studio/resources/engine-reference/<engine>/` is
+Epic's documentation. `<project-engine-reference>/` is
 the project's pinned authority; check it before trusting a version-qualified
 claim here.*

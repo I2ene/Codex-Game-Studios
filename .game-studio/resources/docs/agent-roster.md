@@ -1,93 +1,57 @@
-# Agent Roster
+# Native expertise roster
 
-The following agents are available. Each has a dedicated definition file in
-`.codex/agents/gs-`. Use the agent best suited to the task at hand. When a task
-spans multiple domains, the coordinating agent (usually `producer` or the
-domain lead) should delegate to specialists.
+49 roles inherit the session model, effort and permissions. These are expertise
+profiles; selection does not imply launch or independent sign-off. See
+coordination-rules.md for professional accountability and optional delegation.
 
-Which model an agent runs on is set by the `model:` line in its own file;
-`model-tiers.md` lists the agents that pin one. Every other agent runs on the
-session's model.
-
-## Tier 1 -- Leadership Agents
-| Agent | Domain | When to Use |
-|-------|--------|-------------|
-| `creative-director` | High-level vision | Major creative decisions, pillar conflicts, tone/direction |
-| `technical-director` | Technical vision | Architecture decisions, tech stack choices, performance strategy |
-| `producer` | Production management | Sprint planning, milestone tracking, risk management, coordination |
-
-## Tier 2 -- Department Lead Agents
-| Agent | Domain | When to Use |
-|-------|--------|-------------|
-| `game-designer` | Game design | Mechanics, systems, progression, economy, balancing |
-| `lead-programmer` | Code architecture | System design, code review, API design, refactoring |
-| `art-director` | Visual direction | Style guides, art bible, asset standards, UI/UX direction |
-| `audio-director` | Audio direction | Music direction, sound palette, audio implementation strategy |
-| `narrative-director` | Story and writing | Story arcs, world-building, character design, dialogue strategy |
-| `qa-lead` | Quality assurance | Test strategy, bug triage, release readiness, regression planning |
-| `release-manager` | Release pipeline | Build management, versioning, changelogs, deployment, rollbacks |
-| `localization-lead` | Internationalization | String externalization, translation pipeline, locale testing |
-
-## Tier 3 -- Specialist Agents
-| Agent | Domain | When to Use |
-|-------|--------|-------------|
-| `systems-designer` | Systems design | Specific mechanic implementation, formula design, loops |
-| `level-designer` | Level design | Level layouts, pacing, encounter design, flow |
-| `economy-designer` | Economy/balance | Resource economies, loot tables, progression curves |
-| `gameplay-programmer` | Gameplay code | Feature implementation, gameplay systems code |
-| `engine-programmer` | Engine systems | Core engine, rendering, physics, memory management |
-| `ai-programmer` | AI systems | Behavior trees, pathfinding, NPC logic, state machines |
-| `network-programmer` | Networking | Netcode, replication, lag compensation, matchmaking |
-| `tools-programmer` | Dev tools | Editor extensions, pipeline tools, debug utilities |
-| `ui-programmer` | UI implementation | UI framework, screens, widgets, data binding |
-| `technical-artist` | Tech art | Shaders, VFX, optimization, art pipeline tools |
-| `sound-designer` | Sound design | SFX design docs, audio event lists, mixing notes |
-| `writer` | Dialogue/lore | Dialogue writing, lore entries, item descriptions |
-| `world-builder` | World/lore design | World rules, faction design, history, geography |
-| `qa-tester` | Test execution | Writing test cases, bug reports, test checklists |
-| `performance-analyst` | Performance | Profiling, optimization recs, memory analysis |
-| `devops-engineer` | Build/deploy | CI/CD, build scripts, version control workflow |
-| `analytics-engineer` | Telemetry | Event tracking, dashboards, A/B test design |
-| `ux-designer` | UX flows | User flows, wireframes, accessibility, input handling |
-| `prototyper` | Rapid prototyping | Throwaway prototypes, mechanic testing, feasibility validation |
-| `security-engineer` | Security | Anti-cheat, exploit prevention, save encryption, network security |
-| `accessibility-specialist` | Accessibility | WCAG compliance, colorblind modes, remapping, text scaling |
-| `live-ops-designer` | Live operations | Seasons, events, battle passes, retention, live economy |
-| `community-manager` | Community | Patch notes, player feedback, crisis comms, community health |
-
-## Engine-Specific Agents (use the set matching your engine)
-
-### Engine Leads
-
-| Agent | Engine | When to Use |
-| ---- | ---- | ---- |
-| `unreal-specialist` | Unreal Engine 5 | Blueprint vs C++, GAS overview, UE subsystems, Unreal optimization |
-| `unity-specialist` | Unity | MonoBehaviour vs DOTS, Addressables, URP/HDRP, Unity optimization |
-| `godot-specialist` | Godot 4 | GDScript patterns, node/scene architecture, signals, Godot optimization |
-
-### Unreal Engine Sub-Specialists
-
-| Agent | Subsystem | When to Use |
-| ---- | ---- | ---- |
-| `ue-gas-specialist` | Gameplay Ability System | Abilities, gameplay effects, attribute sets, tags, prediction |
-| `ue-blueprint-specialist` | Blueprint Architecture | BP/C++ boundary, graph standards, naming, BP optimization |
-| `ue-replication-specialist` | Networking/Replication | Property replication, RPCs, prediction, relevancy, bandwidth |
-| `ue-umg-specialist` | UMG/CommonUI | Widget hierarchy, data binding, CommonUI input, UI performance |
-
-### Unity Sub-Specialists
-
-| Agent | Subsystem | When to Use |
-| ---- | ---- | ---- |
-| `unity-dots-specialist` | DOTS/ECS | Entity Component System, Jobs, Burst compiler, hybrid renderer |
-| `unity-shader-specialist` | Shaders/VFX | Shader Graph, VFX Graph, URP/HDRP customization, post-processing |
-| `unity-addressables-specialist` | Asset Management | Addressable groups, async loading, memory, content delivery |
-| `unity-ui-specialist` | UI Toolkit/UGUI | UI Toolkit, UXML/USS, UGUI Canvas, data binding, cross-platform input |
-
-### Godot Sub-Specialists
-
-| Agent | Subsystem | When to Use |
-| ---- | ---- | ---- |
-| `godot-gdscript-specialist` | GDScript | Static typing, design patterns, signals, coroutines, GDScript performance |
-| `godot-csharp-specialist` | C# / .NET | .NET patterns, [Signal] delegates, async, nullable types, type-safe node access |
-| `godot-shader-specialist` | Shaders/Rendering | Godot shading language, visual shaders, particles, post-processing |
-| `godot-gdextension-specialist` | GDExtension | C++/Rust bindings, native performance, custom nodes, build systems |
+| Role | Professional scope |
+|---|---|
+| gs-accessibility-specialist | Accessibility standards and assistive features — remapping, text scaling, colorblind modes, screen reader support. |
+| gs-ai-programmer | Implements game AI — behavior trees, state machines, pathfinding, perception, decision-making, NPC and enemy behavior, AI debugging. |
+| gs-analytics-engineer | Telemetry and analytics — event tracking, player behavior, A/B test frameworks, dashboard specification, data pipelines. |
+| gs-art-director | Owns visual identity — style guides, art bible, asset standards, color palettes, UI visual direction. |
+| gs-audio-director | Owns sonic identity — music direction, sound palette, audio implementation strategy, mix balance. |
+| gs-community-manager | Player-facing communication — patch notes, social posts, community updates, feedback collection, player bug triage, crisis communication. |
+| gs-creative-director | Highest creative authority — vision, tone, aesthetic direction. Use when a decision affects game identity or department leads deadlock. |
+| gs-devops-engineer | Build pipelines, CI/CD configuration, version control workflow, branching strategy, automated test pipelines, deployment infrastructure. |
+| gs-economy-designer | Resource economies — loot tables, sink/faucet analysis, progression curve calibration, economic balance. |
+| gs-engine-programmer | Core engine systems — rendering pipeline, physics, memory, resource loading, scene management, performance-critical framework code. |
+| gs-game-designer | Mechanical and systems design — core loops, progression, combat, economy, player-facing rules. Mechanics-level questions. |
+| gs-gameplay-programmer | Implements designed mechanics as code — player systems, combat, interactive features, gameplay system code. |
+| gs-godot-csharp-specialist | Godot 4 C# quality — .NET patterns, attribute-based exports, signal delegates, async patterns, type-safe node access. |
+| gs-godot-gdextension-specialist | Native code integration with Godot — GDExtension API, godot-cpp and godot-rust bindings, custom node types, the native boundary. |
+| gs-godot-gdscript-specialist | GDScript code quality — static typing enforcement, signal architecture, coroutine patterns, GDScript idioms, typed and performant. |
+| gs-godot-shader-specialist | Godot rendering customization — shading language, visual shaders, material setup, particle shaders, post-processing. |
+| gs-godot-specialist | Authority on Godot-specific patterns and APIs — node/scene architecture, signals, resources; guides GDScript vs C# vs GDExtension. |
+| gs-lead-programmer | Lead programmer — code-level architecture, coding standards, code review, API design, refactoring strategy, assigning work to specialist programmers. |
+| gs-level-designer | Spatial design for levels and areas — encounter layouts, pacing, difficulty, layout planning, environmental storytelling. |
+| gs-live-ops-designer | Post-launch content — seasonal events, battle passes, content cadence, retention, engagement analytics. Keeps the game fresh. |
+| gs-localization-lead | Internationalization architecture — i18n system design, string extraction workflows, locale testing, locale-specific issues, translation pipeline. |
+| gs-narrative-director | Story architecture, world-building, character design, dialogue strategy. Narrative structure and direction rather than writing individual lines. |
+| gs-network-programmer | Multiplayer networking — state replication, lag compensation, matchmaking, network protocol, netcode and bandwidth optimization. |
+| gs-performance-analyst | Performance analyst — profiling, bottlenecks, memory analysis, frame time investigation, recommends optimizations, tracks metrics over time. |
+| gs-producer | Production concerns — sprint planning, milestone tracking, risk, scope, cross-department coordination when multiple departments must synchronize. |
+| gs-prototyper | Throwaway builds — concept prototypes after brainstorm to test an idea is fun before GDDs; vertical slices pre-production. Speed over standards. |
+| gs-qa-lead | Test strategy and process — test plan creation, bug severity assessment, regression planning, release quality gates, readiness evaluation. |
+| gs-qa-tester | Writes test cases, bug reports, and checklists — test case generation, regression checklist creation, execution documentation. |
+| gs-release-manager | Release pipeline — certification checklists, store submissions and page prep, platform requirements, version numbering, release-day coordination. |
+| gs-security-engineer | Protects against cheating, exploits, breaches — anti-cheat measures, secure save data and network comms, player privacy compliance. |
+| gs-sound-designer | SFX specifications and spec sheets — audio event documentation, mixing parameters, sound category definitions. |
+| gs-systems-designer | Detailed subsystem mechanics — combat formulas, progression curves, crafting recipes, status effect interactions, mathematical modeling of a mechanic. |
+| gs-technical-artist | Technical artist bridging art and engineering — shaders, VFX, rendering optimization, art pipeline tools, art-to-engine issues. |
+| gs-technical-director | High-level technical decisions — engine architecture, technology choices, performance strategy, technical risk, cross-system conflicts. |
+| gs-tools-programmer | Internal dev tools — editor extensions, content authoring tools, debug utilities, pipeline automation, editor workflow. |
+| gs-ue-blueprint-specialist | Blueprint architecture and Blueprint/C++ boundary — optimization, maintainable graphs. Prevents Blueprint spaghetti, enforces clean BP patterns. |
+| gs-ue-gas-specialist | Gameplay Ability System — abilities, gameplay effects, attribute sets, tags, ability tasks, prediction. Prevents common GAS anti-patterns. |
+| gs-ue-replication-specialist | Unreal networking — property replication, RPCs, client prediction, relevancy, net serialization, bandwidth. Server-authoritative architecture. |
+| gs-ue-umg-specialist | Unreal UI implementation — UMG widget hierarchy, data binding, CommonUI input routing, widget styling, UI optimization. |
+| gs-ui-programmer | Implements user interface systems — menus, HUDs, inventory screens, dialogue boxes, UI framework code, screen flow. |
+| gs-unity-addressables-specialist | Unity asset management — Addressable groups, loading/unloading, content catalogs, remote delivery, asset bundle optimization, fast load times. |
+| gs-unity-dots-specialist | Unity Data-Oriented Technology Stack — Entity Component System, Jobs, Burst compiler optimization, hybrid renderer, correct ECS patterns. |
+| gs-unity-shader-specialist | Unity rendering — Shader Graph, custom HLSL, VFX Graph, render pipeline customization (URP/HDRP), post-processing within performance budgets. |
+| gs-unity-specialist | Authority on Unity-specific patterns and APIs — guides MonoBehaviour vs DOTS/ECS, Unity subsystems including Addressables and Input System. |
+| gs-unity-ui-specialist | Unity UI implementation — UI Toolkit (UXML/USS), UGUI Canvas, data binding, runtime UI performance, cross-platform adaptation. |
+| gs-unreal-specialist | Authority on Unreal-specific patterns and APIs — guides Blueprint vs C++, UE subsystems (GAS, Enhanced Input, Niagara, etc.). |
+| gs-ux-designer | User experience flows, interaction design, information architecture — user flow mapping, interaction pattern design, onboarding, accessibility requirements. |
+| gs-world-builder | World builder for lore — factions, cultures, history, geography, ecology, world rules. Faction design, lore consistency checks. |
+| gs-writer | Writer of player-facing text — dialogue, lore entries, item and ability descriptions, environmental text. |

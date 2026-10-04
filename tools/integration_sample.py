@@ -37,14 +37,11 @@ def execute(native_discovery=False):
                 raise RuntimeError('Installed native discovery did not match release: ' + json.dumps(discovery))
         for folder in ['design', 'production/epics/counter', 'src', 'tests', 'production/session-state', 'reviews']:
             (root / folder).mkdir(parents=True, exist_ok=True)
-        # Applying gs-start/brainstorm/create-stories/dev-story/code-review/story-done
-        # procedures in the parent at minimal. These are actual authored artifacts,
-        # not claims of independent director participation or autonomous model turns.
+        # Deterministic helper/artifact fixture, not a skill-execution claim.
         (root / 'design/game-brief.md').write_text('# Counter fixture brief\n\nNon-game framework smoke sample.\nGoal: increment an integer to a cap.\nMVP: one pure function.\nBuild order: implement counter, verify invalid inputs, package source.\nAcceptance: 0 <= value <= limit; clamp increment to limit; reject invalid types/ranges.\nNo engine, visuals, balancing or performance evaluation.\n', encoding='utf-8')
         story = root / 'production/epics/counter/story-001.md'
         story.write_text('# Counter function\nStatus: Ready\nType: Logic\nGDD: N/A — minimal one-page brief\nADR Governing Implementation: N/A — pure fixture function\n\n## Acceptance Criteria\n- Increment below cap\n- Clamp at cap including zero cap\n- Reject negative, over-cap and boolean inputs\n', encoding='utf-8')
         shutil.copyfile(ROOT / 'fixtures/minimal-counter/counter.py', root / 'src/counter.py')
-        shutil.copyfile(ROOT / 'fixtures/minimal-counter/counter.py', root / 'tests/counter.py')
         shutil.copyfile(ROOT / 'fixtures/minimal-counter/test_counter.py', root / 'tests/test_counter.py')
         tested = checks.run_command(root, 'test', 30)
         if tested['exit_code'] != 0:
@@ -65,7 +62,7 @@ def execute(native_discovery=False):
             result['cwd'] = '<sample-root>'
             result['argv'][0] = '<current-python>'
         return {'status': 'EXECUTED', 'timestamp_utc': datetime.now(timezone.utc).isoformat(),
-                'scope': 'Non-game fixture; parent-applied professional steps, no independent agents',
+                'scope': 'Deterministic non-game helper/artifact fixture; no model-driven skill execution or independent agents',
                 'install_dry_run': dry['dry_run'], 'installed_version': installed['version'],
                 'reinstall_writes': len(reinstall['write']), 'test_receipt': tested, 'package_receipt': built,
                 'review_inputs_unchanged': all(o['status'] == 'UNCHANGED' for o in unchanged['observations']),

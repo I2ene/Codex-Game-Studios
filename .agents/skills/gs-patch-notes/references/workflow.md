@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -18,8 +26,8 @@ project; engine reference versions are examples and require current verification
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
 `project.yaml` → default `collaborative`). Every `ask the user` call and
 every file write follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 ## Provenance check — before reading any history
 
@@ -86,14 +94,14 @@ If no version is provided, ask the user before proceeding.
 
 ## Phase 2: Gather Change Data
 
-- Read the internal changelog at `production/releases/[version]$gs-changelog.md` if it exists
+- Read the internal changelog at `production/releases/[version]/changelog.md` if it exists
 - Also check `docs/CHANGELOG.md` for the relevant version entry
 - Run `git log` between the previous release tag and current tag/HEAD as a fallback
 - Read sprint retrospectives in `production/sprints/` for context
 - Read any balance change documents in `design/balance/`
 - Read bug fix records from QA if available
 
-**If no changelog data is available** (neither `production/releases/[version]$gs-changelog.md`
+**If no changelog data is available** (neither `production/releases/[version]/changelog.md`
 nor a `docs/CHANGELOG.md` entry for this version exists, and git log is empty or unavailable):
 
 > "No changelog data found for [version]. Run `$gs-changelog [version]` first to generate the
@@ -243,7 +251,7 @@ Check the generated notes for:
 Present the completed patch notes to the user along with: a count of changes by category, and any internal changes that were excluded (for review).
 
 Ask: "May I write these patch notes to `docs/patch-notes/[version].md`, and an
-archive copy to `production/releases/[version]$gs-patch-notes.md`?"
+archive copy to `production/releases/[version]/patch-notes.md`?"
 
 If yes, write both files, creating the directories if needed.
 If no, write nothing.

@@ -38,6 +38,21 @@ def validate():
                     errors.append(str(p.relative_to(ROOT)) + ': obsolete execution path')
                 if any(token in text for token in ['D:\\File\\GameDesign', 'D:\\Game\\PersonalRPG', 'rpg-game-design']):
                     errors.append(str(p.relative_to(ROOT)) + ': private coupling')
+                if re.search(r'injected commit subjects|Both blocks are resolved before|AGENTS\.md-imported|\[NOT CHECKED\]|RECEIPT: NONE|Codex 2\.1\.63|is_always_ask_category|\[version\]\$gs-[\w-]+\.md', text):
+                    errors.append(str(p.relative_to(ROOT)) + ': retired interface consumer')
+                if re.search(r'independent Claude session|You MUST issue.*native delegation|Agent delegation \(MANDATORY\)|It prints.*`(?:PRESENT:|ADRS)`|`ADRS:`|`NO_DEPS_SECTION`', text):
+                    errors.append(str(p.relative_to(ROOT)) + ': obsolete delegation/output contract')
+                if re.search(r'orchestrator whose prompt|named path is your write authorisation|File writes are delegated', text):
+                    errors.append(str(p.relative_to(ROOT)) + ': inferred authorization/delegation')
+                if base in {'.agents', '.codex/agents'} and re.search(r'\.game-studio/resources/engine-reference/(godot|unity|unreal)/', text):
+                    errors.append(str(p.relative_to(ROOT)) + ': packaged engine authority path')
+    for p in (ROOT / '.agents/skills').glob('*/references/workflow.md'):
+        if '## Project engine reference contract' not in p.read_text(encoding='utf-8'):
+            errors.append(str(p.relative_to(ROOT)) + ': missing shared engine interface')
+    for name in ['design-review', 'architecture-review', 'review-all-gdds']:
+        p = ROOT / '.agents/skills' / ('gs-' + name) / 'references/workflow.md'
+        if '.game-studio/resources/docs/review-receipts.md' not in p.read_text(encoding='utf-8'):
+            errors.append(name + ': missing linked receipt contract')
     inventory = json.loads((ROOT / 'docs/migration/inventory.json').read_text())
     if len(inventory['files']) != 485 or len({r['source'] for r in inventory['files']}) != 485:
         errors.append('Inventory is incomplete/duplicated')

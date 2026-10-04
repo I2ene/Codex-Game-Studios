@@ -1,0 +1,32 @@
+{
+  "configured_engine": "Godot",
+  "configured_version": "4.3",
+  "project": {
+    "root": "records/toolchain/godot",
+    "documents": {
+      "VERSION.fixture-backup.md": "records/toolchain/godot/VERSION.fixture-backup.md"
+    },
+    "version_record": null,
+    "installed_record": null,
+    "status": "NOT ASSESSED — NO PROJECT VERSION RECORD"
+  },
+  "background": {
+    "root": ".game-studio/resources/engine-reference/godot",
+    "documents": {
+      "breaking-changes.md": ".game-studio/resources/engine-reference/godot/breaking-changes.md",
+      "current-best-practices.md": ".game-studio/resources/engine-reference/godot/current-best-practices.md",
+      "deprecated-apis.md": ".game-studio/resources/engine-reference/godot/deprecated-apis.md",
+      "modules/animation.md": ".game-studio/resources/engine-reference/godot/modules/animation.md",
+      "modules/audio.md": ".game-studio/resources/engine-reference/godot/modules/audio.md",
+      "modules/input.md": ".game-studio/resources/engine-reference/godot/modules/input.md",
+      "modules/navigation.md": ".game-studio/resources/engine-reference/godot/modules/navigation.md",
+      "modules/networking.md": ".game-studio/resources/engine-reference/godot/modules/networking.md",
+      "modules/physics.md": ".game-studio/resources/engine-reference/godot/modules/physics.md",
+      "modules/rendering.md": ".game-studio/resources/engine-reference/godot/modules/rendering.md",
+      "modules/ui.md": ".game-studio/resources/engine-reference/godot/modules/ui.md",
+      "VERSION.md": ".game-studio/resources/engine-reference/godot/VERSION.md"
+    },
+    "status": "HISTORICAL EXAMPLES — NOT PROJECT AUTHORITY"
+  },
+  "rule": "Read project documents first. Missing project version/API evidence stays unknown; packaged versions never fill it. Verify current official sources and actual toolchain before version-qualified claims."
+}

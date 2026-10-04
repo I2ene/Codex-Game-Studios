@@ -1,3 +1,22 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -15,7 +34,7 @@ Missing evidence means NOT ASSESSED — NO DATA. Resolve engine/version from thi
 project; engine reference versions are examples and require current verification.
 
 **Argument check:** If no version number is provided:
-1. Read `production/session-state/active.md` and the most recent file in `production/milestones/` (if they exist) to infer the target version.
+1. Read `<resolved-checkpoint>` and the most recent file in `production/milestones/` (if they exist) to infer the target version.
 2. If a version is found: report "No version argument provided — inferred [version] from milestone data. Proceeding." Then confirm with `ask the user`: "Releasing [version]. Is this correct?"
 3. If no version is discoverable: use `ask the user` to ask "What version number should be released? (e.g., v1.0.0)" and wait for user input before proceeding. Do NOT default to a hardcoded version string.
 
@@ -27,8 +46,8 @@ full analysis in conversation, then capture the decision with concise labels.
 In `collaborative` mode, the user must approve before moving to the next phase.
 In `guided` mode the pipeline advances automatically unless a phase is BLOCKED;
 in `autonomous` mode it runs end to end, recording each phase outcome via
-`log_decision`. Decisions in `automation_always_ask` categories
-(`is_always_ask_category` helper) always prompt regardless of mode. See
+an authored decision record (not a tool or shell function). Decisions in `automation_always_ask` categories
+(check modes.automation_always_ask in config JSON against existing authorization) prompt only when existing authorization does not cover the material action. See
 `.game-studio/resources/docs/automation-modes.md`.
 
 ## Phase 0: Resolve Config
@@ -67,7 +86,7 @@ below), and the agents that work at them are team members, not director gates.
 - **`individual`** (default): `release-manager` only. Other agents consulted via the release-manager, not spawned separately.
 - **`small`**: + `producer` + `devops-engineer` + `qa-lead` + `community-manager`.
 - **`studio`**: + `security-engineer` + `analytics-engineer` + `localization-lead` + `performance-analyst`, and `network-programmer` when the game is multiplayer (the full pipeline as documented).
-A non-core agent needed at `individual` routes through the nearest active core agent with an informational note. **"Phase gate" means any phase that ends in an `ask the user` decision point this pipeline itself lists** — a transition under Decision Points above, the stage check, or the Phase 6 deploy question — **whatever the `automation` mode.** `guided` and `autonomous` change how a gate is passed (it auto-advances, or is recorded with `log_decision`), not whether it is one, so bounded-exception condition (3) below holds at it in every mode. An agent restricted to "phase gates only" is spawned at those points and no others. This active-set scoping applies throughout the pipeline below: any phase that names an agent outside the active set routes through the nearest core agent rather than spawning it.
+Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no bounded exception infers consent from a path or another agent's message.
 
 **Announce the active set before Phase 1 — never let the collapse be silent.**
 Before spawning anything, state in one line which agents this run will actually
@@ -108,7 +127,7 @@ enforced.**
 
 ## How to Delegate
 
-Use the available native delegation tool to spawn each team member as a subagent:
+Apply the following professional responsibilities in the parent; delegate useful independent tasks only when authorized and available:
 - `expertise role: release-manager` — Release tag, versioning, changelog, patch notes, deployment
 - `expertise role: qa-lead` — Test sign-off, regression suite, release quality gate
 - `expertise role: devops-engineer` — Build pipeline, artifacts, deployment automation
@@ -122,7 +141,7 @@ Use the available native delegation tool to spawn each team member as a subagent
 
 **Brief each agent — do not dump context.** Read the shared inputs **once** and pass a distilled brief inline: the lines each agent actually needs, never a file path for a document you have already read (an agent handed a path re-reads the whole file). Pass a path only for a document you have not read and only that agent needs.
 
-**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is your write authorisation under the bounded exception below, so write it without a separate approval prompt. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session.
+**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session.
 
 **Substitute a real path for `[path]`.** One file per agent under
 `production/releases/`, except the two whose homes are fixed elsewhere. An active

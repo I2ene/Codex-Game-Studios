@@ -509,6 +509,8 @@ Read only rules relevant to the requested changes; user/project instructions gov
         for path in (ROOT / base).rglob('*.md'):
             text = path.read_text(encoding='utf-8')
             path.write_text('\n'.join(line.rstrip() for line in text.splitlines()) + '\n', encoding='utf-8', newline='\n')
+    from revise_interfaces import main as revise
+    revise()
     print('Applied reviewed native operational interfaces')
 
 

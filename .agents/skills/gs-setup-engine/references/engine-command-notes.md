@@ -78,7 +78,7 @@ double quotes, so they take single-quoted scalars. Write the block for the
 machine the project is developed on (`uname -s`: `Linux`, `Darwin` = macOS,
 anything else = Windows). The Windows block was run on UE 5.7; the Linux and
 macOS lines come from Epic's documentation, recorded with their sources in
-`.game-studio/resources/engine-reference/unreal/current-best-practices.md` ("Command Line").
+`<project-engine-reference>/current-best-practices.md` ("Command Line").
 
 Windows:
 

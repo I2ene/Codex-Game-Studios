@@ -4,39 +4,60 @@ Environment: Windows; Python 3.12.14; PyYAML 6.0.3; Codex CLI 0.160.0.
 User/session model and permissions inherited. No private game project installed,
 edited or used as a sample. MIT/Donchitos license unchanged.
 
-| Check | Actual result | Boundary |
+| Check | Observed result | Boundary |
 |---|---|---|
-| python tools/validate.py | FORMAT: 74 skills, 49 roles, 485 sources, zero errors | Metadata, entry links, obsolete paths/private coupling; not inference quality |
-| python tools/audit_inventory.py | 485 original SHA-256 hashes verified; 123 native/68 replace/289 retain/5 unsupported | Coverage/declared targets; not game outcomes |
-| python tools/build_release.py | FORMAT: 2.0.0; 394 payload files | Integrity manifest; not publisher authenticity |
-| python -m unittest discover -s tests -v | EXECUTED: 32 tests, 31 passed, one skipped | Windows denied symlink fixture creation; normal/dangling junction rejection executed |
-| python tools/integration_sample.py --native-discovery | EXECUTED: installed 74 skills, zero framework/protocol errors; 2 tests and source packaging exit 0; checkpoint PRESENT; reinstall writes 0 | Non-game fixture/read-only discovery; no model inference |
+| tools/validate.py | FORMAT: 74 skills, 49 roles, 485 sources, zero errors | Metadata, links and known interface guards; not inference quality |
+| tools/audit_inventory.py | 485 original SHA-256 hashes verified; 123 native/68 replace/289 retain/5 unsupported | Audited coverage and declared targets; not game outcomes |
+| tools/build_release.py | FORMAT: 2.0.0; 398 managed payload files | Integrity manifest, not publisher authenticity |
+| unittest tests.test_workflow_interfaces tests.test_checks | EXECUTED: 21 targeted tests passed | Concrete revision regressions and helper checks; does not imply all model workflows passed |
+| corrected integration_sample.py | EXECUTED: source-import tests and source ZIP exit 0; recovery PRESENT; reinstall writes 0 | Deterministic nongame helper/artifact fixture; native discovery not requested in this corrected run |
+| installed native sample, current model parent | Actual selected branches of ten workflows exercised, with reports/receipts and four acceptance tests | Manual installed-procedure execution, parent-only; distinct from automated CLI execution |
+| headless Codex model attempt | Model call EXECUTED; workflow NOT ASSESSED | Windows native sandbox setup blocked reads/commands; no permissions/trust bypass |
 
-[sample-evidence.json](sample-evidence.json) preserves sanitized actual receipts and
-native skill names. The fixture authored a brief/story, copied implementation/tests,
-applied a parent review, retained input hashes and completed the story. It exercises
-artifacts/helpers, not an autonomous skill-behavior suite or independent director
-review. Source ZIP is not an engine/game build or platform release.
+[sample-evidence.json](sample-evidence.json) records the corrected deterministic
+helper fixture. Its tests import the delivered src implementation; a new regression
+proves damaged src fails even with an old same-named copy in tests. Source ZIP is
+not an engine/game build or platform release.
 
-Tests cover YAML leaf precedence/local locks/rigor/system overrides, malformed input,
-enums/legacy/scalar strict flags, custom engines, optional confined recovery, existing
-consumer preservation, edited managed files/blocks, corrupt state/overlap, upgrades,
-dry run/removal/normal-failure rollback/locking, temp collision preservation, Windows
-junctions, actual success/failure commands, missing evidence, artifacts/story/dependency
-observations, review changes/deletions and event-specific hook JSON/date serialization.
+[native-sample/execution.json](native-sample/execution.json) records retained actual
+model-parent outputs. The input builder never prewrites reports or verdicts. The
+parent read installed procedures and applied selected branches: minimal routing and
+conditional closure; standard/full design, cross-GDD and architecture reviews;
+change/re-review; project-first engine ADR/target gate; release stage guard and
+missing-data handoff. Initial story BLOCKED on an actual specification mismatch,
+then four tests and 3/3 criteria permitted closure. Review failure remained failure
+when inputs were unchanged; changed limits exposed maximum 5 versus 3. Proposed ADR,
+failing architecture/gate, unchanged Technical Setup stage, blocked release team and
+unknown release/engine quality are retained. No independent sign-off is claimed.
 
-Actual independent runtime reviewer: /root/runtime_review, read-only confined repros.
-Six material findings repaired and regression-checked. Its suite overlapped edits;
-the parent's fresh run above establishes current results. The later user-assigned
-Astra candidate review is tracked separately in the review handoff.
+The separate CLI invocation reached GPT-6.1 Sol/xhigh but native Windows sandbox
+initialization failed before tool reads/commands; its retained final explicitly
+says NOT ASSESSED. A prior restricted-network attempt never connected and its
+verified fixture process was terminated. Raw CLI transcripts/global data are not
+committed. Manual parent execution is not autonomous headless completion evidence.
+Fixture/Python paths and CRLF line endings are normalized in retained evidence; manifest records
+original and retained hashes. Linked report bytes remain unchanged. Normalized
+project config copies cannot replay original config digests without original bytes.
 
-NOT ASSESSED: full inference behavior of 74 workflows/49 roles; custom-role launch;
-trusted callbacks; game balance/performance; visual/UI/assets/playtests; engine
-parse/tests/builds; certification/deployment/live operations. Missing data never
-became a pass. No hook was automatically registered or trusted.
+Prior [CI run](https://github.com/I2ene/Codex-Game-Studios/actions/runs/37233711962)
+passed six Windows/macOS/Linux × Python 3.11/3.12 jobs at
+11c8d24569e7666bb5f9d461bf9fe62e55d300df; [ci-evidence.json](ci-evidence.json)
+records actual results. Its old counter-test copy was insufficient source evidence
+and is superseded by R6. Earlier local suite: 32 tests, 31 passed/1 symlink privilege
+skip; normal/dangling junction rejection executed. Earlier read-only native discovery
+found all 74 installed skills with zero framework/protocol errors; this was discovery,
+not model execution. Fresh revision CI must be read at its actual commit on PR #2.
 
-CI is configured for Windows/macOS/Linux with Python 3.11/3.12. Local results do not
-prove remote environments passed; consult actual PR checks. Abrupt process/OS
-termination is nontransactional: inspect/restore before removing orphan install locks.
-Section receipts reject # filenames; whole-file receipts support them. Unresolved
-dependencies widen review scope. Commands are reviewed argv, not a sandbox.
+Runtime tests cover YAML/config precedence and validation, confined recovery,
+consumer preservation, ownership/overlap/upgrade/dry-run/rollback/locking, path links,
+actual success/failure commands and optional event I/O. Added tests cover linked
+receipt lifecycle/report drift/dependencies/context, five story formats/routing,
+engine authority, concrete coherence contradictions/probe/pins/Windows paths,
+missing rendering, UTF-8 and dependency ordering/missing declarations.
+
+NOT ASSESSED: complete inference of all 74 workflows/49 roles; custom-role launch;
+trusted callbacks; game balance/performance/visuals/assets/playtests; actual engine
+parse/tests/build; certification/deployment/live operations. Missing data never
+became a pass; no hook was automatically registered or trusted. Abrupt process/OS
+termination is nontransactional: inspect/restore before clearing an orphan install
+lock. Hashes do not authenticate a publisher; reviewed argv is not a sandbox.
