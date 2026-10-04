@@ -1,12 +1,25 @@
 # Changelog
 
-What's new in Claude Code Game Studios, written for the people using it.
+Native Codex releases follow; original Claude Code Game Studios history is retained below.
 
 See [UPGRADING.md](UPGRADING.md) for step-by-step upgrade instructions, and
 [docs/migration-guide-v1.1.md](docs/migration-guide-v1.1.md) if you have an
 existing project on the older config files.
 
 ---
+
+## [2.0.0] — 2026-10-05 — Codex candidate
+
+- Adopt all 74 workflows as repository skills and 49 roles as inheriting TOML
+  profiles, preserving professional procedures, contracts, gates and templates.
+- Add engine-neutral installation/upgrades with integrity hashes, ownership preflight,
+  exclusive locking, preservation, idempotency and normal-failure rollback.
+- Replace injected shell/Claude settings with explicit-root YAML, optional context,
+  observations, SHA-256 receipts and reviewed argv commands.
+- Supply optional native hook definitions/JSON handlers without registration/trust,
+  permission changes, model selection or fabricated participants.
+- Audit 485 sources. Installed CLI discovery found 74 skills; runtime/fixture evidence
+  remains separate from unassessed game and host capabilities.
 
 ## [1.1.2] — 2026-09-29
 

@@ -19,3 +19,12 @@
 # .gitattributes governs the INDEX. It does not retro-fix a working tree that
 # predates the rule -- run `git add --renormalize .` for that.
 .claude/**/*.md text eol=lf
+
+# Release integrity hashes cover the native payload bytes on every supported OS.
+.agents/** text eol=lf
+.codex/agents/** text eol=lf
+.game-studio/** text eol=lf
+tools/** text eol=lf
+tests/** text eol=lf
+fixtures/** text eol=lf
+*.md text eol=lf
