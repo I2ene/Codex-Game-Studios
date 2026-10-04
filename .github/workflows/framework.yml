@@ -12,9 +12,6 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python: ['3.11', '3.12']
     runs-on: ${{ matrix.os }}
-    env:
-      # Test-owned temporary fixtures avoid OS aliases such as macOS /var symlinks.
-      TMPDIR: ${{ runner.temp }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -23,4 +20,9 @@ jobs:
       - run: python -m pip install -r requirements.txt
       - run: python tools/validate.py
       - run: python -m unittest discover -s tests -v
+        env:
+          # runner context is available at step scope, not jobs.<id>.env.
+          TMPDIR: ${{ runner.temp }}
       - run: python tools/integration_sample.py
+        env:
+          TMPDIR: ${{ runner.temp }}
