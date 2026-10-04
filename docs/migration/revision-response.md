@@ -39,4 +39,5 @@ method; autonomous headless completion remains unverified.
 
 No main merge, private game install, engine install, certification, deployment,
 notification or global configuration change occurred. [Draft PR #2](https://github.com/I2ene/Codex-Game-Studios/pull/2)
-remains the reviewable delivery. Independent re-review is pending.
+remains the reviewable delivery. Independent re-review concluded PASS at 81d5877,
+including subsequent R7/R8 boundaries; see independent-review.md.

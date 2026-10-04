@@ -18,7 +18,10 @@ to this reusable framework and synthetic fixture evidence.
 
 Round 2 accepted R1–R6 and the declared parent-sample scope; two additional P2
 boundaries are now repaired. See [R7/R8 response](revision-2-response.md).
-dd0dc43 six-environment CI succeeded; next focused re-review is pending.
+Final reviewed code: 81d5877afdfea1754cff89ef28b53e2bd65997e2. Astra/high PASS,
+R1–R8 closed; all six CI environments succeeded. [Acceptance](independent-review.md)
+and [final CI](ci-final-evidence.json) retain scope and exact-head evidence.
+Later delivery documentation leaves the reviewed payload/runtime unchanged.
 
 [Inventory](inventory.json) audits 485 original blobs and dispositions; all 74
 procedures/49 inherited role profiles, seven stages, professional contracts,

@@ -31,7 +31,8 @@ Fresh format, payload integrity and cross-platform CI results are tracked separa
 in verification.md. No repeated full model-workflow run is needed for the unchanged
 professional procedures; the prior sample retains its exact payload hash and scope.
 
-User-assigned Astra/high re-review remains required; no main merge is authorized.
+User-assigned Astra/high final re-review: PASS at 81d5877afdfea1754cff89ef28b53e2bd65997e2;
+R1–R8 closed. No main merge is authorized.
 
 Follow-up: Astra accepted R8 but found the remaining plain Godot --script branch.
 Recognized Godot --script/-s relative paths now use the same run project path as
@@ -39,4 +40,6 @@ res://. Host Python paths remain at the consumer root. Both flag forms have a ne
 red→green root-only/project-only regression; no actual Godot run is implied.
 Godot 4.3 explicitly changes cwd for --path and loads --script with ResourceLoader:
 [main.cpp](https://github.com/godotengine/godot/blob/4.3-stable/main/main.cpp).
-The new test plus existing related cases passed; fresh CI/re-review remain required.
+The new expanded matrix plus three related cases passed after correcting the
+intermediate short-option ambiguity. Final six-environment CI succeeded; Astra
+independently verified these cases and accepted the candidate. See independent-review.md.

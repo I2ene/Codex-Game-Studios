@@ -14,6 +14,7 @@ edited or used as a sample. MIT/Donchitos license unchanged.
 | corrected integration_sample.py | EXECUTED: source-import tests and source ZIP exit 0; recovery PRESENT; reinstall writes 0 | Deterministic nongame helper/artifact fixture; native discovery not requested in this corrected run |
 | installed native sample, current model parent | Actual selected branches of ten workflows exercised, with reports/receipts and four acceptance tests | Manual installed-procedure execution, parent-only; distinct from automated CLI execution |
 | headless Codex model attempt | Model call EXECUTED; workflow NOT ASSESSED | Windows native sandbox setup blocked reads/commands; no permissions/trust bypass |
+| final CI / independent review | Six successful environments; 50-test suites; Astra/high PASS at 81d5877 | Full helper tests, not exhaustive model or game quality proof |
 
 [sample-evidence.json](sample-evidence.json) records the corrected deterministic
 helper fixture. Its tests import the delivered src implementation; a new regression
@@ -61,6 +62,17 @@ parent sample scope, then found two P2 boundary issues. [R7/R8 response](revisio
 records their red reproductions, repairs and new checks. The next CI belongs to the
 new boundary-fix head; earlier sample artifacts retain their exact earlier payload
 hash, rather than pretending their original execution occurred at a later revision.
+
+Final [CI run](https://github.com/I2ene/Codex-Game-Studios/actions/runs/37240252480)
+at 81d5877afdfea1754cff89ef28b53e2bd65997e2 succeeded in all six environments:
+format, 50-test suite and corrected source-import helper fixture steps. Windows ran
+all 50; non-Windows skipped the Windows-specific junction capability case.
+[ci-final-evidence.json](ci-final-evidence.json) preserves actual job/step results.
+The intermediate expanded matrix at 44f3aa9 failed on a short-option ambiguity and
+is not passing evidence; 81d5877 repaired it and the complete path matrix plus three
+related regressions actually passed. [Independent Astra/high review](independent-review.md)
+confirmed PASS and closed R1–R8 at this exact head. Delivery documentation after
+that head does not change payload or runtime.
 
 Runtime tests cover YAML/config precedence and validation, confined recovery,
 consumer preservation, ownership/overlap/upgrade/dry-run/rollback/locking, path links,
