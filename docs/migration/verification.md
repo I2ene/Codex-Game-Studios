@@ -46,7 +46,11 @@ records actual results. Its old counter-test copy was insufficient source eviden
 and is superseded by R6. Earlier local suite: 32 tests, 31 passed/1 symlink privilege
 skip; normal/dangling junction rejection executed. Earlier read-only native discovery
 found all 74 installed skills with zero framework/protocol errors; this was discovery,
-not model execution. Fresh revision CI must be read at its actual commit on PR #2.
+not model execution. Revision run 37238640713 exposed an order-dependent test import:
+the new test module prepended the unused tools directory, shadowing runtime studio.
+Removed that import-path entry after reproducing the exact failing order; the
+13-test reproduction then passed. Fresh replacement CI must be read at its actual
+commit on PR #2.
 
 Runtime tests cover YAML/config precedence and validation, confined recovery,
 consumer preservation, ownership/overlap/upgrade/dry-run/rollback/locking, path links,
