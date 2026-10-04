@@ -2380,10 +2380,12 @@
       "sha256": "9d3d8bb4ca6bb660b556a8acda27efa4027bb91be27c5671392125a78be73dbb",
       "disposition": "replace",
       "target": ".game-studio/runtime/checks.py",
-      "verification": "Resolved config and engine markers only; engine executable/preset validation not assessed",
-      "native_interface": "coherence",
+      "verification": "Executed project-first version/render/physics/runner/export comparisons; explicit fixture version probe tested; real engine execution not assessed",
+      "native_interface": "coherence/engine-reference",
       "targets": [
-        ".game-studio/runtime/checks.py"
+        ".game-studio/runtime/checks.py",
+        ".game-studio/runtime/engine.py",
+        ".game-studio/resources/docs/engine-reference-resolution.md"
       ],
       "installed": true,
       "verification_status": "EXECUTED"

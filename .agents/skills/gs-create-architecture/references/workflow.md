@@ -1,3 +1,22 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -29,12 +48,12 @@ It sits between design and implementation, and must exist before sprint planning
 This skill creates the whole-system blueprint that gives ADRs their context.
 
 
-See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the spawned agent reads its own gate file; do not read it in the parent session.
+See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the actual reviewer reads its gate file; read it in the parent when applying the role yourself.
 
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **`docs.density`** — it controls per-section *depth*, where `workflow`
 controls which sections exist. `modes.rigor` sets both together; set
@@ -67,19 +86,19 @@ Before anything else, load the full project context in this order:
 Read the four project-wide engine documents in full — they are small, and every
 part of each is used:
 
-1. `.game-studio/resources/engine-reference/[engine]/VERSION.md`
+1. `<project-engine-reference>/VERSION.md`
    → Extract: engine name, version, LLM cutoff, post-cutoff risk levels
-2. `.game-studio/resources/engine-reference/[engine]/breaking-changes.md`
+2. `<project-engine-reference>/breaking-changes.md`
    → Extract: all HIGH and MEDIUM risk changes
-3. `.game-studio/resources/engine-reference/[engine]/deprecated-apis.md`
+3. `<project-engine-reference>/deprecated-apis.md`
    → Extract: APIs to avoid
-4. `.game-studio/resources/engine-reference/[engine]/current-best-practices.md`
+4. `<project-engine-reference>/current-best-practices.md`
    → Extract: post-cutoff best practices that differ from training data
 
 Then read **only the module docs whose domain this game actually uses** —
 not the whole `modules/` directory:
 
-5. `.game-studio/resources/engine-reference/[engine]/modules/` — glob it to establish what exists,
+5. `<project-engine-reference>/modules/` — glob it to establish what exists,
    then match against the domains present in `design/gdd/systems-index.md`
    (the same domain vocabulary the ADR template uses: Physics, Rendering, UI,
    Audio, Navigation, Animation, Networking, Core, Input). Read the matching
@@ -261,7 +280,7 @@ For each GDD system, ask:
 
 Present the proposed layer assignment and ask for approval before proceeding to
 the next section. Record the approved layer map in
-`production/session-state/active.md`; it goes into the document at Phase 7.
+`<resolved-checkpoint>`; it goes into the document at Phase 7.
 
 **Engine awareness check**: For each system assigned to the Core and Foundation
 layers, flag if it touches a HIGH or MEDIUM risk engine domain. Show the relevant
@@ -286,12 +305,12 @@ relevant module reference doc. If an API is post-cutoff, flag it:
 
 ```
 ⚠️  [ClassName.method()] — Godot 4.6 (post-cutoff, HIGH risk)
-    Verified against: .game-studio/resources/engine-reference/godot/modules/[domain].md
+    Verified against: <project-engine-reference>/modules/[domain].md
     Behaviour confirmed: [yes / NEEDS VERIFICATION]
 ```
 
 Get user approval on the ownership map, then record it in
-`production/session-state/active.md`; it is written at Phase 7.
+`<resolved-checkpoint>`; it is written at Phase 7.
 
 ---
 
@@ -311,7 +330,7 @@ Use ASCII sequence diagrams where helpful. For each data flow:
 - Flag any data flows that cross thread boundaries
 
 Get user approval on each scenario, then record it in
-`production/session-state/active.md`; it is written at Phase 7.
+`<resolved-checkpoint>`; it is written at Phase 7.
 
 ---
 
@@ -332,7 +351,7 @@ These become the contracts programmers implement against.
 exists and has not changed signature in the target engine version.
 
 Get user approval on the API boundaries, then record them in
-`production/session-state/active.md`; they are written at Phase 7.
+`<resolved-checkpoint>`; they are written at Phase 7.
 
 ---
 
@@ -501,7 +520,7 @@ Show the proposed Document Status block inline, then use `ask the user`:
 
 ## Phase 8: Handoff
 
-**Step 1 — Update session state**: Write a summary to `production/session-state/active.md` covering: artifact written, TD/LP sign-off verdicts, any blockers, required ADRs remaining, and next step.
+**Step 1 — Update session state**: Write a summary to `<resolved-checkpoint>` covering: artifact written, TD/LP sign-off verdicts, any blockers, required ADRs remaining, and next step.
 
 **Step 2 — Output the handoff** using exactly this template (no freeform prose, no rephrasing of section titles):
 
@@ -580,7 +599,7 @@ This skill follows the collaborative design principle at every phase:
 6. **One write, after every section is approved** — the document is written once,
    at Phase 7; Phase 7b's Step 4 only updates its Document Status, after its own
    ask. Record each approved section's decisions in
-   `production/session-state/active.md` as you go, so a crash loses no decision.
+   `<resolved-checkpoint>` as you go, so a crash loses no decision.
    A revision that Phase 7b forces is written the same way — once, after its
    re-drafted sections are approved — and an update (Phase 0e) writes only the
    sections it chose.

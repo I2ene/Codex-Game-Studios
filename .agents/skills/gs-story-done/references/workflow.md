@@ -1,3 +1,22 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -34,12 +53,12 @@ forgotten, and the story file reflects actual completion status.
 ## Phase 1: Find the Story
 
 
-See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the spawned agent reads its own gate file; do not read it in the parent session.
+See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the actual reviewer reads its gate file; read it in the parent when applying the role yourself.
 
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **Workflow tier**: resolved per the story's system (per
 `.game-studio/resources/docs/workflow-modes.md`) — **the GDD filename stem** of the story's
@@ -72,7 +91,7 @@ read that file directly.
 
 **If no argument is provided:**
 
-1. Check `production/session-state/active.md` for the currently active story.
+1. Check `<resolved-checkpoint>` for the currently active story.
 2. If not found there, read the most recent file in `production/sprints/` and
    look for stories marked IN PROGRESS.
 3. If multiple in-progress stories are found, use `ask the user`:
@@ -223,7 +242,7 @@ Based on the Story Type extracted in Phase 2, check for required evidence.
 **Resolve the gate level for this story's type.** A gate level is either
 BLOCKING (a gap prevents the COMPLETE verdict in Phase 6) or ADVISORY (a gap is
 noted in the Completion Notes but does not block). Resolve it from the
-`testing.strict` block **already resolved in the resolved-config block at the top of this skill** — not by reading
+`testing.strict` block **already resolved in the JSON returned by an explicit config command** — not by reading
 `project.yaml` yourself:
 
 1. Map the Story Type to a `testing.strict` key — Logic→`logic`,
@@ -279,11 +298,10 @@ game the rendered result is the product; set `testing.strict.visual` or
 > established by `$gs-gate-check` (runs the suite at a phase gate) and
 > `$gs-smoke-check` (runs it before QA hand-off), both of which do execute.
 >
-> Unlike `$gs-regression-suite` and `$gs-launch-checklist`, which stop at existence
-> because their `allowed-tools` has no `Bash`, this skill HAS `Bash` — the limit
-> here is the instruction, not the grant. Running the story's own test before
-> closing it is a live option; it is not enabled because it needs a configured
-> runner and a decision about what a missing runner should mean.
+> Native skills have no per-skill tool grant. Use tools actually exposed by the host.
+> When a configured runner is inspected and execution is authorized, an explicit
+> run can supply pass/fail evidence. Otherwise this phase establishes file presence
+> only, and must not describe a present test as a passing test.
 
 **For Logic stories**: first read the story's **Test Evidence** section to extract the
 exact required file path. Use `Glob` to check that exact path. If the exact path is not
@@ -323,7 +341,7 @@ step 4 (`.game-studio/resources/docs/run-and-observe.md`); its absence means the
 run is not waived at `qa.level: minimal`.
 
 **For every other story type**, read the `Run result:` line from the
-`$gs-dev-story` checkpoint in `production/session-state/active.md` — only when its
+`$gs-dev-story` checkpoint in `<resolved-checkpoint>` — only when its
 **Current task** names this story; a later `$gs-dev-story` overwrites it — or from
 the story's `## Completion Notes`. `OBSERVED` with a retained path: note
 it. `N/A — <reason>`: accept only if the reason names why nothing is
@@ -585,28 +603,15 @@ COMPLETE-WITH-NOTES verdict in Phase 6; or, after a BLOCKED **or NOT ASSESSED**
 verdict, only if the user explicitly asks to close the story despite the
 blockers (Phase 6 does not advance here on its own in either case).
 
-**Automation note**: This is the story-completion gate. Closing a story whose
-verdict is BLOCKED (failing acceptance criteria) **or NOT ASSESSED** (criteria
-nobody could evaluate) — the "Accept deviations as-is and close anyway" option —
-is a `scope_changes` decision. Call
-`is_always_ask_category scope_changes`; when it returns 0 (the default), this
-gate prompts via `ask the user` **regardless of `modes.automation`** —
-autonomous mode must NOT silently close a BLOCKED story, even when the user's
-own request is what got you here. For a COMPLETE or COMPLETE-WITH-NOTES
-verdict, autonomous mode may pick "Close the story (Recommended)" and record
-it via `log_decision`.
-
-Use `ask the user` before writing anything:
-- Prompt: "Verification complete. How do you want to proceed?"
-- Options:
-  - `Close the story — update file, mark Complete, log notes (Recommended)`
-  - `Close and log advisory deviations as tech debt in docs/tech-debt-register.md`
-  - `There are issues I want to fix first — don't close yet`
-  - `Accept deviations as-is and close anyway`
-
-If "Close", "Close and log tech debt", or "Accept deviations": edit the story file.
-If "Close and log tech debt": after updating the story file, also append the advisory deviations to `docs/tech-debt-register.md` (create the file if it does not exist).
-If "Fix first": stop here and list what the user flagged. Do not write any files.
+**Completion authorization.** For COMPLETE/COMPLETE WITH NOTES, use the user's
+existing authorized closure instruction, or resolve an open closure choice through
+the host's supported input mechanism. BLOCKED/NOT ASSESSED never close silently;
+they require human acceptance explicitly covering the named failures/unknown risks.
+Check modes.automation_always_ask in config JSON; no shell category function exists.
+An earlier generic closure approval does not cover unknown failures discovered later.
+If authorized, update the story and notes. Log advisory tech debt only when relevant
+and authorized; an unresolved choice may offer close, log debt, fix first or accept
+named risks. Do not repeat per-file approval already supplied.
 
 1. Update the status field: `Status: Complete`
 2. Update the `Last Updated:` field in the story header to today's date (format: `YYYY-MM-DD`). If the field does not exist, add it after the `Status:` line.
@@ -641,30 +646,15 @@ git add [code-root and test-root files changed during implementation] [story-fil
 git commit -m "feat: [story title] ([TR-ID])"
 ```
 
-The `validate-commit.sh` hook will verify design doc references and check for hardcoded values automatically.
+No automatic commit interceptor is installed. Apply the relevant code review and configured tests explicitly within authorization; retain actual evidence.
 
 ### Session State Update
 
-After updating the story file, silently update the checkpoint in
-`production/session-state/active.md` — **overwrite the `<!-- CHECKPOINT -->` …
-`<!-- /CHECKPOINT -->` block, never append** (schema:
-`.game-studio/resources/docs/templates/session-state.md`). `session-start.sh` shows exactly
-that block when the next session opens. Fill **Next step** from Phase 8, so it
-names the same next story the user is shown:
+After the authorized story update, write a concise current snapshot with current
+task, actual verdict/test evidence, blockers, next route and participant identity.
+Use the configured recover/checkpoint --save interface and template, only if enabled.
+No CHECKPOINT/STATUS marker parser or fixed active.md path is required.
 
-    <!-- CHECKPOINT -->
-    **Updated:** [date]
-    **Branch:** `[current git branch]`
-    **Current task:** $gs-story-done — [story file path] closed: [COMPLETE / COMPLETE WITH NOTES / NOT ASSESSED / BLOCKED]
-    **Next step:** [$gs-story-done [next story path] for an In Review story, else $gs-dev-story [next story path] — or "build order done: play the build" — or the blocker to clear when every unfinished story is blocked — or the sprint's next step]
-    **Blocked on:** [nothing, or what blocked this verdict]
-    **Files in progress:** none
-    **Open questions:** [tech debt logged: N items, or none]
-    <!-- /CHECKPOINT -->
-
-If `active.md` does not exist, create it from the template. If it exists with no
-markers (a file from before the schema), insert the template's STATUS and
-CHECKPOINT blocks at the top and leave the rest untouched.
 Confirm in conversation: "Session state updated."
 
 ---
@@ -680,44 +670,13 @@ on whether there is a sprint at all.
 plan, there is no sprint to close out.** The brief's build order is the plan and
 the story files carry it:
 
-1. Run `python .game-studio/runtime/studio.py stories --root <project-root>`, from the project root — after
-   Phase 7's story-file write, so this story's new status is in it. It prints
-   every unfinished story under `production/epics/`, whatever Status form its
-   file uses, **already in the route's order** — `IN_REVIEW`, then `IN_PROGRESS`, then `TODO` (a `Ready` or
-   `Not Started` story) in build (file-name) order — then `BLOCKED`, `OTHER`,
-   `NO_STATUS` and the `COMPLETE` count. It is the list `$gs-help` and
-   `$gs-sprint-status` read, so the three name the same next story; do not re-read
-   or re-rank the story files.
-2. The first `In Review` story is next (recommend `$gs-story-done [path]` for it —
-   its work is written, and closing it first keeps finished work from piling
-   up); else the first `In Progress` one; else the first `Ready` or
-   `Not Started` one — the story on the script's first `IN_REVIEW`,
-   `IN_PROGRESS` or `TODO` line. Name any `Blocked` story with its blocker and pass
-   over it.
-
-   ```
-   ### Next Up
-   **[Story NNN: title]** — [1-line description]
-   Run `$gs-story-done [path]` to close it (In Review) — else `$gs-dev-story [path]` to implement it.
-   ```
-
-   At `minimal` recommend `$gs-dev-story` directly (or `$gs-story-done` for an In Review
-   story) — `$gs-story-readiness` is not on
-   the minimal path (engine → brief → stories → code), and it checks fields the
-   minimal story template does not carry. With no sprint plan at a higher tier,
-   add the `$gs-story-readiness [path]` line from the sprint branch below.
-3. **No unfinished story — only `COMPLETE N of N`** → every story is built —
-   at `minimal`, the brief's build order is done. Say so, and offer three ways on:
-   - play the build and note what feels wrong
-   - add the next stories from the brief with `$gs-create-stories`
-   - if the game has outgrown a one-page brief, `$gs-settings` to raise `modes.rigor`
-4. **No `IN_REVIEW`, `IN_PROGRESS` or `TODO` line, but `BLOCKED`, `OTHER` or
-   `NO_STATUS` lines remain** — every unfinished story is `Blocked`, `Draft`, or
-   has no status line. There is no Next Up, and the
-   build order is **not** done — never say it is. Name each such story with its
-   blocker (or `Draft` / `no status`), and suggest clearing the blocker first. For
-   a Draft or unstatused story: at `minimal`, finish it and set its Status to
-   `Ready`; at a higher tier, `$gs-story-readiness [path]` shows what it still needs.
+After the authorized story status update, explicitly run
+`python .game-studio/runtime/studio.py stories --root <project-root>` and read
+.game-studio/resources/docs/story-routing.md. Use complete/count and next.action/path/skill JSON. IN_REVIEW
+routes to story-done, IN_PROGRESS/TODO to dev-story. COMPLETE offers play the build,
+add stories or raise rigor when applicable. BLOCKED/REVIEW STATUS has no actionable
+next story; name blockers/unknown rows. NO STORIES needs a real brief and stories.
+This status-derived route never replaces the actual closure evidence above.
 
 **Never print the Sprint Close-Out Sequence on this branch** (`$gs-smoke-check
 sprint`, `$gs-team-qa sprint`, `$gs-retrospective`, `$gs-gate-check`, `$gs-sprint-plan new`)

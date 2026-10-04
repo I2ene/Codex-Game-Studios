@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -18,8 +26,8 @@ project; engine reference versions are examples and require current verification
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
 `project.yaml` → default `collaborative`). Every `ask the user` call and
 every file write follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 # Test Flakiness Detection
 
@@ -71,7 +79,7 @@ by default.
 For Unreal projects: automation logs go to `Saved/Logs/`. Grep for
 `Result={Success}` and `Result={Fail}` — each test prints
 `Test Completed. Result={<status>}`
-(`.game-studio/resources/engine-reference/unreal/current-best-practices.md`, "Command Line").
+(`<project-engine-reference>/current-best-practices.md`, "Command Line").
 
 ### Option B — Local log files
 
@@ -104,7 +112,7 @@ For each CI log or result file found, parse:
 reads):
 - Each test is a `<test-case` element; its `fullname` attribute is the identifier
 - Its `result` attribute is `Passed`, `Failed`, `Inconclusive` or `Skipped`
-  (`.game-studio/resources/engine-reference/unity/current-best-practices.md`, "Command Line");
+  (`<project-engine-reference>/current-best-practices.md`, "Command Line");
   only `Passed` and `Failed` enter the history
 
 **Plain text logs**:
@@ -168,11 +176,11 @@ Skip mechanisms, by engine — name only the one for the project's engine:
   `addons/gdUnit4/src/core/GdUnitTestSuiteScanner.gd`, as of gdUnit4 6.1.3;
   confirm them there for the installed version.
 - **Godot (gdUnit4), C#**: **NOT SOURCEABLE** — gdUnit4's C# test attributes are
-  not in the `addons/gdUnit4/` source, and `.game-studio/resources/engine-reference/godot/` does not
+  not in the `addons/gdUnit4/` source, and `<project-engine-reference>/` does not
   cover them. Log it in the quarantine section and ask the user how their C#
   tests are skipped; do not invent an attribute.
 - **Unity (NUnit)**: `[Ignore("flaky: [cause]")]` — NUnit 3 requires the reason
-- **Unreal**: **NOT SOURCEABLE** — `.game-studio/resources/engine-reference/unreal/` documents no way
+- **Unreal**: **NOT SOURCEABLE** — `<project-engine-reference>/` documents no way
   to skip an automation test. Log it in the quarantine section and ask the user
   how their CI excludes a test; do not invent a flag.
 

@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -24,12 +32,12 @@ When this skill is invoked:
 ## 0. Parse Arguments — Detect Retrofit / Acceptance Mode
 
 
-See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the spawned agent reads its own gate file; do not read it in the parent session.
+See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the actual reviewer reads its gate file; read it in the parent when applying the role yourself.
 
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **`team.size`**: which agents validate this ADR (orthogonal to review_mode/workflow).
 - **`individual`** (default): `technical-director` (TD-ADR) + the engine-specialist.
@@ -198,7 +206,7 @@ Use the user's response as the title, then proceed to Step 1.
 
 Before doing anything else, establish the engine environment:
 
-1. Read `.game-studio/resources/engine-reference/[engine]/VERSION.md` to get:
+1. Read `<project-engine-reference>/VERSION.md` to get:
    - Engine name and version
    - LLM knowledge cutoff date
    - Post-cutoff version risk levels (LOW / MEDIUM / HIGH)
@@ -208,12 +216,12 @@ Before doing anything else, establish the engine environment:
    Animation, Networking, Core, Input, Scripting.
 
 3. Read the corresponding module reference if it exists:
-   `.game-studio/resources/engine-reference/[engine]/modules/[domain].md`
+   `<project-engine-reference>/modules/[domain].md`
 
-4. Read `.game-studio/resources/engine-reference/[engine]/breaking-changes.md` — flag any
+4. Read `<project-engine-reference>/breaking-changes.md` — flag any
    changes in the relevant domain that post-date the LLM's training cutoff.
 
-5. Read `.game-studio/resources/engine-reference/[engine]/deprecated-apis.md` — flag any APIs
+5. Read `<project-engine-reference>/deprecated-apis.md` — flag any APIs
    in the relevant domain that should not be used.
 
 6. **Display a knowledge gap warning** before proceeding if the domain carries
@@ -421,7 +429,7 @@ chosen approach.]
 | **Engine** | [e.g. Godot 4.6] |
 | **Domain** | [Physics / Rendering / UI / Audio / Navigation / Animation / Networking / Core / Input] |
 | **Knowledge Risk** | [LOW / MEDIUM / HIGH — from VERSION.md] |
-| **References Consulted** | [List engine-reference docs read, e.g. `.game-studio/resources/engine-reference/godot/modules/physics.md`] |
+| **References Consulted** | [List engine-reference docs read, e.g. `<project-engine-reference>/modules/physics.md`] |
 | **Post-Cutoff APIs Used** | [Any APIs from post-LLM-cutoff versions this decision depends on, or "None"] |
 | **Verification Required** | [Specific behaviours to test before shipping, or "None"] |
 

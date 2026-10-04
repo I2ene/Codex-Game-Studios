@@ -1,3 +1,22 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -31,12 +50,12 @@ Two modes:
   from the index and hand off to `$gs-design-system` (Phase 6).
 
 
-See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the spawned agent reads its own gate file; do not read it in the parent session.
+See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the actual reviewer reads its gate file; read it in the parent when applying the role yourself.
 
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt). In collaborative mode the
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization). In collaborative mode the
 system list, dependency, priority and write approvals are separate questions:
 each waits for its answer before the next step runs.
 
@@ -154,7 +173,7 @@ Then use `ask the user` to capture feedback:
 **At `collaborative`** — iterate until the user approves the enumeration.
 **At `guided`** — ask once, apply the answer, and proceed; do not loop.
 **At `autonomous`** — do not ask. Record the enumeration and its inferred systems
-via `log_decision` and proceed.
+via an authored decision record (not a tool or shell function) and proceed.
 
 > **The loop needed an exit that does not depend on being asked.**
 > `automation-modes.md:56` defines `autonomous` as *"No `ask the user`"*, so a
@@ -352,7 +371,7 @@ CD-SYSTEMS NOT ASSESSED — [input]` in the same place.
 
 ### Step 5c: Update Session State
 
-After writing, create `production/session-state/active.md` if it does not exist, then update it with:
+After writing, create `<resolved-checkpoint>` if it does not exist, then update it with:
 - Task: Systems decomposition
 - Status: Systems index created
 - File: design/gdd/systems-index.md
@@ -446,7 +465,7 @@ This skill follows the collaborative design principle at every phase:
 4. **Incremental writing**: Update the systems index after each system is designed
 5. **Handoff**: Individual GDD authoring is owned by `$gs-design-system`, which handles
    incremental section writing, cross-referencing, design review, and index updates
-6. **Session state updates**: Write to `production/session-state/active.md` after
+6. **Session state updates**: Write to `<resolved-checkpoint>` after
    each milestone (index created, system designed, priorities changed)
 
 **Never** auto-generate the full systems list and write it without review.

@@ -14,7 +14,7 @@ from paths import atomic_write, confined, digest, plain
 def parser():
     p = argparse.ArgumentParser(description='Codex Game Studios explicit project helpers')
     sub = p.add_subparsers(dest='command', required=True)
-    for name in ['config', 'recover', 'artifacts', 'stories', 'dependencies', 'coherence',
+    for name in ['config', 'recover', 'artifacts', 'stories', 'dependencies', 'coherence', 'engine-reference',
                  'gdd-structure', 'review-scope', 'receipts', 'checkpoint', 'settings', 'run', 'hooks']:
         s = sub.add_parser(name)
         s.add_argument('--root', required=True, type=Path, help='Explicit consumer project root')
@@ -32,6 +32,7 @@ def parser():
             s.add_argument('action', choices=['hash', 'check', 'sections-hash', 'sections-check'])
             s.add_argument('patterns', nargs='+')
             s.add_argument('--receipt')
+            s.add_argument('--report', help='Link an actual existing report when generating its JSON companion')
         elif name == 'review-scope':
             s.add_argument('--receipt')
         elif name == 'checkpoint':
@@ -45,6 +46,8 @@ def parser():
             s.add_argument('--timeout', type=float, default=300)
         elif name == 'hooks':
             s.add_argument('--python', default=sys.executable, help='Interpreter with runtime dependencies')
+        elif name == 'coherence':
+            s.add_argument('--probe', action='store_true', help='Explicitly execute reviewed commands.engine_probe argv')
     return p
 
 
@@ -108,6 +111,10 @@ def checkpoint(root, save=None):
 
 
 def main(argv=None):
+    # Codex tool transport consumes UTF-8, including on Windows legacy locales.
+    for stream in [sys.stdout, sys.stderr]:
+        if hasattr(stream, 'reconfigure'):
+            stream.reconfigure(encoding='utf-8')
     args = parser().parse_args(argv)
     root = plain(args.root)
     if not root.is_dir():
@@ -126,7 +133,9 @@ def main(argv=None):
     elif name == 'artifacts':
         result = checks.artifacts(root, args.phase, args.path)
     elif name == 'receipts':
-        result = checks.receipts(root, args.action, args.patterns, args.receipt)
+        if args.report and not args.action.endswith('hash'):
+            raise ValueError('--report is only valid for receipt generation')
+        result = checks.receipts(root, args.action, args.patterns, args.receipt, args.report)
     elif name == 'review-scope':
         result = checks.review_scope(root, args.receipt)
     elif name == 'gdd-structure':
@@ -141,6 +150,11 @@ def main(argv=None):
         result = checks.run_command(root, args.name, args.timeout)
     elif name == 'hooks':
         result = hooks.definition(root, args.python)
+    elif name == 'coherence':
+        result = checks.coherence(root, args.probe)
+    elif name == 'engine-reference':
+        from engine import references
+        result = references(root)
     else:
         result = getattr(checks, name)(root)
     text = json.dumps(result, ensure_ascii=False, indent=2, default=str) + '\n'

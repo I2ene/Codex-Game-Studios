@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -19,11 +27,11 @@ Resolve settings explicitly with the native config command; retain its values an
 
 
 `--review` overrides `review_mode`; store it for all gate spawns this run. See
-`.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the spawned agent reads its own gate file; do not read it in the parent session.
+`.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the actual reviewer reads its gate file; read it in the parent when applying the role yourself.
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **`docs.density`** — it controls per-section *depth*, where `workflow`
 controls which sections exist. `modes.rigor` sets both together; set
@@ -291,7 +299,7 @@ If the user selects B, C, or D, make the revision, then use `ask the user` again
 **At `guided`** — pillars are a major decision, so ask once; apply the chosen
 revision and lock them in without a second confirmation round.
 **At `autonomous`** — do not ask. Lock in the drafted pillars and record them via
-`log_decision` with the alternatives considered.
+an authored decision record (not a tool or shell function) with the alternatives considered.
 
 > An `autonomous` run never issues the question, so "repeat until [A]" has no
 > exit condition (`automation-modes.md:56`).
@@ -416,7 +424,7 @@ Options: `[A] Yes — write it` / `[B] Revise another section`
 **At `guided`** — ask once; apply the requested revision and write the document
 without a further confirmation round.
 **At `autonomous`** — do not ask; write the document and record the decision via
-`log_decision`.
+an authored decision record (not a tool or shell function).
 
 > Same exit-condition problem as the pillars loop above (`automation-modes.md:56`).
 

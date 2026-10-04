@@ -1,3 +1,32 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
+## Native review evidence contract
+
+Read .game-studio/resources/docs/review-receipts.md before freshness/scope decisions. It replaces old text-line
+or embedded-hash consumption below. Choose a real report/companion pair explicitly;
+first/missing/legacy JSON means fresh full review. Consume baseline_status,
+report_status and unchanged_inputs plus observations/unresolved. Prior failures stay
+failures. After actual review, write the human report then generate a linked JSON
+with receipts hash --report <report> --output <companion> for inputs actually read.
+Scope/mode/required coverage must be the same before prior-verdict reuse.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -36,8 +65,8 @@ completeness. This skill reviews the *relationships* between all GDDs.
   inherits those inconsistencies)
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **Argument modes:**
 
@@ -88,18 +117,10 @@ For `since-last-review` mode, compute the scope deterministically instead of
 reasoning through git history:
 
 ```
-Bash: python .game-studio/runtime/studio.py review-scope --root <project-root>
+python .game-studio/runtime/studio.py review-scope --root <project-root> --receipt "[latest-cross-review-stem].receipt.json"
 ```
 
-It prints `PRIOR_REVIEW:`, a `CHANGED:` list, and a `DEPS ...:` list of each
-changed GDD's declared dependencies. Use those lists as the scope — the
-dependency lines are already the "Key deps" expansion, so no second pass is
-needed. If `PRIOR_REVIEW: NONE`, a full review is required; fall back to `full`
-mode.
-
-Show the user which GDDs are in scope based on summaries before doing any full
-reads. Only proceed to L1 for the `CHANGED` set plus the GDDs named on the
-`DEPS` lines.
+It returns JSON changed/scope/missing/unresolved_dependencies. Explicitly select the matching report/JSON pair; missing or legacy baseline means full scope. Use scope, not old text labels, and retain unread/covered denominators. See .game-studio/resources/docs/review-receipts.md.
 
 ### Phase 1b — Registry Pre-Load (fast baseline)
 
@@ -182,7 +203,7 @@ consistency and design-theory review is its domain.
   structure and the game pillars.
 - The full TR registry contents if loaded in Phase 1b (paste the registry text, not just a file path)
 - The specific checklist items assigned to that agent's phase (Phase 2 gets 2a–2f; Phase 3 gets 3a–3g)
-- The engine name and version — `engine.name` and `engine.version` from `project.yaml`, resolving each field independently (if its key is absent or empty, use `docs/project-reference/technical-preferences.md`) — plus `.game-studio/resources/engine-reference/[engine]/VERSION.md`
+- The engine name and version — `engine.name` and `engine.version` from `project.yaml`, resolving each field independently (if its key is absent or empty, use `docs/project-reference/technical-preferences.md`) — plus `<project-engine-reference>/VERSION.md`
 
 Do not rely on the subagent to re-read these files — it has its own context window and cannot access Phase 1 results unless they are explicitly passed in the delegation brief.
 
@@ -687,15 +708,7 @@ Use `ask the user` for write permission:
 - Prompt: "May I write this review to `design/gdd/gdd-cross-review-[date].md`?"
 - Options: `[A] Yes — write the report` / `[B] No — skip`
 
-> **`[date]` here means ISO 8601 — `YYYY-MM-DD`, e.g.
-> `gdd-cross-review-2026-08-19.md`. This is not a style preference.**
-> `.game-studio/runtime/studio.py review-scope` picks the prior review with
-> `sort | tail -1`, so lexical order IS chronological order only for ISO dates.
-> Written as `aug-19-2026` or `19-08-2026`, the wrong file is chosen as the
-> baseline, the changed-set is computed from it, and GDDs modified since the
-> real last review silently escape the next one. That is the same
-> quiet-escape failure the three fixes documented at the top of that script
-> exist to prevent.
+Use ISO YYYY-MM-DD report names and explicit companion selection. Helpers do not auto-select reports or parse Markdown hashes.
 
 If any GDDs are flagged for revision, use a second `ask the user`:
 - Prompt: "Should I update the systems index to mark these GDDs as needing revision? ([list of flagged GDDs])"
@@ -707,7 +720,7 @@ If any GDDs are flagged for revision, use a second `ask the user`:
 ### Session State Update
 
 After writing the report (and updating systems index if approved), silently
-append to `production/session-state/active.md`:
+append to `<resolved-checkpoint>`:
 
     ## Session Extract — $gs-review-all-gdds [date]
     - Verdict: [PASS / NOT ASSESSED / CONCERNS / FAIL]
@@ -750,7 +763,7 @@ Assign letters A, B, C… only to included options. Mark the most pipeline-advan
 
 In collaborative and guided modes, never end the skill with plain text — always
 close with this widget. In autonomous mode, print the verdict and recommended
-next step, then record via `log_decision` (no widget).
+next step, then record via an authored decision record (not a tool or shell function) (no widget).
 
 ---
 

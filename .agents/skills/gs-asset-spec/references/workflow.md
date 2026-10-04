@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -25,8 +33,8 @@ If no argument is provided, check whether `design/assets/entity-inventory.md` ex
 ---
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt). **Note**: actually invoking an external image
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization). **Note**: actually invoking an external image
 generator (calling an image API) always prompts regardless of
 `modes.automation` — it is an irreversible external action guarded
 unconditionally, independent of whether `external_calls` is listed in
@@ -135,7 +143,7 @@ Extract:
 - **Target name**: the name after the colon (normalize to kebab-case)
 - **Review mode**: `--review [full|lean|solo]` if present
 
-The effective mode is the one already resolved at the top of this skill via
+The effective mode is the one returned by the explicit config command via
 `explicit config command --keys review_mode`, which applies the full chain; with nothing
 set it follows `modes.rigor` — `solo` at `minimal` (the default), `lean` at
 `standard`, `full` at `full`. A `--review` argument overrides it for this

@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -284,11 +292,11 @@ required/optional split from Section 2. An `ABSENT` required artifact is a
 blocker at `full` and frequently not one at `minimal`; the script does not know
 that and does not decide it.
 
-**`NO_CHECK` is not `PRESENT`.** The header prints a `NO_CHECK:` count before any
-row precisely so this cannot be skimmed past. Those steps were *scanned*, not
-*satisfied* — carry each into Section 4 (Collaborative Assessment) and ask, or
-mark MANUAL CHECK NEEDED. A gate that reports PASS because most of its checklist
-was undetectable is the failure mode this count exists to prevent.
+Consume artifacts JSON counts and steps. PRESENT means a matched file observation;
+ABSENT means no matched input; NO_CHECK means no catalog predicate, never a pass.
+Retain the requested/observed denominators and apply tier/professional quality checks.
+Missing criteria or engine/playtest evidence remains NOT ASSESSED.
+
 
 **Existence is not adequacy.** The script cannot tell a real document from a
 template skeleton. So: for any artifact the verdict actually turns on, spot-read
@@ -337,7 +345,7 @@ ASSESSED for this gate, never passed.
   the trigger in the verdict section. A gate that ran no tests found no test
   failures, which is not the same as passing.
   A test failure's effect on the verdict depends on the `testing.strict` block
-  **resolved in Phase 1** (`explicit config command` merges `project.local.yaml` over
+  **resolved in Phase 1** (`resolve_config` merges `project.local.yaml` over
   `project.yaml`; reading the file directly would drop a local override), per
   test type:
   - **Logic** — unit-level failures (`tests/unit/` on Godot, Edit Mode on
@@ -363,7 +371,7 @@ ASSESSED for this gate, never passed.
   Bash: python .game-studio/runtime/studio.py gdd-structure --root <project-root>
   ```
 
-  It prints a `PRESENT:` / `ABSENT:` pair per GDD and already accepts
+  It returns documents JSON with present/absent arrays per GDD and already accepts
   `## Detailed Design` as satisfying the `Detailed Rules` requirement. It reports
   presence only and makes no REQUIRED/ADVISORY judgment.
 
@@ -467,7 +475,7 @@ gate files:
 - **CD-PHASE-GATE**: the game pillars and core fantasy (from
   `design/gdd/game-concept.md`, else `design/game-brief.md`).
 - **TD-PHASE-GATE**: the architecture document path, the engine reference path
-  (`.game-studio/resources/engine-reference/<engine>/VERSION.md`), and the ADR list.
+  (`<project-engine-reference>/VERSION.md`), and the ADR list.
 - **PR-PHASE-GATE**: the sprint and milestone artifacts present, `team.size` as
   explicitly resolved (with the current sprint plan's capacity, if a plan exists), and
   the number of stories under `production/epics/` whose status is `Blocked`. At

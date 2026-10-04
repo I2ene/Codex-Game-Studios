@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -18,8 +26,8 @@ project; engine reference versions are examples and require current verification
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
 `project.yaml` → default `collaborative`). Every `ask the user` call and
 every file write follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 Resolve settings explicitly with the native config command; retain its values and provenance.
 
@@ -71,7 +79,7 @@ ratings, of which ~140 are unassessable.
 Read the argument for the target platform (`pc`, `console`, `mobile`, or `all`). If no platform is specified, default to `all`.
 
 **The argument selects DEVICE requirements. It never selects the certification
-track.** Certification is decided by `platform.cert_tier`, resolved in the resolved-config block at the top of this skill —
+track.** Certification is decided by `platform.cert_tier`, resolved in the JSON returned by an explicit config command —
 see the `platform.cert_tier` rule above. The two axes are different lists that
 happen to share one word: `pc`/`console`/`mobile` are hardware shapes, while
 `none|itch|steam|console` are certification regimes. They agree on `console` and
@@ -210,7 +218,7 @@ Steamworks rows.
 > tier, which is the exact wrong vocabulary the `cert_tier` rule warns against.
 
 **Certification — emit ONLY the block matching `platform.cert_tier`** (resolved in
-the resolved-config block at the top of this skill). Do not emit this subsection's other blocks, and do not fall back to
+the JSON returned by an explicit config command). Do not emit this subsection's other blocks, and do not fall back to
 emitting all of them because the platform argument was `all`.
 
 **At `none`** — emit no certification block at all. Emit exactly this one line in

@@ -1,4 +1,9 @@
 import unittest
+from pathlib import Path
+import sys
+
+# In the consumer this test imports the delivered source, never a tests/ copy.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
 from counter import increment
 
 

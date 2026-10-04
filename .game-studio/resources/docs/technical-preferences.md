@@ -1,12 +1,10 @@
 # Technical Preferences
 
-<!-- project.yaml at the repo root is the machine-readable source of truth for
-     engine, specialists, naming, performance, platform, and testing.framework.
-     This file is the human-readable LEGACY FALLBACK: agents and skills resolve
-     each key from project.yaml first and fall back here only when the
-     project.yaml key is absent. $gs-setup-engine dual-writes both.
-     Forbidden patterns and allowed libraries are NOT migrated — they live only
-     in this file. Populated by $gs-setup-engine; updated as decisions are made. -->
+<!-- Project.yaml supplies machine-readable settings. This packaged template is
+     professional guidance, never a populated project preference record. Write the
+     relevant human decisions to docs/project-reference/technical-preferences.md only
+     when useful and authorized. Runtime never parses Markdown preference fallbacks;
+     explicitly reconcile missing fields and preserve custom rules/libraries. -->
 
 ## Engine & Language
 

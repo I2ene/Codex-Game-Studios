@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -18,26 +26,23 @@ project; engine reference versions are examples and require current verification
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
 `project.yaml` → default `collaborative`). Every `ask the user` call and
 every file write follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
-## Recent History
+## Read actual history
 
-Recent commits:
-
-
-Recent tags (newest first):
-
+In the confirmed consumer repository explicitly run git rev-parse --is-inside-work-tree,
+git log --oneline -20 and git tag --sort=-version:refname. Record the actual command
+outputs/range. Nothing runs before this skill loads. If history is absent/unavailable,
+use the no-history branch or a human-supplied change list; never invent commits.
 
 ## Provenance check — before trusting the history above
 
-**The commits above may not belong to this game.** This skill's history blocks are
-auto-resolved *before* the body runs, so the read has already happened — what this
-check governs is whether that output is usable, not whether it is fetched.
+**Verify the observed commits belong to this project.**
 
-1. Read the injected commit subjects above. **If there are none — the log is
-   empty or git is unavailable — skip this check**: there is nothing to
-   classify, and Phase 1's no-history branch is the right stop.
+1. Read the actual command output just obtained. Empty/unavailable history requires
+   the no-history branch; there is no hidden injected history to consult.
+
 2. **Classify each one** as **Game** (mechanics, content, balance, art, audio,
    UI, or a bug in those), **Framework / maintenance** (subjects naming skills,
    hooks, agents, the test plan, CI, or the framework's own docs), or **Unclear**
@@ -79,13 +84,11 @@ session-hook timeout rendered as a gameplay fix for a game with **no save
 system**. It was fluent, plausible, and entirely false. A reader cannot tell the
 difference; only this check can.
 
-**Do not treat the preamble's existence as evidence.** Injected output means the
-command ran, never that its subject is your game.
+**The observed command output proves only that history was read.** Corroborate its subjects against this project before classifying player-facing changes.
 
 ---
 
-Both blocks are resolved before this skill runs. Use them as the starting point
-for Phase 2 rather than re-running the same commands.
+Use the actual recorded history as Phase 2 input. Re-run only when the requested range or repository changes.
 
 ---
 

@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -25,8 +33,8 @@ full analysis in conversation, then capture the decision with concise labels.
 In `collaborative` mode, the user must approve before moving to the next step.
 In `guided` mode the pipeline advances automatically unless a step is BLOCKED;
 in `autonomous` mode it runs end to end, recording each step outcome via
-`log_decision`. Decisions in `automation_always_ask` categories
-(`is_always_ask_category` helper) always prompt regardless of mode. See
+an authored decision record (not a tool or shell function). Decisions in `automation_always_ask` categories
+(check modes.automation_always_ask in config JSON against existing authorization) prompt only when existing authorization does not cover the material action. See
 `.game-studio/resources/docs/automation-modes.md`.
 
 ## Phase 0: Resolve Config
@@ -47,7 +55,7 @@ below), and the agents that work at them are team members, not director gates.
 - **`individual`** (default): `level-designer` only. Other agents consulted via the level-designer, not spawned separately.
 - **`small`**: + `systems-designer` + `art-director` + `qa-tester`.
 - **`studio`**: + `narrative-director` + `world-builder` + `accessibility-specialist` (the full pipeline as documented).
-A non-core agent needed at `individual` routes through the nearest active core agent with an informational note. **"Phase gate" means any phase that ends in an `ask the user` decision point this pipeline itself lists** — a transition under Decision Points above, or a **Gate** step written into the pipeline below — **whatever the `automation` mode.** `guided` and `autonomous` change how a gate is passed (it auto-advances, or is recorded with `log_decision`), not whether it is one, so bounded-exception condition (3) below holds at it in every mode. An agent restricted to "phase gates only" is spawned at those points and no others. This active-set scoping applies throughout the pipeline below: any phase that names an agent outside the active set routes through the nearest core agent rather than spawning it.
+Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no bounded exception infers consent from a path or another agent's message.
 
 **Announce the active set before Step 1 — never let the collapse be silent.**
 Before spawning anything, state in one line which agents this run will actually
@@ -87,7 +95,7 @@ enforced.**
 
 ## How to Delegate
 
-Use the available native delegation tool to spawn each team member as a subagent:
+Apply the following professional responsibilities in the parent; delegate useful independent tasks only when authorized and available:
 - `expertise role: narrative-director` — Narrative purpose, characters, emotional arc
 - `expertise role: world-builder` — Lore context, environmental storytelling, world rules
 - `expertise role: level-designer` — Spatial layout, pacing, encounters, navigation
@@ -98,7 +106,7 @@ Use the available native delegation tool to spawn each team member as a subagent
 
 **Brief each agent — do not dump context.** Read the shared inputs **once** and pass a distilled brief inline: the lines each agent actually needs, never a file path for a document you have already read (an agent handed a path re-reads the whole file). Pass a path only for a document you have not read and only that agent needs.
 
-**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is your write authorisation under the bounded exception below, so write it without a separate approval prompt. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session.
+**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session.
 
 **Substitute a real path for `[path]`.** Working artifacts go under
 `production/levels/[level-name]/`, slugged as in the "Save to" step below. One
@@ -126,17 +134,17 @@ compile from them (`design/levels/[level-name].md`).
 
 Spawn all three agents simultaneously — issue all three native delegation when authorized calls before waiting for any result.
 
-Spawn the `narrative-director` agent to:
+Apply the `narrative-director` expertise in the parent, or delegate to an authorized participant to:
 - Define the narrative purpose of this area (what story beats happen here?)
 - Identify key characters, dialogue triggers, and lore elements
 - Specify emotional arc (how should the player feel entering, during, leaving?)
 
-Spawn the `world-builder` agent to:
+Apply the `world-builder` expertise in the parent, or delegate to an authorized participant to:
 - Provide lore context for the area (history, faction presence, ecology)
 - Define environmental storytelling opportunities
 - Specify any world rules that affect gameplay in this area
 
-Spawn the `art-director` agent to:
+Apply the `art-director` expertise in the parent, or delegate to an authorized participant to:
 - Establish visual theme targets for this area — these are INPUTS to layout, not outputs of it
 - Define the color temperature and lighting mood for this area (how does it differ from adjacent areas?)
 - Specify shape language direction (angular fortress? organic cave? decayed grandeur?)
@@ -148,7 +156,7 @@ Spawn the `art-director` agent to:
 **Gate**: Use `ask the user` to present all three Step 1 outputs (narrative brief, lore foundation, visual direction targets) and confirm before proceeding to Step 2.
 
 ### Step 2: Layout and Encounter Design (level-designer)
-Spawn the `level-designer` agent with the full Step 1 output as context:
+Apply the `level-designer` expertise in the parent, or delegate to an authorized participant with the full Step 1 output as context:
 - Narrative brief (from narrative-director)
 - Lore foundation (from world-builder)
 - **Visual direction targets (from art-director)** — layout must work within these targets, not contradict them
@@ -173,7 +181,7 @@ Do NOT invent content for the missing adjacent area.
 **Gate**: Use `ask the user` to present Step 2 layout (including any unresolved adjacent area dependencies) and confirm before proceeding to Step 3.
 
 ### Step 3: Systems Integration (systems-designer)
-Spawn the `systems-designer` agent to:
+Apply the `systems-designer` expertise in the parent, or delegate to an authorized participant to:
 - Specify enemy compositions and encounter formulas
 - Define loot tables and reward placement
 - Balance difficulty relative to expected player level/gear
@@ -186,14 +194,14 @@ Spawn the `systems-designer` agent to:
 
 **Note**: The art-director's directional pass (visual theme, color targets, mood) happened in Step 1. This pass is location-specific production concepts — given the finalized layout, what does each specific space look like?
 
-Spawn the `art-director` agent with the finalized layout from Step 2:
+Apply the `art-director` expertise in the parent, or delegate to an authorized participant with the finalized layout from Step 2:
 - Produce location-specific concept specs for key spaces (entrance, key encounter zones, landmarks, exits)
 - Specify which art assets are unique to this area vs. shared from the global pool
 - Define sight-line and lighting setups per key space (these are now layout-informed, not directional)
 - Specify VFX needs that are specific to this area's layout (weather volumes, particles, atmospheric effects)
 - Flag any locations where the layout creates visual direction conflicts with the Step 1 targets — surface these as production risks
 
-Spawn the `accessibility-specialist` agent in parallel to:
+Apply the `accessibility-specialist` expertise in the parent, or delegate to an authorized participant in parallel to:
 - Review the level layout for navigation clarity (can players orient themselves without relying on color alone?)
 - Check that critical path signposting uses shape/icon/sound cues in addition to color
 - Review any puzzle mechanics for cognitive load — flag anything that requires holding more than 3 simultaneous states
@@ -209,7 +217,7 @@ Wait for both agents to return before proceeding.
 Do NOT proceed to Step 5 without the user acknowledging any BLOCKING accessibility concerns.
 
 ### Step 5: QA Planning (qa-tester)
-Spawn the `qa-tester` agent to:
+Apply the `qa-tester` expertise in the parent, or delegate to an authorized participant to:
 - Write test cases for the critical path
 - Identify boundary and edge cases (sequence breaks, softlocks)
 - Create a playtest checklist for the area

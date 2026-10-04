@@ -1,3 +1,22 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -43,8 +62,8 @@ no QA plan, readiness check or sprint. `$gs-story-done` names the next story.
 ---
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **Workflow tier**: resolved per the story's system (per
 `.game-studio/resources/docs/workflow-modes.md`) — **the GDD filename stem** of the story's
@@ -69,7 +88,7 @@ are not required (`minimal`), the Phase 5 `testing.strict` gate is a no-op.
 
 **If a path is provided**: read that file directly.
 
-**If no argument**: check `production/session-state/active.md` for the active
+**If no argument**: check `<resolved-checkpoint>` for the active
 story. If found, confirm: "Continuing work on [story title] — is that correct?"
 If not found, ask: "Which story are we implementing?" Glob
 `production/epics/**/*.md` and list stories with Status: Ready.
@@ -331,7 +350,7 @@ assumptions about post-cutoff engine APIs that need expert verification.
 
 > **Read the risk, do not trust the story card alone.** If the story's `Risk`
 > field is absent, or says `NOT ASSESSED`, **or disagrees with
-> `.game-studio/resources/engine-reference/<engine>/VERSION.md`, the VERSION.md rating wins** and an
+> `<project-engine-reference>/VERSION.md`, the VERSION.md rating wins** and an
 > unknown counts as HIGH. At `minimal` there is no ADR, so VERSION.md is the only
 > source; a story card carrying an improvised `MEDIUM` against a VERSION.md
 > rating of HIGH would skip this spawn without saying so. `$gs-create-stories` now derives the field
@@ -433,7 +452,7 @@ ADVISORY means a missing test is noted but does not block:
 
 1. Map the Story Type to a `testing.strict` key — Logic→`logic`,
    Integration→`integration`, Visual/Feel→`visual`, UI→`ui`, Config/Data→`config`.
-   Take `testing.strict.<key>` from the **the resolved-config block at the top of this skill**, not from
+   Take `testing.strict.<key>` from the **the JSON returned by an explicit config command**, not from
    `project.yaml` directly. If its value is `true` (case-insensitive) →
    BLOCKING; if `false` → ADVISORY; `unset` → fall through.
 
@@ -507,7 +526,7 @@ Before collecting anything:
      `"<UE root>/Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.exe" <Project>Editor Win64 Development -Project="<absolute path>/<Project>.uproject"`
      on Windows; on Linux `"<UE root>/Engine/Build/BatchFiles/Linux/Build.sh" <Project>Editor Linux Development -Project=…`,
      on macOS `…/Mac/Build.sh <Project>Editor Mac Development -Project=…` (from Epic's
-     documentation — `.game-studio/resources/engine-reference/unreal/current-best-practices.md`, "Command Line").
+     documentation — `<project-engine-reference>/current-best-practices.md`, "Command Line").
      A compile error fails the build (`Result: Failed`, non-zero exit).
    Report what you ran, its exit code, and any error lines.
 3. If the engine binary is unavailable, write **`parse NOT VERIFIED — engine
@@ -580,11 +599,9 @@ Ready for: `$gs-story-done [story-path]` — at `standard`/`full`, `$gs-code-rev
 
 ## Phase 7: Update Session State
 
-Silently update the checkpoint in `production/session-state/active.md` —
+Silently update the checkpoint in `<resolved-checkpoint>` —
 **overwrite the `<!-- CHECKPOINT -->` … `<!-- /CHECKPOINT -->` block, never
-append** (schema: `.game-studio/resources/docs/templates/session-state.md`). `session-start.sh`
-shows exactly that block when the next session opens, so it is what a cold
-resume starts from:
+append** (schema: `.game-studio/resources/docs/templates/session-state.md`). recover reads the configured snapshot as bounded project data; no shell hook or marker parser is implied.
 
 ```
 <!-- CHECKPOINT -->
@@ -641,14 +658,11 @@ Common blockers:
 `autonomous` modes, see `.game-studio/resources/docs/automation-modes.md` — the rules below
 describe what collaborative mode requires, not universal behavior.
 
-- **File writes are delegated** — all source code, test files, and evidence docs are written by sub-agents spawned via native delegation when authorized. Each sub-agent enforces the "May I write to [path]?" protocol individually. This orchestrator writes only the following, each after an ask that names it:
-  - the story's `Status:` / `Last Updated:` and its `production/sprint-status.yaml` entry — the one "May I mark this story In Progress?" ask (Phase 2)
-  - the story's `ADR Version`, `**ADR Decision Summary**` and `## Implementation Notes` (ADR mismatch option [A]), and its `Manifest Version:` / `Manifest-Note:` (manifest option [A] or [B]) — each option names that edit, so choosing it is the ask
-  - a dependency story's `Status: Complete` (dependency option [C], then "May I update [dependency path] Status to Complete?")
-  - a Config/Data story's data file ("May I write to [path]?")
-  - on Unity, `Assets/Scripts/ScreenshotOnArg.cs`, written verbatim from `.game-studio/resources/docs/run-and-observe.md` ("May I write `Assets/Scripts/ScreenshotOnArg.cs`?", Phase 6)
+- **Writes follow actual task scope** — the parent or a real authorized participant
+  writes implementation/tests/evidence at the procedure's named paths. Preserve the
+  story, registry and checkpoint contracts; no per-file consent loop or invented
+  independent participant is implied. Ask only for missing material authorization.
 
-  The session-state checkpoint in `production/session-state/active.md` is the one write made without an ask.
 - **Load before implementing** — do not start coding until all context is loaded
   (story, TR-ID, ADR, manifest, engine prefs). Incomplete context produces code
   that drifts from design.

@@ -1,3 +1,21 @@
+## Native review evidence contract
+
+Read .game-studio/resources/docs/review-receipts.md before freshness/scope decisions. It replaces old text-line
+or embedded-hash consumption below. Choose a real report/companion pair explicitly;
+first/missing/legacy JSON means fresh full review. Consume baseline_status,
+report_status and unchanged_inputs plus observations/unresolved. Prior failures stay
+failures. After actual review, write the human report then generate a linked JSON
+with receipts hash --report <report> --output <companion> for inputs actually read.
+Scope/mode/required coverage must be the same before prior-verdict reuse.
+
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -25,12 +43,12 @@ wins and `--depth` is ignored — say so. No block → defaults in
 ## Phase 0: Parse Arguments
 
 
-See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the spawned agent reads its own gate file; do not read it in the parent session.
+See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the actual reviewer reads its gate file; read it in the parent when applying the role yourself.
 
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **`workflow`** for the GDD under review — use the `system_overrides` row for `<system>` if the block lists one, else the project value. Validation scope follows the tier:
 - `full` — all 8 sections validated; any missing section blocks approval.
@@ -45,7 +63,7 @@ Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.
 
 Resolved mode controls how thorough this review is:
 
-- **`full`**: Complete review — all phases + specialist agent delegation (Phase 3b)
+- **`full`**: Complete review — all phases + specialist expertise (Phase 3b, delegated only when authorized/available)
 - **`lean`**: All phases, no specialist agents — faster, single-session analysis
 - **`solo`**: Phases 1-4 only, no delegation, no Phase 5 next-step prompt — use when called from within another skill
 
@@ -53,42 +71,36 @@ Resolved mode controls how thorough this review is:
 
 ## Phase 1: Load Documents
 
-**Freshness check first — a re-review of an unchanged document costs full
-price and reproduces the same verdict.** Run:
+Select the actual report/JSON companion pair explicitly. Read the prior report,
+including verdict, mode and covered inputs. Run receipts check with that companion
+and exactly the input patterns previously reviewed, including dependencies/context
+actually read. Use .game-studio/resources/docs/review-receipts.md.
 
-```
-Bash: python .game-studio/runtime/studio.py receipts --root <project-root> check "design/gdd/reviews/[doc-name]-review-log.md" "[target-doc-path]" "design/registry/entities.yaml"
-```
+- baseline_status=MISSING, legacy/non-native JSON, report_status=UNLINKED/ABSENT/
+  CHANGED, changed scope/mode, or unavailable required input: fresh review. A legacy
+  JSON error is a baseline problem; retain the old report and create a native pair.
+- unchanged_inputs=true with report_status=UNCHANGED and complete required coverage:
+  surface the actual prior date/verdict. A failed verdict still fails. Reuse an
+  approved verdict only within the requested scope; an explicit request to re-review
+  takes precedence. Do not ask again when that choice was already authorized.
+- observations NEW/CHANGED/REMOVED or changed unresolved: read/review affected inputs.
+  For design-review read the target fully; registry-only changes require rechecking
+  all registry-sourced facts and full review if conflicts appear. For architecture
+  review reconcile affected systems/dependencies; structural/deleted ADR changes need
+  full coverage analysis. Report unresolved required inputs as NOT ASSESSED, never
+  silently reduce the denominator or offer an unsupported unchanged verdict.
+- Optional inputs absent in both snapshots are named, rather than silently omitted.
+  Their appearance/deletion changes freshness. Empty observations never prove reuse.
 
-The registry is in the check because this review consults it for
-cross-document facts — an unchanged GDD reviewed against a *changed*
-registry can reach different conclusions, so the skip is only safe when
-**every** listed line reads `UNCHANGED` (an absent registry simply doesn't
-appear in the output and doesn't block the skip).
+Snapshot the actual inputs before reviewing and reconcile any input drift before
+publication. After writing the real Markdown report/log, generate its companion with
+receipts hash <actual-reviewed-patterns...> --root <project-root> --report <report.md>
+--output <companion.json>. Re-run check to confirm the link and input snapshot. Hashes
+record bytes; they never supply a professional approval or independent participant.
 
-- **All `UNCHANGED`** and the log's latest entry carries a verdict — surface it:
-  *"This document is byte-identical to its last review on [date] (verdict:
-  [verdict])."* If that verdict was APPROVED, offer via `ask the user`:
-  `[A] Use the prior verdict (Recommended)` / `[B] Re-review anyway` —
-  `guided` proceeds with [A] and notes it; `autonomous` logs via
-  `log_decision` and uses the prior verdict. If it was NEEDS REVISION or
-  MAJOR REVISION NEEDED, say so plainly: the document has not changed since
-  it failed review — the prior findings stand; revising the document is the
-  next step, not re-reviewing it. Offer to display the prior findings from
-  the log.
-- **Only the registry line reads `CHANGED`** (doc `UNCHANGED`) — the prior
-  verdict stands except for cross-document facts: re-verify the doc's
-  registry-sourced values against the new registry and re-issue the verdict;
-  escalate to a full re-review only if a conflict appears.
-- **Target doc `CHANGED` or `NEW`, or `RECEIPT: NONE`** — proceed with the
-  full review below. **Do not offer a partial/delta re-review that skips
-  reading or re-analyzing unchanged sections.** A section-scoped re-review
-  misses defects a full review finds, and saves little or nothing.
-  "Unchanged since last review" only means
-  byte-identical to what was reviewed then — it says nothing about whether
-  that prior pass was itself complete, and no amount of "scan everything
-  anyway" instruction reliably overcame a model's attention naturally
-  narrowing to the flagged change.
+
+Companion: design/gdd/reviews/[doc-name]-review-receipt.json.
+Report: design/gdd/reviews/[doc-name]-review-log.md.
 
 Read the target design document in full. Read AGENTS.md to understand project context and standards.
 
@@ -128,7 +140,7 @@ everything "implied". Do not glob-read all of `design/gdd/`.
 Bash: python .game-studio/runtime/studio.py gdd-structure --root <project-root> [target-doc-path]
 ```
 
-It prints a `PRESENT:` list and, when applicable, an `ABSENT:` list. It reports
+It returns documents JSON with present/absent section-name arrays and a document count. It reports
 **presence only** and makes no REQUIRED/ADVISORY judgment — that is Step 2b's
 job. It already accepts `## Detailed Design` as satisfying the `Detailed Rules`
 requirement, so do not flag that as missing.
@@ -183,8 +195,11 @@ spot-read any section the verdict actually turns on.
 
 **This phase is MANDATORY in full mode.** Do not skip it.
 
-**Before spawning any agents**, print this notice:
-> "Full review: spawning specialist agents in parallel. This typically takes 8–15 minutes. Use `--review lean` for faster single-session analysis."
+State the actual review method before the domain pass: parent-only or authorized
+participants with real IDs. Professional adversarial checks are required in full;
+they do not require unavailable or unauthorized delegation, guessed durations or
+independent sign-off. Read relevant role instructions and apply their checks here
+when the parent performs them.
 
 ### Step 1 — Identify all domains the GDD touches
 
@@ -214,12 +229,11 @@ These are the most common baselines — but not required for pure UI specs, audi
 
 ### Step 2 — Spawn all relevant specialists in parallel
 
-**CRITICAL: native delegation when authorized in this skill spawns a SUBAGENT — a separate independent Claude session
-with its own context window. It is NOT task tracking. Do NOT simulate specialist
-perspectives internally. Do NOT reason through domain views yourself. You MUST issue
-actual native delegation when authorized calls. A simulated review is not a specialist review.**
-
-Issue all native delegation when authorized calls simultaneously. Do NOT spawn one at a time.
+Use actual host delegation tools only when authorized and available. Give bounded
+independent tasks and track real participants/artifacts/results. Otherwise the parent
+reads the relevant gs-* expertise profile, performs its adversarial checks and labels
+each finding [parent applying role]. Never describe parent analysis as an independent
+specialist review. Parallelism is optional for independent work; dependent work waits.
 
 **Prompt each specialist adversarially:**
 > "Here is the GDD for [system] and the main review's structural findings so far.
@@ -347,7 +361,7 @@ Work through all blocking items, asking for design decisions only where you cann
 After all revisions are complete, show a summary table (blocker → fix applied) and use `ask the user` for a **post-revision closing widget**:
 
 - Prompt: "Revisions complete — [N] blockers resolved. What next?"
-- Note current context usage: if context is above ~50%, add: "(Recommended: /clear before re-review — this session has used X% context. A full re-review runs 5 agents and needs clean context.)"
+- Note current context usage: if context is above ~50%, add: "(Recommended: /clear before re-review — this session has used X% context. A full re-review applies five professional review responsibilities; delegation is optional and needs clean context.)"
 - Options:
   - `[A] Re-review in a new session — run $gs-design-review [doc-path] after /clear`
   - `[B] Accept revisions for now — mark In Review in the systems index; a re-review decides Approved`
@@ -356,7 +370,7 @@ After all revisions are complete, show a summary table (blocker → fix applied)
 
 In collaborative and guided modes, never end the revision flow with plain text —
 always close with this widget. In autonomous mode, summarize the outcome and
-record via `log_decision`.
+record via an authored decision record (not a tool or shell function).
 
 **Second widget — tracking records (combined, for APPROVED path):**
 
@@ -389,7 +403,7 @@ Prior verdict resolved: [Yes / No / First review]
 Findings:
 - [BLOCKING] [section]: [one-line finding]
 - [RECOMMENDED] [section]: [one-line finding]
-[output of: Bash: python .game-studio/runtime/studio.py receipts --root <project-root> hash "[target-doc-path]" — plus "design/registry/entities.yaml" if the registry file exists]
+Receipt: design/gdd/reviews/[doc-name]-review-receipt.json (linked JSON generated after this log entry)
 ```
 
 Findings rules: one line per finding, named by the section it lives in;
@@ -398,13 +412,7 @@ for a human reader of the revision history, not a mechanism the skill reads
 back — a delta re-review that skipped re-analyzing unchanged sections was
 tried and reverted (see Phase 1) after measuring it against a full review.
 
-The hash line is the receipt Phase 1 reads on the next run to detect a
-byte-identical re-review — the one form of skip that's actually safe,
-because the input is provably the same, not merely believed to be adequately
-covered by a prior pass. Always include it, whatever the verdict — an
-unchanged document that previously FAILED review is exactly the case where
-skipping a redundant re-review saves the most (the prior findings stand
-verbatim).
+The linked JSON companion, not embedded log text, supplies the next-run hash comparison. Follow .game-studio/resources/docs/review-receipts.md, including report linkage, same scope/mode and changed/deleted/unavailable inputs.
 
 ---
 
@@ -428,4 +436,4 @@ Assign letters A, B, C… only to included options. Mark the most pipeline-advan
 
 In collaborative and guided modes, never end the skill with plain text after
 file writes — always close with this widget. In autonomous mode, print the next
-step and record via `log_decision`.
+step and record via an authored decision record (not a tool or shell function).

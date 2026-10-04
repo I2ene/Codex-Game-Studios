@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -40,12 +48,12 @@ at `workflow: minimal`, `$gs-dev-story [story-path]` directly (`$gs-story-readin
 ## 1. Parse Argument
 
 
-See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the spawned agent reads its own gate file; do not read it in the parent session.
+See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the actual reviewer reads its gate file; read it in the parent when applying the role yourself.
 
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 **`workflow`** for this epic's system (per `.game-studio/resources/docs/workflow-modes.md`) —
 use the `system_overrides` row for `<system>` if the block lists one, else the
@@ -323,7 +331,7 @@ For each story, write `production/epics/[epic-slug]/story-[NNN]-[slug].md`:
 > - **Requirement** → `Brief MVP feature N` (the feature this story implements — NOT a `TR-[system]-NNN` ID)
 > - **ADR Governing Implementation / ADR Decision Summary / ADR Version** → `N/A (minimal — no ADRs)`
 > - **Manifest Version** and **Control Manifest Rules (this layer)** → `N/A (minimal — no control manifest)`
-> - **Engine** and **Risk** → read `.game-studio/resources/engine-reference/<engine>/VERSION.md`
+> - **Engine** and **Risk** → read `<project-engine-reference>/VERSION.md`
 >   (engine from `engine.name`). **Engine** is `engine.name` + `engine.version`.
 >   **Risk** is the risk level that file assigns to the pinned version — its
 >   post-cutoff timeline row, or its stated overall risk. If the file is missing

@@ -1,3 +1,11 @@
+## Project engine reference contract
+
+When engine facts or APIs matter, explicitly run the native engine-reference command
+and read .game-studio/resources/docs/engine-reference-resolution.md. <project-engine-reference> means its resolved
+project.root and project.documents. Use actual project version/verification records;
+missing records remain unknown. Packaged engine versions are historical background,
+never project authority. Confirm current official APIs and actual toolchain before claims.
+
 ## Native execution contract
 
 Use current project instructions, user authorization and inherited model/permissions.
@@ -18,8 +26,8 @@ project; engine reference versions are examples and require current verification
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
 `project.yaml` → default `collaborative`). Every `ask the user` call and
 every file write follows `.game-studio/resources/docs/automation-modes.md`
-(collaborative asks always · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+(collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
+`automation_always_ask` categories require input only outside existing authorization).
 
 # Test Setup
 
@@ -331,7 +339,7 @@ The project path must be absolute: UE does not find a relative one (exit 1,
 the tests with `Engine/Binaries/Linux/UnrealEditor` and the same arguments; on
 macOS build with `Engine/Build/BatchFiles/Mac/Build.sh <Project>Editor Mac Development -Project="$(pwd -W 2>/dev/null || pwd)/<Project>.uproject"`
 — Epic documents no command-line editor inside `UnrealEditor.app` for the test
-run (see `.game-studio/resources/engine-reference/unreal/current-best-practices.md`, "Command Line").
+run (see `<project-engine-reference>/current-best-practices.md`, "Command Line").
 
 Read the output, not the exit code: a failing test and a run that matched nothing both exit 255.
 `Result={Fail}` is a failure; `No automation tests matched` means no test was

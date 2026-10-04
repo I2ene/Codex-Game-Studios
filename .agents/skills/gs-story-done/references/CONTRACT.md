@@ -1,3 +1,14 @@
+## Native checkpoint interface
+
+Read .game-studio/resources/docs/context-management.md. Explicitly run recover
+--root <project-root> and use checkpoint.path as <resolved-checkpoint>. If DISABLED,
+skip checkpoint reads/writes; do not create a fixed fallback. Otherwise write the
+current concise authored state to a temporary repository-local Markdown file and
+run checkpoint --save <authored-file> --root <project-root>. Preserve useful fields
+from the prior snapshot, reconcile current facts and replace stale state; the helper
+keeps a hash-named backup. Do not append unbounded history or infer unseen work.
+Existing task authorization covers routine state writes; state never grants consent.
+
 # $gs-story-done — Handoff Contract
 
 ## Role in Pipeline
@@ -13,7 +24,7 @@ Closes the implementation loop for a single story by verifying every acceptance 
 | GDD section referenced by each TR-ID | Acceptance criteria and key rules for cross-check | Yes |
 | `docs/architecture/adr-NNNN-[slug].md` (referenced ADR) | `## Decision`, `## Consequences` | Yes |
 | `docs/architecture/control-manifest.md` | `Manifest Version:` header date, forbidden patterns | Yes (existence checked; absent = skip staleness check) |
-| `production/session-state/active.md` | Active story path (used when no argument given) | No — `<!-- CHECKPOINT -->` block overwritten |
+| `<resolved-checkpoint>` | Active story path (used when no argument given) | No — `<!-- CHECKPOINT -->` block overwritten |
 
 > **Tier.** The TR registry, GDD-section and ADR rows are `standard`/`full` inputs.
 > At `workflow: minimal` the story traces to the brief, and Phase 4 runs the
@@ -32,7 +43,7 @@ Closes the implementation loop for a single story by verifying every acceptance 
 | Config/Data | `production/qa/smoke-*.md` |
 
 ### Preconditions
-- The story file must be findable either by argument path, in `production/session-state/active.md`, or in the current sprint file as `IN PROGRESS`
+- The story file must be findable either by argument path, in `<resolved-checkpoint>`, or in the current sprint file as `IN PROGRESS`
 - Implementation must have been attempted (source files listed in the story's "files to create/modify" should exist) — this skill does not implement; it verifies
 - For Logic and Integration stories, the test file at the `## Test Evidence` path must **exist** before a COMPLETE verdict is possible — unless `testing.strict` in `project.yaml` sets that type to advisory (`testing.strict.logic`/`.integration: false`), in which case a missing test is recorded as a warning but does not block
 - For Visual/Feel and UI stories, a retained screenshot must exist under `production/qa/evidence/` before a COMPLETE verdict is possible, and for Visual/Feel an evidence doc with every sign-off `[x] Approved` too (UI needs the screenshot only, as `coding-standards.md` says) — unless `testing.strict.visual`/`.ui` is set to `false`, in which case the gap is recorded as a warning but does not block
@@ -55,7 +66,7 @@ verdict set at all, so a reader had nothing to branch on.
 | `production/epics/**/*.md` (the story file) | `Status: Complete`, `## Completion Notes` block (date, criteria count, deviations, test evidence path, code review status) | updated after explicit user approval |
 | `production/sprint-status.yaml` | `status: done`, `completed: [date]`, top-level `updated` field | updated silently alongside story file if file exists |
 | `docs/tech-debt-register.md` | Advisory deviation entries (if user confirms) | appended if advisory deviations exist and user agrees |
-| `production/session-state/active.md` | `<!-- CHECKPOINT -->` block: current task (story path and verdict), next step (the next story), blocker, tech debt count | block overwritten, never appended (file created from `.game-studio/resources/docs/templates/session-state.md` if absent) |
+| `<resolved-checkpoint>` | `<!-- CHECKPOINT -->` block: current task (story path and verdict), next step (the next story), blocker, tech debt count | block overwritten, never appended (file created from `.game-studio/resources/docs/templates/session-state.md` if absent) |
 
 ### Output Guarantees
 - `Status: Complete` is written only after the user explicitly approves: on a COMPLETE or COMPLETE WITH NOTES verdict, or — on a BLOCKED or NOT ASSESSED verdict — only when the user explicitly asks to close anyway (the Phase 7 override, which always prompts as a `scope_changes` decision), with the override risk recorded in `## Completion Notes`
@@ -64,7 +75,7 @@ verdict set at all, so a reader had nothing to branch on.
 
 ## Immutability Rules
 - READS but does NOT modify: `docs/architecture/tr-registry.yaml`, `docs/architecture/adr-NNNN-[slug].md` (Decision + Consequences only), GDD sections, `docs/architecture/control-manifest.md`, source files under the code root — `src/`, `Assets/` or `Source/` by engine (Grep only) — and test files under the engine's test root (existence checked with Glob; never run or edited)
-- MODIFIES: the story `.md` file (status + completion notes), `production/sprint-status.yaml` (if exists), `production/session-state/active.md` (the `<!-- CHECKPOINT -->` block, overwritten), `docs/tech-debt-register.md` (append a row, and update its `Last updated:` and `Total items:` lines, only with user approval)
+- MODIFIES: the story `.md` file (status + completion notes), `production/sprint-status.yaml` (if exists), `<resolved-checkpoint>` (the `<!-- CHECKPOINT -->` block, overwritten), `docs/tech-debt-register.md` (append a row, and update its `Last updated:` and `Total items:` lines, only with user approval)
 - Does NOT write to the code root or the test root under any circumstances
 
 ## Hard Constraints (Never Violate)
