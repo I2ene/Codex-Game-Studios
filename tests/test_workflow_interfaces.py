@@ -161,6 +161,95 @@ class WorkflowInterfaceTests(unittest.TestCase):
         self.assertEqual(result['missing_sections'], ['docs/architecture/adr-0003-unknown.md'])
         self.assertLess(result['order'].index('docs/architecture/adr-0001-base.md'), result['order'].index('docs/architecture/adr-0002-use.md'))
 
+    def test_nested_engine_does_not_change_generic_runner_working_directory(self):
+        self.put('project.yaml', 'engine: {name: Godot, version: "4.3", project_root: game}\ncommands:\n  test: ' + json.dumps([sys.executable, 'runner.py']) + '\n')
+        self.put('runner.py', 'print("root runner executed")\n')
+        self.put('game/project.godot', '[application]\nconfig/features=PackedStringArray("4.3")\n')
+        run = self.checks.run_command(self.root, 'test', 30)
+        self.assertEqual(run['exit_code'], 0)
+        rows = {r['check']: r for r in self.checks.coherence(self.root)['observations']}
+        self.assertEqual(rows['test-entry:runner.py']['status'], 'MATCH')
+        self.assertEqual(rows['test-entry:runner.py']['path'], 'runner.py')
+        (self.root / 'runner.py').unlink()
+        self.put('game/runner.py', 'print("different file, not the actual entry")\n')
+        self.assertNotEqual(self.checks.run_command(self.root, 'test', 30)['exit_code'], 0)
+        rows = {r['check']: r for r in self.checks.coherence(self.root)['observations']}
+        self.assertEqual(rows['test-entry:runner.py']['status'], 'DIFFERS')
+
+    def test_godot_resource_and_export_checks_use_explicit_run_path(self):
+        self.put('project.yaml', 'engine: {name: Godot, version: "4.3", project_root: game}\ncommands:\n  test: [godot, --path, game, --script, res://runner.gd]\n  build: [godot, --path, game, --export-release, Linux]\n')
+        self.put('game/runner.gd', '# synthetic resource only')
+        self.put('game/export_presets.cfg', '[preset.0]\nname="Linux"\n')
+        rows = {r['check']: r for r in self.checks.coherence(self.root)['observations']}
+        self.assertEqual(rows['test-entry:runner.gd']['path'], 'game/runner.gd')
+        self.assertEqual(rows['test-entry:runner.gd']['status'], 'MATCH')
+        self.assertEqual(rows['export-presets']['status'], 'MATCH')
+        # Configuring marker location alone does not add --path to executed argv.
+        self.put('project.yaml', 'engine: {name: Godot, version: "4.3", project_root: game}\ncommands:\n  test: [godot, --script, res://runner.gd]\n  build: [godot, --export-release, Linux]\n')
+        rows = {r['check']: r for r in self.checks.coherence(self.root)['observations']}
+        self.assertEqual(rows['test-entry:runner.gd']['status'], 'DIFFERS')
+        self.assertEqual(rows['export-presets']['status'], 'DIFFERS')
+
+    def test_stable_absent_context_is_observed_without_fabricated_changed_gdds(self):
+        doc = 'design/gdd/a.md'
+        self.put(doc, '# A\n## Dependencies\nNone\n')
+        self.put('reviews/report.md', 'Verdict: CONCERNS\n')
+        patterns = ['design/gdd/*.md', 'design/registry/entities.yaml']
+        baseline = self.checks.receipts(self.root, 'hash', patterns, report='reviews/report.md', optional_patterns=['design/registry/entities.yaml'])
+        self.put('reviews/report.json', json.dumps(baseline))
+        result = self.checks.review_scope(self.root, 'reviews/report.json')
+        self.assertEqual(result['changed'], [])
+        self.assertEqual(result['scope'], [])
+        self.assertEqual(result['freshness']['unresolved'], ['design/registry/entities.yaml'])
+        self.put('design/registry/entities.yaml', 'entities: []\n')
+        result = self.checks.review_scope(self.root, 'reviews/report.json')
+        self.assertEqual(result['changed'], [])
+        self.assertEqual(result['scope'], [doc])
+        baseline = self.checks.receipts(self.root, 'hash', patterns, report='reviews/report.md', optional_patterns=['design/registry/entities.yaml'])
+        self.put('reviews/report.json', json.dumps(baseline))
+        self.put('design/registry/entities.yaml', 'entities: [{name: new}]\n')
+        self.assertEqual(self.checks.review_scope(self.root, 'reviews/report.json')['scope'], [doc])
+        (self.root / 'design/registry/entities.yaml').unlink()
+        self.assertEqual(self.checks.review_scope(self.root, 'reviews/report.json')['scope'], [doc])
+        # Undeclared/required missing patterns remain conservative, even unchanged.
+        baseline = self.checks.receipts(self.root, 'hash', patterns, report='reviews/report.md')
+        self.put('reviews/report.json', json.dumps(baseline))
+        result = self.checks.review_scope(self.root, 'reviews/report.json')
+        self.assertEqual(result['changed'], [])
+        self.assertEqual(result['scope'], [doc])
+        self.assertEqual(result['freshness']['required_unresolved'], ['design/registry/entities.yaml'])
+
+    def test_unknown_resource_adapter_and_external_run_path_remain_unassessed(self):
+        self.put('project.yaml', 'engine: {name: Godot, version: "4.3"}\ncommands:\n  test: [python, res://runner.py]\n  build: [godot, --path, ../outside, --export-release, Linux]\n')
+        self.put('runner.py', '# a file does not establish custom resource adapter semantics')
+        rows = {r['check']: r for r in self.checks.coherence(self.root)['observations']}
+        self.assertEqual(rows['test-entry:runner.py']['status'], 'NOT ASSESSED')
+        self.assertEqual(rows['export-presets']['status'], 'NOT ASSESSED')
+
+    def test_cli_optional_snapshot_classification_is_saved_and_check_inherits_it(self):
+        self.put('design/gdd/a.md', '# A\n## Dependencies\nNone\n')
+        self.put('reviews/report.md', 'Actual parent fixture report: CONCERNS\n')
+        command = [sys.executable, str(ROOT / '.game-studio/runtime/studio.py'), 'receipts']
+        patterns = ['design/gdd/*.md', 'design/registry/entities.yaml']
+        generated = subprocess.run(command + ['hash', *patterns, '--root', str(self.root),
+                                             '--report', 'reviews/report.md', '--output', 'reviews/report.json',
+                                             '--optional-pattern', patterns[1]], capture_output=True)
+        self.assertEqual(generated.returncode, 0, generated.stderr)
+        saved = json.loads((self.root / 'reviews/report.json').read_text(encoding='utf-8'))
+        self.assertEqual(saved['optional_patterns'], [patterns[1]])
+        checked = subprocess.run(command + ['check', *patterns, '--root', str(self.root),
+                                           '--receipt', 'reviews/report.json'], capture_output=True)
+        self.assertEqual(checked.returncode, 0, checked.stderr)
+        result = json.loads(checked.stdout.decode('utf-8'))
+        self.assertTrue(result['unchanged_inputs'])
+        self.assertEqual(result['required_unresolved'], [])
+        self.assertEqual(result['optional_unresolved'], [patterns[1]])
+        redeclared = subprocess.run(command + ['check', *patterns, '--root', str(self.root),
+                                              '--receipt', 'reviews/report.json', '--optional-pattern', patterns[1]], capture_output=True)
+        self.assertEqual(redeclared.returncode, 2)
+        with self.assertRaises(ValueError):
+            self.checks.receipts(self.root, 'check', patterns, 'reviews/report.json', optional_patterns=[patterns[1]])
+
 
 if __name__ == '__main__':
     unittest.main()

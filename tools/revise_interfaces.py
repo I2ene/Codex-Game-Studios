@@ -72,6 +72,10 @@ whenever engine facts, APIs, architecture or technical gates matter. Resolve the
 actual name/version from project.yaml and confirmed toolchain. engine.reference_root
 is the exact project-owned engine folder; default docs/engine-reference/<engine-lowercase>.
 engine.project_root optionally locates engine project files inside the repository.
+It locates marker files for inspection; it never changes the runner's working
+directory or inserts command arguments. run executes from the consumer root.
+Ordinary relative script arguments resolve there. Godot res:// and export presets
+resolve from the actual command's explicit --path, or the consumer root if omitted.
 
 Read project.documents for VERSION.md, breaking/deprecated APIs, modules and practices.
 The placeholder <project-engine-reference> in procedures means this resolved folder,
@@ -122,12 +126,19 @@ After the actual report/log is written, generate its linked companion:
 
 `python .game-studio/runtime/studio.py receipts hash <reviewed-patterns...> --root <project-root> --report <report.md> --output <companion.json>`
 
+Patterns are required by default. At generation, repeat `--optional-pattern <pattern>`
+for each reviewed input that the applicable tier explicitly makes optional. The
+pattern must also be in reviewed-patterns. The companion saves optional_patterns;
+check inherits it and never reclassifies a missing required input after the fact.
+Old companions without this field conservatively treat all patterns as required.
+
 On re-review use identical input patterns and read the actual report/verdict:
 
 `python .game-studio/runtime/studio.py receipts check <reviewed-patterns...> --root <project-root> --receipt <companion.json>`
 
 Consume JSON baseline_status, report_status, unchanged_inputs, observations, hashes,
-patterns and unresolved/previous_unresolved. Only unchanged_inputs=true, linked report
+patterns, required_unresolved, optional_unresolved and unresolved/previous_unresolved.
+Only unchanged_inputs=true, linked report
 UNCHANGED, unchanged scope/mode and complete required coverage permits offering the
 actual prior verdict. A prior failure remains a failure; helper hashes do not approve it.
 Changed/new/removed inputs, report drift or unresolved required patterns need review.
@@ -140,6 +151,12 @@ full scope. Dependency additions/content changes/deletions are visible; unresolv
 declarations widen scope. Apply professional consistency/design checks to that set,
 and name covered/unread documents. Section receipts require # free filenames;
 whole-file receipts support #. Hashes certify observed bytes, not judgment quality.
+
+changed lists actual GDD additions/changes/removals; scope may be wider after context,
+report drift or unavailable required inputs. Stable absent declared optional inputs
+stay named unknowns and do not widen scope. Their appearance/removal/content change
+invalidates freshness. Required missing inputs still require conservative full scope
+and an unavailable-coverage finding; do not equate matching bytes with completeness.
 '''
 }
 
@@ -355,14 +372,18 @@ No ADR input means NOT ASSESSED, not a clean dependency result.''')
 Read review-receipts.md before freshness/scope decisions. It replaces old text-line
 or embedded-hash consumption below. Choose a real report/companion pair explicitly;
 first/missing/legacy JSON means fresh full review. Consume baseline_status,
-report_status and unchanged_inputs plus observations/unresolved. Prior failures stay
+report_status and unchanged_inputs plus observations/required_unresolved/optional_unresolved. Prior failures stay
 failures. After actual review, write the human report then generate a linked JSON
 with receipts hash --report <report> --output <companion> for inputs actually read.
+Declare applicable optional inputs when generating the snapshot with repeated
+--optional-pattern <pattern>; check inherits the saved classification. Required
+unavailable inputs still block verdict reuse; stable absent optional inputs stay named.
 Scope/mode/required coverage must be the same before prior-verdict reuse.
 
 '''
         if '## Native review evidence contract' not in text:
             text = header + text
+        text = text.replace('Only GDDs modified since the last review report (git-based)', 'Only GDDs affected since the explicitly selected linked native companion')
         write(path, fix_text(text))
 
     # Coherence is concrete JSON comparisons; installed probes are explicitly opt-in.
