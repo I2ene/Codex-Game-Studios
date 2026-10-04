@@ -54,7 +54,7 @@ tests/test_checks.py, tests/test_hooks.py.
 - [x] Run isolated applicable design→development→review→delivery sample and retain receipts.
 - [x] Document installation, upgrade, integration, scope and unassessed limitations.
 - [x] Add CI, perform fresh review, fix material findings and run affected checks.
-- [ ] Commit/push as I2ene; create and attach draft PR; verify main remains baseline.
+- [x] Commit/push as I2ene; create and attach draft PR; verify main remains baseline.
 
 Files: README.md, UPGRADING.md, docs/install.md, docs/integration.md,
 docs/migration/verification.md, .github/workflows/framework.yml.
