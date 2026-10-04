@@ -16,6 +16,10 @@ All six verified P2 findings accepted and revised. Start with the itemized
 Review the exact new head sent to the original chat; source changes are confined
 to this reusable framework and synthetic fixture evidence.
 
+Round 2 accepted R1–R6 and the declared parent-sample scope; two additional P2
+boundaries are now repaired. See [R7/R8 response](revision-2-response.md).
+dd0dc43 six-environment CI succeeded; next focused re-review is pending.
+
 [Inventory](inventory.json) audits 485 original blobs and dispositions; all 74
 procedures/49 inherited role profiles, seven stages, professional contracts,
 templates, scoped rules and gate criteria remain available. Full interface audit

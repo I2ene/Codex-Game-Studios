@@ -10,6 +10,7 @@ edited or used as a sample. MIT/Donchitos license unchanged.
 | tools/audit_inventory.py | 485 original SHA-256 hashes verified; 123 native/68 replace/289 retain/5 unsupported | Audited coverage and declared targets; not game outcomes |
 | tools/build_release.py | FORMAT: 2.0.0; 398 managed payload files | Integrity manifest, not publisher authenticity |
 | unittest tests.test_workflow_interfaces tests.test_checks | EXECUTED: 21 targeted tests passed | Concrete revision regressions and helper checks; does not imply all model workflows passed |
+| R7/R8 interface/helper regressions | EXECUTED: 26 targeted tests passed after three red reproductions | Actual cwd positive/negative runs, known/unknown resource paths, explicit optional/required snapshots and CLI classification |
 | corrected integration_sample.py | EXECUTED: source-import tests and source ZIP exit 0; recovery PRESENT; reinstall writes 0 | Deterministic nongame helper/artifact fixture; native discovery not requested in this corrected run |
 | installed native sample, current model parent | Actual selected branches of ten workflows exercised, with reports/receipts and four acceptance tests | Manual installed-procedure execution, parent-only; distinct from automated CLI execution |
 | headless Codex model attempt | Model call EXECUTED; workflow NOT ASSESSED | Windows native sandbox setup blocked reads/commands; no permissions/trust bypass |
@@ -51,6 +52,15 @@ the new test module prepended the unused tools directory, shadowing runtime stud
 Removed that import-path entry after reproducing the exact failing order; the
 13-test reproduction then passed. Fresh replacement CI must be read at its actual
 commit on PR #2.
+
+[Replacement CI](https://github.com/I2ene/Codex-Game-Studios/actions/runs/37238824476)
+at dd0dc4390bff6c14a73a540809016cff1a15123d passed all six environments and their
+format/full 44-test suite/helper fixture steps. [ci-revision-evidence.json](ci-revision-evidence.json)
+retains those results. Astra round 2 accepted the first six repairs and the declared
+parent sample scope, then found two P2 boundary issues. [R7/R8 response](revision-2-response.md)
+records their red reproductions, repairs and new checks. The next CI belongs to the
+new boundary-fix head; earlier sample artifacts retain their exact earlier payload
+hash, rather than pretending their original execution occurred at a later revision.
 
 Runtime tests cover YAML/config precedence and validation, confined recovery,
 consumer preservation, ownership/overlap/upgrade/dry-run/rollback/locking, path links,

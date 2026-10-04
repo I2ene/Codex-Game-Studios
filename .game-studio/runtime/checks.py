@@ -117,10 +117,12 @@ def sections(text):
     return result
 
 
-def receipts(root, action, patterns, receipt=None, report=None):
+def receipts(root, action, patterns, receipt=None, report=None, optional_patterns=None):
     root = plain(root)
     if action not in {'hash', 'check', 'sections-hash', 'sections-check'}:
         raise ValueError('Unknown receipt action')
+    if action.endswith('check') and optional_patterns is not None:
+        raise ValueError('Checks inherit saved optional classification; generate a fresh reviewed snapshot to change it')
     old, observations, unresolved, baseline = {}, [], [], {}
     if action.endswith('check') and receipt:
         p = confined(root, receipt)
@@ -136,6 +138,10 @@ def receipts(root, action, patterns, receipt=None, report=None):
                 confined(root, key.split('#', 1)[0] if action.startswith('sections-') else key)
                 if not isinstance(sha, str) or len(sha) != 64:
                     raise ValueError('Invalid receipt hash')
+    optional_patterns = baseline.get('optional_patterns', []) if optional_patterns is None else optional_patterns
+    if not isinstance(optional_patterns, list) or not all(isinstance(p, str) and p in patterns for p in optional_patterns):
+        raise ValueError('Optional patterns must be an explicit subset of reviewed patterns')
+    optional_patterns = list(dict.fromkeys(optional_patterns))
     current = {}
     for pattern in patterns:
         matched = files(root, pattern)
@@ -170,6 +176,9 @@ def receipts(root, action, patterns, receipt=None, report=None):
     return {'algorithm': 'sha256', 'kind': 'sections' if action.startswith('sections-') else 'files',
             'hashes': current, 'observations': observations, 'patterns': list(patterns),
             'unresolved': unresolved, 'previous_unresolved': baseline.get('unresolved', []),
+            'optional_patterns': optional_patterns,
+            'required_unresolved': [p for p in unresolved if p not in optional_patterns],
+            'optional_unresolved': [p for p in unresolved if p in optional_patterns],
             'baseline_status': 'PRESENT' if baseline else 'MISSING',
             'report': linked_report, 'report_hash': report_hash, 'report_status': report_status,
             'unchanged_inputs': bool(baseline and current and current == old and unresolved == baseline.get('unresolved', [])
@@ -269,15 +278,23 @@ def review_scope(root, receipt=None):
             baseline_reason = 'Legacy/non-native baseline; full scope'
     if observations:
         changed = [r['path'] for r in observations['observations'] if r['status'] != 'UNCHANGED'
+                   and r['path'].startswith('design/gdd/')
                    and Path(r['path']).stem not in excluded and not Path(r['path']).stem.startswith('gdd-cross-review-')]
         context_changed = any(not r['path'].startswith('design/gdd/') or Path(r['path']).stem in excluded
                               for r in observations['observations'] if r['status'] != 'UNCHANGED')
-        if observations['report_status'] != 'UNCHANGED' or context_changed or observations['unresolved']:
-            changed = sorted(set(changed) | set(names))
-            baseline_reason = 'Report/context drift or unresolved inputs; full scope'
+        absent_inputs_changed = set(observations['unresolved']) != set(observations['previous_unresolved'])
+        required_missing = bool(observations['required_unresolved'])
+        full_scope = observations['report_status'] != 'UNCHANGED' or context_changed or absent_inputs_changed or required_missing
+        if required_missing:
+            baseline_reason = 'Required input unavailable; conservative full scope without invented document changes'
+        elif full_scope:
+            baseline_reason = 'Report/context or absent-input set changed; full scope without invented document changes'
+        elif observations['unresolved']:
+            baseline_reason = 'Linked report/context compared; unchanged absent inputs remain unknown'
     else:
         changed = names
-    scoped = set(changed)
+        full_scope = True
+    scoped = set(names) | set(changed) if full_scope else set(changed)
     queue = list(names)
     missing = [rel for rel in changed if rel not in names and rel.startswith('design/gdd/')]
     unresolved, graph = [], {}

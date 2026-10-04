@@ -12,3 +12,8 @@ representative Codex calls after fixes, not unchanged full-suite repetition.
 - [x] R2: native coordination/role metadata/authorization mechanisms and interface audit across all 74 workflows/49 roles plus installed resources (format guards, not exhaustive behavioral proof).
 - [x] Actual representative installed-procedure execution by the current model parent: minimal routing/closure; standard/full review→change→re-review; project engine records→ADR/gate; release guard/handoff/missing-data. Headless CLI workflow remains NOT ASSESSED because native Windows sandbox setup failed; it is not counted as completion.
 - [ ] Update inventory/evidence/limitations and PR; send new head plus itemized outcomes to Astra/high for re-review. No main merge or private game install.
+
+Round 2: first six fixes and parent execution scope accepted; dd0dc43 six-environment
+CI succeeded. Additional R7/R8 reproduced, repaired and documented in
+revision-2-response.md; 26 targeted tests passed. Exact new head/CI and focused
+Astra re-review remain pending. No repeat of unchanged full model samples.

@@ -33,6 +33,7 @@ def parser():
             s.add_argument('patterns', nargs='+')
             s.add_argument('--receipt')
             s.add_argument('--report', help='Link an actual existing report when generating its JSON companion')
+            s.add_argument('--optional-pattern', action='append', help='Declare a reviewed pattern optional at snapshot generation; absent undeclared patterns remain required')
         elif name == 'review-scope':
             s.add_argument('--receipt')
         elif name == 'checkpoint':
@@ -135,7 +136,9 @@ def main(argv=None):
     elif name == 'receipts':
         if args.report and not args.action.endswith('hash'):
             raise ValueError('--report is only valid for receipt generation')
-        result = checks.receipts(root, args.action, args.patterns, args.receipt, args.report)
+        if args.optional_pattern is not None and not args.action.endswith('hash'):
+            raise ValueError('--optional-pattern is only valid at snapshot generation; checks inherit its saved classification')
+        result = checks.receipts(root, args.action, args.patterns, args.receipt, args.report, args.optional_pattern)
     elif name == 'review-scope':
         result = checks.review_scope(root, args.receipt)
     elif name == 'gdd-structure':

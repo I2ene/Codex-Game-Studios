@@ -25,12 +25,19 @@ After the actual report/log is written, generate its linked companion:
 
 `python .game-studio/runtime/studio.py receipts hash <reviewed-patterns...> --root <project-root> --report <report.md> --output <companion.json>`
 
+Patterns are required by default. At generation, repeat `--optional-pattern <pattern>`
+for each reviewed input that the applicable tier explicitly makes optional. The
+pattern must also be in reviewed-patterns. The companion saves optional_patterns;
+check inherits it and never reclassifies a missing required input after the fact.
+Old companions without this field conservatively treat all patterns as required.
+
 On re-review use identical input patterns and read the actual report/verdict:
 
 `python .game-studio/runtime/studio.py receipts check <reviewed-patterns...> --root <project-root> --receipt <companion.json>`
 
 Consume JSON baseline_status, report_status, unchanged_inputs, observations, hashes,
-patterns and unresolved/previous_unresolved. Only unchanged_inputs=true, linked report
+patterns, required_unresolved, optional_unresolved and unresolved/previous_unresolved.
+Only unchanged_inputs=true, linked report
 UNCHANGED, unchanged scope/mode and complete required coverage permits offering the
 actual prior verdict. A prior failure remains a failure; helper hashes do not approve it.
 Changed/new/removed inputs, report drift or unresolved required patterns need review.
@@ -43,3 +50,9 @@ full scope. Dependency additions/content changes/deletions are visible; unresolv
 declarations widen scope. Apply professional consistency/design checks to that set,
 and name covered/unread documents. Section receipts require # free filenames;
 whole-file receipts support #. Hashes certify observed bytes, not judgment quality.
+
+changed lists actual GDD additions/changes/removals; scope may be wider after context,
+report drift or unavailable required inputs. Stable absent declared optional inputs
+stay named unknowns and do not widen scope. Their appearance/removal/content change
+invalidates freshness. Required missing inputs still require conservative full scope
+and an unavailable-coverage finding; do not equate matching bytes with completeness.

@@ -131,24 +131,47 @@ def coherence(root, probe=False):
         if not isinstance(argv, list) or not argv or not all(isinstance(a, str) and a for a in argv):
             observe(command_name + '-command', 'NOT ASSESSED', reason='No valid reviewed argv command')
             continue
-        observe(command_name + '-command', 'OBSERVED', argv=argv, note='Recorded only; not executed')
+        observe(command_name + '-command', 'OBSERVED', argv=argv, execution_cwd=str(root), note='Recorded only; not executed. run always uses the consumer root as cwd.')
+        godot_argv = name == 'Godot' and Path(argv[0].replace('\\', '/')).name.lower().startswith('godot')
+        resource_root, resource_reason = (root, None) if godot_argv else (None, 'No known Godot resource-path adapter for this argv executable')
+        path_flags = [i for i, arg in enumerate(argv) if arg == '--path'] if godot_argv else []
+        if path_flags:
+            if len(path_flags) != 1 or path_flags[0] + 1 >= len(argv) or argv[path_flags[0] + 1].startswith('--'):
+                resource_root, resource_reason = None, 'Ambiguous or missing Godot --path argument'
+            else:
+                run_path = argv[path_flags[0] + 1].replace('\\', '/')
+                try:
+                    parsed = Path(run_path)
+                    relative = parsed.relative_to(root).as_posix() if parsed.is_absolute() else run_path
+                    resource_root = confined(root, relative)
+                except ValueError:
+                    resource_root, resource_reason = None, 'Godot --path lies outside observable consumer root or is invalid'
         runners = []
         for argument in argv[1:]:
             candidate = argument.removeprefix('res://').replace('\\', '/')
             if re.search(r'\.(gd|cs|py|sh)$', candidate) and not Path(candidate).is_absolute() and ':' not in candidate:
                 runners.append(candidate)
-                path = confined(project_root, candidate)
-                observe(command_name + '-entry:' + candidate, 'MATCH' if path.is_file() else 'DIFFERS', path=path.relative_to(root).as_posix())
+                base = resource_root if argument.startswith('res://') else root
+                if base is None:
+                    observe(command_name + '-entry:' + candidate, 'NOT ASSESSED', reason=resource_reason)
+                else:
+                    try:
+                        path = confined(base, candidate)
+                        observe(command_name + '-entry:' + candidate, 'MATCH' if path.is_file() else 'DIFFERS', path=path.relative_to(root).as_posix())
+                    except ValueError:
+                        observe(command_name + '-entry:' + candidate, 'NOT ASSESSED', reason='Entry is outside its observable project root or is invalid')
         if not runners:
             observe(command_name + '-entry', 'NOT ASSESSED', reason='No explicit project script argument; module/method adapters need their own validator')
         if command_name == 'build':
             exports = [i for i, arg in enumerate(argv) if arg in {'--export-debug', '--export-release', '--export-pack'}]
-            if exports:
-                cfg = confined(project_root, 'export_presets.cfg')
+            if exports and resource_root is None:
+                observe('export-presets', 'NOT ASSESSED', reason=resource_reason)
+            elif exports:
+                cfg = confined(resource_root, 'export_presets.cfg')
                 names = re.findall(r'(?m)^name\s*=\s*"([^"]+)"', cfg.read_text(encoding='utf-8-sig')) if cfg.is_file() else []
                 requested = [argv[i + 1] for i in exports if i + 1 < len(argv)]
                 observe('export-presets', 'MATCH' if len(requested) == len(exports) and all(p in names for p in requested) else 'DIFFERS',
-                        requested=requested, available=names, file_present=cfg.is_file())
+                        requested=requested, available=names, file_present=cfg.is_file(), source=cfg.relative_to(root).as_posix())
             else:
                 observe('export-presets', 'NOT ASSESSED', reason='No Godot export flag in build argv; project adapter must validate its own targets')
     return {'status': 'OBSERVED', 'settings': settings, 'engine_reference': refs, 'observations': observations,

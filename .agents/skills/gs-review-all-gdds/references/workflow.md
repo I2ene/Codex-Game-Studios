@@ -14,9 +14,12 @@ Existing task authorization covers routine state writes; state never grants cons
 Read .game-studio/resources/docs/review-receipts.md before freshness/scope decisions. It replaces old text-line
 or embedded-hash consumption below. Choose a real report/companion pair explicitly;
 first/missing/legacy JSON means fresh full review. Consume baseline_status,
-report_status and unchanged_inputs plus observations/unresolved. Prior failures stay
+report_status and unchanged_inputs plus observations/required_unresolved/optional_unresolved. Prior failures stay
 failures. After actual review, write the human report then generate a linked JSON
 with receipts hash --report <report> --output <companion> for inputs actually read.
+Declare applicable optional inputs when generating the snapshot with repeated
+--optional-pattern <pattern>; check inherits the saved classification. Required
+unavailable inputs still block verdict reuse; stable absent optional inputs stay named.
 Scope/mode/required coverage must be the same before prior-verdict reuse.
 
 ## Project engine reference contract
@@ -75,7 +78,7 @@ Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.
 - **No argument / `full`**: Both consistency and design theory passes
 - **`consistency`**: Cross-GDD consistency checks only (faster)
 - **`design-theory`**: Game design holism checks only
-- **`since-last-review`**: Only GDDs modified since the last review report (git-based)
+- **`since-last-review`**: Only GDDs affected since the explicitly selected linked native companion
 
 ---
 
