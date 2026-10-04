@@ -136,7 +136,7 @@ def coherence(root, probe=False):
         resource_root, resource_reason = (root, None) if godot_argv else (None, 'No known Godot resource-path adapter for this argv executable')
         path_flags = [i for i, arg in enumerate(argv) if arg == '--path'] if godot_argv else []
         if path_flags:
-            if len(path_flags) != 1 or path_flags[0] + 1 >= len(argv) or argv[path_flags[0] + 1].startswith('--'):
+            if len(path_flags) != 1 or path_flags[0] + 1 >= len(argv) or argv[path_flags[0] + 1].startswith('-'):
                 resource_root, resource_reason = None, 'Ambiguous or missing Godot --path argument'
             else:
                 run_path = argv[path_flags[0] + 1].replace('\\', '/')
