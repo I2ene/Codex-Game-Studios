@@ -1,3 +1,15 @@
+# Codex Game Studios
+
+This fork provides a Codex-native **design layer**: 26 entry and specialist skills, 13 optional design role profiles, and a portable project-context adapter. It preserves the upstream studio methods and templates. No separate requirements-design skill is required.
+
+Start with [the Codex design guide](codex/README.md), `$ccgs-start`, or `$ccgs-help`. Native workflows use `.agents/skills`; optional role definitions use `.codex/agents`. [The compatibility contract](codex/compatibility.md) maps the preserved source procedures to current Codex tools and context.
+
+Developer skills, hooks, engine setup, profiling, builds and release automation have **not yet been adapted**. Preserving their original files does not make them Codex-ready. Framework validation checks source receipts, native configuration and safe installation; it does not establish game quality.
+
+## Preserved upstream documentation
+
+The material below describes the original Claude Code runtime and its full inventory. Refer to the Codex guide for the currently supported native subset.
+
 <p align="center">
   <h1 align="center">Claude Code Game Studios</h1>
   <p align="center">

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Game Studios · Game Design"
+  short_description: "Preserved studio game design workflows with a Codex context adapter"
+  default_prompt: "Use $rpg-game-design to restore the current project context and continue the appropriate studio design workflow."

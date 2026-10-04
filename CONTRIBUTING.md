@@ -1,5 +1,11 @@
 # Contributing to Claude Code Game Studios
 
+## Codex fork contributions
+
+This fork also maintains a native design adapter. See `AGENTS.md`, `codex/README.md` and `codex/compatibility.md`. Native skills use `.agents/skills`, optional role profiles use `.codex/agents`, and the inventory/source receipts are in `codex/manifest.json`. Test the native validator and installer tests before publishing changes. Preserve generic portability and upstream license; keep consuming-game rules and personal context out of this framework.
+
+The guidelines below document the original Claude Code contribution format and conventions. Codex adaptation follows the native compatibility contract and the human's current authorization, rather than importing unsupported Claude tools or repeated per-file approval prompts.
+
 CCGS is a coordination framework for indie game development using Claude Code.
 Contributions are welcome — bug fixes, new skills that fill a real gap, agent
 improvements, and hook fixes. PRs that don't fit the framework's direction will
