@@ -7,8 +7,9 @@ is the exact project-owned engine folder; default docs/engine-reference/<engine-
 engine.project_root optionally locates engine project files inside the repository.
 It locates marker files for inspection; it never changes the runner's working
 directory or inserts command arguments. run executes from the consumer root.
-Ordinary relative script arguments resolve there. Godot res:// and export presets
-resolve from the actual command's explicit --path, or the consumer root if omitted.
+Host-script arguments resolve there. For recognized Godot argv, --script/-s relative
+paths, res:// and export presets resolve from the actual command's explicit --path,
+or the consumer root if omitted. Unknown resource adapters stay NOT ASSESSED.
 
 Read project.documents for VERSION.md, breaking/deprecated APIs, modules and practices.
 The placeholder <project-engine-reference> in procedures means this resolved folder,

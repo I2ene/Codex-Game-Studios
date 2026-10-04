@@ -147,11 +147,12 @@ def coherence(root, probe=False):
                 except ValueError:
                     resource_root, resource_reason = None, 'Godot --path lies outside observable consumer root or is invalid'
         runners = []
-        for argument in argv[1:]:
+        for index, argument in enumerate(argv[1:], start=1):
             candidate = argument.removeprefix('res://').replace('\\', '/')
             if re.search(r'\.(gd|cs|py|sh)$', candidate) and not Path(candidate).is_absolute() and ':' not in candidate:
                 runners.append(candidate)
-                base = resource_root if argument.startswith('res://') else root
+                godot_script = godot_argv and argv[index - 1] in {'--script', '-s'}
+                base = resource_root if argument.startswith('res://') or godot_script else root
                 if base is None:
                     observe(command_name + '-entry:' + candidate, 'NOT ASSESSED', reason=resource_reason)
                 else:

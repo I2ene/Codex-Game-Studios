@@ -226,6 +226,21 @@ class WorkflowInterfaceTests(unittest.TestCase):
         self.assertEqual(rows['test-entry:runner.py']['status'], 'NOT ASSESSED')
         self.assertEqual(rows['export-presets']['status'], 'NOT ASSESSED')
 
+    def test_godot_plain_script_flag_uses_project_run_path(self):
+        self.put('game/project.godot', '# synthetic marker, no engine run')
+        for flag in ['--script', '-s']:
+            self.put('project.yaml', 'engine: {name: Godot, version: "4.3", project_root: game}\ncommands:\n  test: ' + json.dumps(['godot', '--path', 'game', flag, 'runner.gd']) + '\n')
+            self.put('runner.gd', '# misleading root file')
+            (self.root / 'game/runner.gd').unlink(missing_ok=True)
+            rows = {r['check']: r for r in self.checks.coherence(self.root)['observations']}
+            self.assertEqual(rows['test-entry:runner.gd']['status'], 'DIFFERS')
+            self.assertEqual(rows['test-entry:runner.gd']['path'], 'game/runner.gd')
+            (self.root / 'runner.gd').unlink()
+            self.put('game/runner.gd', '# actual selected resource')
+            rows = {r['check']: r for r in self.checks.coherence(self.root)['observations']}
+            self.assertEqual(rows['test-entry:runner.gd']['status'], 'MATCH')
+            self.assertEqual(rows['test-entry:runner.gd']['path'], 'game/runner.gd')
+
     def test_cli_optional_snapshot_classification_is_saved_and_check_inherits_it(self):
         self.put('design/gdd/a.md', '# A\n## Dependencies\nNone\n')
         self.put('reviews/report.md', 'Actual parent fixture report: CONCERNS\n')
