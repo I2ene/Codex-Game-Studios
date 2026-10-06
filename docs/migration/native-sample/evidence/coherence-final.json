@@ -1,0 +1,223 @@
+{
+  "status": "OBSERVED",
+  "settings": {
+    "root": "<fixture-root>",
+    "values": {
+      "code_root": "src",
+      "commands.build": [
+        "<fixture-python>",
+        "-m",
+        "zipfile",
+        "-c",
+        "delivery.zip",
+        "src/counter.py"
+      ],
+      "commands.test": [
+        "<fixture-python>",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "engine.name": "Godot",
+      "engine.reference_root": "records/toolchain/godot",
+      "engine.version": "4.3",
+      "modes.automation": "autonomous",
+      "modes.rigor": "full",
+      "project.name": "Native nongame interface fixture",
+      "project.stage": "Technical Setup",
+      "schema_version": 1,
+      "test_root": "tests",
+      "modes.workflow": "full",
+      "docs.density": "thorough",
+      "qa.level": "full",
+      "modes.story_granularity": "fine",
+      "modes.review_mode": "full",
+      "team.size": "studio",
+      "performance.enforce": "warn",
+      "features.session_state": "on",
+      "modes.automation_always_ask": [
+        "scope_changes",
+        "file_deletions",
+        "schema_changes"
+      ],
+      "testing.strict.config": null,
+      "testing.strict.integration": null,
+      "platform.online": null,
+      "workflow_overrides.art_bible_strict": null,
+      "accessibility.target": null,
+      "testing.strict.visual": null,
+      "workflow_overrides.edge_cases": null,
+      "testing.strict.logic": null,
+      "workflow_overrides.tuning_knobs": null,
+      "testing.strict.ui": null,
+      "platform.cert_tier": null
+    },
+    "sources": {
+      "code_root": "project.yaml",
+      "commands.build": "project.yaml",
+      "commands.test": "project.yaml",
+      "engine.name": "project.yaml",
+      "engine.reference_root": "project.yaml",
+      "engine.version": "project.yaml",
+      "modes.automation": "project.yaml",
+      "modes.rigor": "project.yaml",
+      "project.name": "project.yaml",
+      "project.stage": "project.yaml",
+      "schema_version": "project.yaml",
+      "test_root": "project.yaml",
+      "modes.workflow": "rigor:full",
+      "docs.density": "rigor:full",
+      "qa.level": "rigor:full",
+      "modes.story_granularity": "rigor:full",
+      "modes.review_mode": "rigor:full",
+      "team.size": "rigor:full",
+      "performance.enforce": "default",
+      "features.session_state": "default",
+      "modes.automation_always_ask": "default",
+      "testing.strict.config": "unset",
+      "testing.strict.integration": "unset",
+      "platform.online": "unset",
+      "workflow_overrides.art_bible_strict": "unset",
+      "accessibility.target": "unset",
+      "testing.strict.visual": "unset",
+      "workflow_overrides.edge_cases": "unset",
+      "testing.strict.logic": "unset",
+      "workflow_overrides.tuning_knobs": "unset",
+      "testing.strict.ui": "unset",
+      "platform.cert_tier": "unset"
+    },
+    "notes": []
+  },
+  "engine_reference": {
+    "configured_engine": "Godot",
+    "configured_version": "4.3",
+    "project": {
+      "root": "records/toolchain/godot",
+      "documents": {
+        "VERSION.md": "records/toolchain/godot/VERSION.md"
+      },
+      "version_record": "Godot 4.3",
+      "installed_record": "NOT DETERMINED — fixture has no verified Godot probe",
+      "status": "PROJECT RECORDS — VERIFY EVIDENCE"
+    },
+    "background": {
+      "root": ".game-studio/resources/engine-reference/godot",
+      "documents": {
+        "breaking-changes.md": ".game-studio/resources/engine-reference/godot/breaking-changes.md",
+        "current-best-practices.md": ".game-studio/resources/engine-reference/godot/current-best-practices.md",
+        "deprecated-apis.md": ".game-studio/resources/engine-reference/godot/deprecated-apis.md",
+        "modules/animation.md": ".game-studio/resources/engine-reference/godot/modules/animation.md",
+        "modules/audio.md": ".game-studio/resources/engine-reference/godot/modules/audio.md",
+        "modules/input.md": ".game-studio/resources/engine-reference/godot/modules/input.md",
+        "modules/navigation.md": ".game-studio/resources/engine-reference/godot/modules/navigation.md",
+        "modules/networking.md": ".game-studio/resources/engine-reference/godot/modules/networking.md",
+        "modules/physics.md": ".game-studio/resources/engine-reference/godot/modules/physics.md",
+        "modules/rendering.md": ".game-studio/resources/engine-reference/godot/modules/rendering.md",
+        "modules/ui.md": ".game-studio/resources/engine-reference/godot/modules/ui.md",
+        "VERSION.md": ".game-studio/resources/engine-reference/godot/VERSION.md"
+      },
+      "status": "HISTORICAL EXAMPLES — NOT PROJECT AUTHORITY"
+    },
+    "rule": "Read project documents first. Missing project version/API evidence stays unknown; packaged versions never fill it. Verify current official sources and actual toolchain before version-qualified claims."
+  },
+  "observations": [
+    {
+      "check": "pinned-reference",
+      "status": "MATCH",
+      "declared": "4.3",
+      "observed": "Godot 4.3",
+      "comparison": "Configured numeric pin precision; Unity 6000.N = 6.N; build suffix not compared",
+      "source": "records/toolchain/godot/VERSION.md"
+    },
+    {
+      "check": "installed-at-pin",
+      "status": "NOT ASSESSED",
+      "recorded": "NOT DETERMINED — fixture has no verified Godot probe",
+      "reason": "No recorded installed-version probe"
+    },
+    {
+      "check": "installed-binary",
+      "status": "NOT ASSESSED",
+      "reason": "No binary executed. Review commands.engine_probe argv and explicitly opt in with coherence --probe."
+    },
+    {
+      "check": "project-version",
+      "status": "NOT ASSESSED",
+      "declared": "4.3",
+      "observed": null,
+      "reason": "Missing or unparseable version evidence",
+      "source": "project.godot"
+    },
+    {
+      "check": "rendering",
+      "status": "NOT ASSESSED",
+      "declared": null,
+      "observed": null,
+      "reason": "No declared/explicit project rendering method; defaults not guessed"
+    },
+    {
+      "check": "physics",
+      "status": "NOT ASSESSED",
+      "declared": null,
+      "found_2d": [],
+      "note": "Jolt is a 3D backend; found 2D usage needs reconciliation. Absence of 2D matches is not a physics correctness verdict."
+    },
+    {
+      "check": "test-command",
+      "status": "OBSERVED",
+      "argv": [
+        "<fixture-python>",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "note": "Recorded only; not executed"
+    },
+    {
+      "check": "test-entry",
+      "status": "NOT ASSESSED",
+      "reason": "No explicit project script argument; module/method adapters need their own validator"
+    },
+    {
+      "check": "build-command",
+      "status": "OBSERVED",
+      "argv": [
+        "<fixture-python>",
+        "-m",
+        "zipfile",
+        "-c",
+        "delivery.zip",
+        "src/counter.py"
+      ],
+      "note": "Recorded only; not executed"
+    },
+    {
+      "check": "build-entry:src/counter.py",
+      "status": "MATCH",
+      "path": "src/counter.py"
+    },
+    {
+      "check": "export-presets",
+      "status": "NOT ASSESSED",
+      "reason": "No Godot export flag in build argv; project adapter must validate its own targets"
+    },
+    {
+      "check": "smoke-command",
+      "status": "NOT ASSESSED",
+      "reason": "No valid reviewed argv command"
+    }
+  ],
+  "counts": {
+    "MATCH": 2,
+    "DIFFERS": 0,
+    "NOT ASSESSED": 8,
+    "OBSERVED": 2
+  },
+  "note": "Named comparisons only. DIFFERS must be reconciled; unassessed checks never imply consistency. No engine build, test or certification verdict."
+}

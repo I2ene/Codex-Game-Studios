@@ -167,6 +167,11 @@ $RECYCLE.BIN/
 *.lnk
 
 # === Test Output ===
+.venv/
+.worktrees/
+.game-studio/install-state.json
+.game-studio/context.json
+.game-studio/install.lock
 # gdUnit4 writes reports/ and Unity's -testResults writes test-results/, both at
 # the project root. Anchored so a reports/ folder elsewhere stays tracked.
 /reports/
