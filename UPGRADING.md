@@ -46,6 +46,8 @@ The skill names, role names, runtime commands, configuration schema and ownershi
 ledger remain compatible. This release removes retired host sources and process
 records from the distribution repository; those were never installed into consumers.
 It adds native professional evaluation scenarios and registry templates, and updates
-managed documentation. Installation seeds absent configuration with the actual
+managed documentation. Local instruction guidance now uses the native filename
+`.game-studio/resources/docs/local-guidance.md`; the old owned filename is removed
+only when unchanged. Installation seeds absent configuration with the actual
 release version. Existing project.yaml version text is preserved; install-state.json
 remains authoritative. Review managed-file conflicts using the normal upgrade flow.
