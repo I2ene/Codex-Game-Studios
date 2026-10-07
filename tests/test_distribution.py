@@ -47,6 +47,15 @@ class ReleaseTests(unittest.TestCase):
             errors = validator.manifest_errors(root)
             self.assertTrue(any("manifest" in e.lower() for e in errors), errors)
 
+    def test_installed_document_links_resolve_without_source_repository(self):
+        import sys
+        sys.path.insert(0, str(ROOT / ".game-studio/runtime"))
+        import installer
+        with tempfile.TemporaryDirectory() as tmp:
+            consumer = Path(tmp) / "consumer"
+            installer.install(ROOT, consumer)
+            self.assertEqual(validator.document_errors(consumer), [])
+
     def test_fresh_install_seed_matches_release_version(self):
         import sys
         sys.path.insert(0, str(ROOT / ".game-studio/runtime"))

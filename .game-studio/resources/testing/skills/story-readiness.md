@@ -1,7 +1,7 @@
 # Evaluation scenarios: gs-story-readiness
 
 Professional scenarios adapted from Donchitos' upstream testing guidance; see
-[source attribution](../../../../NOTICE.md). These are evaluation inputs and domain
+[source attribution](../../../NOTICE.md). These are evaluation inputs and domain
 checks, not executed results. Read `.agents/skills/gs-story-readiness/SKILL.md` and its current procedure first.
 Use [evaluation policy](../README.md) and [category rubric](../quality-rubric.md).
 
