@@ -31,6 +31,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Each section is written individually, immediately after its approval, by an Edit anchored on its heading
 - [ ] Section C's specialists come from the routing table's Combat row and are consulted before drafting, using parent work or authorized parallel delegation
 - [ ] CD-GDD-ALIGN consults once, after all sections and the Summary are written — not per section
+- [ ] Before completion, read back the GDD from file and verify Summary and Quick reference are populated; Layer/Priority come from the index and Key deps from the completed design.
 - [ ] The verdict is recorded as `> **Creative Director Review (CD-GDD-ALIGN)**: APPROVED [date]`
 - [ ] `$gs-design-review` is directed to a fresh session and never offered inline
 
@@ -51,9 +52,12 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] The retrofit block is shown before any change is made
 - [ ] Sections the tier does not require are not reported as gaps
-- [ ] The skill asks "Shall I fill the 3 missing sections? I will not modify any existing content."
+- [ ] The retrofit proposal identifies the three incomplete design sections and the placeholder Summary; it distinguishes filling these gaps from rewriting completed content, and preserves the user's unresolved decisions.
 - [ ] The absent `scripting.md` module is named in the output, not skipped silently as if feasibility had been checked
 - [ ] No skeleton is created and complete sections are not re-authored or overwritten
+- [ ] After filling Edge Cases, Dependencies and Acceptance Criteria, the Summary body replaces `[To be designed]` with a synthesis of the completed design; this is completion of an unfinished section, not rewriting existing prose.
+- [ ] The Quick reference has Layer and Priority from the systems index and Key deps from the completed Dependencies section.
+- [ ] Before reporting completion, read back the complete GDD from file and verify Summary and Quick reference are populated with no placeholder; completed Overview, Detailed Design and Formulas remain unchanged.
 - [ ] Each filled section still goes through the per-section approval before its write
 
 ---
@@ -133,3 +137,4 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The required section set is `standard`'s (the effective tier) — not the project tier's
 - [ ] Category, Layer and Priority are derived from the brief and marked inferred in the Quick reference
 - [ ] No systems index is created; §5d reports nothing to update
+- [ ] Read back Summary and Quick reference from the completed GDD; inferred Layer/Priority and actual Key deps are populated rather than left as placeholders.

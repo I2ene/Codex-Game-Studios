@@ -87,7 +87,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Case 4a — no master architecture document:**
 - As Case 1, but `docs/architecture/architecture.md` does not exist
 
-**Assertions (4a):**
+**Input (4a):** $gs-architecture-review
+
+**Domain checks (4a):**
 - [ ] The report states `Architecture document coverage: NOT ASSESSED — no docs/architecture/architecture.md` as a named line item, rather than showing no Phase 6 findings
 - [ ] The overall verdict is NOT ASSESSED, not PASS: Phase 6 is part of the `full` scope and did not run, even though every requirement is covered (a CONCERNS or FAIL finding elsewhere would still outrank it)
 
@@ -98,14 +100,11 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
   `## Decision`, `## GDD Requirements Addressed`, `## Engine Compatibility`,
   `## ADR Dependencies`, `## Performance Implications`
 
-**Assertions (4b):**
-- [ ] Skill reports "[N] ADRs found, none carries a scannable section — run `$gs-architecture-decision retrofit [file]` on each" (subcommand first — with the path first, `$gs-architecture-decision` would start authoring a new ADR instead)
-- [ ] Skill does NOT report zero coverage or a design failure — it is a format failure
-- [ ] Rows whose ADR has no `## Status` are `❓ Not assessed`, and the verdict is not PASS — nor FAIL on coverage grounds, since coverage is unknown rather than absent
+- The master architecture document still exists; its absence is not part of this fixture.
 
-**Domain checks:**
-- [ ] The report states `Architecture document coverage: NOT ASSESSED — no docs/architecture/architecture.md` as a named line item, rather than showing no Phase 6 findings
-- [ ] The overall verdict is NOT ASSESSED, not PASS: Phase 6 is part of the `full` scope and did not run, even though every requirement is covered (a CONCERNS or FAIL finding elsewhere would still outrank it)
+**Input (4b):** $gs-architecture-review
+
+**Domain checks (4b):**
 - [ ] Skill reports "[N] ADRs found, none carries a scannable section — run `$gs-architecture-decision retrofit [file]` on each" (subcommand first — with the path first, `$gs-architecture-decision` would start authoring a new ADR instead)
 - [ ] Skill does NOT report zero coverage or a design failure — it is a format failure
 - [ ] Rows whose ADR has no `## Status` are `❓ Not assessed`, and the verdict is not PASS — nor FAIL on coverage grounds, since coverage is unknown rather than absent

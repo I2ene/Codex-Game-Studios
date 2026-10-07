@@ -63,6 +63,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ---
 
 ### Case 3: Partial Path — Cross-reference to a GDD that does not exist
+**Case 3a — missing target is planned in the systems index:**
+
 **Fixture:**
 - `project.yaml` sets `modes.workflow: full`
 - `design/gdd/` holds `game-pillars.md`, `systems-index.md` and two consistent
@@ -74,7 +76,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 **Input:** `$gs-review-all-gdds`
 
-**Domain checks:**
+**Domain checks (3a):**
 - [ ] The finding names `crafting.md` and the missing `system-b.md`
 - [ ] It is reported under Warnings (⚠️), not Blocking — because the systems index lists system-b as planned
 - [ ] Verdict is CONCERNS — not FAIL for a reference to planned work, and not an unqualified PASS

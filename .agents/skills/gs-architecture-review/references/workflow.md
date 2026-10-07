@@ -849,15 +849,13 @@ Then close with `ask the user` tailored to the pre-gate checklist state:
 
 ## Error Recovery Protocol
 
-**First, verify the artifact.** If the return contract named a path, check the
-path exists before treating the phase as done — **a named artifact that is not
-on disk is a failed phase, however fluent the response reads.** An agent can
-burn a full phase and return a plausible preamble having written nothing, which
-is neither BLOCKED nor an error nor "fails to complete", so the trigger below
-never fires. Resume it naming the unmet contract; the context is
-usually still there.
+**First, verify the artifact.** A required output path must exist before the
+phase is complete, whether the author is the parent or a real delegate. If it is
+missing, identify the unmet contract: complete authorized parent work or resume
+the actual participant, and report any blocker. A fluent response alone is not
+evidence of a completed phase.
 
-If any spawned agent returns BLOCKED, errors, or fails to complete: **surface it
+If required parent work or an authorized delegate is BLOCKED, encounters an error, or fails to complete: **surface it
 immediately, don't proceed past a dependency it blocks, and always produce a
 partial report** (retry scope here = fewer GDDs / single-system). Full procedure:
 `.game-studio/resources/docs/error-recovery-protocol.md`.

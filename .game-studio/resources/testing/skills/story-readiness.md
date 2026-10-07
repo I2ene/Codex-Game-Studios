@@ -154,7 +154,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - `production/epics/` holds only `EPIC.md` index files, no story files
 - **Input:** `$gs-story-readiness all`
 
-**Assertions (7a):**
+**Domain checks (7a):**
 - [ ] Output is `NOT ASSESSED — no stories in scope`, naming `production/epics/**/*.md` as the path searched
 - [ ] It routes to `$gs-create-epics [layer]` then `$gs-create-stories [epic-slug]`
 - [ ] No `Ready: 0 / Needs Work: 0 / Blocked: 0` summary is printed over an empty list
@@ -166,15 +166,14 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
   no `## Status` section
 - **Input:** `$gs-story-readiness production/epics/core/story-save-slots.md`
 
-**Assertions (7b):**
+**Domain checks (7b):**
 - [ ] The ADR check is NOT ASSESSED — the status is unknown, not failed — and the verdict is NOT ASSESSED: not BLOCKED, not READY
 - [ ] Output names `docs/architecture/adr-0007-save-format.md` and routes to `$gs-architecture-decision retrofit docs/architecture/adr-0007-save-format.md`
-- [ ] Variant — the story names `ADR-0007` but no such file exists: that is a finding about the story, so the verdict is BLOCKED ("referenced ADR is missing"), not NOT ASSESSED
 
-**Domain checks:**
-- [ ] Output is `NOT ASSESSED — no stories in scope`, naming `production/epics/**/*.md` as the path searched
-- [ ] It routes to `$gs-create-epics [layer]` then `$gs-create-stories [epic-slug]`
-- [ ] No `Ready: 0 / Needs Work: 0 / Blocked: 0` summary is printed over an empty list
-- [ ] The ADR check is NOT ASSESSED — the status is unknown, not failed — and the verdict is NOT ASSESSED: not BLOCKED, not READY
-- [ ] Output names `docs/architecture/adr-0007-save-format.md` and routes to `$gs-architecture-decision retrofit docs/architecture/adr-0007-save-format.md`
-- [ ] Variant — the story names `ADR-0007` but no such file exists: that is a finding about the story, so the verdict is BLOCKED ("referenced ADR is missing"), not NOT ASSESSED
+**Case 7c — referenced ADR file is absent:**
+- As 7b, except docs/architecture/adr-0007-save-format.md does not exist; the story itself remains in scope.
+- **Input:** $gs-story-readiness production/epics/core/story-save-slots.md
+
+**Domain checks (7c):**
+- [ ] Verdict is BLOCKED ("referenced ADR is missing"), not NOT ASSESSED or READY; the finding names ADR-0007 and its missing path.
+- [ ] Resolve the missing referenced decision before implementation; do not report an empty story scope or a malformed existing ADR.

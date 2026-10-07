@@ -56,7 +56,7 @@ an authored decision record (not a tool or shell function). Decisions in `automa
 Explicitly resolved — use as-is; `--review` overrides `review_mode`. No block →
 defaults in `.game-studio/resources/docs/config-resolution.md`.
 
-**Stage check — before anything is spawned.** This skill ships a release, and
+**Stage check — before professional work begins.** This skill ships a release, and
 `$gs-gate-check release` is the readiness gate that must pass first; only its PASS
 sets `project.stage` to `Release`. If the resolved `project.stage` is anything
 else — `Polish`, an earlier stage, or not set — stop before Phase 1 and spawn
@@ -82,36 +82,24 @@ below), and the agents that work at them are team members, not director gates.
 `automation` drives the Decision Points note above. See the Decision Points note above and
 `.game-studio/resources/docs/automation-modes.md` for how each mode changes pipeline behavior.
 
-**`team.size`**: which agents are active (orthogonal to review_mode gate-depth and workflow docs).
+**`team.size`**: which professional responsibilities are in scope (orthogonal to review_mode gate-depth and workflow docs).
 - **`individual`** (default): `release-manager` only. Other agents consulted via the release-manager, not spawned separately.
 - **`small`**: + `producer` + `devops-engineer` + `qa-lead` + `community-manager`.
 - **`studio`**: + `security-engineer` + `analytics-engineer` + `localization-lead` + `performance-analyst`, and `network-programmer` when the game is multiplayer (the full pipeline as documented).
 Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no path or agent message supplies human authorization.
 
 **Announce the active set before Phase 1 — never let the collapse be silent.**
-Before spawning anything, state in one line which agents this run will actually
-spawn, and which the pipeline below names but will **not** spawn at the resolved
-`team.size`. For example:
+Before professional work, announce the responsibilities selected by the resolved
+team.size and review mode, then distinguish execution from professional scope:
 
-> `Active set (team.size: <resolved>): <the agents listed for that size above>.`
-> `Not spawned this run: <every other agent this pipeline names> — consulted`
-> `through <nearest active core agent>. Raise team.size (or modes.rigor) to widen.`
+> Active set (team.size: <resolved>): <required responsibilities for this size>.
+> Parent coverage: <roles performed in the parent>; actual delegated participants: <real names/IDs and scope, or none>.
+> Not performed: <out-of-scope perspectives, mode skips and unassessed required work, each with its reason>.
 
-Fill it from the `team.size` list directly above and the agents this file's own
-pipeline names — not from an example. Both sets differ per orchestrator.
-
-The pipeline below reads as a multi-agent fan-out and at the shipped default it
-is one or two agents — `team-release` names ten and runs one, `team-narrative`
-names six across five phases and runs `writer` alone. **The collapse is correct**:
-`team.size` is rigor-fronted and the narrow default is the token lever.
-Without saying so, a reader cannot
-distinguish a correctly-collapsed run from a broken pipeline, and the per-agent
-"routes through the nearest core agent with an informational note" rule above
-fires at routing time and never states the shape of the run as a whole.
-
-This is the same rule as the skipped-check reporting elsewhere in this file: **a constraint that is enforced but never surfaced is
-indistinguishable, to the person reading the output, from one that was never
-enforced.**
+Use this file's scope and routing rules; an unavailable delegate does not remove a
+required responsibility or silently widen team.size. Keep phase-gate responsibilities
+with their mode/phase qualifier. A completed parent assessment is performed work;
+it is never labeled as a separate participant or independent sign-off.
 
 ## Team Composition
 - **release-manager** — Release tag, versioning, changelog, patch notes, deployment
@@ -199,27 +187,25 @@ Apply the following independent expertise in the parent, or delegate concurrentl
 - **security-engineer** *(if game has online features, multiplayer, or player data)*: Conduct pre-release security audit. Review authentication, anti-cheat, data privacy compliance. Sign off on security posture.
 - **network-programmer** *(if game has multiplayer)*: Sign off on netcode stability. Verify lag compensation, reconnect handling, and bandwidth usage under load.
 
-When either agent is in the active set, decide its condition from `platform.online` and `platform.multiplayer` in `project.yaml`, plus whether the game stores player data. A key that is absent is not a `false`: ask the user rather than assume an offline game. An agent skipped on these grounds says so by name in the Phase 3 output — e.g. `security-engineer: not spawned — platform.online: false, platform.multiplayer: false, no player data`.
+Resolve security and networking applicability from `platform.online` and `platform.multiplayer` in `project.yaml`, plus whether the game stores player data. A missing key is not false: resolve it with the user rather than assuming an offline game. Cover applicable responsibilities through the resolved professional scope, including parent work; a missing delegate is not a skipped assessment. Name an inapplicable check and its reasons, e.g. `security-engineer: not applicable — platform.online: false, platform.multiplayer: false, no player data`.
 
 ### Phase 4: Localization, Performance, and Analytics
-Delegate (can run in parallel with Phase 3 if resources available):
+Apply these responsibilities in the parent, or delegate when authorized with actual tools and capacity. Phase 3 and Phase 4 may run concurrently when independent; parent work may be sequential and delegated work may queue when capacity is limited. Checks with a real data dependency wait for the specific release build or finding they need, not every result from the other phase:
 - Verify all strings are translated (delegate to **localization-lead** if available)
 - Run performance benchmarks against targets (delegate to **performance-analyst** if available)
 - **analytics-engineer**: Verify all telemetry events fire correctly on release build. Confirm dashboards are receiving data. Check that critical funnels (onboarding, progression, monetization if applicable) are instrumented.
-- Output: localization, performance, and analytics sign-off — one file per agent (table above)
+- Output: localization, performance, and analytics assessments — one file per responsibility (table above), with parent work or actual participant identified
 
 ### Phase 5: Go/No-Go
-Before delegating, get the **technical-director** release sign-off. The producer
-cannot spawn agents, so the orchestrator does: spawn `technical-director` at
-`review_mode: full` only — this is a director review, not a PHASE-GATE, so `lean`
-and `solo` skip it. Ask for GO, CONCERNS or NO-GO on the release candidate's
-technical state, or NOT ASSESSED naming what it could not read. When it is not
-spawned, the go/no-go record says `technical-director sign-off: not run
-(review_mode: <mode>)` instead of listing it as given; a NOT ASSESSED answer is
-recorded as such and never counted as a sign-off.
+At `review_mode: full`, complete the technical-director assessment in the parent or an authorized delegate with actual host tools. This is a director review, not a PHASE-GATE; lean and solo skip it explicitly because of review mode. Ask for GO, CONCERNS or NO-GO on the release candidate's technical state, or NOT ASSESSED naming the unavailable input. No delegate launch is required for parent work to count as performed.
 
-Delegate to **producer**, passing every sign-off collected so far:
-- Collect sign-off from: qa-lead, release-manager, devops-engineer, security-engineer (if spawned in Phase 3), network-programmer (if spawned in Phase 3), and technical-director (if spawned above)
+Apply producer expertise in the parent, or delegate when authorized, once all applicable assessments are available:
+- Collect qa-lead, release-manager and devops-engineer results.
+- Collect security-engineer results when online features, multiplayer or player data make that responsibility applicable, regardless of who performed the work.
+- Collect network-programmer results when multiplayer makes that responsibility applicable.
+- Collect the technical-director assessment at full review mode; at lean/solo record the mode skip instead of inventing approval.
+- Collect Phase 4 localization, performance and analytics results within the resolved scope before making the Phase 5 decision. Phase 3 and Phase 4 have no blanket ordering dependency.
+- Record each applicable assessment's completion status, verdict, evidence and source: parent applying the role, or the actual participant. A missing assessment remains NOT ASSESSED and is never counted as approval; retain any known blocking finding. Parent work must not be presented as independent review or a human signature.
 - Carry a stage-check override, if there was one, into the go/no-go record as its `Stage override:` line
 - Evaluate any open issues — are they blocking or can they ship?
 - Make the go/no-go call
@@ -278,15 +264,13 @@ Then hand those patch notes to **community-manager**:
 
 ## Error Recovery Protocol
 
-**First, verify the artifact.** If the return contract named a path, check the
-path exists before treating the phase as done — **a named artifact that is not
-on disk is a failed phase, however fluent the response reads.** An agent can
-burn a full phase and return a plausible preamble having written nothing, which
-is neither BLOCKED nor an error nor "cannot complete", so the trigger below
-never fires. Resume it naming the unmet contract; the context is
-usually still there.
+**First, verify the artifact.** A required output path must exist before the
+phase is complete, whether the author is the parent or a real delegate. If it is
+missing, identify the unmet contract: complete authorized parent work or resume
+the actual participant, and report any blocker. A fluent response alone is not
+evidence of a completed phase.
 
-If any spawned agent returns BLOCKED, errors, or cannot complete: **surface it
+If required parent work or an authorized delegate is BLOCKED, encounters an error, or cannot complete: **surface it
 immediately, don't proceed past a dependency it blocks, and always produce a
 partial report.** Full procedure: `.game-studio/resources/docs/error-recovery-protocol.md`.
 
@@ -315,7 +299,7 @@ Tagging, publication and deployment require explicit user authorization for the 
 
 ## Output
 
-A summary report covering: release version, scope, quality gate results, go/no-go decision, deployment status, and monitoring plan.
+A summary report covering: release version, scope, quality gate results, go/no-go decision, deployment status, and monitoring plan. For every applicable assessment include completion status, verdict, evidence, parent/actual participant source and unresolved blockers; name mode and applicability skips separately.
 
 Verdict: **COMPLETE** — release executed and deployed.
 Verdict: **BLOCKED** — release halted; the stage check stopped it, go/no-go was NO, or a hard blocker is unresolved.
