@@ -1,7 +1,7 @@
 # Evaluation scenarios: gs-gameplay-programmer
 
 Professional scenarios adapted from Donchitos' upstream testing guidance; see
-[source attribution](../../../../NOTICE.md). These are evaluation inputs and domain
+[source attribution](../../../NOTICE.md). These are evaluation inputs and domain
 checks, not executed results. Read `.codex/agents/gs-gameplay-programmer.toml` and its current procedure first.
 Use [evaluation policy](../README.md) and [category rubric](../quality-rubric.md).
 

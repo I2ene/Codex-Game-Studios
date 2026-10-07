@@ -1,7 +1,7 @@
 # Evaluation scenarios: gs-skill-improve
 
 Professional improvement cases adapted from upstream testing guidance; see
-[source attribution](../../../../NOTICE.md). Use [evaluation policy](../README.md),
+[source attribution](../../../NOTICE.md). Use [evaluation policy](../README.md),
 the current native procedure and [quality rubric](../quality-rubric.md).
 
 ### Case 1: Observed authorization defect and missing handoff

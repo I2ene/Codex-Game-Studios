@@ -25,4 +25,4 @@ When evaluating a case, record its input, relevant domain checks, actual result,
 verdict, participants and remaining limitations in the consumer or PR review evidence.
 Do not commit private game records or per-run evaluation logs into this framework.
 
-[Source attribution](../../../NOTICE.md) applies to the adapted scenario knowledge.
+[Source attribution](../../NOTICE.md) applies to the adapted scenario knowledge.

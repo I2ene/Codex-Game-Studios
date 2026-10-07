@@ -1,7 +1,7 @@
 # Evaluation scenarios: gs-skill-test
 
 Professional cases adapted from upstream testing guidance; see
-[source attribution](../../../../NOTICE.md). Use [evaluation policy](../README.md).
+[source attribution](../../../NOTICE.md). Use [evaluation policy](../README.md).
 Read the native target, complete procedure, relevant rules and category rubric.
 These are task-quality criteria, not recorded execution results.
 
