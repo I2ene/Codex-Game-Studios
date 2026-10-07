@@ -112,7 +112,8 @@ def _install(source, target, dry_run):
     writes['AGENTS.md'] = updated.encode()
     project = confined(target, 'project.yaml')
     if not project.exists():
-        writes['project.yaml'] = b'schema_version: 1\nframework:\n  version: 2.0.0\n'
+        version = desired['.game-studio/VERSION'].decode().strip()
+        writes['project.yaml'] = f'schema_version: 1\nframework:\n  version: {version}\n'.encode()
     state = {'schema': 1, 'version': desired['.game-studio/VERSION'].decode().strip(),
              'files': {p: digest(b) for p, b in desired.items()}, 'instruction_hash': digest(block.encode())}
     writes[STATE] = (json.dumps(state, indent=2, sort_keys=True) + '\n').encode()

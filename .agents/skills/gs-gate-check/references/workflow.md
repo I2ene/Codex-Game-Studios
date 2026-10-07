@@ -457,7 +457,7 @@ UX spec set for them to assess.
 > the strictest verdict returned by *whoever ran* still wins. Do not infer PASS
 > from a perspective that was never consulted.
 
-Before generating the final verdict, apply the director reviews (delegate only when authorized and useful) for the resolved tier as **parallel subagents** via native delegation when authorized using the parallel gate protocol from `.game-studio/resources/docs/director-gates.md`. Issue all the native delegation when authorized calls simultaneously — do not wait for one before starting the next.
+Before generating the final verdict, apply the director perspectives for the resolved tier using `.game-studio/resources/docs/director-gates.md`. With user authorization, available host tools and sufficient capacity, delegate independent reviews concurrently; otherwise perform and label the reviews in the parent. Record actual participants and collect all required results before deriving the verdict.
 
 **Gate IDs:**
 

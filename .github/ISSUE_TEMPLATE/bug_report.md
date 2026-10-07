@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Something isn't working as expected
+about: Report a framework defect with a reproducible example
 title: "[Bug] "
 labels: bug
 assignees: ''
@@ -8,42 +8,23 @@ assignees: ''
 
 ## Description
 
-A clear description of what the bug is.
+What failed, and what did you expect?
 
-## Steps to Reproduce
+## Reproduction
 
-1. Open Claude Code in a project using this template
-2. Run `/<skill>` or trigger `<agent>`
-3. ...
-4. See error
-
-## Expected Behavior
-
-What you expected to happen.
-
-## Actual Behavior
-
-What actually happened. Include any error messages or unexpected output.
+1. Install the framework into a non-private temporary project.
+2. Invoke `$gs-<skill>` or the runtime command with its exact arguments.
+3. Describe the observed result and relevant output.
 
 ## Environment
 
-- **OS**: (e.g., Windows 10, macOS 14, Ubuntu 24.04)
-- **Shell**: (e.g., Git Bash, zsh, bash)
-- **Claude Code version**: (run `claude --version`)
-- **Node.js version**: (run `node --version`)
-- **jq installed?**: Yes / No
-- **Python installed?**: Yes / No
+- Framework release/commit and installed ledger version:
+- Codex host and version:
+- Operating system and Python/PyYAML versions:
+- Engine/toolchain version, if applicable:
 
-## Affected Component
+## Component and evidence
 
-- [ ] Agent (which one?):
-- [ ] Skill (which one?):
-- [ ] Hook (which one?):
-- [ ] Rule (which one?):
-- [ ] Template
-- [ ] Documentation
-- [ ] Other:
-
-## Additional Context
-
-Any other context — screenshots, terminal output, or the session log if relevant.
+Name the skill, role, runtime command or document. Separate format checks from
+actual execution and unassessed inputs. Include a small fixture if possible;
+remove secrets, personal paths, chat IDs and private game records.

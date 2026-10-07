@@ -10,8 +10,8 @@ appropriate) and ultimately to the human when vision/scope is unresolved. Produc
 coordinates cross-domain change propagation; preserve affected records/traceability.
 
 Native roles are gs-* TOML expertise profiles. Skills have name/description only.
-All inherit the session model, effort and permissions. No Claude Skill/model alias,
-Task rename, always-enabled subagent service or prompt permission grant exists.
+All inherit the session model, effort and permissions. Expertise profiles do not declare tool APIs, enable a subagent service or grant
+permissions.
 Use only tools actually exposed by the host. If custom-role selection is unavailable,
 read the role instructions and pass a bounded brief to an authorized participant.
 Otherwise the parent performs the professional review and labels it as parent work.

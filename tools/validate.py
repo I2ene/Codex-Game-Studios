@@ -1,5 +1,8 @@
 """Native distribution format checks; never claims semantic/game execution."""
 import json
+import hashlib
+import unicodedata
+from urllib.parse import unquote, urlsplit
 from pathlib import Path
 import re
 import sys
@@ -9,7 +12,98 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def validate():
+IGNORED = {'.git', '.venv', '.worktrees', '.scratch', '__pycache__', 'node_modules'}
+
+
+def content_files(root):
+    for p in root.rglob('*'):
+        if not any(part in IGNORED for part in p.relative_to(root).parts) and p.is_file():
+            yield p
+
+
+def markdown_body(text):
+    return re.sub(r'^(`{3,}|~{3,})[^\n]*\n.*?^\1[^\n]*(?:\n|$)', '', text, flags=re.M | re.S)
+
+
+def heading_ids(text):
+    ids, counts = set(), {}
+    for title in re.findall(r'^#{1,6}\s+(.+?)\s*#*$', markdown_body(text), re.M):
+        title = re.sub(r'<[^>]+>', '', title).lower().strip()
+        title = ''.join(c for c in title if c in '-_ ' or unicodedata.category(c)[0] in 'LN')
+        slug = title.replace(' ', '-')
+        count = counts.get(slug, 0)
+        counts[slug] = count + 1
+        ids.add(slug + (f'-{count}' if count else ''))
+    ids.update(re.findall(r'(?:id|name)=["\']([^"\']+)', text))
+    return ids
+
+
+def document_errors(root):
+    errors = []
+    for p in content_files(root):
+        if p.suffix != '.md':
+            continue
+        body = markdown_body(p.read_text(encoding='utf-8'))
+        for match in re.finditer(r'(?<!!)\[[^]\n]+\]\((<[^>]+>|[^\s)]+)(?:\s+["\'][^\n]*?["\'])?\)', body):
+            target = unquote(match[1].strip('<>'))
+            # A template variable is a consumer-authored destination, not a shipped file.
+            if any(c in target for c in '<>[]*'):
+                continue
+            url = urlsplit(target)
+            if url.scheme or url.netloc:
+                continue
+            file = (p.parent / url.path) if url.path else p
+            if not file.exists() and url.path.startswith(('.game-studio/', '.agents/', '.codex/')):
+                file = root / url.path
+            if not file.exists():
+                errors.append(f'{p.relative_to(root).as_posix()}: broken link {target}')
+            elif url.fragment and file.is_file() and file.suffix == '.md' and url.fragment not in heading_ids(file.read_text(encoding='utf-8')):
+                errors.append(f'{p.relative_to(root).as_posix()}: broken anchor {target}')
+    return errors
+
+
+def manifest_errors(root):
+    errors = []
+    try:
+        release = json.loads((root / '.game-studio/release.json').read_text(encoding='utf-8'))
+        actual = {}
+        for base in ['.agents/skills', '.codex/agents', '.game-studio']:
+            for p in content_files(root / base):
+                rel = p.relative_to(root).as_posix()
+                if p.suffix != '.pyc' and rel != '.game-studio/release.json':
+                    actual[rel] = hashlib.sha256(p.read_bytes()).hexdigest()
+        if release.get('schema') != 1 or release.get('files') != actual:
+            errors.append('Release manifest does not match the complete native payload; run tools/build_release.py after review')
+        if release.get('version') != (root / '.game-studio/VERSION').read_text(encoding='utf-8').strip():
+            errors.append('Release manifest version differs from VERSION')
+    except (ValueError, OSError) as e:
+        errors.append('Release manifest: ' + str(e))
+    return errors
+
+
+def test_catalog_errors(root):
+    errors = []
+    base = root / '.game-studio/resources/testing'
+    try:
+        catalog = yaml.safe_load((base / 'catalog.yaml').read_text(encoding='utf-8'))
+        for kind, entries in [('skills', (root / '.agents/skills').glob('*/SKILL.md')), ('roles', (root / '.codex/agents').glob('*.toml'))]:
+            expected = {p.parent.name if kind == 'skills' else p.stem for p in entries}
+            rows = catalog[kind]
+            names = [row['name'] for row in rows]
+            if len(names) != len(set(names)) or set(names) != expected:
+                errors.append('Evaluation catalog differs from native ' + kind)
+            for row in rows:
+                spec = base / row['spec']
+                if not spec.is_file():
+                    errors.append('Missing evaluation scenario: ' + row['spec'])
+        if catalog.get('schema') != 1:
+            errors.append('Evaluation catalog schema')
+    except (KeyError, TypeError, ValueError, OSError) as e:
+        errors.append('Evaluation catalog: ' + str(e))
+    return errors
+
+
+def validate(verify_release=True):
     errors = []
     skills = list((ROOT / '.agents/skills').glob('*/SKILL.md'))
     roles = list((ROOT / '.codex/agents').glob('*.toml'))
@@ -36,7 +130,7 @@ def validate():
                 text = p.read_text(encoding='utf-8')
                 if re.search(r'CLAUDE_(PROJECT|SKILL)|\.claude/|^!`|^allowed-tools:', text, re.M):
                     errors.append(str(p.relative_to(ROOT)) + ': obsolete execution path')
-                if any(token in text for token in ['D:\\File\\GameDesign', 'D:\\Game\\PersonalRPG', 'rpg-game-design']):
+                if re.search(r'(?:[A-Z]:[/\\]Users[/\\](?!<)[^/\\\s]+|/Users/(?!<)[^/\s]+|/home/(?!<)[^/\s]+)', text):
                     errors.append(str(p.relative_to(ROOT)) + ': private coupling')
                 if re.search(r'injected commit subjects|Both blocks are resolved before|AGENTS\.md-imported|\[NOT CHECKED\]|RECEIPT: NONE|Codex 2\.1\.63|is_always_ask_category|\[version\]\$gs-[\w-]+\.md', text):
                     errors.append(str(p.relative_to(ROOT)) + ': retired interface consumer')
@@ -53,13 +147,17 @@ def validate():
         p = ROOT / '.agents/skills' / ('gs-' + name) / 'references/workflow.md'
         if '.game-studio/resources/docs/review-receipts.md' not in p.read_text(encoding='utf-8'):
             errors.append(name + ': missing linked receipt contract')
-    inventory = json.loads((ROOT / 'docs/migration/inventory.json').read_text())
-    if len(inventory['files']) != 485 or len({r['source'] for r in inventory['files']}) != 485:
-        errors.append('Inventory is incomplete/duplicated')
-    for row in inventory['files']:
-        if row['disposition'] not in {'native', 'replace', 'retain', 'unsupported'} or not row['verification']:
-            errors.append('Invalid migration disposition: ' + row['source'])
-    return {'status': 'FORMAT', 'skills': len(skills), 'roles': len(roles), 'upstream_files': len(inventory['files']), 'errors': errors}
+    for p in content_files(ROOT):
+        if p.name.upper().startswith('CLAUDE'):
+            errors.append(str(p.relative_to(ROOT)) + ': retired host filename')
+    errors.extend(document_errors(ROOT))
+    errors.extend(test_catalog_errors(ROOT))
+    if verify_release:
+        errors.extend(manifest_errors(ROOT))
+    for retired in ['.claude', 'CLAUDE.md', 'CCGS Skill Testing Framework', 'docs/migration', 'docs/superpowers']:
+        if (ROOT / retired).exists():
+            errors.append('Retired distribution content: ' + retired)
+    return {'status': 'FORMAT', 'skills': len(skills), 'roles': len(roles), 'errors': errors}
 
 
 if __name__ == '__main__':

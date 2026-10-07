@@ -3,7 +3,7 @@
 Use these cases as task-quality guidance. They are not executable native tests;
 record actual participants and tool evidence separately.
 
-# Skill Test Spec: /[skill-name]
+# Skill Evaluation Spec: $gs-<skill-name>
 
 ## Skill Summary
 
@@ -13,11 +13,11 @@ record actual participants and tool evidence separately.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `$gs-skill-test spec` — no fixture needed.
+Inspect the native entry, complete procedure and relevant contract; no execution claim follows from static inspection.
 
 - [ ] Frontmatter has all required fields (`name`, `description`)
 - [ ] Entry links to a complete procedure with relevant prerequisites and outputs
-- [ ] Contains the skill's verdict keywords — any that `$gs-skill-test static` Check 3 accepts (gate or review verdicts, go/no-go verdicts, or a severity scale), plus `NOT ASSESSED` when anything depends on the verdict; none needed when the skill outputs an artifact rather than a judgement
+- [ ] Uses the applicable domain verdicts and NOT ASSESSED for missing evidence; artifact authoring does not invent a quality verdict
 - [ ] Existing user authorization and actual native tools govern writes
 - [ ] Next-step handoff section present at end
 
@@ -116,12 +116,12 @@ Checked against the SKILL.md by `$gs-skill-test spec` — no fixture needed.
 
 **Expected behavior**:
 1. [Gate fires / does not fire based on mode]
-2. [Correct director agents spawned or skipped]
+2. [Correct director agents consult or skipped]
 
 **Assertions**:
-- [ ] In full mode: [specific gates spawn]
+- [ ] In full mode: [specific gates consult]
 - [ ] In lean mode: [phase gates only, at the width `modes.workflow` sets — or each gate skipped with `[GATE-ID] skipped — Lean mode`]
-- [ ] In solo mode: no director gates spawn, and the output names each skip
+- [ ] In solo mode: no director gates consult, and the output names each skip
 - [ ] Skill does not auto-advance past a CONCERNS, FAIL or NOT ASSESSED verdict
 
 **Case Verdict**: PASS / FAIL / PARTIAL / NOT ASSESSED

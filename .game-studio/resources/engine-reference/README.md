@@ -1,66 +1,24 @@
-> Historical packaged reference from upstream; not project version authority.
-> Read project-owned records through engine-reference-resolution.md and verify current official sources. Do not edit this packaged file during project setup.
+# Historical engine reference library
 
-# Engine Reference Documentation
+These upstream snapshots preserve professional engine knowledge for Godot, Unity
+and Unreal. Their version pins and verification dates are historical. They do not
+identify the consumer's installed engine or establish current API correctness.
+Read [project reference resolution](../docs/engine-reference-resolution.md) first.
 
-This directory contains curated, version-pinned documentation snapshots for the
-game engine(s) used in this project. These files exist because **LLM knowledge
-has a cutoff date** and game engines update frequently.
+## Reference structure
 
-## Why This Exists
+Each engine directory contains version records, breaking changes, deprecated APIs,
+best practices and subsystem modules. Consult the relevant knowledge when reviewing
+architecture or implementation, then verify APIs against current official sources
+and the consumer's actual engine version.
 
-Claude's training data has a knowledge cutoff (currently May 2025). Game engines
-like Godot, Unity, and Unreal ship updates that introduce breaking API changes,
-new features, and deprecated patterns. Without these reference files, agents will
-suggest outdated code.
+## Project maintenance
 
-## Structure
+`$gs-setup-engine` records project-owned toolchain facts and references. Update those
+records after an engine upgrade or verified API change; preserve packaged snapshots
+so ownership-based framework upgrades remain safe. Record the engine version, actual
+probe evidence where available, source URLs and verification dates. Keep subsystem
+notes focused, with correct/incorrect code examples and migration risks.
 
-Each engine gets its own directory:
-
-```
-<engine>/
-├── VERSION.md              # Pinned version, verification date, knowledge gap window
-├── breaking-changes.md     # API changes between versions, organized by risk level
-├── deprecated-apis.md      # "Don't use X → Use Y" lookup tables
-├── current-best-practices.md  # New practices not in model training data
-└── modules/                # Per-subsystem quick references (~150 lines max each)
-    ├── rendering.md
-    ├── physics.md
-    └── ...
-```
-
-## How Agents Use These Files
-
-Engine-specialist agents are instructed to:
-
-1. Read `VERSION.md` to confirm the current engine version
-2. Check `deprecated-apis.md` before suggesting any engine API
-3. Consult `breaking-changes.md` for version-specific concerns
-4. Read relevant `modules/*.md` for subsystem-specific work
-
-## Maintenance
-
-### When to Update
-
-- After upgrading the engine version
-- When the LLM model is updated (new knowledge cutoff)
-- After running `$gs-setup-engine refresh`
-- When you discover an API the model gets wrong
-
-### How to Update
-
-1. Update `VERSION.md` with the new engine version and date
-2. Add new entries to `breaking-changes.md` for the version transition
-3. Move newly deprecated APIs into `deprecated-apis.md`
-4. Update `current-best-practices.md` with new patterns
-5. Update relevant `modules/*.md` with API changes
-6. Set "Last verified" dates on all modified files
-
-### Quality Rules
-
-- Every file must have a "Last verified: YYYY-MM-DD" date
-- Keep module files under 150 lines (context budget)
-- Include code examples showing correct/incorrect patterns
-- Link to official documentation URLs for verification
-- Only document things that differ from the model's training data
+Model knowledge may lag engine releases. Unknown or unverified facts remain unknown;
+a packaged example is not evidence that an engine build, test or export succeeded.

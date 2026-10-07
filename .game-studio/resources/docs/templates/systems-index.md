@@ -91,7 +91,7 @@ Systems at the top are foundations; systems at the bottom are wrappers.]
 order. Each system's GDD should be completed and reviewed before starting the
 next, though independent systems at the same layer can be designed in parallel.]
 
-| Order | System | Priority | Layer | Delegation brief (s) | Est. Effort |
+| Order | System | Priority | Layer | Expertise | Est. Effort |
 |-------|--------|----------|-------|----------|-------------|
 | 1 | [First system to design] | MVP | Foundation | game-designer | [S/M/L] |
 | 2 | [Second system] | MVP | Foundation | game-designer | [S/M/L] |

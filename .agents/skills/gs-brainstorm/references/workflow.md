@@ -309,7 +309,7 @@ an authored decision record (not a tool or shell function) with the alternatives
 - `lean` → skip both (not PHASE-GATEs). Note: "CD-PILLARS skipped — Lean mode. AD-CONCEPT-VISUAL skipped — Lean mode." Proceed to Phase 5.
 - `full` → spawn as normal.
 
-**After pillars and anti-pillars are agreed, spawn BOTH `creative-director` AND `art-director` via native delegation when authorized in parallel before moving to Phase 5. Issue both native delegation when authorized calls simultaneously — do not wait for one before starting the other.**
+**After pillars and anti-pillars are agreed, cover BOTH creative-director and art-director perspectives before Phase 5. With user authorization, available host tools and sufficient capacity, delegate these independent reviews concurrently; otherwise apply and label both perspectives in the parent.**
 
 - **`creative-director`** — gate **CD-PILLARS** (`.game-studio/resources/docs/director-gates/cd-pillars.md`)
   Pass: full pillar set with design tests, anti-pillars, core fantasy, unique hook.

@@ -375,7 +375,7 @@ behavior: strict project defaults for CI, looser developer overrides for local w
 | **design-review** | 5–15 specialist agents spawned in Phase 3b | No specialist agents — single-session analysis only | Phases 1–4 only, no delegation, no next-steps prompt |
 | **gate-check** | Director expertise applied by the parent, or authorized independent participants — **width set by `modes.workflow`**, not by this axis | Director expertise applied by the parent, or authorized independent participants — same width rule; required phase checks still apply without implying delegated sign-off | Artifact existence checks only, no directors spawned |
 | **design-system** | All section specialists + CD-GDD-ALIGN sign-off gate | Specialists for Sections D and H only (+ G when its knobs interact, + Visual/Audio when visual feedback is central); CD-GDD-ALIGN skipped | No section specialists; CD-GDD-ALIGN skipped |
-| **art-bible** | All section specialists + AD-ART-BIBLE sign-off gate | All section specialists, AD-ART-BIBLE skipped | All section specialists, AD-ART-BIBLE skipped |
+| **art-bible** | Required expertise for scoped sections + AD-ART-BIBLE assessment | Required expertise for scoped sections, AD-ART-BIBLE skipped | Required expertise for scoped sections, AD-ART-BIBLE skipped |
 | **architecture-decision** | Engine specialist + TD-ADR gate | Engine specialist; TD-ADR skipped | Engine specialist; TD-ADR skipped |
 | **create-architecture** | TD-ARCHITECTURE + LP-FEASIBILITY agents, in parallel | Both skipped | Both skipped |
 | **brainstorm** | CD-PILLARS, AD-CONCEPT-VISUAL, TD-FEASIBILITY, PR-SCOPE | All skipped | All skipped |
@@ -429,19 +429,26 @@ pipeline's own review steps run in every mode.
   inherited model panel cost a two-system jam exactly what it cost a thirty-system
   commercial project. Width never softens a verdict: the strictest verdict from
   whoever ran still wins, and `$gs-gate-check` names the perspectives it skipped.
-- **art-bible** always spawns its section specialists regardless of mode — only
-  the final sign-off gate is controlled by `review_mode`. Specialist delegation is
-  mandatory for the authoring output to be useful, and that has not changed.
-  **design-system** is different: `lean` keeps the specialists for its high-risk
-  sections only (D and H, plus G and Visual/Audio when they matter) and `solo`
-  drafts every section without one, and each skipped spawn is announced by name.
-  What sets `art-bible`'s **spawn count** is therefore not `review_mode`
-  but (a) `modes.workflow`, via how many sections get authored at all — `standard`
-  requires sections 1–4, not all 9, and Phase 1 recommends the tier's set — and
-  (b) batching consecutive sections that call the *same* agent with the *same*
-  input into one delegation (2–4, and 5–6). Unbatched, sections 5 and 6 spawn
-  `art-director` twice with the identical `sections 1–4` brief. Every section is
-  still specialist-authored; per-section approval and write-to-file are unchanged.
+- **art-bible** requires the professional expertise for every section in the
+  chosen scope, regardless of review mode. The parent applies that expertise, or uses an authorized delegate.
+  Art-director expertise covers visual direction throughout; Section 7 also needs
+  UX expertise and Section 8 technical-art expertise. `review_mode` controls only
+  the final AD-ART-BIBLE assessment: required in full, skipped with a recorded
+  reason in lean/solo. Parent authorship and assessment must be labelled as parent
+  work; record actual delegates without claiming independent review or another
+  person's sign-off.
+  `modes.workflow` and the chosen/resume scope determine which sections need work:
+  standard requires sections 1–4 when visual asset stories make the bible
+  applicable, full (or art_bible_strict) requires all nine, and minimal is voluntary.
+  Section 1 is approved and written before Sections 2–4 use its locked direction.
+  Sections 2–4 form a mutually consistent mood/shape/colour draft; Sections 5–6
+  share sections 1–4 and keep characters legible against environments.
+  Per-section user approval and immediate write-to-file remain required on both paths.
+  Call counts, single briefs and delegation batching apply only when user authorization, actual host tools and capacity permit delegation.
+  On that path, use a separate Section 1 brief, then one brief for Sections 2–4
+  and one for Sections 5–6 within the chosen scope. Sharing a brief avoids
+  repeated context while retaining each section's review, approval and write.
+  The parent path must cover the same professional work without requiring calls.
 - **dev-story** core programmer routing (gameplay-programmer, ui-programmer, etc.)
   always runs regardless of mode — only the optional engine-specialist escalation
   for HIGH risk stories is gated.
