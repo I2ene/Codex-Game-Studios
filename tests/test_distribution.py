@@ -47,6 +47,19 @@ class ReleaseTests(unittest.TestCase):
             errors = validator.manifest_errors(root)
             self.assertTrue(any("manifest" in e.lower() for e in errors), errors)
 
+    def test_nested_retired_host_filename_is_rejected(self):
+        import shutil
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as tmp:
+            source = Path(tmp) / "release"
+            for folder in [".agents", ".codex/agents", ".game-studio"]:
+                shutil.copytree(ROOT / folder, source / folder, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+            retired = source / ".game-studio/resources/docs/CLAUDE-local-template.md"
+            retired.write_text("A retired host entry with otherwise harmless text.\n", encoding="utf-8")
+            with patch.object(validator, "ROOT", source):
+                errors = validator.validate(verify_release=False)["errors"]
+            self.assertTrue(any("CLAUDE-local-template.md" in e for e in errors), errors)
+
     def test_installed_document_links_resolve_without_source_repository(self):
         import sys
         sys.path.insert(0, str(ROOT / ".game-studio/runtime"))

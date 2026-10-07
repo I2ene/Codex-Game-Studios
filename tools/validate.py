@@ -147,6 +147,9 @@ def validate(verify_release=True):
         p = ROOT / '.agents/skills' / ('gs-' + name) / 'references/workflow.md'
         if '.game-studio/resources/docs/review-receipts.md' not in p.read_text(encoding='utf-8'):
             errors.append(name + ': missing linked receipt contract')
+    for p in content_files(ROOT):
+        if p.name.upper().startswith('CLAUDE'):
+            errors.append(str(p.relative_to(ROOT)) + ': retired host filename')
     errors.extend(document_errors(ROOT))
     errors.extend(test_catalog_errors(ROOT))
     if verify_release:
