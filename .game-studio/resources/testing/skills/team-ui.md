@@ -13,6 +13,23 @@ Historical fixture versions are scenario inputs, not current API verification.
 The linked native procedure governs command arguments, output schemas, receipts,
 context and mode applicability. Missing inputs remain NOT ASSESSED.
 
+## Execution path variants
+
+Run the relevant success and blocking cases through both paths; preserve each
+case's inputs, professional scope, artifact destinations and expected verdict.
+
+**Parent execution path:**
+- Fixture: delegation is unavailable or unauthorized; routine task work is authorized.
+- [ ] The parent performs each required discipline and labels the work as parent work; it never invents independent participants or sign-off.
+- [ ] All required results and blockers are summarized, and dependent phases wait for their prerequisites even when independent work is performed sequentially.
+
+**Authorized delegation path:**
+- Fixture: explicit user authorization, an exposed host tool and sufficient capacity for the independent tasks are confirmed.
+- [ ] Independent tasks may run concurrently with distinct ownership; do not serialize genuinely independent delegated work when the fixture provides sufficient capacity.
+- [ ] Dependent phases wait for all required results; blocks preserve completed work and surface before dependent action.
+- [ ] Actual delegated participants are recorded with scope, result, artifacts and blockers; parent contributions remain labeled as parent work.
+- [ ] Repeat with capacity below the full roster: queue independent work or apply the parent fallback without inventing concurrency or dropping disciplines.
+
 ### Case 1: Happy Path — Full pipeline from UX spec through polish succeeds
 
 **Fixture:**
@@ -32,9 +49,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Art-director in Phase 2 reviews full spec, not just wireframe images
 - [ ] Engine UI specialist is taken from `specialists.ui` and consulted before ui-programmer in Phase 3
 - [ ] ui-programmer lists the files it will create or change, and writes none before the one ask for that set is answered yes
-- [ ] Phase 4 agents launched simultaneously (ux-designer, art-director, accessibility-specialist)
+- [ ] Phase 4 covers UX, visual and accessibility reviews independently before final polish
 - [ ] At `team.size: studio`, Phase 4's prompts are adversarial and the summary report says the adversarial pass ran
-- [ ] All file writes delegated to sub-agents and sub-skills
+- [ ] The parent or authorized participants write their assigned artifacts under existing user authorization and label actual authorship
 - [ ] Verdict COMPLETE in final summary report
 - [ ] Next steps include `$gs-ux-review`, `$gs-code-review`, `$gs-team-polish`
 
@@ -79,7 +96,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 ---
 
-### Case 4: Accessibility Parallel Review — Phase 4 runs three streams simultaneously
+### Case 4: Accessibility Parallel Review — Phase 4 independent review streams
 
 **Fixture:**
 - Resolved config block: `review_mode: full`, `team.size: small`, `automation: collaborative`
@@ -91,7 +108,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-team-ui inventory screen` (resuming from Phase 3 complete)
 
 **Domain checks:**
-- [ ] All three Agent calls issued before any result is awaited (parallel, not sequential)
+- [ ] The three review disciplines use the same implementation and specs independently; Phase 5 waits for all results
 - [ ] Phase 5 does NOT begin until all three Phase 4 agents have returned
 - [ ] Accessibility-specialist explicitly reads `design/accessibility-requirements.md` for the committed tier
 - [ ] Accessibility violations flagged as BLOCKING (not merely advisory)
@@ -116,3 +133,11 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] If user proceeds without the library, ui-programmer is told to treat all patterns as new
 - [ ] Final report documents pattern library status (created / absent / updated)
 - [ ] Skill does NOT fail entirely — the gap is noted and user is given a choice
+
+
+## Applicable domain checks
+
+- [ ] Before professional work starts, resolve and announce team-size scope, parent coverage and any actual participants. At `team.size: individual`: ui-programmer and ux-designer; art, accessibility and engine-UI perspectives follow the documented team-size scope. Name inactive perspectives and unassessed work accurately.
+- [ ] Absent committed accessibility requirements make that review NOT ASSESSED; absent engine configuration makes engine validation NOT ASSESSED. Name each unassessed dimension in the qualified completion verdict.
+- [ ] Missing named artifacts fail their phase; error recovery surfaces the block, offers options and preserves the partial report.
+- [ ] UX review checks keyboard-only and gamepad-only navigation; visual review checks minimum and maximum supported resolutions against the art bible.

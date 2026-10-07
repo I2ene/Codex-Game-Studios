@@ -51,6 +51,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-dev-story production/epics/[epic-slug]/story-[NNN]-[slug].md`
 
 **Domain checks:**
+- [ ] The story header remains Status: Ready while session state records BLOCKED.
 - [ ] The Proposed status is read from ADR-0005's `## Status` section, not inferred
 - [ ] No programmer or engine-specialist agent is consulted
 - [ ] Output names ADR-0005 and recommends `$gs-architecture-decision`
@@ -224,6 +225,7 @@ The `full` column of the file-check table has its own STOP rule, so the
 **Input:** `$gs-dev-story production/epics/[slug]/story-003-[slug].md`
 
 **Domain checks:**
+- [ ] On [C], dependency story-002 becomes Complete and only its Status field changes before work continues on story-003.
 - [ ] The dependency prompt comes before any discipline review begins
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] story-003 itself is not marked Complete — it is set In Progress, after its own ask

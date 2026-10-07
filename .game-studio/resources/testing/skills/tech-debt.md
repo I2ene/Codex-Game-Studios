@@ -111,6 +111,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-tech-debt add`
 
 **Domain checks:**
+- [ ] On “add anyway”, append one new entry alongside the existing matching Open entry; on “update”, edit the matching row without adding a duplicate.
 - [ ] A new entry with the same file and category as an existing `Open` entry is never appended without first showing the match and asking
 - [ ] "Update" edits the matched row rather than adding a new one
 

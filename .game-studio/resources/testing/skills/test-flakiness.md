@@ -98,3 +98,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Each quarantined test gets a fix direction matching its cause
 - [ ] No director gate is invoked in any review mode
 - [ ] No quarantine entry is removed and no test file is deleted
+
+
+## Applicable domain checks
+
+- [ ] A test is classified as flaky only when it both passed and failed across runs with no code change between those runs.

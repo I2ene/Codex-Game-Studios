@@ -49,6 +49,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-regression-suite update`
 
 **Domain checks:**
+- [ ] Update appends the new entries with the six existing entries unchanged; it does not rebuild or rewrite their content.
 - [ ] BUG-0012 is reported as MISSING REGRESSION TEST
 - [ ] The suggested path follows `tests/unit/[system]/[bug-slug]_regression_test.[ext]`
 - [ ] No existing manifest entry is removed
@@ -103,6 +104,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-regression-suite report`
 
 **Domain checks:**
+- [ ] `report` writes no files and offers no write operation.
 - [ ] No director gate is invoked and no gate skip message appears
 - [ ] No subagent is consulted
 - [ ] The status report is shown in conversation

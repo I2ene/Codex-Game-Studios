@@ -13,6 +13,23 @@ Historical fixture versions are scenario inputs, not current API verification.
 The linked native procedure governs command arguments, output schemas, receipts,
 context and mode applicability. Missing inputs remain NOT ASSESSED.
 
+## Execution path variants
+
+Run the relevant success and blocking cases through both paths; preserve each
+case's inputs, professional scope, artifact destinations and expected verdict.
+
+**Parent execution path:**
+- Fixture: delegation is unavailable or unauthorized; routine task work is authorized.
+- [ ] The parent performs each required discipline and labels the work as parent work; it never invents independent participants or sign-off.
+- [ ] All required results and blockers are summarized, and dependent phases wait for their prerequisites even when independent work is performed sequentially.
+
+**Authorized delegation path:**
+- Fixture: explicit user authorization, an exposed host tool and sufficient capacity for the independent tasks are confirmed.
+- [ ] Independent tasks may run concurrently with distinct ownership; do not serialize genuinely independent delegated work when the fixture provides sufficient capacity.
+- [ ] Dependent phases wait for all required results; blocks preserve completed work and surface before dependent action.
+- [ ] Actual delegated participants are recorded with scope, result, artifacts and blockers; parent contributions remain labeled as parent work.
+- [ ] Repeat with capacity below the full roster: queue independent work or apply the parent fallback without inventing concurrency or dropping disciplines.
+
 ### Case 1: Happy Path — All team members produce outputs, document compiled and saved
 
 **Fixture:**
@@ -31,7 +48,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] narrative-director, world-builder and art-director discipline reviews cover independent concerns, with authorized parallel delegation when available in Step 1, and all three complete before Step 2
 - [ ] The level-designer brief carries the art-director's Step 1 visual targets as constraints
 - [ ] `host input tool` called at each step gate (minimum: after Step 1, Step 2, Step 3, Step 4)
-- [ ] Step 4 agents (art-director, accessibility-specialist) launched simultaneously
+- [ ] Step 4 covers production art and accessibility independently; Step 5 waits for both results
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] Level doc saved to `design/levels/forest-dungeon.md` (slugified from argument)
 - [ ] Verdict COMPLETE in final summary report
@@ -113,3 +130,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] If user proceeds with placeholder, level doc explicitly marks the west exit as UNRESOLVED
 - [ ] Summary report includes an open cross-level dependencies section listing unresolved references
 - [ ] Circular or forward references do not cause the skill to loop or crash
+
+
+## Applicable domain checks
+
+- [ ] Before professional work starts, resolve and announce team-size scope, parent coverage and any actual participants. At `team.size: individual`: level-designer, with other pipeline perspectives routed through it. Name inactive perspectives and unassessed work accurately.
+- [ ] A missing named artifact fails its step; partial reports retain successful outputs and unresolved dependencies.

@@ -75,7 +75,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 3. On REALISTIC: the per-epic "May I write" asks proceed
 4. Epic files are written after approval
 
-**Assertions (full mode):**
+**Domain checks (full mode):**
 - [ ] PR-EPIC is consulted once, after both epics are defined
 - [ ] PR-EPIC runs before any "May I write" ask
 - [ ] No EPIC.md is written before PR-EPIC resolves
@@ -89,13 +89,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 2. PR-EPIC is skipped — noted in output
 3. "May I write" asks proceed directly
 
-**Assertions (override):**
-- [ ] "PR-EPIC skipped — Lean mode." appears in output
-- [ ] No producer agent is consulted and the write asks follow the epic definitions directly
-
-**Domain checks:**
-- [ ] PR-EPIC is consulted once, after both epics are defined
-- [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
+**Domain checks (override):**
 - [ ] "PR-EPIC skipped — Lean mode." appears in output
 - [ ] No producer agent is consulted and the write asks follow the epic definitions directly
 

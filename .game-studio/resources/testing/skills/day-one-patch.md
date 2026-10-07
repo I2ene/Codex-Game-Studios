@@ -26,6 +26,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-day-one-patch`
 
 **Domain checks:**
+- [ ] The implemented code fix is verified with targeted configured tests and QA; the patch record lists BUG-0010 and BUG-0011 as fixed and BUG-0012 as deferred to 1.1 with its architecture-change reason.
 - [ ] BUG-0012 is deferred to 1.1 because it needs an architecture change
 - [ ] Scope is approved via `host input tool` before any work
 - [ ] The rollback plan is written before any fix is attempted

@@ -156,3 +156,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Heading reads `Minimal path — 1 of 3 stories complete`
 - [ ] The escalation block appears and has no `$gs-gate-check` line
 - [ ] Verdict is COMPLETE
+
+
+## Applicable domain checks
+
+- [ ] Recommend the next skill without automatically running it.

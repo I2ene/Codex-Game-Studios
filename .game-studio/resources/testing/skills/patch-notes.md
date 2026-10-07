@@ -28,6 +28,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-patch-notes v0.4.0`
 
 **Domain checks:**
+- [ ] The authorized write produces both `docs/patch-notes/v0.4.0.md` and `production/releases/v0.4.0/patch-notes.md`, with the same approved notes.
 - [ ] Only the 3 player-facing items appear in the notes; the 2 internal items are listed separately as excluded, for review
 - [ ] Entries are written in plain language without internal task IDs or system names
 - [ ] Notes use the built-in Detailed style (Highlights, New Content, … Known Issues) — the default when no `--style` is given and no template exists
@@ -122,6 +123,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-patch-notes v0.4.0`
 
 **Domain checks:**
+- [ ] No patch notes is generated or written on this provenance/no-history stop.
 - [ ] Output names the classification result — 0 of 20 commits are Game commits
 - [ ] Output contains the "does not appear to belong to" stop, not notes written from framework commits (no "Fixed an issue where …" line from a hook fix)
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
@@ -138,6 +140,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-patch-notes v0.4.0`
 
 **Domain checks:**
+- [ ] No patch notes is generated or written on this provenance/no-history stop.
 - [ ] The "does not appear to belong to" provenance stop is NOT shown — an empty history is not a wrong history
 - [ ] Output contains "No changelog data found for v0.4.0" and recommends `$gs-changelog v0.4.0`
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.

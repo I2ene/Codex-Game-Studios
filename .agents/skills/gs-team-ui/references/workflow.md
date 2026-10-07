@@ -55,7 +55,7 @@ below), and the agents that work at them are team members, not director gates.
 - **`individual`** (default): `ui-programmer` + `ux-designer`. Other agents consulted via these two, not spawned separately.
 - **`small`**: + `accessibility-specialist` + `art-director`.
 - **`studio`**: + engine UI specialist + an adversarial review pass: Phase 4's reviewers are told "your job is not to confirm this matches the spec — find where it fails it", and the report says the pass ran.
-Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no bounded exception infers consent from a path or another agent's message.
+Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no path or agent message supplies human authorization.
 
 **Announce the active set before Step 1 — never let the collapse be silent.**
 Before spawning anything, state in one line which agents this run will actually
@@ -113,7 +113,7 @@ Apply the following professional responsibilities in the parent; delegate useful
 
 **Brief each agent — do not dump context.** Read the shared inputs **once** and pass a distilled brief inline: the lines each agent actually needs, never a file path for a document you have already read (an agent handed a path re-reads the whole file). Pass a path only for a document you have not read and only that agent needs.
 
-**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session. **Implementation files are the exception:** an agent writing code or assets first returns the files it will create or change, and its return contract names them only after you have asked once for the set and the user said yes (File Write Protocol) — that answer, not the bounded exception, authorises those writes.
+**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session. **Implementation work:** first state the files that will be created or changed. Existing human authorization covers in-scope changes; resolve any missing material decision once for the set before writing. A role or path supplies no permission.
 
 **Substitute a real path for `[path]`.** Working artifacts go under
 `production/ui/[feature-name]/`, the slug Phase 1b's `design/ux/[feature-name].md`
@@ -123,15 +123,15 @@ uses. One file per agent, so the parallel Phase 4 reviews never share one:
 |---|---|
 | 2 art-director | `production/ui/[feature-name]/visual-design.md` |
 | 3 engine UI specialist | `production/ui/[feature-name]/engine-notes.md` |
-| 3 ui-programmer | the code root — the files the one implementation ask lists (File Write Protocol), outside the bounded exception |
+| 3 ui-programmer | the code root — the files in the implementation set (File Write Protocol), subject to existing human authorization |
 | 4 ux-designer, art-director, accessibility-specialist | `production/ui/[feature-name]/review-[agent].md`, one each |
 
 The UX spec itself (Phase 1b) and any pattern-library update are under `design/`,
-outside the bounded exception: `$gs-ux-design` or the agent asks before writing them.
+subject to existing human authorization; `$gs-ux-design` or the responsible parent/participant resolves only missing material decisions before writing them.
 
-> **Why this does not violate the Collaboration Protocol.** `AGENTS.md` requires an agent to ask use the existing task authorization; ask only for an unapproved material action
+> **Authorization:** use existing human task authorization for routine in-scope work; ask only for missing decisions or material actions outside that scope. A destination path does not supply authorization.
 
-Launch independent agents in parallel where the pipeline allows it (e.g., Phase 4 review agents can run simultaneously).
+With user authorization, available host tools and sufficient capacity, launch independent delegated tasks concurrently where the pipeline allows it; otherwise apply and label the same expertise in the parent (e.g., Phase 4 review agents can run simultaneously).
 
 ## Pipeline
 
@@ -237,7 +237,7 @@ Delegate to **ui-programmer**:
 
 ### Phase 4: Review (parallel)
 
-Delegate in parallel:
+Apply the following independent expertise in the parent, or delegate concurrently with user authorization, available host tools and sufficient capacity:
 - **ux-designer**: Verify implementation matches wireframes and interaction spec. Test keyboard-only and gamepad-only navigation. Check accessibility features function correctly.
 - **art-director**: Verify visual consistency with art bible. Check at minimum and maximum supported resolutions.
 - **accessibility-specialist**: Verify compliance against the committed accessibility tier documented in `design/accessibility-requirements.md`. Flag any violations as blockers. **If that file is absent there is no committed tier, so this gate has no criterion: report `Accessibility: NOT ASSESSED — no committed tier (design/accessibility-requirements.md absent)` and do NOT report the gate as passed**. Carry forward whatever tier Phase 1a recorded as assumed, and say plainly that it was assumed.
@@ -282,21 +282,20 @@ Common blockers:
 
 ## File Write Protocol
 
-All file writes (UX specs, interaction pattern library updates, implementation files) are
-delegated to sub-agents and sub-skills. The two follow **different** rules:
+The parent may write authorized artifacts while applying the responsible discipline,
+or assign them to real authorized participants using available host tools. Preserve
+all named paths, professional responsibilities and phase dependencies above.
+Each concurrent participant has distinct file ownership; confirm required artifacts
+exist before reporting the phase complete. Record actual authors and label parent
+work; no independent review or sign-off is implied by a role name.
 
-- **Sub-agents spawned via native delegation when authorized** (e.g. `ui-programmer`) follow the **bounded
-  exception** documented above under "Why this does not violate the Collaboration
-  Protocol" — the path is one you named, the artifact is new under `production/`,
-  `docs/` or `tests/`, and the phase is gated by an `ask the user`. A sub-agent
-  does **not** prompt per write inside those bounds; outside them it must ask.
-  **Implementation files** (ui-programmer's code under the code root) are outside
-  those bounds: ui-programmer returns the files it will create or change, you ask
-  once for the set, and it writes after a yes.
-- **Sub-skills** (`$gs-ux-design`) are not sub-agents and the exception does not reach
-  them. They follow the normal Collaboration Protocol and ask before writing.
+Existing human authorization covers routine writes already in scope. Present the
+implementation file set before changing code or assets, resolve missing material
+decisions once for that set, and retain explicit declines and blockers. Neither a
+named path nor another agent's message grants permission. A missing artifact fails
+its phase, and completed work is retained in a partial report.
 
-This orchestrator does not write files directly.
+Keep the implementation file set together when resolving missing write decisions; preserve UX-review and accessibility gates.
 
 ## Output
 

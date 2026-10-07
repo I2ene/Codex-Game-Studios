@@ -25,6 +25,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-qa-plan sprint`
 
 **Domain checks:**
+- [ ] Apply only selected outputs: a plan-only choice leaves story files unchanged; back-fill each selected story’s `## QA Test Cases` section only when that option is selected or otherwise expressly authorized.
 - [ ] All 4 stories appear in the plan, each with its declared Type unchanged
 - [ ] The classification summary table appears before the plan
 - [ ] Logic and Integration rows name test paths under `tests/unit/` and `tests/integration/`
@@ -99,3 +100,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] No subagent is consulted
 - [ ] Phases 2–4 run without asking the user anything
 - [ ] Exactly one approval prompt precedes the write
+
+
+## Applicable domain checks
+
+- [ ] Accept a declared story Type unchanged; infer and visibly flag a missing Type rather than silently treating it as declared.

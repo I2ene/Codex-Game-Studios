@@ -64,7 +64,7 @@ Bridges planning and code by loading the full context for a single story (story 
 
 ## Immutability Rules
 - READS but does NOT modify: `project.yaml`, `docs/architecture/tr-registry.yaml`, `docs/architecture/adr-NNNN-[slug].md`, all GDD files in `design/gdd/`, `docs/architecture/control-manifest.md`, `docs/project-reference/technical-preferences.md` (legacy fallback), `<project-engine-reference>/VERSION.md`
-- MODIFIES, via sub-agent: `<code root>/**` (new/updated source files; code root resolved per `.game-studio/resources/docs/code-root-resolution.md`) and the engine's test root (the new test file; `tests/` on Godot)
+- MODIFIES, through parent expertise or authorized delegates using available host tools: `<code root>/**` (new/updated source files; code root resolved per `.game-studio/resources/docs/code-root-resolution.md`) and the engine's test root (the new test file; `tests/` on Godot)
 - MODIFIES, itself, each after an ask that names the file (in `collaborative` mode; `.game-studio/resources/docs/automation-modes.md` governs the others): the story file's `Status:`, `Last Updated:`, `ADR Version`, `**ADR Decision Summary**`, `## Implementation Notes`, `Manifest Version:` and `Manifest-Note:` (see the story row above); the story's entry in `production/sprint-status.yaml` (`status: in-progress`, top-level `updated`); a dependency story's `Status:` (dependency option `[C]` only); a Config/Data story's data file; on Unity, `Assets/Scripts/ScreenshotOnArg.cs`, written verbatim from `.game-studio/resources/docs/run-and-observe.md` when the project has none
 - MODIFIES without an ask: `<resolved-checkpoint>` — its `<!-- CHECKPOINT -->` block is overwritten, never appended
 - Sets the story file's own `Status` field to `In Progress` only (Phase 2, before
@@ -80,7 +80,7 @@ Bridges planning and code by loading the full context for a single story (story 
 - Never touches files listed in the story's `## Out of Scope` section without explicit user approval
 - Never deviates from the ADR's Implementation Guidelines silently — deviations must be flagged in the summary
 - Never modifies ADR files or GDD files under any circumstances
-- Source and test files are written by sub-agents via native delegation when authorized; this orchestrator writes none directly, except the verbatim `ScreenshotOnArg.cs` capture script on Unity, after an ask
+- Source and test files are written by the parent applying programmer expertise or authorized delegates using available host tools. Label actual authorship and preserve file ownership, context and verification requirements. The Unity `ScreenshotOnArg.cs` capture script still follows the documented verbatim procedure and existing human authorization.
 
 ## Downstream Skill Expects
 **Next skill:** `$gs-story-done`

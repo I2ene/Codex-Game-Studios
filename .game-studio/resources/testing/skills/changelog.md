@@ -26,6 +26,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-changelog`
 
 **Domain checks:**
+- [ ] Present both the internal and player-facing changelog before saving.
 - [ ] Changelog covers the commits in `v0.3.0..HEAD`, and the output states how many of how many injected commits it used
 - [ ] Entries use the skill's section set — New Features, Improvements, Bug Fixes, Balance Changes, Technical Debt / Refactoring, Known Issues, Miscellaneous — not a generic Features/Fixes split
 - [ ] Sprint plans in `production/sprints/` for the covered sprints are read for context before categorizing
@@ -115,6 +116,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-changelog`
 
 **Domain checks:**
+- [ ] No changelog is generated or written on this provenance/no-history stop.
 - [ ] Output names the classification result — 0 of 30 commits are Game commits
 - [ ] Output contains the "does not appear to belong to" stop, not a changelog built from framework commits (no "Fixed an issue where …" copy from a hook fix)
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
@@ -132,6 +134,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-changelog`
 
 **Domain checks:**
+- [ ] No changelog is generated or written on this provenance/no-history stop.
 - [ ] The "does not appear to belong to" provenance stop is NOT shown — an empty history is not a wrong history
 - [ ] Output says no git history was found and offers committing the work or supplying the change list directly
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.

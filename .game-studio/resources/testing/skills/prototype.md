@@ -79,6 +79,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-prototype rope-physics --spike`
 
 **Domain checks:**
+- [ ] Keep the spike scope to 2–3 bullets with an approximately four-hour cap; SPIKE-NOTE records the question, YES/NO/PARTIAL result and next action.
 - [ ] The intent widget and hypothesis/debrief phases are skipped
 - [ ] The spike folder is created only after its ask
 - [ ] `SPIKE-NOTE.md` and `active.md` are written only after an ask that names both
@@ -124,3 +125,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Run A's verdict is NOT ASSESSED, not a guessed PROCEED/PIVOT/KILL
 - [ ] Run A's report and `prototypes/index.md` row both read NOT ASSESSED until a playtest happens
 - [ ] Run B's recommended path is the `workflow: minimal` route (`$gs-create-stories`, `$gs-dev-story`), not the `standard`/`full` GDD pipeline
+
+
+## Applicable domain checks
+
+- [ ] If the concept is too vague to form a falsifiable hypothesis, stop before building and obtain the missing scope.

@@ -233,7 +233,7 @@ Do NOT proceed to Phase 3 without user confirmation of the asset list.
 
 ## Phase 3: Spec Generation
 
-Spawn specialist agents based on review mode. **Issue all native delegation when authorized calls simultaneously — do not wait for one before starting the next.**
+Cover the specialist disciplines required by review mode. With user authorization, available host tools and sufficient capacity, delegate independent reviews concurrently; otherwise apply the expertise in the parent and label it accurately. Collect all required results before dependent work.
 
 ### Full mode — spawn in parallel:
 

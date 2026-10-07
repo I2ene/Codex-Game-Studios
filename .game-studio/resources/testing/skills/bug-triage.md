@@ -44,6 +44,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-bug-triage`
 
 **Domain checks:**
+- [ ] No triage report file is written when no bug source exists.
 - [ ] Output states that no bug files were found in `production/qa/bugs/`
 - [ ] Skill stops gracefully rather than erroring
 - [ ] No triage tables are produced

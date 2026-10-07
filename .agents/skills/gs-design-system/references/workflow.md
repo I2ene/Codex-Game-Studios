@@ -708,7 +708,7 @@ This is usually the largest section. Break it into sub-sections:
 
 **Professional expertise review (required; delegation optional)**: Before drafting Section C, apply relevant specialist expertise in the parent, or delegate independent reviews only when authorized and available:
 - Look up the system category in the routing table (Section 6 of this skill)
-- Spawn the Primary Agent AND Supporting Delegation brief (s) listed for this category
+- Cover the primary and supporting expertise listed for this category in the parent, or through authorized delegation with available tools and capacity
 - Provide each agent: system name, game concept summary, pillar set, dependency GDD excerpts, the specific section being worked on
 - Collect their findings before drafting
 - Surface any disagreements between agents to the user via `ask the user`
@@ -1222,7 +1222,7 @@ actually does. Every category has at least one row, so nothing falls through.
 
 If two rows fit, spawn the union of their Primary agents and say why.
 
-| System type | Primary Agent | Supporting Delegation brief (s) |
+| System type | Primary Agent | Supporting expertise |
 |----------------|---------------|---------------------|
 | **Foundation/Infrastructure** (event bus, save/load, scene mgmt, service locator) | `systems-designer` | `gameplay-programmer` (feasibility), `engine-programmer` (engine integration) |
 | Combat, damage, health | `game-designer` | `systems-designer` (formulas), `ai-programmer` (enemy AI), `art-director` (hit feedback visual direction, VFX intent) |

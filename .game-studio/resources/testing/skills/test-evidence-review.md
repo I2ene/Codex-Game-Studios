@@ -170,3 +170,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The UI story with no screenshot is still MISSING and BLOCKING at `qa.level: minimal`
 - [ ] The waived story is named as waived in the report, not dropped from it
 - [ ] Variant: an all-waived scope reads WAIVED, with no "must be resolved before `$gs-story-done`" prompt
+
+
+## Applicable domain checks
+
+- [ ] Resolve severity per story type from `testing.strict.<type>`; when unset, use the legacy plain-boolean `testing.strict` for every type, then the coding-standards default. A missing per-type override is not itself false.

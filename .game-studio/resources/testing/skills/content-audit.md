@@ -172,3 +172,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The Levels row reads `NOT ASSESSED — code root unresolved`, never Found 0 or NOT STARTED
 - [ ] The summary totals leave Levels out and say so
 - [ ] Verdict is NOT ASSESSED, not COMPLETE
+
+
+## Applicable domain checks
+
+- [ ] On Unity, content discovery also scans `Assets/` without requiring a `data/` segment (including `Assets/**/Items/**` and `*Item*.asset`); present Unity items, abilities, quests and dialogue are not reported NOT STARTED by an `assets/data/`-only scan.

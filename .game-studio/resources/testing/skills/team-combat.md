@@ -13,6 +13,23 @@ Historical fixture versions are scenario inputs, not current API verification.
 The linked native procedure governs command arguments, output schemas, receipts,
 context and mode applicability. Missing inputs remain NOT ASSESSED.
 
+## Execution path variants
+
+Run the relevant success and blocking cases through both paths; preserve each
+case's inputs, professional scope, artifact destinations and expected verdict.
+
+**Parent execution path:**
+- Fixture: delegation is unavailable or unauthorized; routine task work is authorized.
+- [ ] The parent performs each required discipline and labels the work as parent work; it never invents independent participants or sign-off.
+- [ ] All required results and blockers are summarized, and dependent phases wait for their prerequisites even when independent work is performed sequentially.
+
+**Authorized delegation path:**
+- Fixture: explicit user authorization, an exposed host tool and sufficient capacity for the independent tasks are confirmed.
+- [ ] Independent tasks may run concurrently with distinct ownership; do not serialize genuinely independent delegated work when the fixture provides sufficient capacity.
+- [ ] Dependent phases wait for all required results; blocks preserve completed work and surface before dependent action.
+- [ ] Actual delegated participants are recorded with scope, result, artifacts and blockers; parent contributions remain labeled as parent work.
+- [ ] Repeat with capacity below the full roster: queue independent work or apply the parent fallback without inventing concurrency or dropping disciplines.
+
 ### Case 1: Happy Path — All agents succeed, full pipeline runs to completion
 
 **Fixture:**
@@ -28,7 +45,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Active-set line naming `team.size: small` appears before the first agent is consulted
 - [ ] `host input tool` called at each phase transition (at minimum before Phase 3 and before Phase 5)
 - [ ] The pre-Phase 3 gate offers [A] Proceed / [B] Revise / [C] Stop, and no implementation agent is consulted unless [A] is chosen
-- [ ] Phase 3 agents launched simultaneously — no sequential dependency between gameplay-programmer, ai-programmer, technical-artist, sound-designer
+- [ ] Phase 3 covers gameplay, flagged AI, VFX and sound disciplines independently; integration waits for all required results
 - [ ] Engine specialist runs in Phase 2 before Phase 3 begins (output incorporated into architecture)
 - [ ] Each agent prompt names its destination from the path table; no sub-agent writes under `design/`
 - [ ] No implementation file (code root, `assets/`) is written before one ask covering the whole Phase 3 set
@@ -74,7 +91,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 ---
 
-### Case 4: Parallel Phase Validation — Phase 3 agents run simultaneously
+### Case 4: Parallel Phase Validation — Phase 3 independent disciplines
 
 **Fixture:**
 - Resolved config block: `team.size: small`, `automation: collaborative`
@@ -85,7 +102,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-team-combat parry and riposte system` (resuming from Phase 2 complete)
 
 **Domain checks:**
-- [ ] Four Agent calls issued in a single batch (no sequential waiting between them)
+- [ ] The four independent disciplines share the approved architecture as input; no result is made an artificial prerequisite of another
 - [ ] Phase 4 does not begin until all four Phase 3 agents have returned results
 - [ ] Skill does not pass one Phase 3 agent's output as input to another Phase 3 agent (they are independent)
 - [ ] All four Phase 3 agent results referenced in the Phase 4 integration step
@@ -127,3 +144,10 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The engine specialist is not consulted and the run output records `Engine validation: NOT ASSESSED — no engine configured` — the skip is never silent (variant B)
 - [ ] The architecture is never described as engine-validated when no specialist ran (variant B)
 - [ ] When the run completes, its verdict reads `COMPLETE — engine validation NOT ASSESSED ([reason])` — never a plain COMPLETE (variant B)
+
+
+## Applicable domain checks
+
+- [ ] Before professional work starts, resolve and announce team-size scope, parent coverage and any actual participants. At `team.size: individual`: gameplay-programmer; AI work is escalated only when flagged, and other perspectives are routed through the responsible discipline. Name inactive perspectives and unassessed work accurately.
+- [ ] Missing named artifacts fail the phase; a partial report preserves completed work and distinguishes COMPLETE, NEEDS WORK and BLOCKED.
+- [ ] At studio size the adversarial QA pass looks for failures; subsystem expertise may be applied by the parent or authorized delegates without claiming a tools grant.

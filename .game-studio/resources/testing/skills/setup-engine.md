@@ -61,11 +61,19 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-setup-engine unreal 5.7`
 
 **Domain checks:**
-- [ ] Engine field is set to Unreal Engine 5.7 and `engine.language` is `C++`
+- [ ] In the baseline fixture, Engine is Unreal Engine 5.7 and `engine.language` is `C++`; no `.uproject` is scaffolded
 - [ ] Routing table includes `.uasset` and `.umap` entries
 - [ ] ue-blueprint-specialist is assigned for Blueprint graphs
 - [ ] `commands` carry the `# TODO: confirm these` comment
 - [ ] Verdict is COMPLETE
+
+**Variant — explicit Blueprint-primary choice:**
+- Same project, but the user explicitly selects Blueprint as the primary language.
+- Input: `$gs-setup-engine unreal 5.7`, with the Blueprint-primary answer.
+
+**Domain checks (Blueprint-primary):**
+- [ ] Records Blueprint as `engine.language` and the primary language, with C++ where needed; the baseline C++-primary expectation does not apply.
+- [ ] No `.uproject` is scaffolded; engine routing and command-verification requirements still apply.
 
 ---
 
@@ -133,3 +141,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Every Godot command value is an argv list; its executable path is one element, preserving spaces, and the remaining arguments are separate elements
 - [ ] `engine.path` records the editor executable
 - [ ] Variant — the probe finds nothing and the user does not know where Godot is: bare `godot` is kept under a `# TODO: godot is not on PATH here` comment, and the skill says the commands will not run until the path is set
+
+
+## Applicable domain checks
+
+- [ ] Use the selected Godot export preset and Unity build target; never invent a default for an unresolved preset or target.

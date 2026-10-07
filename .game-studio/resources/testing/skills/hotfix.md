@@ -99,6 +99,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-hotfix`
 
 **Domain checks:**
+- [ ] With [C] Stop here, do not merge, tag, deploy or update records; the hotfix record stays In Progress.
 - [ ] No gate IDs (CD-*, TD-*, AD-*, PR-*) appear in output
 - [ ] NOT ASSESSED does not advance to Phase 6 as if the QA gate passed
 - [ ] Deployment goes ahead only with the three APPROVE sign-offs plus an explicit producer decision to deploy unverified

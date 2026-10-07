@@ -129,3 +129,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The verdict is NOT ASSESSED, not PASS — the engine audit is part of the `full` scope and had no pinned engine to check against, even though every requirement is covered
 
 ---
+
+
+## Applicable domain checks
+
+- [ ] Reuse existing TR-registry IDs; never renumber or delete entries. Deprecation is an explicit human decision.

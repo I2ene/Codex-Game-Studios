@@ -25,8 +25,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 **Domain checks:**
 - [ ] The Scope tab marks "Full bible — all 9 sections" as Recommended and says why
-- [ ] Every section's content comes from a consulted specialist, never from the orchestrator's own drafting
-- [ ] Sections 2–4 come from a single `art-director` call but are presented, approved and written one section at a time
+- [ ] Every section applies its required specialist expertise through labeled parent work or an authorized delegate; actual contributors are recorded.
+- [ ] Sections 2–4 form one coherent art-director draft, applied by the parent or requested in a single authorized delegated brief; they are presented, approved and written one section at a time.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] AD-ART-BIBLE consults only after all nine sections are written, as `art-director` (the agent its gate definition names)
 - [ ] AD-ART-BIBLE is passed all four context items: the art bible path, the pillars and core fantasy, the platform and performance constraints, and the visual identity anchor
@@ -48,7 +48,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] (a) CONCERNS are shown to the user with the three standard options, not auto-accepted
 - [ ] (a) "Accept and proceed" records `CONCERNS (accepted) [date]` in the status header
-- [ ] (a) The flagged section is re-drafted by its specialist, not by the orchestrator, and approved before it is written; the header records `REVISED [date]`
+- [ ] (a) The flagged section is re-drafted with the relevant specialist expertise by the parent or an authorized delegate, and approved before it is written; the header records `REVISED [date]`.
 - [ ] (b) NOT ASSESSED is recorded as such, naming the missing input — not as an approval
 - [ ] Phase 6 next steps are not presented before the verdict is recorded
 
@@ -109,3 +109,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] (a) AD-ART-BIBLE is not consulted; the skip note reads "AD-ART-BIBLE skipped — Solo mode.", and the header records the SKIPPED sign-off line with the mode and date
 - [ ] (a) The Phase 6 option pool is the `workflow: minimal` set, not the `standard`/`full` GDD pool
 - [ ] (b) The skill stops with the `$gs-brainstorm` message and writes nothing
+
+
+## Applicable domain checks
+
+- [ ] Surface conflicting discipline recommendations to the user before choosing a direction; do not silently select a winner.

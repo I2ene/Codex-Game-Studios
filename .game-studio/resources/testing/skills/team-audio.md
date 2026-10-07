@@ -13,6 +13,23 @@ Historical fixture versions are scenario inputs, not current API verification.
 The linked native procedure governs command arguments, output schemas, receipts,
 context and mode applicability. Missing inputs remain NOT ASSESSED.
 
+## Execution path variants
+
+Run the relevant success and blocking cases through both paths; preserve each
+case's inputs, professional scope, artifact destinations and expected verdict.
+
+**Parent execution path:**
+- Fixture: delegation is unavailable or unauthorized; routine task work is authorized.
+- [ ] The parent performs each required discipline and labels the work as parent work; it never invents independent participants or sign-off.
+- [ ] All required results and blockers are summarized, and dependent phases wait for their prerequisites even when independent work is performed sequentially.
+
+**Authorized delegation path:**
+- Fixture: explicit user authorization, an exposed host tool and sufficient capacity for the independent tasks are confirmed.
+- [ ] Independent tasks may run concurrently with distinct ownership; do not serialize genuinely independent delegated work when the fixture provides sufficient capacity.
+- [ ] Dependent phases wait for all required results; blocks preserve completed work and surface before dependent action.
+- [ ] Actual delegated participants are recorded with scope, result, artifacts and blockers; parent contributions remain labeled as parent work.
+- [ ] Repeat with capacity below the full roster: queue independent work or apply the parent fallback without inventing concurrency or dropping disciplines.
+
 ### Case 1: Happy Path — All steps complete, audio design document saved
 
 **Fixture:**
@@ -30,8 +47,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Sound bible is read during context gathering (before Step 1) when it exists
 - [ ] audio-director is consulted before sound-designer or accessibility-specialist
 - [ ] `host input tool` appears after Step 1 output and before Step 2 launch
-- [ ] sound-designer and accessibility-specialist Agent calls are issued simultaneously in Step 2
-- [ ] technical-artist and `godot-specialist` Agent calls are issued simultaneously in Step 3
+- [ ] Step 2 covers sound design and accessibility independently; both results are available before Step 3
+- [ ] Step 3 covers technical-art and configured engine expertise independently before gameplay implementation
 - [ ] gameplay-programmer is not launched until Step 3 `host input tool` is approved
 - [ ] gameplay-programmer writes no code or test file before the one ask for its implementation set is answered yes
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
@@ -115,3 +132,10 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] technical-artist is still consulted in Step 3 (skip applies only to the engine specialist)
 - [ ] gameplay-programmer still runs in Step 4
 - [ ] Verdict is `COMPLETE — engine validation NOT ASSESSED (…)`, never a plain COMPLETE (engine not configured is a graceful case, not a blocker)
+
+
+## Applicable domain checks
+
+- [ ] Before professional work starts, resolve and announce team-size scope, parent coverage and any actual participants. At `team.size: individual`: sound-designer; audio-director, accessibility-specialist, technical-artist, engine-specialist and gameplay-programmer perspectives are routed through it. Name inactive perspectives and unassessed work accurately.
+- [ ] Final document is `design/audio/audio-[feature].md`; missing named step artifacts fail the step rather than counting as completed.
+- [ ] BLOCKED results surface immediately, preserve completed outputs in a partial report, and retain the `$gs-dev-story` / `$gs-asset-audit` handoff.

@@ -31,8 +31,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The knowledge gap inventory and its three-option `host input tool` come before Phase 1
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] The master document is written only after the Phase 7 `host input tool` approval
-- [ ] TD-ARCHITECTURE and LP-FEASIBILITY are each consulted as agents (`technical-director`, `lead-programmer`) after the document is written, and both verdicts are collected before Step 3
-- [ ] TD-ARCHITECTURE is passed its four context items by name; the parent session does not read the gate file
+- [ ] TD-ARCHITECTURE and LP-FEASIBILITY each apply their required expertise through labeled parent work or an authorized delegate after the document is written; both verdicts are collected before Step 3.
+- [ ] The parent applying TD-ARCHITECTURE reads its gate definition and all required context; an authorized delegate instead receives the four named context items. Neither path omits gate inputs.
 - [ ] The handoff uses the fixed template headings, with no trailing commentary
 - [ ] The handoff names `$gs-gate-check pre-production` — never a `[stage]` placeholder, which while this skill runs would resolve to the gate already passed
 

@@ -201,9 +201,10 @@ For each major game state (e.g., exploration, combat, victory, defeat, menus —
 - Atmospheric descriptors (3–5 adjectives)
 - Energy level (frenetic / measured / contemplative / etc.)
 
-**Agent delegation for Sections 2–4 — one call, issued here.** Spawn
-`art-director` via native delegation when authorized with the locked Visual Identity Statement and pillar set,
-and ask for all three sections in a single brief:
+**Art-director expertise for Sections 2–4 — one coherent draft, prepared here.**
+Apply that expertise in the parent, or use one delegated brief when authorized and
+supported by actual host tools. Use the locked Visual Identity Statement and pillar
+set for all three sections, and label parent work or actual participants accurately:
 
 1. **Mood & atmosphere** — "Define mood and atmosphere targets for each major game state in this game. Be specific — 'dark and foreboding' is not enough. Name the exact emotional target, the lighting character (warm/cool, high/low contrast, time of day direction), and at least one visual element that carries the mood. Each game state must feel visually distinct from the others."
 2. **Shape language** — "Define the shape language for this game. Connect each shape principle back to the visual identity statement and a specific game pillar. Explain what these shape choices communicate to the player emotionally."
@@ -214,8 +215,8 @@ targets and the shape hierarchy — and returned as three separately labelled
 blocks so each can be approved and written on its own.
 
 Then present **Section 2** to the user, approve it, and write it to file
-immediately before moving to Section 3. Do not present all three at once: the
-batching is in the delegation, not in the review.
+immediately before moving to Section 3. Do not present all three at once:
+the draft is prepared together while each section is reviewed separately.
 
 ### Section 3: Shape Language
 
@@ -227,7 +228,7 @@ Cover:
 - UI shape grammar (does UI echo the world aesthetic, or is it a distinct HUD language?)
 - Hero shapes vs. supporting shapes (what draws the eye, what recedes?)
 
-**Draft source**: the Sections 2–4 delegation issued under Section 2 — use the
+**Draft source**: the coherent Sections 2–4 draft prepared under Section 2 — use the
 shape-language block it returned. Do not spawn again.
 
 Write the approved section to file immediately.
@@ -243,7 +244,7 @@ Cover:
 - UI palette (may differ from world palette — define the divergence explicitly)
 - Colorblind safety: which semantic colors need shape/icon/sound backup
 
-**Draft source**: the Sections 2–4 delegation issued under Section 2 — use the
+**Draft source**: the coherent Sections 2–4 draft prepared under Section 2 — use the
 colour-system block it returned. Do not spawn again.
 
 Write the approved section to file immediately.
@@ -256,11 +257,9 @@ These sections translate the visual identity into concrete production rules. The
 
 ### Section 5: Character Design Direction
 
-**Agent delegation for Sections 5–6 — one call, issued here.** Both sections
-were separate spawns of the **same agent with the same input** (`sections 1–4`),
-which is pure duplication: the second call re-sent the whole visual identity to
-an agent that had just been given it. Spawn `art-director` once with sections
-1–4 and ask for both:
+**Art-director expertise for Sections 5–6 — one coherent draft, prepared here.**
+Apply that expertise in the parent, or use one delegated brief when authorized and
+supported by actual host tools. Use sections 1–4 as shared context for both:
 
 1. **Character design direction** — "Cover: visual archetype for the player character (if any), distinguishing feature rules per character type (how do players tell enemies/NPCs/allies apart at a glance?), expression/pose style targets (stiff/expressive/realistic/exaggerated), and LOD philosophy (how much detail is preserved at game camera distance?)."
 2. **Environment design language** — "Cover: architectural style and its relationship to the world's culture/history, texture philosophy (painted vs. PBR vs. stylized — why this choice for this game?), prop density rules (sparse/dense — what drives the choice per area type?), and environmental storytelling guidelines (what visual details should tell the story without text?)."
@@ -273,14 +272,14 @@ Present **Section 5** first, approve, write to file, then Section 6.
 
 ### Section 6: Environment Design Language
 
-**Draft source**: the Sections 5–6 delegation issued under Section 5 — use the
+**Draft source**: the coherent Sections 5–6 draft prepared under Section 5 — use the
 environment block it returned. Do not spawn again.
 
 Write the approved section to file.
 
 ### Section 7: UI/HUD Visual Direction
 
-**Agent delegation**: Spawn in parallel:
+**Professional expertise**: apply both disciplines in the parent, or delegate independent work concurrently when user authorization, actual host tools and capacity permit:
 - **`art-director`**: Visual style for UI — diegetic vs. screen-space HUD, typography direction (font personality, weight, size hierarchy), iconography style (flat/outlined/illustrated/photorealistic), animation feel for UI elements
 - **`ux-designer`**: UX alignment check — does the visual direction support the interaction patterns this game requires? Flag any conflicts between art direction and readability/accessibility needs.
 
@@ -290,7 +289,7 @@ Write the approved section to file.
 
 ### Section 8: Asset Standards
 
-**Agent delegation**: Spawn in parallel:
+**Professional expertise**: apply both disciplines in the parent, or delegate independent work concurrently when user authorization, actual host tools and capacity permit:
 - **`art-director`**: File format preferences, naming convention direction, texture resolution tiers, LOD level expectations, export settings philosophy
 - **`technical-artist`**: Engine-specific hard constraints — poly count budgets per asset category, texture memory limits, material slot counts, importer constraints, anything from the performance budgets (`performance.*` in `project.yaml`, falling back to `docs/project-reference/technical-preferences.md`)
 

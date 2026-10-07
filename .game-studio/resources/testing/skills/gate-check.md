@@ -31,6 +31,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-gate-check systems-design`
 
 **Domain checks:**
+- [ ] The authorized PASS transition sets `project.stage` to Systems Design and synchronizes `production/stage.txt`; the re-read confirms the target value, not merely that two old values agree.
 - [ ] Existence is resolved via `<runtime> artifacts --phase concept`, not by opening files to see what exists
 - [ ] The ABSENT systems-index and art-bible catalog steps are not reported as blockers — the catalog's `required=` flag is an observation; the gate file's checklist is what this gate requires
 - [ ] `design/gdd/game-concept.md` is spot-read for real content before it is marked `[x]`

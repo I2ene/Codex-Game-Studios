@@ -26,7 +26,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Severity uses the S1–S4 scale (`S1-Critical` here) and Priority uses the P1–P4 labels
 - [ ] "Likely affected files" is filled from the codebase search
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
-- [ ] Variant — with `BUG-0001.md` and `BUG-0003.md` already present, the new ID is
+- [ ] Variant — with `BUG-0001.md` and `BUG-0003.md` already present, the new ID is BUG-0004: the highest existing number plus one, not the file count plus one.
 - [ ] Verdict is COMPLETE after the write
 - [ ] `$gs-hotfix [BUG-ID]` is suggested because severity is S1
 
@@ -134,3 +134,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] The Closure Record's Regression test reads "Manual verification"
 - [ ] Variant — answering `[Still occurs]` gives STILL PRESENT (the bug is reopened and `$gs-hotfix [BUG-ID]` suggested); answering `[Not played yet]` gives CANNOT VERIFY
+
+
+## Applicable domain checks
+
+- [ ] The Reporter field never uses an email address or account ID obtained from the session.
