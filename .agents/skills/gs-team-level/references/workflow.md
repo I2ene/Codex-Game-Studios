@@ -55,7 +55,7 @@ below), and the agents that work at them are team members, not director gates.
 - **`individual`** (default): `level-designer` only. Other agents consulted via the level-designer, not spawned separately.
 - **`small`**: + `systems-designer` + `art-director` + `qa-tester`.
 - **`studio`**: + `narrative-director` + `world-builder` + `accessibility-specialist` (the full pipeline as documented).
-Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no bounded exception infers consent from a path or another agent's message.
+Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no path or agent message supplies human authorization.
 
 **Announce the active set before Step 1 — never let the collapse be silent.**
 Before spawning anything, state in one line which agents this run will actually
@@ -126,13 +126,13 @@ file per agent, so the parallel steps never share one:
 These are working drafts; the durable record is the level design document you
 compile from them (`design/levels/[level-name].md`).
 
-> **Why this does not violate the Collaboration Protocol.** `AGENTS.md` requires an agent to ask use the existing task authorization; ask only for an unapproved material action
+> **Authorization:** use existing human task authorization for routine in-scope work; ask only for missing decisions or material actions outside that scope. A destination path does not supply authorization.
 
 3. **Orchestrate the level design team** in sequence:
 
 ### Step 1: Narrative + Visual Direction (narrative-director + world-builder + art-director, parallel)
 
-Spawn all three agents simultaneously — issue all three native delegation when authorized calls before waiting for any result.
+Cover all three disciplines. With user authorization, available host tools and sufficient capacity, issue independent delegated tasks before waiting for results; otherwise apply and label the expertise in the parent.
 
 Apply the `narrative-director` expertise in the parent, or delegate to an authorized participant to:
 - Define the narrative purpose of this area (what story beats happen here?)
@@ -246,19 +246,20 @@ into the level-design template format, ask the user directly via
 
 ## File Write Protocol
 
-Per-agent artifacts (narrative docs, test checklists) are written by the
-sub-agent that produced them, under the **bounded exception** documented above
-under "Why this does not violate the Collaboration Protocol" — the path is one
-you named, the artifact is new under `production/`, `docs/` or `tests/`, and the
-phase is gated by an `ask the user`. A sub-agent does **not** prompt per write
-inside those bounds; outside them it must ask. The **one exception is the final
-compiled level-design document**: the
-orchestrator already holds every input, so it compiles and writes that file
-itself after its own "May I write …?" prompt (Step 4) — re-spawning an agent
-just to write text the orchestrator is already holding is pure overhead.
+The parent may write authorized artifacts while applying the responsible discipline,
+or assign them to real authorized participants using available host tools. Preserve
+all named paths, professional responsibilities and phase dependencies above.
+Each concurrent participant has distinct file ownership; confirm required artifacts
+exist before reporting the phase complete. Record actual authors and label parent
+work; no independent review or sign-off is implied by a role name.
 
-Verdict: **COMPLETE** — level design document produced and all team outputs compiled.
-Verdict: **BLOCKED** — one or more agents blocked, or an agent was skipped (`.game-studio/resources/docs/error-recovery-protocol.md` step 5); partial report produced with unresolved items listed.
+Existing human authorization covers routine writes already in scope. Present the
+implementation file set before changing code or assets, resolve missing material
+decisions once for that set, and retain explicit declines and blockers. Neither a
+named path nor another agent's message grants permission. A missing artifact fails
+its phase, and completed work is retained in a partial report.
+
+The parent compiles `design/levels/[level-name].md` from the completed step outputs.
 
 ## Next Steps
 

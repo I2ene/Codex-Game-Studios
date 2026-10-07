@@ -13,6 +13,23 @@ Historical fixture versions are scenario inputs, not current API verification.
 The linked native procedure governs command arguments, output schemas, receipts,
 context and mode applicability. Missing inputs remain NOT ASSESSED.
 
+## Execution path variants
+
+Run the relevant success and blocking cases through both paths; preserve each
+case's inputs, professional scope, artifact destinations and expected verdict.
+
+**Parent execution path:**
+- Fixture: delegation is unavailable or unauthorized; routine task work is authorized.
+- [ ] The parent performs each required discipline and labels the work as parent work; it never invents independent participants or sign-off.
+- [ ] All required results and blockers are summarized, and dependent phases wait for their prerequisites even when independent work is performed sequentially.
+
+**Authorized delegation path:**
+- Fixture: explicit user authorization, an exposed host tool and sufficient capacity for the independent tasks are confirmed.
+- [ ] Independent tasks may run concurrently with distinct ownership; do not serialize genuinely independent delegated work when the fixture provides sufficient capacity.
+- [ ] Dependent phases wait for all required results; blocks preserve completed work and surface before dependent action.
+- [ ] Actual delegated participants are recorded with scope, result, artifacts and blockers; parent contributions remain labeled as parent work.
+- [ ] Repeat with capacity below the full roster: queue independent work or apply the parent fallback without inventing concurrency or dropping disciplines.
+
 ### Case 1: Happy Path — All 7 phases complete, season plan produced
 
 **Fixture:**
@@ -65,12 +82,12 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] Skill does NOT guess a season name or fabricate a scope
 - [ ] Usage message shows the full argument-hint: `$gs-team-live-ops [season name or event description] [--review full|lean|solo]`
-- [ ] No Agent calls are issued before the argument check fails
+- [ ] No discipline work starts when the argument check fails
 - [ ] No files are read or written
 
 ---
 
-### Case 4: Parallel Phase Validation — Phases 3 and 4 run simultaneously
+### Case 4: Parallel Phase Validation — Independent economy and analytics paths
 
 **Fixture:**
 - Resolved config block: `team.size: small`, `automation: collaborative`
@@ -81,11 +98,11 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-team-live-ops "Season 1: The First Thaw"` (observed at Phase 3/4 transition)
 
 **Domain checks:**
-- [ ] Both Agent calls for Phase 3 and Phase 4 are issued before either result is awaited — they are not sequential
+- [ ] Economy and analytics use independent inputs; both results are collected before content writing
 - [ ] Analytics-engineer prompt does NOT include economy-designer output as a required input (the inputs are independent)
 - [ ] If economy-designer blocks but analytics-engineer succeeds, analytics output is preserved and the block is surfaced via host input tool
 - [ ] Phase 5 does not begin until BOTH Phase 3 and Phase 4 results are collected
-- [ ] Skill documentation explicitly states "Phases 3 and 4 can run simultaneously"
+- [ ] On the delegated path, economy and analytics tasks run concurrently when the available capacity supports both
 
 ---
 
@@ -105,3 +122,10 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Verdict: COMPLETE is still reachable despite the missing file
 - [ ] Gap flag appears in the season design output document (not just in conversation)
 - [ ] Next steps recommend creating `design/live-ops/ethics-policy.md`
+
+
+## Applicable domain checks
+
+- [ ] Before professional work starts, resolve and announce team-size scope, parent coverage and any actual participants. At `team.size: individual`: live-ops-designer and economy-designer; analytics, community, narrative and writing perspectives are routed through them. Name inactive perspectives and unassessed work accurately.
+- [ ] Missing named phase artifacts fail the phase; blocks preserve successful work in a partial report.
+- [ ] An unresolved ethics violation remains BLOCKED; the blocked handoff names revision and re-run rather than the normal release route.

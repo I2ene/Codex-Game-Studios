@@ -183,6 +183,14 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-smoke-check`
 
 **Domain checks:**
+- [ ] Each platform uses fresh per-run results and receipts; stale EditMode or PlayMode XML from a prior pass cannot satisfy this run. A compile failure or missing results after a run is FAIL.
 - [ ] Play Mode is run as a second run with its own results file
 - [ ] Each platform is reported on its own line
 - [ ] The Play Mode failure makes the verdict FAIL — the Edit Mode pass does not cover it
+
+
+## Applicable domain checks
+
+- [ ] A configured suite that could not be launched locally stays NOT ASSESSED until the developer confirms an IDE/CI result or confirmed NOT RUN; that confirmed NOT RUN contributes PASS WITH WARNINGS, never a clean PASS.
+- [ ] Missing gdUnit4/Unity Test Framework, gdUnit4 103/104, zero executed tests and other unassessed manual batches remain NOT ASSESSED under the native verdict rules; confirmation does not turn these causes into warnings or a pass.
+- [ ] Known automated/manual failures still outrank missing or unknown results, including when another platform or manual batch could not run.

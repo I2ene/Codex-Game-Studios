@@ -63,6 +63,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-start`
 
 **Domain checks:**
+- [ ] If the user selects Systems Design, write that authorized `project.stage` value and preserve rigor and automation; report observed stage separately from selected state. Do not create or synchronize a legacy stage mirror unless separately authorized and applicable.
 - [ ] Source files are found under `Assets/`, not reported as absent
 - [ ] `$gs-project-stage-detect` and `$gs-adopt` are recommended for D2
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.

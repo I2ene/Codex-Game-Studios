@@ -99,7 +99,7 @@ runs and the last assertion below would test nothing.)
 
 ---
 
-### Case 5: Review mode — specialist delegation in `full`, none in `lean` / `solo`
+### Case 5: Review mode — specialist coverage in `full`, main review in `lean` / `solo`
 **Fixture (all sub-cases):**
 - `project.yaml` sets `modes.workflow: full`
 - `design/gdd/light-manipulation.md` exists with all 8 sections, including

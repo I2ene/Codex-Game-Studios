@@ -361,7 +361,7 @@ After the sprint plan is written and QA plan status is resolved:
 
 **Review mode configuration:** All director gates (producer feasibility, QA review, code review) respect the project review mode, resolved by explicitly invoking config (`--review` flag → `project.local.yaml` → `modes.review_mode` in `project.yaml` → `production/review-mode.txt` → the `modes.rigor` expansion, which yields `lean` at standard rigor and `solo` at minimal). This skill never asks for it or writes it; Phase 0 says where to point a user who wants a different depth. The mode is one of:
 - `lean` — skip non-phase-gate director gates (the `rigor: standard` value)
-- `full` — run all director gates as spawned sub-agents
-- `solo` — skip all gate spawning unconditionally (single developer, no review)
+- `full` — run all director gates through labeled parent expertise or authorized delegation using available host tools; collect every required verdict
+- `solo` — skip the director gates with explicit mode notes (single developer, no director review)
 
 `modes.review_mode` in `project.yaml` is the primary source; `production/review-mode.txt` is the legacy fallback. Both are read by `$gs-sprint-plan`, `$gs-story-readiness`, `$gs-story-done`, and other gate-using skills at startup.

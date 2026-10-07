@@ -83,7 +83,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] No bare `0` count is reported for TODO/FIXME/HACK
 - [ ] Codebase Health is `NOT ASSESSED — code root unresolved`
 - [ ] The test-results NOT ASSESSED line is present
-- [ ] Go / No-Go is never READY: it is NOT ASSESSED naming both unassessed sections,
+- [ ] Go / No-Go is never READY: it is NOT ASSESSED naming both unassessed sections, or NOT READY if a blocking item failed.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 
 ---

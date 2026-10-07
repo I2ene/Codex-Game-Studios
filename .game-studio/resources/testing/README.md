@@ -12,6 +12,17 @@ assertions are replaced by the current native contracts. The authoritative skill
 procedure defines current arguments, verdicts, tier applicability and output schemas.
 A source scenario is not evidence that any model or role passed it.
 
+## Maintaining domain coverage
+
+Compare expected behavior, assertions and cross-case protocol conditions independently.
+Merge applicable, nonduplicate professional requirements into the relevant Domain
+checks; keep inputs, alternative outcomes, subcase boundaries and stop conditions.
+Retire host mechanisms and rephrase conflicts against current native contracts rather
+than dropping their underlying professional responsibility. Matching case counts do
+not establish semantic completeness. Inspect concrete scenarios against the current
+procedure; FORMAT regressions can guard clauses and scope, but do not prove a model
+will perform them correctly.
+
 ## Evaluation policy
 
 - Resolve actual configuration and applicable prerequisites. Preserve full/standard/minimal domain requirements, review modes and strictest verdicts.

@@ -45,6 +45,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-consistency-check`
 
 **Domain checks:**
+- [ ] When the conflict-log write is authorized, append the crit_multiplier conflict naming `combat.md` versus `loot.md` to `docs/consistency-failures.md`.
 - [ ] Verdict is CONFLICTS FOUND (not PASS)
 - [ ] The conflict entry names both GDDs and shows both values (1.5 and 2.0)
 - [ ] The conflict is classified 🔴 CONFLICT, and the resolution targets the non-source GDD (`loot.md`)
@@ -83,6 +84,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-consistency-check`
 
 **Domain checks:**
+- [ ] Verdict is NOT ASSESSED — entity registry empty; the skill stops before scanning.
 - [ ] Skill outputs the empty-registry message naming `$gs-design-system`
 - [ ] Use the linked native procedure and explicit runtime command; retired host execution is not required.
 - [ ] No file is written, including `production/session-state/active.md`

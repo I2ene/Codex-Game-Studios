@@ -23,6 +23,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-soak-test 2h all`
 
 **Domain checks:**
+- [ ] Godot memory alerts at >20% growth from T+0 after the first 15 minutes; orphan nodes must return to their T+0 count after scene unload.
 - [ ] Checkpoints are exactly T+0, T+20, T+40, T+60, T+80, T+100, T+120
 - [ ] Memory thresholds are relative to T+0, and the unit is recorded as displayed (no unit assumed)
 - [ ] The Godot tool and counter names are marked NOT SOURCEABLE, not presented as verified, and Pre-Session Setup asks for the tool actually used
@@ -72,6 +73,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-soak-test 30m memory`
 
 **Domain checks:**
+- [ ] Unity’s alert is monotonic GC allocation growth over at least three checkpoints.
 - [ ] Missing budgets are recorded as "not set", not filled with defaults
 - [ ] Checkpoints are exactly T+0, T+10, T+20, T+30
 - [ ] The Unity threshold is the unit-free monotonic-growth check
@@ -90,3 +92,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] No director gate is invoked
 - [ ] No gate skip messages appear
 - [ ] The run ends at "Protocol written." with the run steps — no gate verdict, and no soak verdict issued by the skill
+
+
+## Applicable domain checks
+
+- [ ] Generated verdict guidance forbids PASS for an incomplete soak or unavailable memory instrumentation, names unreached checkpoints and the reason as NOT ASSESSED, and keeps observed FAIL above missing evidence. The skill plans the soak and never runs it itself.

@@ -251,5 +251,5 @@ analytics-engineer, economy-designer, localization-lead
 | Metric | PASS criteria |
 |---|---|
 | **O1 — Domain ownership clear** | Agent description clearly states what it owns (pipeline, releases, economy, etc.) |
-| **O2 — Defers implementation** | Does not write game logic or engine code; delegates to appropriate specialist |
+| **O2 — Defers implementation** | Keeps operational work separate from implementation responsibility; routes implementation to the appropriate expertise, performed by a labeled parent or an authorized delegate |
 | **O3 — Toolset matches role** | Use of actual available tools stays within the role's operational domain and current authorization |

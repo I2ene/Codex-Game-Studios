@@ -26,6 +26,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-test-helpers player`
 
 **Domain checks:**
+- [ ] Reads engine, language and framework, samples the existing test file, and uses section reads for Formulas / Edge Cases / Detailed Rules (including numbered headings).
+- [ ] The helper declares `class_name`; static `make_*` factories have default parameters and a header `Based on: design/gdd/player.md`.
+- [ ] Every assertion uses the confirmed gdUnit4 framework API, with evidence from the installed framework or existing project tests; the per-engine usage note follows delivery.
 - [ ] Generated helper is GDScript at `tests/helpers/player_factory.gd`
 - [ ] Bound constants trace to the GDD's Formulas section (not invented values)
 - [ ] Helper extends `RefCounted`, not the test-suite base class, and uses no Autoload/singleton
@@ -43,6 +46,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-test-helpers player`
 
 **Domain checks:**
+- [ ] Stops before scanning tests or drafting helpers when both configuration sources lack an engine.
 - [ ] The message states the engine is not configured
 - [ ] `$gs-setup-engine` is named as the prerequisite
 - [ ] No write tool is called
@@ -61,6 +65,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-test-helpers scaffold`
 
 **Domain checks:**
+- [ ] The missing base files are `game_factory.gd` and `scene_runner_helper.gd`; their plain helper classes declare `class_name` and extend `RefCounted`.
 - [ ] `scaffold` mode generates no `[system]_factory` helper
 - [ ] The existing `game_assertions.gd` is left byte-for-byte unchanged
 - [ ] The skip message names the existing file and how to regenerate it
@@ -112,7 +117,27 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-test-helpers scaffold`
 
 **Domain checks:**
+- [ ] Generates `GameAssertions.cs` and `GameFactory.cs`, using NUnit assertion APIs confirmed against the installed package version rather than assuming all historical `Assert` methods still exist.
+- [ ] The usage note references the test assembly; helper files remain inside the existing EditMode assembly.
 - [ ] Helpers are written under `Assets/Tests/EditMode/Helpers/`
 - [ ] Nothing is written under `tests/helpers/` — outside `Assets/`, Unity never compiles it
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] Verdict is COMPLETE
+
+
+## Applicable domain checks
+
+Apply these to cases that generate the corresponding helper; they do not turn an
+existing-file skip or an unconfirmed API into permission to overwrite or guess.
+
+- [ ] Engine, language and framework are resolved before drafting; missing project keys use the documented technical-preferences fallback.
+- [ ] The configured framework failure API registers a failure with the runner and allows the suite to continue; an unconfirmed API produces no helper.
+- [ ] Godot signal assertions keep shared mutable state in a Dictionary rather than reassigning a captured bool; check emitted and not-emitted outcomes, including an action that emits nothing.
+- [ ] On confirmed Godot 4.5+ use a variadic callback for signal arguments; on older versions use a confirmed callback with matching arity. Check zero-, one- and multiple-argument signals as applicable, rather than copying `func(...args)` into an unsupported project.
+- [ ] Helper classes are not test suites; bounds and defaults trace to the relevant GDD, and the source header names it. Existing files stay unchanged.
+- [ ] `all` applies the system-factory checks to every system with tests; no-argument routing selects scaffold only when no helpers exist. Unreal uses `Source/<Module>/Private/Tests/Helpers/`; Unity sharing between EditMode and PlayMode requires the documented shared test assembly decision.
+
+API applicability references: [Godot 4.5 GDScript](https://docs.godotengine.org/en/4.5/tutorials/scripting/gdscript/gdscript_basics.html)
+and [NUnit migration guidance](https://docs.nunit.org/articles/nunit/release-notes/Nunit4.0-MigrationGuide.html).
+These references explain version constraints; the consuming project's actual toolchain
+and installed test framework remain authoritative. No engine execution is implied.

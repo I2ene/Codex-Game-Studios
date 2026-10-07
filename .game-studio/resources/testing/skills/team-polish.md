@@ -13,6 +13,23 @@ Historical fixture versions are scenario inputs, not current API verification.
 The linked native procedure governs command arguments, output schemas, receipts,
 context and mode applicability. Missing inputs remain NOT ASSESSED.
 
+## Execution path variants
+
+Run the relevant success and blocking cases through both paths; preserve each
+case's inputs, professional scope, artifact destinations and expected verdict.
+
+**Parent execution path:**
+- Fixture: delegation is unavailable or unauthorized; routine task work is authorized.
+- [ ] The parent performs each required discipline and labels the work as parent work; it never invents independent participants or sign-off.
+- [ ] All required results and blockers are summarized, and dependent phases wait for their prerequisites even when independent work is performed sequentially.
+
+**Authorized delegation path:**
+- Fixture: explicit user authorization, an exposed host tool and sufficient capacity for the independent tasks are confirmed.
+- [ ] Independent tasks may run concurrently with distinct ownership; do not serialize genuinely independent delegated work when the fixture provides sufficient capacity.
+- [ ] Dependent phases wait for all required results; blocks preserve completed work and surface before dependent action.
+- [ ] Actual delegated participants are recorded with scope, result, artifacts and blockers; parent contributions remain labeled as parent work.
+- [ ] Repeat with capacity below the full roster: queue independent work or apply the parent fallback without inventing concurrency or dropping disciplines.
+
 ### Case 1: Happy Path — Full pipeline completes, READY FOR RELEASE verdict
 
 **Fixture:**
@@ -29,7 +46,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Active-set line naming `team.size: small` appears before the first agent is consulted
 - [ ] performance-analyst is consulted first in Phase 1 before any other agents
 - [ ] `host input tool` appears after Phase 1 output and before Phases 2/3/4 launch
-- [ ] Phases 3 and 4 Agent calls are issued at the same time as Phase 2 (not after Phase 2 completes)
+- [ ] After assessment, optimization, visual and audio polish are independent; hardening waits for all applicable results
 - [ ] engine-programmer is NOT consulted when Phase 1 finds no engine-level root causes
 - [ ] performance-analyst edits no code, shader or asset in any phase
 - [ ] Implementation files of Phases 2–4 are listed by each agent and asked for in one `host input tool` for the whole set — not once per phase — before any is edited
@@ -38,7 +55,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Phase 6 verdict is based on comparison of metrics against defined budgets
 - [ ] Summary report includes: before/after performance metrics, visual polish changes, audio polish changes, test results
 - [ ] Summary states that nothing reads `production/polish/` yet
-- [ ] No files are written by the orchestrator directly
+- [ ] The parent may write authorized artifacts while applying and labeling the responsible discipline
 - [ ] Verdict is READY FOR RELEASE
 
 ---
@@ -93,7 +110,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] engine-programmer is NOT consulted in Phase 2 unless Phase 1 explicitly identifies an engine-level root cause
 - [ ] engine-programmer is consulted in Phase 2 when Phase 1 identifies an engine-level root cause
-- [ ] engine-programmer's Phase 2 Agent call is issued alongside the Phase 3 and 4 calls (not sequentially), and performance-analyst is not re-consulted to change code
+- [ ] Engine-programmer expertise handles the engine fix independently of visual and audio polish; performance-analyst does not implement code changes
 - [ ] engine-programmer edits nothing before the one ask for the Phase 2–4 implementation set is answered yes
 - [ ] Phases 2, 3 and 4 cover independent concerns; authorized delegation may run concurrently, while parent work is labeled accurately
 - [ ] engine-programmer's output includes profiler validation of the fix
@@ -155,3 +172,11 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The report names the optimisation list as handed to `$gs-dev-story`, with the path and each item's owner
 - [ ] Verdict is never READY FOR RELEASE at `individual`
 - [ ] An over-budget metric the handed-off item targets makes the verdict NEEDS MORE WORK
+
+
+## Applicable domain checks
+
+- [ ] Before professional work starts, resolve and announce team-size scope, parent coverage and any actual participants. At `team.size: individual`: performance-analyst and technical-artist; inactive implementation owners are handed to `$gs-dev-story` rather than silently added. Name inactive perspectives and unassessed work accurately.
+- [ ] Missing named artifacts fail their phase; BLOCKED work surfaces immediately and retains completed results.
+- [ ] At individual size omitted audio polish and hardening are named as not run: NOT ASSESSED unless a known problem makes the result NEEDS MORE WORK.
+- [ ] READY FOR RELEASE requires all applicable phases and committed metric budgets; NEEDS MORE WORK names severity, measured gap and recommended action. Studio hardening is adversarial; no extra engine-specialist roster is inferred.

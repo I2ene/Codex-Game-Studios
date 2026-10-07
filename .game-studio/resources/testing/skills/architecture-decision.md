@@ -102,6 +102,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-architecture-decision accept ADR-0005`
 
 **Domain checks:**
+- [ ] On acceptance in variant (b), set Status to Accepted and preserve an existing Date (add one only if absent); move each of the three dependent stories from Blocked to Ready, and report the ADR and every moved story.
 - [ ] (a) Acceptance is refused when a dependency is not `Accepted`, naming ADR-0002; nothing is written
 - [ ] (b) The confirmation prompt states how many stories will become Ready
 - [ ] (b) The confirmation prompt appears in `autonomous` automation mode
@@ -125,3 +126,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The retrofit answer `Accepted` is never written straight into `## Status`; `Accepted` appears only after acceptance mode's dependency check and confirmation
 - [ ] The confirmation prompt names the story count, as in Case 5
 - [ ] Variant — the user declines "Shall I add the 3 missing sections?": no section is written, `## Date` included
+
+
+## Applicable domain checks
+
+- [ ] Authoring saves Status: Proposed in every review mode; accepting review concerns does not itself accept the ADR. Only acceptance mode may set Accepted after its dependency checks.

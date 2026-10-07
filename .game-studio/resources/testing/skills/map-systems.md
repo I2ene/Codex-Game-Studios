@@ -105,7 +105,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 4. Notes "CD-SYSTEMS skipped — Lean mode."
 5. Session state is updated and Verdict: COMPLETE is printed
 
-**Assertions (lean mode):**
+**Domain checks (lean mode):**
 - [ ] All three skip notes appear, each at its own phase
 - [ ] No director agent is consulted
 - [ ] The "May I write" ask still precedes the write
@@ -119,15 +119,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 1. `--review solo` overrides the resolved `full`
 2. The same three gates are skipped, noted with "Solo mode."
 
-**Assertions (solo mode):**
-- [ ] All three skip notes carry the "Solo mode." label
-- [ ] Behavior is otherwise identical to lean mode for this skill
-
-**Domain checks:**
-- [ ] All three skip notes appear, each at its own phase
-- [ ] No director agent is consulted
-- [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
-- [ ] `active.md` is updated and Verdict: COMPLETE is printed even though CD-SYSTEMS was skipped
+**Domain checks (solo mode):**
 - [ ] All three skip notes carry the "Solo mode." label
 - [ ] Behavior is otherwise identical to lean mode for this skill
 

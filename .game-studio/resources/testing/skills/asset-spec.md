@@ -65,6 +65,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-asset-spec system:tower-defense`
 
 **Domain checks:**
+- [ ] Append the Tower Defense context to the existing manifest, preserving all previous asset/context entries; update the Progress Summary.
 - [ ] The hit spark references `ASSET-012`; no duplicate hit-spark spec is created
 - [ ] The new asset's ID is `ASSET-015` (project-wide sequence, not restarted per target)
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
@@ -126,3 +127,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] Existing blocks and IDs are preserved; the file is not overwritten wholesale
 - [ ] New assets continue the project-wide ID sequence (`ASSET-010`, `ASSET-011`)
+
+
+## Applicable domain checks
+
+- [ ] Surface conflicting discipline recommendations to the user before choosing a direction; do not silently select a winner.

@@ -13,6 +13,23 @@ Historical fixture versions are scenario inputs, not current API verification.
 The linked native procedure governs command arguments, output schemas, receipts,
 context and mode applicability. Missing inputs remain NOT ASSESSED.
 
+## Execution path variants
+
+Run the relevant success and blocking cases through both paths; preserve each
+case's inputs, professional scope, artifact destinations and expected verdict.
+
+**Parent execution path:**
+- Fixture: delegation is unavailable or unauthorized; routine task work is authorized.
+- [ ] The parent performs each required discipline and labels the work as parent work; it never invents independent participants or sign-off.
+- [ ] All required results and blockers are summarized, and dependent phases wait for their prerequisites even when independent work is performed sequentially.
+
+**Authorized delegation path:**
+- Fixture: explicit user authorization, an exposed host tool and sufficient capacity for the independent tasks are confirmed.
+- [ ] Independent tasks may run concurrently with distinct ownership; do not serialize genuinely independent delegated work when the fixture provides sufficient capacity.
+- [ ] Dependent phases wait for all required results; blocks preserve completed work and surface before dependent action.
+- [ ] Actual delegated participants are recorded with scope, result, artifacts and blockers; parent contributions remain labeled as parent work.
+- [ ] Repeat with capacity below the full roster: queue independent work or apply the parent fallback without inventing concurrency or dropping disciplines.
+
 ### Case 1: Happy Path — All stories pass manual QA, APPROVED verdict
 
 **Fixture:**
@@ -70,7 +87,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 **Domain checks:**
 - [ ] FAIL result in Phase 5 triggers `host input tool` to collect the failure description before the bug report is written
-- [ ] `qa-tester` is consulted via Agent to write the bug report — orchestrator does not write it directly
+- [ ] Bug-report drafting applies qa-tester expertise in the parent or an authorized delegate; the record names who actually performed it
 - [ ] Bug report follows `$gs-bug-report`'s naming: `BUG-[NNNN].md` in `production/qa/bugs/`
 - [ ] The ID is one past the highest existing bug, zero-padded to four digits (BUG-0003)
 - [ ] Phase 6 sign-off report Bugs Found table includes the bug ID, story name, severity, and status
@@ -190,3 +207,12 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The sign-off verdict is NOT APPROVED although every story passed — never NOT ASSESSED or APPROVED
 - [ ] The Phase 6 brief names no verdict and no deciding fact; the qa-lead reaches NOT APPROVED from the rules
 - [ ] A closed bug is not counted as open
+
+
+## Applicable domain checks
+
+- [ ] Before professional work starts, resolve and announce team-size scope, parent coverage and any actual participants. At `team.size: individual`: qa-tester, with qa-lead expertise at the pipeline decision points. Name inactive perspectives and unassessed work accurately.
+- [ ] Manual results are recorded only as the tester supplied them; unanswered stories remain unexecuted, and evidence never carries invented or pre-ticked sign-off.
+- [ ] Absent smoke evidence is UNKNOWN, with the documented caution; UNKNOWN or NOT ASSESSED smoke prevents approval unless a known S1/S2 or unworked-around failure already requires NOT APPROVED.
+- [ ] Each story has a named evidence destination; studio delegation may split stories when capacity permits, while small/individual uses grouped work. The parent path preserves the same story coverage.
+- [ ] Sign-off drafting returns the assessment before writing, uses the evidence and verdict rules without a preselected verdict, and preserves all failures/blocks in the summary.

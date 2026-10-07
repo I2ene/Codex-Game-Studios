@@ -42,6 +42,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-playtest-report new`
 
 **Domain checks:**
+- [ ] `new` ends with the blank template alone: no findings routing, discipline gate, save offer or file write.
 - [ ] Output contains the headings Session Info, Test Focus, First Impressions, Gameplay Flow, Bugs Encountered, Feature-Specific Feedback, Quantitative Data, Overall Assessment and Top 3 Priorities
 - [ ] Placeholders (e.g. `[Date]`, `[Name/ID]`) are left unfilled
 - [ ] No notes file is read and no findings are fabricated

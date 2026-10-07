@@ -13,6 +13,23 @@ Historical fixture versions are scenario inputs, not current API verification.
 The linked native procedure governs command arguments, output schemas, receipts,
 context and mode applicability. Missing inputs remain NOT ASSESSED.
 
+## Execution path variants
+
+Run the relevant success and blocking cases through both paths; preserve each
+case's inputs, professional scope, artifact destinations and expected verdict.
+
+**Parent execution path:**
+- Fixture: delegation is unavailable or unauthorized; routine task work is authorized.
+- [ ] The parent performs each required discipline and labels the work as parent work; it never invents independent participants or sign-off.
+- [ ] All required results and blockers are summarized, and dependent phases wait for their prerequisites even when independent work is performed sequentially.
+
+**Authorized delegation path:**
+- Fixture: explicit user authorization, an exposed host tool and sufficient capacity for the independent tasks are confirmed.
+- [ ] Independent tasks may run concurrently with distinct ownership; do not serialize genuinely independent delegated work when the fixture provides sufficient capacity.
+- [ ] Dependent phases wait for all required results; blocks preserve completed work and surface before dependent action.
+- [ ] Actual delegated participants are recorded with scope, result, artifacts and blockers; parent contributions remain labeled as parent work.
+- [ ] Repeat with capacity below the full roster: queue independent work or apply the parent fallback without inventing concurrency or dropping disciplines.
+
 ### Case 1: Happy Path (Single-Player) — All phases complete, version deployed
 
 **Fixture:**
@@ -29,7 +46,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] Active-set line naming `team.size: studio` appears before the first agent is consulted
 - [ ] Phase 2 cuts no `release/*` branch: the release candidate is the version-bump commit on `main`
-- [ ] Phase 3 qa-lead and devops-engineer Agent calls are issued simultaneously, not sequentially
+- [ ] Phase 3 covers QA and build verification independently; all required quality results precede Phase 4
 - [ ] security-engineer is NOT consulted when `platform.online` and `platform.multiplayer` are false and there is no player data, and the Phase 3 output says so by name (e.g. `security-engineer: not consulted — platform.online: false, platform.multiplayer: false, no player data`) — the skip is never silent
 - [ ] Each agent is told its own named output file — parallel Phase 3 and Phase 4 agents never share one — and the orchestrator confirms the file exists before treating the phase as done
 - [ ] Phase 5 producer collects sign-offs from qa-lead, release-manager, devops-engineer and technical-director before declaring GO
@@ -77,7 +94,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] security-engineer IS consulted in Phase 3 when the game has online features, multiplayer, or player data — this is not skipped
 - [ ] network-programmer IS consulted in Phase 3 when the game has multiplayer
-- [ ] All four Phase 3 Agent calls (qa-lead, devops-engineer, security-engineer, network-programmer) are issued simultaneously
+- [ ] Phase 3 covers QA, build, security and networking independently, collecting all four results before Phase 4
 - [ ] security-engineer audit covers authentication, anti-cheat, and data privacy compliance
 - [ ] Phase 5 producer sign-off collection includes security-engineer and network-programmer alongside qa-lead, release-manager, devops-engineer and technical-director
 - [ ] Phase 6 deployment does not begin until security-engineer has signed off
@@ -98,12 +115,12 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-team-release v1.2.0`
 
 **Domain checks:**
-- [ ] Phase 4 delegates the translation check to localization-lead when it is in the active set
+- [ ] Phase 4 applies localization-lead expertise in the parent or an authorized delegate when that discipline is in scope
 - [ ] The localization finding is presented at the Phase 4 → 5 transition via `host input tool` before the go/no-go runs
 - [ ] The producer's NO-GO rationale names the untranslated-strings issue
 - [ ] The resolution options include re-running the affected phase — the skill does not require restarting from Phase 1
 - [ ] If the user overrides, the written justification is embedded in the record before any Phase 6 action
-- [ ] The orchestrator writes no files itself — it does not produce translations to unblock the release
+- [ ] A missing translation remains a release blocker or explicit recorded override; do not fabricate translations or evidence to unblock it
 - [ ] Verdict is BLOCKED and Phase 6 does not run on NO-GO
 
 ---
@@ -170,3 +187,13 @@ In both variants `project.stage` is `Release`.
 - [ ] On `[A]` the verdict is BLOCKED and no agent is consulted at all (not even release-manager)
 - [ ] On `[B]` the override and its reason appear in the go/no-go record and in the final report
 - [ ] The skill writes neither `project.stage` nor `production/stage.txt` in either variant
+
+
+## Applicable domain checks
+
+- [ ] Before professional work starts, resolve and announce team-size scope, parent coverage and any actual participants. At `team.size: individual`: release-manager, with other release perspectives routed through it. Name inactive perspectives and unassessed work accurately.
+- [ ] Missing named artifacts fail their phase. Each parallel participant has a distinct destination, and every required sign-off is collected before a go/no-go decision.
+- [ ] Unknown online/multiplayer/player-data scope is resolved rather than assumed false; skipped security/network work is named with reasons.
+- [ ] Lean/solo omits the technical-director sign-off explicitly; a NOT ASSESSED director result is never counted as approval.
+- [ ] A stabilization release branch accepts fixes only, propagated to main. Tagging, publication and deployment require applicable explicit user authorization; no path or role supplies it.
+- [ ] A NO-GO without an explicit recorded override blocks deployment and preserves the partial report. A staging-only choice holds production; COMPLETE requires the deployment scope actually authorized and executed.

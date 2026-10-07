@@ -27,6 +27,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-sprint-plan new`
 
 **Domain checks:**
+- [ ] Allocate sprint-003 after the highest existing sprint-002; write the new plan without replacing sprint-002.
 - [ ] Stories come from `production/epics/**/story-*.md` via the status grep, and only `Ready` stories are planned
 - [ ] All 5 `Ready` stories are planned — `balanced` allows 6–10, so none is held back
 - [ ] Sprint draft is shown before any write prompt or gate invocation
@@ -146,6 +147,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-sprint-plan new`
 
 **Domain checks:**
+- [ ] The written plan’s header records `PR-SPRINT: NOT ASSESSED — story estimates missing`; the run never stores REALISTIC for that review.
 - [ ] The missing input (story estimates) is named in the output
 - [ ] NOT ASSESSED is not presented as REALISTIC — nothing says the plan's feasibility was reviewed
 - [ ] The CONCERNS options ([A] Proceed / [B] Adjust scope / [C] Extend timeline) are not raised for NOT ASSESSED

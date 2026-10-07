@@ -25,6 +25,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-security-audit`
 
 **Domain checks:**
+- [ ] The Dependency Inventory includes `addons/gdUnit4/`; dependencies are inventoried even when the source scan has no findings.
 - [ ] `security-engineer` is consulted with the fixed brief template — scope, engine/language, the `platform.*` values and a source manifest rooted at `src/` — and the brief adds no severity and no remark on the game's type
 - [ ] Save handling is checked with Godot 4 names (`FileAccess`), not only the Godot 3 `File.open`
 - [ ] Hardcoded-credential patterns (`api_key`, `secret`, `password`, `token`, `private_key`) are scanned
@@ -116,6 +117,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-security-audit`
 
 **Domain checks:**
+- [ ] Category 3 uses the sourced Unity input-validation names (`InputSystem`, `PlayerInput`, `ReadValue`, `InputValue`) rather than the Godot list; verify their applicability against the actual project version.
 - [ ] The source manifest uses the Unity code root `Assets/`
 - [ ] Category 1 is NOT ASSESSED for Unity and no save-API pattern list is invented
 - [ ] Category 2 uses the Unity network names, not the Godot list

@@ -31,6 +31,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-create-stories combat`
 
 **Domain checks:**
+- [ ] After writing the three stories, `EPIC.md` has their three Stories rows and the existing epics-index row reads 3 stories.
 - [ ] Exactly 3 stories are drafted — one per acceptance criterion at `fine`
 - [ ] Each story file has the header fields Epic, Status, Layer, Type, Manifest Version, and a Context block with GDD, `Requirement: TR-[system]-NNN`, ADR Governing Implementation, ADR Version, Engine/Risk
 - [ ] Each story has Acceptance Criteria, QA Test Cases, Test Evidence and Dependencies sections

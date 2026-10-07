@@ -59,7 +59,7 @@ still decides who runs it — see Phase 4).
 - **`individual`** (default): `writer` only; `narrative-director` invoked only on an explicit pillar conflict. Other agents consulted via the writer, not spawned separately.
 - **`small`**: `narrative-director` + `writer`, plus `localization-lead` and `world-builder` when `review_mode` is `full` (at `lean` and `solo` they are consulted through the writer).
 - **`studio`**: all six Team Composition agents, whatever the `review_mode` (the full pipeline as documented).
-Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no bounded exception infers consent from a path or another agent's message.
+Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no path or agent message supplies human authorization.
 
 **Announce the active set before Phase 1 — never let the collapse be silent.**
 Before spawning anything, state in one line which agents this run will actually
@@ -110,10 +110,10 @@ Apply the following professional responsibilities in the parent; delegate useful
 
 **End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session.
 
-**Substitute a real path for `[path]`.** Agents write drafts under
-`production/narrative/[content-slug]/` — inside the bounded exception below. The
-finished documents belong in `design/narrative/`, which the exception does **not**
-cover, so **you** write those after one approval (see "Write the finals"):
+**Substitute a real path for `[path]`.** Drafts use
+`production/narrative/[content-slug]/`; finished documents use `design/narrative/`.
+The parent compiles the finals from completed drafts within existing human
+authorization, resolving only missing material decisions (see "Write the finals").
 
 | Agent | Drafts to (`[path]`) | Final document (you write it) |
 |---|---|---|
@@ -134,9 +134,9 @@ cover, so **you** write those after one approval (see "Write the finals"):
 > run to invent one, which defeats it. `$gs-team-qa` Phase 4 carries the same
 > requirement for the same reason.
 
-> **Why this does not violate the Collaboration Protocol.** `AGENTS.md` requires an agent to ask use the existing task authorization; ask only for an unapproved material action
+> **Authorization:** use existing human task authorization for routine in-scope work; ask only for missing decisions or material actions outside that scope. A destination path does not supply authorization.
 
-Launch independent agents in parallel where the pipeline allows it (e.g., Phase 2 agents can run simultaneously).
+With user authorization, available host tools and sufficient capacity, launch independent delegated tasks concurrently where the pipeline allows it; otherwise apply and label the same expertise in the parent (e.g., Phase 2 agents can run simultaneously).
 
 ## Pipeline
 
@@ -149,7 +149,7 @@ Delegate to **narrative-director**:
 - Output: narrative brief with story requirements
 
 ### Phase 2: World Foundation (parallel)
-Delegate in parallel — issue all three native delegation when authorized calls simultaneously before waiting for any result:
+Apply the following independent expertise in the parent, or delegate concurrently with user authorization, available host tools and sufficient capacity:
 - **world-builder**: Create or update lore entries for factions, locations, and history relevant to this content. Cross-reference against existing lore for contradictions. Set canon level for new entries.
 - **writer**: Draft character dialogue using voice profiles. Ensure all lines are under 120 characters, use named placeholders for variables, and are localization-ready.
 - **art-director**: Define character visual design direction for key characters appearing in this content (silhouette, visual archetype, distinguishing features). Specify environmental visual storytelling elements for each key space (prop composition, lighting notes, spatial arrangement). Define tone palette and cinematic direction for any cutscenes or scripted sequences.
@@ -192,7 +192,7 @@ active at `team.size: individual`; consistency self-checked by writer." A
 self-check is not the gate's verdict, and the report must not present it as one.
 
 ### Phase 5: Polish (parallel)
-Delegate in parallel — issue every native delegation when authorized call before waiting for any result:
+Apply the following independent expertise in the parent, or delegate concurrently with user authorization, available host tools and sufficient capacity:
 - **writer**: Final self-review — verify no line exceeds dialogue box constraints, all text uses string keys (not raw strings), placeholder variable names are consistent
 - **localization-lead**: Validate i18n compliance — check string key naming conventions, flag any strings with hardcoded formatting that won't survive translation, verify character limit headroom for languages that expand (German/Finnish typically +30%), confirm no cultural assumptions in text that would need locale-specific variants
 - **world-builder**: Finalize canon levels for all new lore entries
@@ -225,14 +225,20 @@ Common blockers:
 
 ## File Write Protocol
 
-Sub-agents write their drafts to the `production/narrative/[content-slug]/` paths
-you name, under the **bounded exception** documented above under "Why this does
-not violate the Collaboration Protocol" — the path is one you named, the artifact
-is new under `production/`, `docs/` or `tests/`, and the phase is gated by an
-`ask the user`. A sub-agent does **not** prompt per write inside those bounds;
-outside them it must ask. The **one exception is the final documents under
-`design/narrative/`**: you hold every draft, so you write those yourself after
-the single "May I write …?" in "Write the finals".
+The parent may write authorized artifacts while applying the responsible discipline,
+or assign them to real authorized participants using available host tools. Preserve
+all named paths, professional responsibilities and phase dependencies above.
+Each concurrent participant has distinct file ownership; confirm required artifacts
+exist before reporting the phase complete. Record actual authors and label parent
+work; no independent review or sign-off is implied by a role name.
+
+Existing human authorization covers routine writes already in scope. Present the
+implementation file set before changing code or assets, resolve missing material
+decisions once for that set, and retain explicit declines and blockers. Neither a
+named path nor another agent's message grants permission. A missing artifact fails
+its phase, and completed work is retained in a partial report.
+
+The parent compiles the approved narrative documents from the drafts; all planned `design/` destinations remain explicit.
 
 ## Output
 

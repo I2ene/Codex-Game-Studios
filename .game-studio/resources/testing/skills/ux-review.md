@@ -78,6 +78,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** (a) `$gs-ux-review design/ux/inventory-screen.md` (b) `$gs-ux-review design/ux/inventory.md`
 
 **Domain checks:**
+- [ ] In variant (b), carry the spec header’s Standard tier forward as an assumption, never as the project’s committed accessibility tier.
 - [ ] (a) A missing spec yields NOT ASSESSED naming the path, with no checklist output
 - [ ] (b) Accessibility is reported NOT ASSESSED, not COMPLIANT, when no tier is committed
 - [ ] (b) `$gs-ux-design accessibility` is recommended
@@ -95,6 +96,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-ux-review all`
 
 **Domain checks:**
+- [ ] The `all` run covers every file under `design/ux/`, presents a file / verdict / primary issue summary first, then a full report for each file.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] Each document's checklist comes from its Template line (HUD vs UX spec)
 - [ ] A file without a Template line is classified by name, and the report says which checklist was assumed

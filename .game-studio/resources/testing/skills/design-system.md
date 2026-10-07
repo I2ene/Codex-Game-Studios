@@ -24,6 +24,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-design-system combat`
 
 **Domain checks:**
+- [ ] The new skeleton contains all eight required section headers.
+- [ ] For the Gameplay category, Visual/Audio and Game Feel are required sections and are not offered as skippable.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] Every section draft is followed in the same response by the "Approve the [Section Name] section?" widget
 - [ ] Each section is written individually, immediately after its approval, by an Edit anchored on its heading

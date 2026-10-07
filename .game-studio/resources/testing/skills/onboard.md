@@ -27,9 +27,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] The agent definition for the named role is read
 - [ ] The code root `src/` is scanned for this programmer role
-- [ ] The document uses the `# Onboarding: [Role/Area]` template sections
+- [ ] The explanation covers the role, current task, architecture, naming standards, relevant scripts and review responsibilities without requiring a retired fixed report template
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
-- [ ] Verdict is COMPLETE and next steps name `$gs-sprint-status` and `$gs-help`
+- [ ] The completion summary distinguishes explained context from executed work and recommends a relevant next step such as `$gs-sprint-status` or `$gs-help`
 
 ---
 
@@ -50,7 +50,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 ---
 
-### Case 3: Every Input Absent — NOT ASSESSED, No Document
+### Case 3: Every Input Absent — Report Gaps Without Inventing Project State
 
 **Fixture:**
 - `AGENTS.md` does not exist
@@ -60,8 +60,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-onboard qa-tester`
 
 **Domain checks:**
+- [ ] Unavailable framework instructions and role profiles are reported as context gaps; identify an installation gap only when the requested installed capability actually requires those files. Do not attribute them to a game-authoring skill or suppress useful authorized onboarding that the parent can perform.
 - [ ] Inputs are recorded as FOUND or ABSENT before any report is produced
-- [ ] Verdict is `NOT ASSESSED — NO DATA`, not COMPLETE
+- [ ] Unavailable project facts and unexecuted verification are NOT ASSESSED — NO DATA; no complete project assessment or successful task execution is invented
 - [ ] The missing inputs are named; `tests/` points to `$gs-test-setup`
 - [ ] Use the linked native procedure and explicit runtime command; retired host execution is not required.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
@@ -95,6 +96,6 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 **Domain checks:**
 - [ ] No director gate is invoked and no gate skip message appears
-- [ ] No subagent is consulted
+- [ ] No delegation is required; producer expertise can be applied and labeled by the parent
 - [ ] `production/` is the area scanned for this role
-- [ ] Verdict is COMPLETE after the write ask
+- [ ] Report what was explained or executed; do not require a file write or a redundant approval for already authorized onboarding work

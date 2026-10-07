@@ -23,6 +23,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-test-setup`
 
 **Domain checks:**
+- [ ] Godot CI uses the project-installed gdUnit4 package rather than silently replacing it with latest, and configures the permissions required by its result publisher using the verified action/runtime syntax.
 - [ ] `tests/unit/`, `tests/integration/`, `tests/smoke/` and `production/qa/evidence/` all exist afterwards (each holds a written file)
 - [ ] No custom runner script is written (the old hand-written runner loaded a file gdUnit4 never shipped and failed every run)
 - [ ] The test command matches the coding-standards.md CI command
@@ -41,6 +42,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-test-setup`
 
 **Domain checks:**
+- [ ] Document the `UNITY_LICENSE` secret prerequisite for Unity CI.
 - [ ] Tests are under `Assets/Tests/`, never `tests/` or a top-level `Tests/` (neither is compiled: 0 tests, "Passed")
 - [ ] `.asmdef` files are generated
 - [ ] EditMode and PlayMode runner config is present, in CI and as two local runs with separate results files
@@ -92,3 +94,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] No director gate is invoked
 - [ ] No gate skip messages appear
 - [ ] Verdict is COMPLETE without any gate check
+
+
+## Applicable domain checks
+
+- [ ] `force` bypasses the early exit only to create missing scaffold files; every existing test or infrastructure file remains unchanged.

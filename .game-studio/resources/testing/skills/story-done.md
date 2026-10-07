@@ -187,3 +187,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Phase 7 is entered only if the user explicitly asks to close anyway; it then always prompts (`scope_changes`), and the Completion Notes record AC-4 as never evaluated
 - [ ] Variant — AC-4 is a checkable criterion that the user answers `Not tested yet`: it is UNTESTED in the traceability table and the verdict is NOT ASSESSED, naming what would settle it
 - [ ] Variant — another criterion also FAILS: the verdict is BLOCKED (BLOCKED is evaluated before NOT ASSESSED)
+
+
+## Applicable domain checks
+
+- [ ] Only the “Close and log advisory deviations as tech debt” choice appends debt entries; append rows in the tech-debt register table with an Added date, never free-form bullets.

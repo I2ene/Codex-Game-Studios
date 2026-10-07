@@ -129,3 +129,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] No PASS or PASS WITH CONDITIONS is issued for an unplayed locale
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] The report does not present the locale as cleared for the Polish → Release gate
+
+
+## Applicable domain checks
+
+- [ ] `scan`, `validate` and `status` are read-only and write no files.

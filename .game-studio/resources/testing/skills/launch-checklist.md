@@ -98,6 +98,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-launch-checklist dry-run`
 
 **Domain checks:**
+- [ ] Dry-run creates no checklist file or directory and makes no save/write offer.
 - [ ] The "omitted — cert_tier is 'none'" line appears and no certification rows are emitted
 - [ ] No Phase 4b question is asked in dry-run, the skip is stated, and the Overall Status is NOT ASSESSED
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.

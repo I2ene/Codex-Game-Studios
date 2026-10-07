@@ -13,6 +13,23 @@ Historical fixture versions are scenario inputs, not current API verification.
 The linked native procedure governs command arguments, output schemas, receipts,
 context and mode applicability. Missing inputs remain NOT ASSESSED.
 
+## Execution path variants
+
+Run the relevant success and blocking cases through both paths; preserve each
+case's inputs, professional scope, artifact destinations and expected verdict.
+
+**Parent execution path:**
+- Fixture: delegation is unavailable or unauthorized; routine task work is authorized.
+- [ ] The parent performs each required discipline and labels the work as parent work; it never invents independent participants or sign-off.
+- [ ] All required results and blockers are summarized, and dependent phases wait for their prerequisites even when independent work is performed sequentially.
+
+**Authorized delegation path:**
+- Fixture: explicit user authorization, an exposed host tool and sufficient capacity for the independent tasks are confirmed.
+- [ ] Independent tasks may run concurrently with distinct ownership; do not serialize genuinely independent delegated work when the fixture provides sufficient capacity.
+- [ ] Dependent phases wait for all required results; blocks preserve completed work and surface before dependent action.
+- [ ] Actual delegated participants are recorded with scope, result, artifacts and blockers; parent contributions remain labeled as parent work.
+- [ ] Repeat with capacity below the full roster: queue independent work or apply the parent fallback without inventing concurrency or dropping disciplines.
+
 ### Case 1: Happy Path — All five phases complete, narrative doc delivered
 
 **Fixture:**
@@ -28,14 +45,14 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Active-set line naming `team.size: studio` appears before the first agent is consulted
 - [ ] narrative-director is consulted in Phase 1 before any other agents
 - [ ] `host input tool` appears after Phase 1 output and before Phase 2 launch
-- [ ] world-builder, writer and art-director Agent calls are issued simultaneously in Phase 2 (not sequentially)
+- [ ] Phase 2 covers world-building, writing and art direction independently before level integration
 - [ ] level-designer is not launched until Phase 2 `host input tool` is approved
 - [ ] narrative-director is re-consulted in Phase 4 using gate ND-CONSISTENCY — in every review mode, since it is this pipeline's own review and `review_mode` never skips it — and its APPROVE / CONCERNS / REJECT verdict decides whether Phase 5 starts
-- [ ] Phase 5 consults all three agents (writer, localization-lead, world-builder) simultaneously
+- [ ] Phase 5 covers writing, localization and canon independently; all results reach the final summary
 - [ ] Each agent prompt names its draft path from the skill's path table
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] Summary report includes: narrative brief status, lore entries created/updated, dialogue lines written, level narrative integration points, consistency review results
-- [ ] The orchestrator writes nothing except the approved final documents
+- [ ] Writes follow existing user authorization and named artifact responsibilities, including labeled parent execution
 - [ ] Verdict is COMPLETE after delivery
 
 ---
@@ -86,7 +103,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-team-narrative ironveil faction introduction cutscene` (Phase 5 scenario)
 
 **Domain checks:**
-- [ ] localization-lead is consulted in Phase 5 simultaneously with writer and world-builder
+- [ ] Phase 5 includes localization expertise alongside writing and world-building, without assuming delegated participants
 - [ ] Hardcoded date format is identified as a localization blocker (not silently passed)
 - [ ] The specific string key and reason are included in the surfaced BLOCKED message
 - [ ] `host input tool` offers skip-and-note-gap, retry, and stop options
@@ -112,3 +129,11 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] `host input tool` offers at least one option to resolve the missing prerequisite
 - [ ] Orchestrator does not fabricate voice profiles or invent character voices
 - [ ] Phase 3 is not launched while writer is BLOCKED without explicit user authorization
+
+
+## Applicable domain checks
+
+- [ ] Before professional work starts, resolve and announce team-size scope, parent coverage and any actual participants. At `team.size: individual`: writer; other perspectives are routed through it, and ND-CONSISTENCY is not presented as an independent director gate. Name inactive perspectives and unassessed work accurately.
+- [ ] At individual size record the writer consistency self-check separately from ND-CONSISTENCY; no independent director approval is implied.
+- [ ] An ND-CONSISTENCY NOT ASSESSED result names the missing input and is re-run only after supplying it, or carried into both the report and `COMPLETE — consistency NOT ASSESSED ([input])`.
+- [ ] Missing named artifacts fail their phase; completed work survives in the partial report.

@@ -157,7 +157,7 @@ Identify the system category (engine, gameplay, AI, networking, UI, tools) and e
 
 ## Phase 7: Specialist Reviews (Parallel)
 
-Spawn all applicable specialists simultaneously via native delegation when authorized — do not wait for one before starting the next.
+Cover all applicable specialist reviews. With user authorization, available host tools and sufficient capacity, delegate independent reviews concurrently; otherwise apply and label the expertise in the parent. Do not omit a required review because delegation is unavailable.
 
 > **Verify every specialist finding before reporting it. Do not pass findings
 > through unchecked.** For each finding, record in the report:
