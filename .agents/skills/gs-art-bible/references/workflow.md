@@ -138,9 +138,10 @@ Use `ask the user` with two tabs:
     sections 1–4 as the useful-if-you-want-it option rather than defaulting to 9.
   - `workflow_overrides.art_bible_strict: true` → **Full bible** regardless of tier.
 
-  This is the single biggest cost lever in this skill: every authored section
-  carries a specialist spawn, so authoring 9 sections where the tier requires 4
-  more than doubles the run for artifacts nothing downstream will check.
+  Scope controls required authoring work on both execution paths: authoring nine
+  sections takes more work than the four-section minimum. Delegation call costs apply only to authorized
+  delegation supported by actual host tools and capacity; coherent section briefs
+  can share context without batching user approvals.
 - Tab **"References"** — "Do you have reference games, films, or art that define the visual direction?"
   (Free text — let the user type specific titles. Do NOT preset options here.)
 
@@ -158,20 +159,22 @@ Phase 6 names each section not authored this run and why.
 
 These four sections define the core visual language. **All other sections flow from them.** Author and write each to file before moving to the next.
 
-> **Spawn policy for this phase.** Section 1 is delegated on its own — it is
-> foundational and the user chooses between anchor directions before anything
-> else can build on it. Sections 2–4 are then delegated in **one** `art-director`
-> call, not three: they are the same agent receiving the same inputs (Visual
-> Identity Statement + pillars), and mood, shape and colour are interdependent —
-> an art director defines them together, not in isolation. Three separate calls
-> re-sent the same context three times and asked the agent to reason about
-> colour without knowing the shape language it had just written.
->
-> **This is not reduced specialist involvement** — every section is still
-> authored by the specialist, which is the point `.game-studio/resources/docs/effects-map.md`
-> makes about art-bible delegation being mandatory. It is one call instead of
-> three for the same three sections. Per-section user approval and
-> write-to-file-immediately are unchanged.
+**Required expertise and section dependencies.** The parent applies required art-director expertise, or uses an authorized delegate.
+Section 1 must be approved and written before drafting Sections 2–4: the user
+chooses the foundational visual direction first. Use that locked statement and
+the pillars to prepare one coherent draft for Sections 2–4; mood, shape and
+colour must be mutually consistent. Reuse an already complete foundation without
+re-authoring it when resuming.
+
+Call counts and delegated briefs apply only when user authorization, actual host tools and capacity permit delegation.
+On that path, brief Section 1 separately, then use one art-director brief for
+Sections 2–4 rather than repeating the same context in three calls. The parent
+path produces the same coherent draft without requiring a call.
+Per-section user approval and immediate write-to-file remain required on both paths.
+Label parent authorship and review as parent work; record actual delegated
+participants, never an invented independent review or another person's sign-off.
+See the **art-bible** note under **modes.review_mode** in
+`.game-studio/resources/docs/effects-map.md` for the same expertise and mode contract.
 
 ### Section 1: Visual Identity Statement
 
@@ -182,11 +185,11 @@ If a visual anchor exists from game-concept.md: present it and ask:
 - "Revise it before expanding?"
 - "Start fresh with new options?"
 
-**Professional expertise review (required; delegation optional)**: Spawn `art-director` via native delegation when authorized:
+**Professional expertise review (required; delegation optional)**: the parent applies art-director expertise, or uses an authorized delegate when user authorization, actual host tools and capacity permit:
 - Provide: game concept (elevator pitch, core fantasy), full pillar set, platform target, any reference games/art from Phase 1 framing, the visual anchor if it exists
 - Ask: "Draft a Visual Identity Statement for this game. Provide: (1) a one-line visual rule that could resolve any visual decision ambiguity, (2) 2–3 supporting visual principles, each with a one-sentence design test ('when X is ambiguous, this principle says choose Y'). Anchor all principles directly in the stated pillars — each principle must serve a specific pillar. (From a one-page brief, which has no pillars, anchor them in its pitch and "what they feel" line.)"
 
-Present the art-director's draft to the user. Use `ask the user`:
+Present the draft to the user, identifying parent authorship or the actual delegate. Use `ask the user`:
 - Options: `[A] Lock this in and write it to design/art/art-bible.md` / `[B] Revise the one-liner` / `[C] Revise a supporting principle` / `[D] Describe my own direction`
 
 Write the approved section to file immediately.
@@ -203,7 +206,7 @@ For each major game state (e.g., exploration, combat, victory, defeat, menus —
 
 **Art-director expertise for Sections 2–4 — one coherent draft, prepared here.**
 Apply that expertise in the parent, or use one delegated brief when authorized and
-supported by actual host tools. Use the locked Visual Identity Statement and pillar
+supported by actual host tools and capacity. Use the locked Visual Identity Statement and pillar
 set for all three sections, and label parent work or actual participants accurately:
 
 1. **Mood & atmosphere** — "Define mood and atmosphere targets for each major game state in this game. Be specific — 'dark and foreboding' is not enough. Name the exact emotional target, the lighting character (warm/cool, high/low contrast, time of day direction), and at least one visual element that carries the mood. Each game state must feel visually distinct from the others."
@@ -229,7 +232,7 @@ Cover:
 - Hero shapes vs. supporting shapes (what draws the eye, what recedes?)
 
 **Draft source**: the coherent Sections 2–4 draft prepared under Section 2 — use the
-shape-language block it returned. Do not spawn again.
+shape-language block already prepared. A delegated path needs no additional call for this block.
 
 Write the approved section to file immediately.
 
@@ -245,7 +248,7 @@ Cover:
 - Colorblind safety: which semantic colors need shape/icon/sound backup
 
 **Draft source**: the coherent Sections 2–4 draft prepared under Section 2 — use the
-colour-system block it returned. Do not spawn again.
+colour-system block already prepared. A delegated path needs no additional call for this block.
 
 Write the approved section to file immediately.
 
@@ -259,7 +262,7 @@ These sections translate the visual identity into concrete production rules. The
 
 **Art-director expertise for Sections 5–6 — one coherent draft, prepared here.**
 Apply that expertise in the parent, or use one delegated brief when authorized and
-supported by actual host tools. Use sections 1–4 as shared context for both:
+supported by actual host tools and capacity. Use sections 1–4 as shared context for both:
 
 1. **Character design direction** — "Cover: visual archetype for the player character (if any), distinguishing feature rules per character type (how do players tell enemies/NPCs/allies apart at a glance?), expression/pose style targets (stiff/expressive/realistic/exaggerated), and LOD philosophy (how much detail is preserved at game camera distance?)."
 2. **Environment design language** — "Cover: architectural style and its relationship to the world's culture/history, texture philosophy (painted vs. PBR vs. stylized — why this choice for this game?), prop density rules (sparse/dense — what drives the choice per area type?), and environmental storytelling guidelines (what visual details should tell the story without text?)."
@@ -273,7 +276,7 @@ Present **Section 5** first, approve, write to file, then Section 6.
 ### Section 6: Environment Design Language
 
 **Draft source**: the coherent Sections 5–6 draft prepared under Section 5 — use the
-environment block it returned. Do not spawn again.
+environment block already prepared. A delegated path needs no additional call for this block.
 
 Write the approved section to file.
 
@@ -303,7 +306,7 @@ Write the approved section to file.
 
 **Goal**: A curated reference set that is specific about what to take and what to avoid from each source.
 
-**Agent delegation**: Spawn `art-director` via native delegation when authorized with the completed sections 1–8. Ask: "Compile a reference direction for this game. Provide 3–5 reference sources (games, films, art styles, or specific artists). For each: name it, specify exactly what visual element to draw from it (not 'the general aesthetic' — a specific technique, color choice, or compositional rule), and specify what to explicitly avoid or diverge from (to prevent the 'trying to copy X' reading). References should be additive — no two references should be pointing in exactly the same direction."
+**Required professional work**: the parent applies art-director expertise, or uses an authorized delegate when user authorization, actual host tools and capacity permit. Use the completed sections 1–8. Ask: "Compile a reference direction for this game. Provide 3–5 reference sources (games, films, art styles, or specific artists). For each: name it, specify exactly what visual element to draw from it (not 'the general aesthetic' — a specific technique, color choice, or compositional rule), and specify what to explicitly avoid or diverge from (to prevent the 'trying to copy X' reading). References should be additive — no two references should be pointing in exactly the same direction."
 
 Write the approved section to file.
 
@@ -311,12 +314,12 @@ Write the approved section to file.
 
 ## Phase 5: Art Director Sign-Off
 
-**Review mode check** — apply before spawning AD-ART-BIBLE:
+**Review mode check** — apply before the AD-ART-BIBLE assessment:
 - `solo` → skip. Note: "AD-ART-BIBLE skipped — Solo mode." Then record the skip
   (below) and proceed to Phase 6.
 - `lean` → skip (not a PHASE-GATE). Note: "AD-ART-BIBLE skipped — Lean mode."
   Then record the skip (below) and proceed to Phase 6.
-- `full` → spawn as normal.
+- `full` → perform the required art-director assessment through the parent or an authorized delegate.
 
 On either skip, ask "May I record the skipped sign-off in
 `design/art/art-bible.md`'s header?" and, on yes, replace the header's
@@ -324,7 +327,7 @@ On either skip, ask "May I record the skipped sign-off in
 `> **Art Director Sign-Off (AD-ART-BIBLE)**: SKIPPED [date] — [solo|lean] mode`
 — the gate accepts either form as a recorded sign-off.
 
-After all sections are complete (or the scoped set from Phase 1 is complete), spawn `art-director` via native delegation when authorized using gate **AD-ART-BIBLE** (`.game-studio/resources/docs/director-gates/ad-art-bible.md`).
+After all sections are complete (or the scoped set from Phase 1 is complete), the parent applies art-director expertise, or uses an authorized delegate when user authorization, actual host tools and capacity permit. Read and apply gate **AD-ART-BIBLE** (`.game-studio/resources/docs/director-gates/ad-art-bible.md`). Label a parent assessment as parent work, not an independent review or another person's sign-off; record the actual reviewer for a delegated assessment.
 
 Pass: the art bible path (`design/art/art-bible.md`); the game pillars and core
 fantasy; the platform and performance constraints (`platform.*` and
@@ -334,10 +337,11 @@ Phase 0 read the one-page brief, pass its pitch and "what they feel" line as the
 pillars and fantasy, and its "Art & audio direction" line as the anchor.
 
 Handle verdict per standard rules in `director-gates.md`.
-On `Revise flagged items`, or to resolve a REJECT, the section's own specialist
-— `art-director`, with `ux-designer` for Section 7 and `technical-artist` for
-Section 8 — re-drafts each flagged section, which is then presented, approved
-and written like any other section before `REVISED [date]` is recorded.
+On `Revise flagged items`, or to resolve a REJECT, apply the section's required
+expertise in the parent or through an authorized delegate — art-director, with
+ux-designer for Section 7 and technical-artist for Section 8. Re-draft each flagged
+section, then present, approve and write it like any other section before
+`REVISED [date]` is recorded.
 A `NOT ASSESSED` answer is never an approval: name the missing input, then
 supply it and re-run the gate, or record `NOT ASSESSED`.
 Record the verdict in the art bible's status header:

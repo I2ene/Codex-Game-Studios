@@ -37,6 +37,66 @@ class WorkflowBranchTests(unittest.TestCase):
             "downstream protocol": r"Collaborative Protocol[^\n]*(?:draft|write)",
         }), [])
 
+    def test_art_bible_authoring_policy_agrees_across_phase_effects_and_tail(self):
+        workflow = (ROOT / ".agents/skills/gs-art-bible/references/workflow.md").read_text(encoding="utf-8")
+        effects = (ROOT / ".game-studio/resources/docs/effects-map.md").read_text(encoding="utf-8")
+        phase = section(workflow, "## Phase 2: Visual Identity Foundation (Sections 1–4)")
+        policy = phase.split("### Section 1:")[0]
+        note = effects.split("- **art-bible**", 1)[1].split("- **dev-story**", 1)[0]
+        protocol = section(workflow, "## Collaborative Protocol")
+        for name, scoped in [("Phase 2 policy", policy), ("effects-map art-bible", note),
+                             ("Collaborative Protocol", protocol)]:
+            with self.subTest(scope=name):
+                normalized = re.sub(r"\s+", " ", scoped)
+                self.assertNotRegex(normalized, r"(?i)delegation (?:is|being) mandatory|always spawns|every section carries a specialist spawn")
+                self.assertEqual(missing_clauses(scoped, {
+                    "expertise applied by parent or delegate": r"parent[^\n]*expertise[^\n]*authorized delegate",
+                    "section approval and write remain individual": r"(?:[Ww]rite each section[^\n]*approval|[Pp]er.section[^\n]*approval[^\n]*writ)",
+                }), [])
+
+        self.assertIn(".game-studio/resources/docs/effects-map.md", policy)
+        for name, scoped in [("Phase 2 policy", policy), ("effects-map art-bible", note)]:
+            with self.subTest(delegation_scope=name):
+                self.assertRegex(re.sub(r"\s+", " ", scoped),
+                                 r"user authorization, actual host tools and capacity")
+        framing = section(workflow, "## Phase 1: Framing")
+        self.assertNotRegex(re.sub(r"\s+", " ", framing), r"every authored section carries a specialist spawn")
+        self.assertRegex(re.sub(r"\s+", " ", framing), r"(?i)delegat[^.]*cost[^.]*only[^.]*authorized")
+
+    def test_art_bible_keeps_foundation_coherence_approval_and_gate(self):
+        text = (ROOT / ".agents/skills/gs-art-bible/references/workflow.md").read_text(encoding="utf-8")
+        phase = section(text, "## Phase 2: Visual Identity Foundation (Sections 1–4)")
+        policy = re.sub(r"\s+", " ", phase.split("### Section 1:")[0])
+        self.assertRegex(policy, r"Section 1[^.]*approved[^.]*written[^.]*before[^.]*2–4")
+        two = section(text, "### Section 2: Mood & Atmosphere")
+        five = section(text, "### Section 5: Character Design Direction")
+        self.assertIn("mutually consistent", two)
+        self.assertRegex(two, r"palette must serve the mood")
+        self.assertIn("shape hierarchy", two)
+        self.assertRegex(two, r"Section 2[^\n]*approve[^\n]*write")
+        self.assertIn("sections 1–4 as shared context", five)
+        self.assertIn("legible against each other", five)
+        self.assertRegex(five, r"Section 5[^\n]*approve[^\n]*write[^\n]*Section 6")
+        for heading in ["### Section 1: Visual Identity Statement",
+                        "## Phase 4: Reference Direction (Section 9)",
+                        "## Phase 5: Art Director Sign-Off"]:
+            with self.subTest(phase=heading):
+                self.assertRegex(section(text, heading), r"parent[^\n]*expertise[^\n]*authorized delegate")
+        seven = section(text, "### Section 7: UI/HUD Visual Direction")
+        eight = section(text, "### Section 8: Asset Standards")
+        for scoped, role in [(seven, "ux-designer"), (eight, "technical-artist")]:
+            self.assertIn(role, scoped)
+            self.assertIn("ask the user", scoped)
+        gate = section(text, "## Phase 5: Art Director Sign-Off")
+        self.assertIn("AD-ART-BIBLE", gate)
+        self.assertRegex(gate, r"full[^\n]*assessment")
+        self.assertIn("NOT ASSESSED", gate)
+        self.assertRegex(gate, r"parent[^\n]*not an independent review")
+        checks = domain_checks(case((TESTING / "skills/art-bible.md").read_text(encoding="utf-8"), 1))
+        self.assertRegex(checks, r"Phase 2[^\n]*effects-map[^\n]*Collaborative Protocol")
+        self.assertRegex(checks, r"Section 1[^\n]*approved[^\n]*written[^\n]*2–4")
+        self.assertRegex(checks, r"Sections 5–6[^\n]*legible[^\n]*approval[^\n]*write")
+
     def test_release_phase_five_collects_applicable_completed_parent_reviews(self):
         text = (ROOT / ".agents/skills/gs-team-release/references/workflow.md").read_text(encoding="utf-8")
         gate = section(text, "### Phase 5: Go/No-Go")

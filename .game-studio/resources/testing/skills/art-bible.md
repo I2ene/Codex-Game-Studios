@@ -26,10 +26,14 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] The Scope tab marks "Full bible — all 9 sections" as Recommended and says why
 - [ ] Every section applies its required specialist expertise through labeled parent work or an authorized delegate; actual contributors are recorded.
-- [ ] In collaborative mode with delegation unavailable, the parent drafts the required section bodies and records their specialist basis; the Collaborative Protocol permits those drafts and writes after each section's approval without inventing independent review.
+- [ ] In collaborative mode with delegation unavailable, the parent drafts the required section bodies and records their specialist basis; Phase 2, the art-bible effects-map note and the Collaborative Protocol all permit that work, with each section's approval and write, without requiring calls or inventing independent review.
+- [ ] Section 1 is approved and written before drafting Sections 2–4; an already complete locked foundation is reused without rewriting.
 - [ ] Sections 2–4 form one coherent art-director draft, applied by the parent or requested in a single authorized delegated brief; they are presented, approved and written one section at a time.
+- [ ] Sections 5–6 share the completed sections 1–4, keep characters and environments legible against each other, and retain separate approval and write steps.
+- [ ] Call counts, single delegated briefs and batching apply only with user authorization, actual host tools and capacity; no calls are required on the parent path.
+- [ ] Section 7 covers art direction and UX, Section 8 art direction and technical constraints, Section 9 reference direction, and the full-mode AD-ART-BIBLE assessment remains required through parent expertise or an authorized delegate; authorship and review sources are accurate.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
-- [ ] AD-ART-BIBLE consults only after all nine sections are written, as `art-director` (the agent its gate definition names)
+- [ ] AD-ART-BIBLE runs only after all nine sections are written, applying the art-director gate definition through a labelled parent assessment or an authorized delegate.
 - [ ] AD-ART-BIBLE is passed all four context items: the art bible path, the pillars and core fantasy, the platform and performance constraints, and the visual identity anchor
 - [ ] The APPROVE verdict is recorded in the art bible's status header line
 - [ ] The closing options include `$gs-create-architecture` and "Stop here"
@@ -106,7 +110,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] (a) The game brief is used when the game concept is absent
 - [ ] (a) The skill states no art bible is required at `minimal` before asking the Scope question
-- [ ] (a) `art-director` still drafts the sections in solo mode
+- [ ] (a) Art-director expertise still covers the chosen sections in solo mode, through parent work or an authorized delegate; skipping the final gate does not skip authoring expertise.
 - [ ] (a) AD-ART-BIBLE is not consulted; the skip note reads "AD-ART-BIBLE skipped — Solo mode.", and the header records the SKIPPED sign-off line with the mode and date
 - [ ] (a) The Phase 6 option pool is the `workflow: minimal` set, not the `standard`/`full` GDD pool
 - [ ] (b) The skill stops with the `$gs-brainstorm` message and writes nothing
