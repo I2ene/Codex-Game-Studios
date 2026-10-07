@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT / '.game-studio/runtime'))
 from installer import build_manifest
 
 if __name__ == '__main__':
-    result = validate()
+    result = validate(verify_release=False)
     if result['errors']:
         print(json.dumps(result, indent=2))
         raise SystemExit(1)

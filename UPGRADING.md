@@ -28,6 +28,8 @@ blocks another installation. Inspect affected files and restore from your backup
 before removing the lock and retrying. Do not run concurrent installers or edit the
 managed payload during installation. Dry run never writes or creates the target.
 
+## From upstream 1.x
+
 From upstream 1.x, use a normal native install followed by gs-adopt. Old .claude
 settings, @ imports and permission grants are not Codex configuration. Preserve
 professional records and map applicable preferences explicitly to project.yaml.
@@ -36,4 +38,14 @@ and finalization are unsupported. Old SHA-1 review logs need a fresh reviewed SH
 JSON baseline.
 
 See [install](docs/install.md), [integration](docs/integration.md) and
-[validation procedure and evidence boundaries](docs/migration/verification.md).
+[validation boundaries](docs/validation.md).
+
+## 2.0.0 to 2.0.1
+
+The skill names, role names, runtime commands, configuration schema and ownership
+ledger remain compatible. This release removes retired host sources and process
+records from the distribution repository; those were never installed into consumers.
+It adds native professional evaluation scenarios and registry templates, and updates
+managed documentation. Installation seeds absent configuration with the actual
+release version. Existing project.yaml version text is preserved; install-state.json
+remains authoritative. Review managed-file conflicts using the normal upgrade flow.
