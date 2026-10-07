@@ -46,7 +46,7 @@ case's inputs, professional scope, artifact destinations and expected verdict.
 **Domain checks:**
 - [ ] Active-set line naming `team.size: studio` appears before the first agent is consulted
 - [ ] Phase 2 cuts no `release/*` branch: the release candidate is the version-bump commit on `main`
-- [ ] Phase 3 covers QA and build verification independently; all required quality results precede Phase 4
+- [ ] Phase 3 covers QA and build verification independently; all applicable Phase 3 results join the Phase 4 assessments at Phase 5 before Go/No-Go
 - [ ] security-engineer is NOT consulted when `platform.online` and `platform.multiplayer` are false and there is no player data, and the Phase 3 output says so by name (e.g. `security-engineer: not consulted — platform.online: false, platform.multiplayer: false, no player data`) — the skip is never silent
 - [ ] Each agent is told its own named output file — parallel Phase 3 and Phase 4 agents never share one — and the orchestrator confirms the file exists before treating the phase as done
 - [ ] Phase 5 producer collects sign-offs from qa-lead, release-manager, devops-engineer and technical-director before declaring GO
@@ -94,9 +94,10 @@ case's inputs, professional scope, artifact destinations and expected verdict.
 **Domain checks:**
 - [ ] security-engineer IS consulted in Phase 3 when the game has online features, multiplayer, or player data — this is not skipped
 - [ ] network-programmer IS consulted in Phase 3 when the game has multiplayer
-- [ ] Phase 3 covers QA, build, security and networking independently, collecting all four results before Phase 4
+- [ ] Phase 3 covers QA, build, security and networking independently; all applicable Phase 3 results and Phase 4 assessments are collected at Phase 5 before Go/No-Go
 - [ ] security-engineer audit covers authentication, anti-cheat, and data privacy compliance
 - [ ] Phase 5 producer sign-off collection includes security-engineer and network-programmer alongside qa-lead, release-manager, devops-engineer and technical-director
+- [ ] Completed parent security, network and technical-director assessments enter Phase 5 with evidence and parent source labels even when no delegate was launched; missing or NOT ASSESSED results never become fabricated approval.
 - [ ] Phase 6 deployment does not begin until security-engineer has signed off
 - [ ] Skill does NOT treat security-engineer as optional for a game with player data
 
@@ -191,6 +192,9 @@ In both variants `project.stage` is `Release`.
 
 ## Applicable domain checks
 
+- [ ] Phase 3 and Phase 4 may overlap for independent work only with user authorization, actual tools and capacity for delegation; this is not a mandatory launch requirement.
+- [ ] The parent may execute sequentially; queue delegated work when capacity is limited. Phase 5 joins every applicable result before Go/No-Go.
+- [ ] Real data dependencies still wait for the particular build or prior finding needed; independent checks do not acquire a blanket Phase 3-to-4 order.
 - [ ] Before professional work starts, resolve and announce team-size scope, parent coverage and any actual participants. At `team.size: individual`: release-manager, with other release perspectives routed through it. Name inactive perspectives and unassessed work accurately.
 - [ ] Missing named artifacts fail their phase. Each parallel participant has a distinct destination, and every required sign-off is collected before a go/no-go decision.
 - [ ] Unknown online/multiplayer/player-data scope is resolved rather than assumed false; skipped security/network work is named with reasons.

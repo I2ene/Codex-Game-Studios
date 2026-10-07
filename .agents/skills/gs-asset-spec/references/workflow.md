@@ -391,7 +391,7 @@ If a match is found: reference the existing ASSET-ID rather than creating a dupl
 
 ## Error Recovery Protocol
 
-If any spawned agent returns BLOCKED or cannot complete:
+If required parent work or an authorized delegate is BLOCKED or cannot complete:
 
 1. Surface immediately: "[AgentName]: BLOCKED — [reason]"
 2. In `lean` mode or if `technical-artist` blocks: proceed with art-director output only — note that technical constraints were not validated

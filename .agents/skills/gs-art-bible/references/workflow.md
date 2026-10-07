@@ -387,16 +387,12 @@ Assign letters A, B, C… only to the options actually included. Mark the most l
 `autonomous` modes, see `.game-studio/resources/docs/automation-modes.md` — the rules below
 describe what collaborative mode requires, not universal behavior.
 
-Every section follows: **Question → Options → Decision → Draft (from art-director agent) → Approval → Write to file**
+Every section follows: **Question → Options → Decision → Draft (required specialist expertise) → Approval → Write to file**
 
-- Never draft a section yourself — every section's content comes from the
-  relevant specialist. One delegation may cover several sections (2–4 share a
-  call, as do 5–6), but no section may be written from the orchestrator's own
-  judgement instead of an agent's.
-- Write each section to file immediately after approval — do not batch **the
-  writes or the approvals**. Batching applies only to the delegation call; the
-  user still sees, approves and commits one section at a time.
-- Surface all agent disagreements to the user — never silently resolve conflicts between art-director and technical-artist
+- The parent applies the required specialist expertise, or uses an authorized delegate with actual host tools. This includes drafting section bodies when delegation is unavailable; professional scope and user decisions still govern the draft.
+- Label parent work and record each actual participant accurately; parent-applied expertise is not an independent review or another person's sign-off.
+- Write each section to file immediately after approval — do not batch the writes or approvals. A coherent draft may cover sections 2–4 or 5–6, but the user reviews and approves each section separately. Existing authorization remains valid; resolve missing decisions rather than repeating consent already given.
+- Surface discipline disagreements to the user — never silently resolve conflicts between art-director and technical-artist
 - The art bible is a constraint document: it restricts future decisions in exchange for visual coherence. Every section should feel like it narrows the solution space productively.
 
 ---

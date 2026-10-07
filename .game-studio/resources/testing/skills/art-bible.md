@@ -26,6 +26,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] The Scope tab marks "Full bible — all 9 sections" as Recommended and says why
 - [ ] Every section applies its required specialist expertise through labeled parent work or an authorized delegate; actual contributors are recorded.
+- [ ] In collaborative mode with delegation unavailable, the parent drafts the required section bodies and records their specialist basis; the Collaborative Protocol permits those drafts and writes after each section's approval without inventing independent review.
 - [ ] Sections 2–4 form one coherent art-director draft, applied by the parent or requested in a single authorized delegated brief; they are presented, approved and written one section at a time.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] AD-ART-BIBLE consults only after all nine sections are written, as `art-director` (the agent its gate definition names)
