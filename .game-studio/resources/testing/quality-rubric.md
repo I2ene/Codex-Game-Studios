@@ -27,10 +27,10 @@ auto-advancing stage and must respect the three review modes.
 
 | Metric | PASS criteria |
 |---|---|
-| **G1 — Review mode read** | Skill reads `review_mode` (and `workflow`) from its resolved config block — `modes.review_mode`, the legacy `production/review-mode.txt`, else the `modes.rigor` value — before deciding which directors to spawn |
+| **G1 — Review mode read** | Skill reads `review_mode` (and `workflow`) from its resolved config block — `modes.review_mode`, the legacy `production/review-mode.txt`, else the `modes.rigor` value — before deciding which directors to consult |
 | **G2 — Director perspectives** | Unless solo, apply the panel the workflow tier sets (minimal PR, standard TD + PR, full CD/TD/PR/AD). Delegate only when useful and authorized; label parent reviews and omitted perspectives |
 | **G3 — Lean mode: PHASE-GATE only** | In `lean` mode, only `*-PHASE-GATE` gates run; inline gates (CD-PILLARS, TD-ARCHITECTURE, etc.) are skipped |
-| **G4 — Solo mode: no directors** | In `solo` mode, no director gates spawn; each is noted as "skipped — Solo mode" |
+| **G4 — Solo mode: no directors** | In `solo` mode, no director gates run; each is noted as "skipped — Solo mode" |
 | **G5 — Stage ownership** | Advance stage only within existing authorization and after explaining applicable gates, missing inputs and human decisions |
 
 ---
@@ -47,7 +47,7 @@ read-only and must not trigger director gates during the analysis phase.
 | **R1 — Review boundary** | Review changes no source document; apply edits only when authorized. Routine review logs need no repeated prompt when already in scope |
 | **R2 — 8-section check** | Skill evaluates all 8 required GDD sections (or equivalent architectural sections) explicitly |
 | **R3 — Correct verdict vocabulary** | Verdict is exactly one of: APPROVED / NEEDS REVISION / MAJOR REVISION NEEDED / NOT ASSESSED (design-review, ux-review) or PASS / CONCERNS / FAIL / NOT ASSESSED (architecture-review, review-all-gdds) |
-| **R4 — No director gates during analysis** | Skill does not spawn director gates during its analysis phases; post-analysis director review is acceptable when the skill's scope and stakes warrant it |
+| **R4 — No director gates during analysis** | Skill does not consult director gates during its analysis phases; post-analysis director review is acceptable when the skill's scope and stakes warrant it |
 | **R5 — Structured findings** | Output contains a per-section status table or checklist before the final verdict |
 
 > **Exceptions:**
@@ -89,7 +89,7 @@ multi-dimensional verdicts and integrate correctly with director gate mode.
 | **RD1 — Multi-dimensional check** | Skill checks ≥3 independent dimensions (e.g., Design, Architecture, Scope, DoD) and reports each separately |
 | **RD2 — Four verdict levels** | Verdict hierarchy is clearly defined, with NOT ASSESSED between the pass values and the failure values: READY > NOT ASSESSED > NEEDS WORK > BLOCKED (story-readiness); COMPLETE > COMPLETE WITH NOTES > NOT ASSESSED > BLOCKED (story-done) |
 | **RD3 — BLOCKED requires external action** | BLOCKED verdict is reserved for issues that cannot be fixed by the story author alone (e.g., Proposed ADR, unresolvable dependency) |
-| **RD4 — Director gate at correct mode** | QL-STORY-READY or LP-CODE-REVIEW gate spawns in `full` mode, skips in `lean`/`solo` with a noted skip message |
+| **RD4 — Director gate at correct mode** | QL-STORY-READY or LP-CODE-REVIEW gate consult in `full` mode, skips in `lean`/`solo` with a noted skip message |
 | **RD5 — Next-story handoff** | After completion, skill surfaces the next READY story from the active sprint. With no sprint plan, `$gs-story-done` names the next story in the build order, and `$gs-story-readiness` says no sprint file was found |
 
 ---
@@ -124,7 +124,7 @@ analysis and separate analysis findings from authorized follow-up edits.
 | **AN1 — Read-only scan** | Analysis phase changes nothing: no Write or Edit and no mutating Bash during the scan itself (read-only commands such as `git log` or file-size measurement are fine) |
 | **AN2 — Structured findings table** | Output includes a findings table or checklist (not prose only) with severity/priority per finding |
 | **AN3 — Authorized writes** | Follow existing task authorization; ask for unresolved material actions outside scope, without repeated per-file prompts |
-| **AN4 — No director gates during analysis** | Analysis skills do not spawn director gates; they produce findings for human review |
+| **AN4 — No director gates during analysis** | Analysis skills do not consult director gates; they produce findings for human review |
 
 ---
 
@@ -137,11 +137,11 @@ Team skills orchestrate multiple specialist agents for a department. They identi
 
 | Metric | PASS criteria |
 |---|---|
-| **T1 — Named agent list** | Skill explicitly names which agents it spawns and in what order |
+| **T1 — Named agent list** | Skill explicitly names which disciplines it consults and in what order |
 | **T2 — Appropriate execution** | Independent disciplines may be applied sequentially by the parent or delegated concurrently when useful, authorized and supported |
-| **T3 — BLOCKED surfacing** | If any spawned agent returns BLOCKED or fails, skill surfaces it immediately and halts dependent work — never silently skips |
-| **T4 — Collect all verdicts before proceeding** | Dependent phases wait for all parallel agents to complete before proceeding |
-| **T5 — Usage error on no argument** | If a required argument (e.g., feature name) is missing, skill either outputs a usage hint and stops, or infers the argument (e.g., the release version, the active sprint) and confirms it with the user — in both cases before spawning any agent |
+| **T3 — BLOCKED surfacing** | If any consulted participant or parent discipline review returns BLOCKED or fails, skill surfaces it immediately and halts dependent work — never silently skips |
+| **T4 — Collect all verdicts before proceeding** | Dependent phases wait for all required discipline reviews to complete before proceeding |
+| **T5 — Usage error on no argument** | If a required argument (e.g., feature name) is missing, skill either outputs a usage hint and stops, or infers the argument (e.g., the release version, the active sprint) and confirms it with the user — in both cases before consulting the relevant discipline |
 
 ---
 
@@ -169,13 +169,13 @@ regression-suite, qa-plan, bug-triage, bug-report, playtest-report, asset-spec,
 reverse-document, project-stage-detect, setup-engine, skill-test, skill-improve,
 day-one-patch, and any other skills not in categories above
 
-Utility skills pass the 7 standard static checks. If they happen to spawn director
+Utility skills pass the applicable native static checks. If they happen to consult director
 gates, the gate mode logic must also be correct.
 
 | Metric | PASS criteria |
 |---|---|
 | **U1 — Passes all 7 static checks** | Native metadata/resource format checks pass; task behavior is evaluated separately |
-| **U2 — Gate mode correct (if applicable)** | If the skill spawns any director gate, it reads review-mode and applies full/lean/solo logic correctly |
+| **U2 — Gate mode correct (if applicable)** | If the skill consult any director gate, it reads review-mode and applies full/lean/solo logic correctly |
 
 ---
 
@@ -252,4 +252,4 @@ analytics-engineer, economy-designer, localization-lead
 |---|---|
 | **O1 — Domain ownership clear** | Agent description clearly states what it owns (pipeline, releases, economy, etc.) |
 | **O2 — Defers implementation** | Does not write game logic or engine code; delegates to appropriate specialist |
-| **O3 — Toolset matches role** | `tools:` in frontmatter matches the operational (not coding) nature of the role |
+| **O3 — Toolset matches role** | Use of actual available tools stays within the role's operational domain and current authorization |

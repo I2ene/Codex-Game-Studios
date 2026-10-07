@@ -2,13 +2,13 @@
 
 This repository distributes Codex Game Studios; it is not a game project. Preserve
 MIT/Donchitos attribution, professional lifecycle procedures, templates and contracts.
-`.claude/` and `CCGS Skill Testing Framework/` are archived upstream reference sources,
-excluded from installation. Never treat them as Codex runtime instructions.
+Native content is authoritative. Retired host sources are available in Git history;
+do not restore runtime entries or regenerate reviewed content from historical files.
 
-Run Python 3.11+ with requirements.txt in a local environment. Validate changed runtime
-behavior with targeted unittest checks; run tools/validate.py for native content changes.
-Do not regenerate migrated content blindly: tools/migrate_upstream.py is a one-time
-baseline adapter and subsequent reviewed native edits are authoritative.
+Use Python 3.11+ with requirements.txt in a local environment. Validate changed
+runtime behavior with targeted unittest checks. Run tools/validate.py for content,
+document links, evaluation catalog and release integrity. After reviewed payload
+changes, run tools/build_release.py, then validate again. See CONTRIBUTING.md.
 
 Consumer packaging consists of .agents/skills/gs-*, .codex/agents/gs-* and .game-studio.
 Installer changes must preserve user files, reject unsafe paths and record ownership.
