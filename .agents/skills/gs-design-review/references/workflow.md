@@ -255,7 +255,7 @@ specialist review. Parallelism is optional for independent work; dependent work 
 
 ### Step 3 — Senior lead review
 
-After all specialists respond, spawn `creative-director` as the **senior reviewer**:
+After all required specialist findings are available, apply `creative-director` expertise as the **senior reviewer** in the parent, or delegate when authorized with available host tools. Label parent synthesis accurately:
 - Provide: the GDD, all specialist findings, any disagreements between them
 - Ask: "Synthesise these findings. What are the most important issues? Do you agree with the specialists? What is your overall verdict on this design — APPROVED, NEEDS REVISION or MAJOR REVISION NEEDED?"
 - The creative-director's synthesis becomes the **final verdict** in Phase 4, in this skill's verdict words — never a director-gate word such as READY or REJECT.

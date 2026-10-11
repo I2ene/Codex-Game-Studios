@@ -1,4 +1,4 @@
-"""Regressions for the concrete Astra workflow-interface findings."""
+"""Regressions for native workflow interfaces."""
 import importlib
 import json
 import os

@@ -12,6 +12,7 @@ Read the target native skill and relevant contract. Check name/description, trig
 scope, resource links, actual tool availability and mode-dependent outputs. Use real
 representative tasks in an isolated project to exercise behavior; record host/model
 as observed without overriding them. Distinguish FORMAT, EXECUTED and NOT ASSESSED.
-Use upstream test specifications as professional rubrics only: their Claude tooling,
-frontmatter and ask-before-every-write assertions are archived and not native tests.
+Read .game-studio/resources/testing/README.md and catalog.yaml for native evaluation
+scenarios, domain checks and the category rubric. Scenarios are guidance, not
+executed test results; the current native procedure governs host mechanics.
 Missing game/engine input cannot produce a passed balance/performance/build report.

@@ -262,7 +262,7 @@ requires it — without [system], the 30-second loop can't function."
 **How to phrase the reasoning** — this governs what you *say*, not a column you
 write. Neither table has a `Why` column: Systems Enumeration is
 `# / Name / Category / Priority / Status / Design Doc / Depends On`, and
-Recommended Design Order is `Order / System / Priority / Layer / Delegation brief (s) /
+Recommended Design Order is `Order / System / Priority / Layer / Expertise /
 Est. Effort`. The rationale lives in the conversation above and, for anything
 the user should still see after the session, in the index's `## Overview`
 paragraph. Do not invent a column for it.

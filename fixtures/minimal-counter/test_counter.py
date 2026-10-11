@@ -17,8 +17,9 @@ class CounterTests(unittest.TestCase):
         for value, limit in [(-1, 2), (3, 2), (0, -1)]:
             with self.assertRaises(ValueError):
                 increment(value, limit)
-        with self.assertRaises(TypeError):
-            increment(True, 2)
+        for value, limit in [(True, 2), (0, True), (1.5, 2), (0, "2")]:
+            with self.subTest(value=value, limit=limit), self.assertRaises(TypeError):
+                increment(value, limit)
 
 
 if __name__ == '__main__':

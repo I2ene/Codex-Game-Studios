@@ -677,9 +677,7 @@ spawn `creative-director` via native delegation when authorized:
 - Ask: "Shape the Player Fantasy for this system. What emotion or power fantasy should it serve? What player moment should we anchor to? What tone and language fits the game's established feeling? Be specific — give me 2-3 candidate framings."
 - Collect the creative-director's framings and present them to the user alongside the draft.
 
-**Do NOT draft Section B without first consulting `creative-director`.** The framing
-answer tells us *what kind* of fantasy it is; the creative-director shapes *how it's
-described* — tone, language, the specific player moment to anchor to.
+**Do NOT draft Section B before its applicable creative-director expertise review, performed by the parent or an authorized delegate.** Apply the section's review-mode check first; when skipped, retain the named skip note. The framing answer sets the kind of fantasy; this review shapes tone, language and the player moment to anchor to.
 
 ---
 
@@ -708,13 +706,13 @@ This is usually the largest section. Break it into sub-sections:
 
 **Professional expertise review (required; delegation optional)**: Before drafting Section C, apply relevant specialist expertise in the parent, or delegate independent reviews only when authorized and available:
 - Look up the system category in the routing table (Section 6 of this skill)
-- Spawn the Primary Agent AND Supporting Delegation brief (s) listed for this category
+- Cover the primary and supporting expertise listed for this category in the parent, or through authorized delegation with available tools and capacity
 - Provide each agent: system name, game concept summary, pillar set, dependency GDD excerpts, the specific section being worked on
 - Collect their findings before drafting
 - Surface any disagreements between agents to the user via `ask the user`
 - Draft only after receiving specialist input
 
-**Do NOT draft Section C without first consulting the appropriate specialists.** A `systems-designer` reviewing rules and mechanics will catch design gaps the main session cannot.
+**Do NOT draft Section C before its applicable routing-table expertise review, performed by the parent or authorized delegates.** Apply the section's review-mode check first and retain explicit skip notes. Cover both primary and supporting responsibilities, collect their findings and surface disagreements before drafting; label parent analysis accurately.
 
 **Cross-reference**: For each interaction listed, verify it matches what the
 dependency GDD specifies. If a dependency defines a value or formula and this
@@ -1033,8 +1031,7 @@ GDD without it silently forces those consumers back to full reads.
   (`design/gdd/systems-index.md`); `Key deps` from the Dependencies section just
   written (system names, or `None`).
 
-Replace the `[To be designed]` Summary placeholder in the skeleton. Then apply
-the section cycle's Write step as for any other section.
+Replace the `[To be designed]` Summary placeholder in the skeleton. In retrofit mode, populate an empty or placeholder Summary and any missing Quick reference; preserve completed Summary prose and completed section bodies unless the user authorizes a separate revision. The retrofit proposal names these unfinished summary fields as well as the incomplete design sections. Then apply the section cycle's Write step and the file readback below.
 
 ### 5a: Self-Check
 
@@ -1222,7 +1219,7 @@ actually does. Every category has at least one row, so nothing falls through.
 
 If two rows fit, spawn the union of their Primary agents and say why.
 
-| System type | Primary Agent | Supporting Delegation brief (s) |
+| System type | Primary Agent | Supporting expertise |
 |----------------|---------------|---------------------|
 | **Foundation/Infrastructure** (event bus, save/load, scene mgmt, service locator) | `systems-designer` | `gameplay-programmer` (feasibility), `engine-programmer` (engine integration) |
 | Combat, damage, health | `game-designer` | `systems-designer` (formulas), `ai-programmer` (enemy AI), `art-director` (hit feedback visual direction, VFX intent) |
@@ -1285,8 +1282,7 @@ This skill follows the collaborative design principle at every step:
 4. **Incremental writing**: Each section is written to file immediately after approval
 5. **Session state updates**: After every section write
 6. **Cross-referencing**: Every section checks existing GDDs for conflicts
-7. **Specialist routing**: Complex sections get expert agent input, presented to
-   the user for decision — never written silently
+7. **Specialist routing**: Required expertise is applied in the parent or by an authorized delegate using actual host tools; present its findings and source to the user for decision — never write silently
 
 **Never** auto-generate the full GDD and present it as a fait accompli.
 **Never** write a section without user approval.

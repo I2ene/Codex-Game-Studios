@@ -2,7 +2,7 @@
 
 All helpers use Python 3.11+ with PyYAML 6.x. Invoke with an explicit absolute project
 root; launch from any directory. Skill metadata has name/description only. No shell
-preprocessing, @ imports, Claude tool grants or automatic memory injection exists.
+preprocessing, imported permission grants or automatic memory injection exists.
 
 `python <project-root>/.game-studio/runtime/studio.py <command> --root <project-root>`
 supports config, recover, artifacts, stories, dependencies, coherence, engine-reference, gdd-structure,
@@ -10,8 +10,7 @@ review-scope, receipts, checkpoint, settings, run and hooks. Use `--help` for ac
 arguments. Bash-prefixed examples in older engine references require a compatible
 shell or translation to the local command tool; they are never auto-executed.
 
-Repository skills are `$gs-<name>` or an ordinary natural-language request. Slash
-commands in historical reports are aliases in prose. Native roles are `gs-<role>`;
+Repository skills are `$gs-<name>` or an ordinary natural-language request. Historical slash command examples are procedural notation, not runtime entries. Native roles are `gs-<role>`;
 expertise-role examples are delegation briefs, not a tool schema. Use the available
 host delegation tool only after authorization. If it cannot select custom roles,
 pass the role's developer_instructions in the brief. Track real work in a project

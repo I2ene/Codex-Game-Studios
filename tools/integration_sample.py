@@ -1,4 +1,4 @@
-"""Execute an isolated, non-game consumer lifecycle and retain bounded evidence."""
+"""Execute an isolated, non-game consumer lifecycle and print bounded evidence."""
 import json
 import argparse
 from pathlib import Path

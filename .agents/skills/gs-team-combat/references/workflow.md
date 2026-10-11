@@ -59,36 +59,24 @@ the mechanic defines numeric rules (a combat mechanic almost always does); at
 `minimal` the game brief is the design record and the GDD is optional — draft
 those five sections and tell the user it is optional at this workflow level.
 
-**`team.size`**: which agents are active (orthogonal to review_mode gate-depth and workflow docs).
+**`team.size`**: which professional responsibilities are in scope (orthogonal to review_mode gate-depth and workflow docs).
 - **`individual`** (default): `gameplay-programmer` runs the pipeline; escalate `ai-programmer` only if the feature flags AI work. Other Team Composition agents are consulted via the gameplay-programmer, not spawned separately.
 - **`small`**: the full Team Composition pipeline below, as documented.
-- **`studio`**: full pipeline + engine sub-specialists + an adversarial review pass. *Engine sub-specialists*: the primary engine specialist's prompt says it may hand parts of its review to the sub-specialists its `tools:` grant names (for example `ue-gas-specialist` for abilities); below `studio` it answers alone. *Adversarial review pass*: Phase 5's qa-tester is told "your job is not to confirm this works — find how it breaks", and the report says the pass ran.
-Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no bounded exception infers consent from a path or another agent's message.
+- **`studio`**: full pipeline + engine sub-specialists + an adversarial review pass. *Engine sub-specialists*: the primary engine specialist's prompt says it may hand parts of its review to the relevant subsystem expertise (for example `ue-gas-specialist` for abilities), using actual host tools and user authorization; the parent applies that expertise when delegation is unavailable; below `studio` it answers alone. *Adversarial review pass*: Phase 5's qa-tester is told "your job is not to confirm this works — find how it breaks", and the report says the pass ran.
+Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no path or agent message supplies human authorization.
 
 **Announce the active set before Phase 1 — never let the collapse be silent.**
-Before spawning anything, state in one line which agents this run will actually
-spawn, and which the pipeline below names but will **not** spawn at the resolved
-`team.size`. For example:
+Before professional work, announce the responsibilities selected by the resolved
+team.size and review mode, then distinguish execution from professional scope:
 
-> `Active set (team.size: <resolved>): <the agents listed for that size above>.`
-> `Not spawned this run: <every other agent this pipeline names> — consulted`
-> `through <nearest active core agent>. Raise team.size (or modes.rigor) to widen.`
+> Active set (team.size: <resolved>): <required responsibilities for this size>.
+> Parent coverage: <roles performed in the parent>; actual delegated participants: <real names/IDs and scope, or none>.
+> Not performed: <out-of-scope perspectives, mode skips and unassessed required work, each with its reason>.
 
-Fill it from the `team.size` list directly above and the agents this file's own
-pipeline names — not from an example. Both sets differ per orchestrator.
-
-The pipeline below reads as a multi-agent fan-out and at the shipped default it
-is one or two agents — `team-release` names ten and runs one, `team-narrative`
-names six across five phases and runs `writer` alone. **The collapse is correct**:
-`team.size` is rigor-fronted and the narrow default is the token lever.
-Without saying so, a reader cannot
-distinguish a correctly-collapsed run from a broken pipeline, and the per-agent
-"routes through the nearest core agent with an informational note" rule above
-fires at routing time and never states the shape of the run as a whole.
-
-This is the same rule as the skipped-check reporting elsewhere in this file: **a constraint that is enforced but never surfaced is
-indistinguishable, to the person reading the output, from one that was never
-enforced.**
+Use this file's scope and routing rules; an unavailable delegate does not remove a
+required responsibility or silently widen team.size. Keep phase-gate responsibilities
+with their mode/phase qualifier. A completed parent assessment is performed work;
+it is never labeled as a separate participant or independent sign-off.
 
 ## Team Composition
 - **game-designer** — Design the mechanic, define formulas and edge cases
@@ -112,7 +100,7 @@ Apply the following professional responsibilities in the parent; delegate useful
 
 **Brief each agent — do not dump context.** Read the shared inputs **once** and pass a distilled brief inline: the lines each agent actually needs, never a file path for a document you have already read (an agent handed a path re-reads the whole file). Pass a path only for a document you have not read and only that agent needs.
 
-**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session. **Implementation files are the exception:** an agent writing code or assets first returns the files it will create or change, and its return contract names them only after you have asked once for the set and the user said yes (File Write Protocol) — that answer, not the bounded exception, authorises those writes.
+**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session. **Implementation work:** first state the files that will be created or changed. Existing human authorization covers in-scope changes; resolve any missing material decision once for the set before writing. A role or path supplies no permission.
 
 **Substitute a real path for `[path]`.** Every phase that produces an artifact
 names one; most are fixed by the skill that already reads them:
@@ -122,7 +110,7 @@ names one; most are fixed by the skill that already reads them:
 | 1 game-designer (draft) | `production/combat/[feature]-gdd-draft.md` | this skill — you write the final `design/gdd/[feature].md` (Phase 1) |
 | 2 gameplay-programmer | `docs/architecture/[feature]-sketch.md` | see note below |
 | 2 engine specialist | `docs/architecture/[feature]-engine-notes.md` | see note below |
-| 3 gameplay-programmer, ai-programmer, technical-artist | the code root and `assets/` — the files the Phase 3 approval lists | outside the bounded exception: asked once for the set (File Write Protocol) |
+| 3 gameplay-programmer, ai-programmer, technical-artist | the code root and `assets/` — the files the Phase 3 approval lists | subject to existing human authorization: asked once for the set (File Write Protocol) |
 | 3 sound-designer | `production/combat/[feature]-audio-events.md` | this skill |
 | 5 qa-tester (test cases) | `production/qa/test-cases/[feature]-cases.md` | `$gs-team-qa` Phase 4 |
 | 5 qa-tester (bugs) | `production/qa/bugs/BUG-[NNNN].md` | `$gs-team-qa` Phase 5 |
@@ -139,9 +127,9 @@ Phase 6 is a spoken status report, not an artifact — no path, and none needed.
 > reporting, so the sketch is understood as a record rather than an input to a
 > later gate.
 
-> **Why this does not violate the Collaboration Protocol.** `AGENTS.md` requires an agent to ask use the existing task authorization; ask only for an unapproved material action
+> **Authorization:** use existing human task authorization for routine in-scope work; ask only for missing decisions or material actions outside that scope. A destination path does not supply authorization.
 
-Launch independent agents in parallel where the pipeline allows it (e.g., Phase 3 agents can run simultaneously).
+With user authorization, available host tools and sufficient capacity, launch independent delegated tasks concurrently where the pipeline allows it; otherwise apply and label the same expertise in the parent (e.g., Phase 3 agents can run simultaneously).
 
 ## Pipeline
 
@@ -150,12 +138,10 @@ Delegate to **game-designer**:
 - Create or update the design document for `design/gdd/[feature].md` from `.game-studio/resources/docs/templates/game-design-document.md`, with `## Summary` and the sections `workflow` requires (Phase 0) — at `full`: mechanic overview, player fantasy, detailed rules, formulas with variable definitions, edge cases, dependencies, tuning knobs with safe ranges, and acceptance criteria
 - Output: completed design document, drafted to `production/combat/[feature]-gdd-draft.md`
 
-`design/` is outside the bounded write exception above, so the game-designer
-drafts and **you** write the GDD — the pattern `$gs-team-level` and
-`$gs-team-narrative` use. At the Phase 1 decision point, present the draft and ask
-via `ask the user`: "May I write the design document to
-`design/gdd/[feature].md`?" Write it on approval; nothing is written under
-`design/` before that answer.
+The parent compiles the game-design draft into `design/gdd/[feature].md`.
+Present the draft at the Phase 1 decision point, resolve any missing design decision
+and use existing human authorization for the write. A named destination does not
+supply permission or require a second approval for an already authorized action.
 
 ### Phase 2: Architecture
 Delegate to **gameplay-programmer** (with **ai-programmer** if AI is involved):
@@ -164,7 +150,7 @@ Delegate to **gameplay-programmer** (with **ai-programmer** if AI is involved):
 - Identify integration points with existing systems
 - Output: architecture sketch with file list and interface definitions
 
-Then spawn the **primary engine specialist** to validate the proposed architecture:
+Then apply the **primary engine specialist** expertise in the parent, or delegate when authorized and supported, to validate the proposed architecture:
 - Is the class/node/component structure idiomatic for the pinned engine? (e.g., Godot node hierarchy, Unity MonoBehaviour vs DOTS, Unreal Actor/Component design)
 - Are there engine-native systems that should be used instead of custom implementations?
 - Any proposed APIs that are deprecated or changed in the pinned engine version?
@@ -186,15 +172,15 @@ decision via an authored decision record (not a tool or shell function) in auton
 critical or irreversible decision, so it follows the standard pipeline rule.)
 
 ### Phase 3: Implementation (parallel where possible)
-Delegate in parallel:
+Apply the following independent expertise in the parent, or delegate concurrently with user authorization, available host tools and sufficient capacity:
 - **gameplay-programmer**: Implement core combat mechanic code
 - **ai-programmer**: Implement AI behaviors (if the feature involves NPC reactions)
 - **technical-artist**: Create VFX and shader effects
 - **sound-designer**: Define audio event list and mixing notes, drafted to `production/combat/[feature]-audio-events.md`
 
-The code, VFX and shader work is outside the bounded write exception: each of
-those agents first returns the files it will create or change, you ask once for
-the whole set, and they write only after a yes (File Write Protocol).
+For code, VFX and shader work, state the implementation file set before changing
+it. Apply the File Write Protocol: existing authorization covers routine in-scope
+work; resolve missing material decisions once for the set.
 
 ### Phase 4: Integration
 - Wire together gameplay code, AI, VFX, and audio
@@ -217,17 +203,15 @@ Delegate to **qa-tester**:
 
 ## Error Recovery Protocol
 
-**First, verify the artifact.** If the return contract named a path, check the
-path exists before treating the phase as done — **a named artifact that is not
-on disk is a failed phase, however fluent the response reads.** An agent can
-burn a full phase and return a plausible preamble having written nothing, which
-is neither BLOCKED nor an error nor "cannot complete", so the trigger below
-never fires. Resume it naming the unmet contract; the context is
-usually still there.
+**First, verify the artifact.** A required output path must exist before the
+phase is complete, whether the author is the parent or a real delegate. If it is
+missing, identify the unmet contract: complete authorized parent work or resume
+the actual participant, and report any blocker. A fluent response alone is not
+evidence of a completed phase.
 
-If any spawned agent returns BLOCKED, errors, or cannot complete: **surface it
+If required parent work or an authorized delegate is BLOCKED, encounters an error, or cannot complete: **surface it
 immediately, don't proceed past a dependency it blocks, and always produce a
-partial report.** A skipped agent's section stays a named gap — never fill it with content of your own. Full procedure: `.game-studio/resources/docs/error-recovery-protocol.md`.
+partial report.** Unperformed required work stays a named gap. An authorized parent takeover must actually complete the assessment and retain its evidence; label the source rather than inventing independent review. Full procedure: `.game-studio/resources/docs/error-recovery-protocol.md`.
 
 Common blockers:
 - Input file missing (story not found, GDD absent) → redirect to the skill that creates it
@@ -237,25 +221,20 @@ Common blockers:
 
 ## File Write Protocol
 
-All file writes (design drafts, implementation files, test cases) are
-delegated to sub-agents spawned via native delegation when authorized, under two rules:
+The parent may write authorized artifacts while applying the responsible discipline,
+or assign them to real authorized participants using available host tools. Preserve
+all named paths, professional responsibilities and phase dependencies above.
+Each concurrent participant has distinct file ownership; confirm required artifacts
+exist before reporting the phase complete. Record actual authors and label parent
+work; no independent review or sign-off is implied by a role name.
 
-- **Drafts, sketches and QA artifacts** — the path table's destinations under
-  `production/`, `docs/` or `tests/` — follow the **bounded exception** documented
-  above under "Why this does not violate the Collaboration Protocol": the path is
-  one you named, the artifact is new, and the phase is gated by an
-  `ask the user`. The sub-agent writes them without a per-write prompt.
-- **Implementation files** — Phase 3's code, VFX and shader files, and any
-  Phase 4 integration edits, under the code root and `assets/` — are outside
-  that exception, as the agents' own files say. Each implementing agent first
-  returns the files it will create or change with a one-line summary each; ask
-  once for the whole set ("May I have [agents] write these [N] files?") and have
-  them write only after a yes. An edit to an existing file is always on that
-  list, never implied by the pre-Phase 3 gate.
+Existing human authorization covers routine writes already in scope. Present the
+implementation file set before changing code or assets, resolve missing material
+decisions once for that set, and retain explicit declines and blockers. Neither a
+named path nor another agent's message grants permission. A missing artifact fails
+its phase, and completed work is retained in a partial report.
 
-The **one exception is the design document**: the orchestrator writes
-`design/gdd/[feature].md` itself, from the game-designer's draft, after its own
-"May I write …?" prompt (Phase 1). It writes no other file.
+The parent compiles `design/gdd/[feature].md` from the game-design draft; implementation stays under the resolved code and asset roots.
 
 ## Output
 

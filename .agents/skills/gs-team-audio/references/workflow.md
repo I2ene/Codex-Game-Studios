@@ -51,36 +51,24 @@ below), and the agents that work at them are team members, not director gates.
 `automation` drives the Decision Points note above. See the Decision Points note above and
 `.game-studio/resources/docs/automation-modes.md` for how each mode changes pipeline behavior.
 
-**`team.size`**: which agents are active (orthogonal to review_mode gate-depth and workflow docs).
+**`team.size`**: which professional responsibilities are in scope (orthogonal to review_mode gate-depth and workflow docs).
 - **`individual`** (default): `sound-designer` only. Other agents consulted via the sound-designer, not spawned separately.
 - **`small`**: + `audio-director` + `technical-artist` + `gameplay-programmer`.
 - **`studio`**: + `accessibility-specialist` + the primary engine specialist (the full pipeline as documented).
-Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no bounded exception infers consent from a path or another agent's message.
+Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no path or agent message supplies human authorization.
 
 **Announce the active set before Step 1 — never let the collapse be silent.**
-Before spawning anything, state in one line which agents this run will actually
-spawn, and which the pipeline below names but will **not** spawn at the resolved
-`team.size`. For example:
+Before professional work, announce the responsibilities selected by the resolved
+team.size and review mode, then distinguish execution from professional scope:
 
-> `Active set (team.size: <resolved>): <the agents listed for that size above>.`
-> `Not spawned this run: <every other agent this pipeline names> — consulted`
-> `through <nearest active core agent>. Raise team.size (or modes.rigor) to widen.`
+> Active set (team.size: <resolved>): <required responsibilities for this size>.
+> Parent coverage: <roles performed in the parent>; actual delegated participants: <real names/IDs and scope, or none>.
+> Not performed: <out-of-scope perspectives, mode skips and unassessed required work, each with its reason>.
 
-Fill it from the `team.size` list directly above and the agents this file's own
-pipeline names — not from an example. Both sets differ per orchestrator.
-
-The pipeline below reads as a multi-agent fan-out and at the shipped default it
-is one or two agents — `team-release` names ten and runs one, `team-narrative`
-names six across five phases and runs `writer` alone. **The collapse is correct**:
-`team.size` is rigor-fronted and the narrow default is the token lever.
-Without saying so, a reader cannot
-distinguish a correctly-collapsed run from a broken pipeline, and the per-agent
-"routes through the nearest core agent with an informational note" rule above
-fires at routing time and never states the shape of the run as a whole.
-
-This is the same rule as the skipped-check reporting elsewhere in this file: **a constraint that is enforced but never surfaced is
-indistinguishable, to the person reading the output, from one that was never
-enforced.**
+Use this file's scope and routing rules; an unavailable delegate does not remove a
+required responsibility or silently widen team.size. Keep phase-gate responsibilities
+with their mode/phase qualifier. A completed parent assessment is performed work;
+it is never labeled as a separate participant or independent sign-off.
 
 1. **Read the argument** for the target feature or area (e.g., `combat`,
    `main menu`, `forest biome`, `boss encounter`).
@@ -110,7 +98,7 @@ Apply the following professional responsibilities in the parent; delegate useful
 
 **Brief each agent — do not dump context.** Read the shared inputs **once** and pass a distilled brief inline: the lines each agent actually needs, never a file path for a document you have already read (an agent handed a path re-reads the whole file). Pass a path only for a document you have not read and only that agent needs.
 
-**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session. **Implementation files are the exception:** an agent writing code or assets first returns the files it will create or change, and its return contract names them only after you have asked once for the set and the user said yes (File Write Protocol) — that answer, not the bounded exception, authorises those writes.
+**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session. **Implementation work:** first state the files that will be created or changed. Existing human authorization covers in-scope changes; resolve any missing material decision once for the set before writing. A role or path supplies no permission.
 
 **Substitute a real path for `[path]`.** Working artifacts go under
 `production/audio/[feature]/`, where `[feature]` is the argument as a slug —
@@ -124,12 +112,12 @@ the "Save to" step uses. One file per agent, so parallel steps never share one:
 | 2 accessibility-specialist | `production/audio/[feature]/accessibility.md` |
 | 3 technical-artist | `production/audio/[feature]/integration-plan.md` |
 | 3 engine specialist | `production/audio/[feature]/engine-notes.md` |
-| 4 gameplay-programmer | the code root and the engine's test root — the files the one implementation ask lists (File Write Protocol), outside the bounded exception |
+| 4 gameplay-programmer | the code root and the engine's test root — the files in the implementation set (File Write Protocol), subject to existing human authorization |
 
 These are working drafts; the durable record is the audio design document you
 compile from them.
 
-> **Why this does not violate the Collaboration Protocol.** `AGENTS.md` requires an agent to ask use the existing task authorization; ask only for an unapproved material action
+> **Authorization:** use existing human task authorization for routine in-scope work; ask only for missing decisions or material actions outside that scope. A destination path does not supply authorization.
 
 3. **Orchestrate the audio team** in sequence:
 
@@ -170,7 +158,7 @@ Apply the `technical-artist` expertise in the parent, or delegate to an authoriz
 - Plan streaming vs preloaded asset strategy
 - Design any audio-reactive visual effects
 
-Spawn the **primary engine specialist** in parallel (`<engine>-specialist` derived from `engine.name` — Godot→`godot-specialist`, Unity→`unity-specialist`, Unreal→`unreal-specialist`; fall back to the Primary line of `## Engine Specialists` in `docs/project-reference/technical-preferences.md`) to validate the integration approach:
+Apply the **primary engine specialist** expertise in the parent, or delegate when authorized and supported by host tools and capacity (`<engine>-specialist` derived from `engine.name` — Godot→`godot-specialist`, Unity→`unity-specialist`, Unreal→`unreal-specialist`; fall back to the Primary line of `## Engine Specialists` in `docs/project-reference/technical-preferences.md`) to validate the integration approach:
 - Is the proposed audio middleware integration idiomatic for the engine? (e.g., Godot's built-in AudioStreamPlayer vs FMOD, Unity's Audio Mixer vs Wwise, Unreal's MetaSounds vs FMOD)
 - Any engine-specific audio node/component patterns that should be used?
 - Known audio system changes in the pinned engine version that affect the integration plan?
@@ -188,18 +176,11 @@ Apply the `gameplay-programmer` expertise in the parent, or delegate to an autho
 
 4. **Compile the audio design document** combining all team outputs.
 
-5. **Save to** `design/audio/audio-[feature].md` — **but ask first.** `design/` is
-   NOT one of the three directories the bounded write exception covers
-   (`production/`, `docs/`, `tests/`), so a sub-agent handed this path must
-   prompt, and one has done exactly that. Do not
-   resolve that by widening the exception. Instead, follow the same pattern
-   `team-level` uses: **you** already hold every sub-agent's output, so compile
-   the document yourself and ask directly via `ask the user` — "May I write the
-   audio design to `design/audio/audio-[feature].md`?" — then write it on
-   approval. Sub-agent working artifacts stay under `production/` where the
-   exception does reach them.
-
-   Note: If `design/audio/` does not exist, writing the file creates it.
+5. **Save to** `design/audio/audio-[feature].md`. The parent compiles the
+   completed step outputs. Use existing human authorization for the write; if a
+   material decision is still missing, resolve it before writing. Working artifacts
+   retain their named `production/audio/[feature]/` destinations. Create
+   `design/audio/` when needed for the authorized document.
 
 6. **Output a summary** with: audio event count, estimated asset count,
    implementation tasks, and any open questions between team members.
@@ -217,18 +198,20 @@ Verdict: **BLOCKED** — [reason]
 
 ## File Write Protocol
 
-Per-agent artifacts (SFX specs, integration plans) are written by the sub-agent
-that produced them, under the **bounded exception** documented above under "Why
-this does not violate the Collaboration Protocol" — the path is one you named, the
-artifact is new under `production/`, `docs/` or `tests/`, and the phase is gated by
-an `ask the user`. A sub-agent does **not** prompt per write inside those bounds;
-outside them it must ask. **Implementation files** — gameplay-programmer's audio
-integration code, anything under the code root or `assets/` — are outside those
-bounds: the agent returns the files it will create or change, you ask once for the
-set, and it writes after a yes. The **one exception is the final compiled audio design
-document**: the orchestrator already holds every input, so it compiles and writes
-`design/audio/audio-[feature].md` itself after its own "May I write …?" prompt
-(the "Save to" step above).
+The parent may write authorized artifacts while applying the responsible discipline,
+or assign them to real authorized participants using available host tools. Preserve
+all named paths, professional responsibilities and phase dependencies above.
+Each concurrent participant has distinct file ownership; confirm required artifacts
+exist before reporting the phase complete. Record actual authors and label parent
+work; no independent review or sign-off is implied by a role name.
+
+Existing human authorization covers routine writes already in scope. Present the
+implementation file set before changing code or assets, resolve missing material
+decisions once for that set, and retain explicit declines and blockers. Neither a
+named path nor another agent's message grants permission. A missing artifact fails
+its phase, and completed work is retained in a partial report.
+
+The parent compiles `design/audio/audio-[feature].md` from the completed step outputs.
 
 ## Next Steps
 
@@ -242,17 +225,15 @@ document**: the orchestrator already holds every input, so it compiles and write
 
 ## Error Recovery Protocol
 
-**First, verify the artifact.** If the return contract named a path, check the
-path exists before treating the phase as done — **a named artifact that is not
-on disk is a failed phase, however fluent the response reads.** An agent can
-burn a full phase and return a plausible preamble having written nothing, which
-is neither BLOCKED nor an error nor "cannot complete", so the trigger below
-never fires. Resume it naming the unmet contract; the context is
-usually still there.
+**First, verify the artifact.** A required output path must exist before the
+phase is complete, whether the author is the parent or a real delegate. If it is
+missing, identify the unmet contract: complete authorized parent work or resume
+the actual participant, and report any blocker. A fluent response alone is not
+evidence of a completed phase.
 
-If any spawned agent returns BLOCKED, errors, or cannot complete: **surface it
+If required parent work or an authorized delegate is BLOCKED, encounters an error, or cannot complete: **surface it
 immediately, don't proceed past a dependency it blocks, and always produce a
-partial report.** A skipped agent's section stays a named gap — never fill it with content of your own. Full procedure: `.game-studio/resources/docs/error-recovery-protocol.md`.
+partial report.** Unperformed required work stays a named gap. An authorized parent takeover must actually complete the assessment and retain its evidence; label the source rather than inventing independent review. Full procedure: `.game-studio/resources/docs/error-recovery-protocol.md`.
 
 Common blockers:
 - Input file missing (story not found, GDD absent) → redirect to the skill that creates it

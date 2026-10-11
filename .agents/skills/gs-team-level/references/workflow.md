@@ -51,36 +51,24 @@ below), and the agents that work at them are team members, not director gates.
 `automation` drives the Decision Points note above. See the Decision Points note above and
 `.game-studio/resources/docs/automation-modes.md` for how each mode changes pipeline behavior.
 
-**`team.size`**: which agents are active (orthogonal to review_mode gate-depth and workflow docs).
+**`team.size`**: which professional responsibilities are in scope (orthogonal to review_mode gate-depth and workflow docs).
 - **`individual`** (default): `level-designer` only. Other agents consulted via the level-designer, not spawned separately.
 - **`small`**: + `systems-designer` + `art-director` + `qa-tester`.
 - **`studio`**: + `narrative-director` + `world-builder` + `accessibility-specialist` (the full pipeline as documented).
-Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no bounded exception infers consent from a path or another agent's message.
+Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no path or agent message supplies human authorization.
 
 **Announce the active set before Step 1 — never let the collapse be silent.**
-Before spawning anything, state in one line which agents this run will actually
-spawn, and which the pipeline below names but will **not** spawn at the resolved
-`team.size`. For example:
+Before professional work, announce the responsibilities selected by the resolved
+team.size and review mode, then distinguish execution from professional scope:
 
-> `Active set (team.size: <resolved>): <the agents listed for that size above>.`
-> `Not spawned this run: <every other agent this pipeline names> — consulted`
-> `through <nearest active core agent>. Raise team.size (or modes.rigor) to widen.`
+> Active set (team.size: <resolved>): <required responsibilities for this size>.
+> Parent coverage: <roles performed in the parent>; actual delegated participants: <real names/IDs and scope, or none>.
+> Not performed: <out-of-scope perspectives, mode skips and unassessed required work, each with its reason>.
 
-Fill it from the `team.size` list directly above and the agents this file's own
-pipeline names — not from an example. Both sets differ per orchestrator.
-
-The pipeline below reads as a multi-agent fan-out and at the shipped default it
-is one or two agents — `team-release` names ten and runs one, `team-narrative`
-names six across five phases and runs `writer` alone. **The collapse is correct**:
-`team.size` is rigor-fronted and the narrow default is the token lever.
-Without saying so, a reader cannot
-distinguish a correctly-collapsed run from a broken pipeline, and the per-agent
-"routes through the nearest core agent with an informational note" rule above
-fires at routing time and never states the shape of the run as a whole.
-
-This is the same rule as the skipped-check reporting elsewhere in this file: **a constraint that is enforced but never surfaced is
-indistinguishable, to the person reading the output, from one that was never
-enforced.**
+Use this file's scope and routing rules; an unavailable delegate does not remove a
+required responsibility or silently widen team.size. Keep phase-gate responsibilities
+with their mode/phase qualifier. A completed parent assessment is performed work;
+it is never labeled as a separate participant or independent sign-off.
 
 1. **Read the argument** for the target level or area (e.g., `tutorial`,
    `forest dungeon`, `hub town`, `final boss arena`).
@@ -126,13 +114,13 @@ file per agent, so the parallel steps never share one:
 These are working drafts; the durable record is the level design document you
 compile from them (`design/levels/[level-name].md`).
 
-> **Why this does not violate the Collaboration Protocol.** `AGENTS.md` requires an agent to ask use the existing task authorization; ask only for an unapproved material action
+> **Authorization:** use existing human task authorization for routine in-scope work; ask only for missing decisions or material actions outside that scope. A destination path does not supply authorization.
 
 3. **Orchestrate the level design team** in sequence:
 
 ### Step 1: Narrative + Visual Direction (narrative-director + world-builder + art-director, parallel)
 
-Spawn all three agents simultaneously — issue all three native delegation when authorized calls before waiting for any result.
+Cover all three disciplines. With user authorization, available host tools and sufficient capacity, issue independent delegated tasks before waiting for results; otherwise apply and label the expertise in the parent.
 
 Apply the `narrative-director` expertise in the parent, or delegate to an authorized participant to:
 - Define the narrative purpose of this area (what story beats happen here?)
@@ -208,7 +196,7 @@ Apply the `accessibility-specialist` expertise in the parent, or delegate to an 
 - Check that key gameplay areas have sufficient contrast for colorblind players
 - Output: accessibility concerns list with severity (BLOCKING / RECOMMENDED / NICE TO HAVE)
 
-Wait for both agents to return before proceeding.
+Wait for both required review results before proceeding, whether performed in the parent or by actual delegates.
 
 **Gate**: Use `ask the user` to present both Step 4 results. If the accessibility-specialist returned any BLOCKING concerns, highlight them prominently and offer:
 - (a) Return to level-designer and art-director to redesign the flagged elements before Step 5
@@ -246,19 +234,20 @@ into the level-design template format, ask the user directly via
 
 ## File Write Protocol
 
-Per-agent artifacts (narrative docs, test checklists) are written by the
-sub-agent that produced them, under the **bounded exception** documented above
-under "Why this does not violate the Collaboration Protocol" — the path is one
-you named, the artifact is new under `production/`, `docs/` or `tests/`, and the
-phase is gated by an `ask the user`. A sub-agent does **not** prompt per write
-inside those bounds; outside them it must ask. The **one exception is the final
-compiled level-design document**: the
-orchestrator already holds every input, so it compiles and writes that file
-itself after its own "May I write …?" prompt (Step 4) — re-spawning an agent
-just to write text the orchestrator is already holding is pure overhead.
+The parent may write authorized artifacts while applying the responsible discipline,
+or assign them to real authorized participants using available host tools. Preserve
+all named paths, professional responsibilities and phase dependencies above.
+Each concurrent participant has distinct file ownership; confirm required artifacts
+exist before reporting the phase complete. Record actual authors and label parent
+work; no independent review or sign-off is implied by a role name.
 
-Verdict: **COMPLETE** — level design document produced and all team outputs compiled.
-Verdict: **BLOCKED** — one or more agents blocked, or an agent was skipped (`.game-studio/resources/docs/error-recovery-protocol.md` step 5); partial report produced with unresolved items listed.
+Existing human authorization covers routine writes already in scope. Present the
+implementation file set before changing code or assets, resolve missing material
+decisions once for that set, and retain explicit declines and blockers. Neither a
+named path nor another agent's message grants permission. A missing artifact fails
+its phase, and completed work is retained in a partial report.
+
+The parent compiles `design/levels/[level-name].md` from the completed step outputs.
 
 ## Next Steps
 
@@ -268,17 +257,15 @@ Verdict: **BLOCKED** — one or more agents blocked, or an agent was skipped (`.
 
 ## Error Recovery Protocol
 
-**First, verify the artifact.** If the return contract named a path, check the
-path exists before treating the phase as done — **a named artifact that is not
-on disk is a failed phase, however fluent the response reads.** An agent can
-burn a full phase and return a plausible preamble having written nothing, which
-is neither BLOCKED nor an error nor "cannot complete", so the trigger below
-never fires. Resume it naming the unmet contract; the context is
-usually still there.
+**First, verify the artifact.** A required output path must exist before the
+phase is complete, whether the author is the parent or a real delegate. If it is
+missing, identify the unmet contract: complete authorized parent work or resume
+the actual participant, and report any blocker. A fluent response alone is not
+evidence of a completed phase.
 
-If any spawned agent returns BLOCKED, errors, or cannot complete: **surface it
+If required parent work or an authorized delegate is BLOCKED, encounters an error, or cannot complete: **surface it
 immediately, don't proceed past a dependency it blocks, and always produce a
-partial report.** A skipped agent's section stays a named gap — never fill it with content of your own. Full procedure: `.game-studio/resources/docs/error-recovery-protocol.md`.
+partial report.** Unperformed required work stays a named gap. An authorized parent takeover must actually complete the assessment and retain its evidence; label the source rather than inventing independent review. Full procedure: `.game-studio/resources/docs/error-recovery-protocol.md`.
 
 Common blockers:
 - Input file missing (story not found, GDD absent) → redirect to the skill that creates it
