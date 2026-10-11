@@ -1,4 +1,4 @@
-"""Execute an isolated, non-game consumer lifecycle and retain bounded evidence."""
+"""Execute an isolated, non-game consumer lifecycle and print bounded evidence."""
 import json
 import argparse
 from pathlib import Path
@@ -76,6 +76,4 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--native-discovery', action='store_true', help='Read-only Codex CLI discovery in the installed fixture')
     result = execute(parser.parse_args().native_discovery)
-    output = ROOT / 'docs/migration/sample-evidence.json'
-    output.write_text(json.dumps(result, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     print(json.dumps(result, indent=2, ensure_ascii=False))

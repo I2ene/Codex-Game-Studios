@@ -51,36 +51,24 @@ below), and the agents that work at them are team members, not director gates.
 `automation` drives the Decision Points note above. See the Decision Points note above and
 `.game-studio/resources/docs/automation-modes.md` for how each mode changes pipeline behavior.
 
-**`team.size`**: which agents are active (orthogonal to review_mode gate-depth and workflow docs).
+**`team.size`**: which professional responsibilities are in scope (orthogonal to review_mode gate-depth and workflow docs).
 - **`individual`** (default): `ui-programmer` + `ux-designer`. Other agents consulted via these two, not spawned separately.
 - **`small`**: + `accessibility-specialist` + `art-director`.
 - **`studio`**: + engine UI specialist + an adversarial review pass: Phase 4's reviewers are told "your job is not to confirm this matches the spec — find where it fails it", and the report says the pass ran.
-Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no bounded exception infers consent from a path or another agent's message.
+Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no path or agent message supplies human authorization.
 
 **Announce the active set before Step 1 — never let the collapse be silent.**
-Before spawning anything, state in one line which agents this run will actually
-spawn, and which the pipeline below names but will **not** spawn at the resolved
-`team.size`. For example:
+Before professional work, announce the responsibilities selected by the resolved
+team.size and review mode, then distinguish execution from professional scope:
 
-> `Active set (team.size: <resolved>): <the agents listed for that size above>.`
-> `Not spawned this run: <every other agent this pipeline names> — consulted`
-> `through <nearest active core agent>. Raise team.size (or modes.rigor) to widen.`
+> Active set (team.size: <resolved>): <required responsibilities for this size>.
+> Parent coverage: <roles performed in the parent>; actual delegated participants: <real names/IDs and scope, or none>.
+> Not performed: <out-of-scope perspectives, mode skips and unassessed required work, each with its reason>.
 
-Fill it from the `team.size` list directly above and the agents this file's own
-pipeline names — not from an example. Both sets differ per orchestrator.
-
-The pipeline below reads as a multi-agent fan-out and at the shipped default it
-is one or two agents — `team-release` names ten and runs one, `team-narrative`
-names six across five phases and runs `writer` alone. **The collapse is correct**:
-`team.size` is rigor-fronted and the narrow default is the token lever.
-Without saying so, a reader cannot
-distinguish a correctly-collapsed run from a broken pipeline, and the per-agent
-"routes through the nearest core agent with an informational note" rule above
-fires at routing time and never states the shape of the run as a whole.
-
-This is the same rule as the skipped-check reporting elsewhere in this file: **a constraint that is enforced but never surfaced is
-indistinguishable, to the person reading the output, from one that was never
-enforced.**
+Use this file's scope and routing rules; an unavailable delegate does not remove a
+required responsibility or silently widen team.size. Keep phase-gate responsibilities
+with their mode/phase qualifier. A completed parent assessment is performed work;
+it is never labeled as a separate participant or independent sign-off.
 
 **Director gate skip rule**: Before spawning creative-director, art-director, or any other Tier 1/2 director for review (outside of PHASE-GATE triggers), apply the resolved mode: skip if solo mode; skip if lean mode and this is not a PHASE-GATE.
 
@@ -113,7 +101,7 @@ Apply the following professional responsibilities in the parent; delegate useful
 
 **Brief each agent — do not dump context.** Read the shared inputs **once** and pass a distilled brief inline: the lines each agent actually needs, never a file path for a document you have already read (an agent handed a path re-reads the whole file). Pass a path only for a document you have not read and only that agent needs.
 
-**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session. **Implementation files are the exception:** an agent writing code or assets first returns the files it will create or change, and its return contract names them only after you have asked once for the set and the user said yes (File Write Protocol) — that answer, not the bounded exception, authorises those writes.
+**End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session. **Implementation work:** first state the files that will be created or changed. Existing human authorization covers in-scope changes; resolve any missing material decision once for the set before writing. A role or path supplies no permission.
 
 **Substitute a real path for `[path]`.** Working artifacts go under
 `production/ui/[feature-name]/`, the slug Phase 1b's `design/ux/[feature-name].md`
@@ -123,15 +111,15 @@ uses. One file per agent, so the parallel Phase 4 reviews never share one:
 |---|---|
 | 2 art-director | `production/ui/[feature-name]/visual-design.md` |
 | 3 engine UI specialist | `production/ui/[feature-name]/engine-notes.md` |
-| 3 ui-programmer | the code root — the files the one implementation ask lists (File Write Protocol), outside the bounded exception |
+| 3 ui-programmer | the code root — the files in the implementation set (File Write Protocol), subject to existing human authorization |
 | 4 ux-designer, art-director, accessibility-specialist | `production/ui/[feature-name]/review-[agent].md`, one each |
 
 The UX spec itself (Phase 1b) and any pattern-library update are under `design/`,
-outside the bounded exception: `$gs-ux-design` or the agent asks before writing them.
+subject to existing human authorization; `$gs-ux-design` or the responsible parent/participant resolves only missing material decisions before writing them.
 
-> **Why this does not violate the Collaboration Protocol.** `AGENTS.md` requires an agent to ask use the existing task authorization; ask only for an unapproved material action
+> **Authorization:** use existing human task authorization for routine in-scope work; ask only for missing decisions or material actions outside that scope. A destination path does not supply authorization.
 
-Launch independent agents in parallel where the pipeline allows it (e.g., Phase 4 review agents can run simultaneously).
+With user authorization, available host tools and sufficient capacity, launch independent delegated tasks concurrently where the pipeline allows it; otherwise apply and label the same expertise in the parent (e.g., Phase 4 review agents can run simultaneously).
 
 ## Pipeline
 
@@ -216,7 +204,7 @@ Delegate to **art-director**:
 
 ### Phase 3: Implementation
 
-Before implementation begins, spawn the **engine UI specialist** (`specialists.ui` from `project.yaml`; if absent, the UI Specialist line of `## Engine Specialists` in `docs/project-reference/technical-preferences.md`) to review the UX spec and visual design spec for engine-specific implementation guidance:
+Before implementation begins, resolve the **engine UI specialist** profile (`specialists.ui` from `project.yaml`; if absent, the UI Specialist line of `## Engine Specialists` in `docs/project-reference/technical-preferences.md`). Apply that expertise in the parent or through authorized delegation with actual host tools to review the UX spec and visual design spec for engine-specific implementation guidance:
 - Which engine UI framework should be used for this screen? (e.g., UI Toolkit vs UGUI in Unity, Control nodes vs CanvasLayer in Godot, UMG vs CommonUI in Unreal)
 - Any engine-specific gotchas for the proposed layout or interaction patterns?
 - Recommended widget/node structure for the engine?
@@ -237,7 +225,7 @@ Delegate to **ui-programmer**:
 
 ### Phase 4: Review (parallel)
 
-Delegate in parallel:
+Apply the following independent expertise in the parent, or delegate concurrently with user authorization, available host tools and sufficient capacity:
 - **ux-designer**: Verify implementation matches wireframes and interaction spec. Test keyboard-only and gamepad-only navigation. Check accessibility features function correctly.
 - **art-director**: Verify visual consistency with art bible. Check at minimum and maximum supported resolutions.
 - **accessibility-specialist**: Verify compliance against the committed accessibility tier documented in `design/accessibility-requirements.md`. Flag any violations as blockers. **If that file is absent there is no committed tier, so this gate has no criterion: report `Accessibility: NOT ASSESSED — no committed tier (design/accessibility-requirements.md absent)` and do NOT report the gate as passed**. Carry forward whatever tier Phase 1a recorded as assumed, and say plainly that it was assumed.
@@ -262,17 +250,15 @@ All three review streams must report before proceeding to Phase 5.
 
 ## Error Recovery Protocol
 
-**First, verify the artifact.** If the return contract named a path, check the
-path exists before treating the phase as done — **a named artifact that is not
-on disk is a failed phase, however fluent the response reads.** An agent can
-burn a full phase and return a plausible preamble having written nothing, which
-is neither BLOCKED nor an error nor "cannot complete", so the trigger below
-never fires. Resume it naming the unmet contract; the context is
-usually still there.
+**First, verify the artifact.** A required output path must exist before the
+phase is complete, whether the author is the parent or a real delegate. If it is
+missing, identify the unmet contract: complete authorized parent work or resume
+the actual participant, and report any blocker. A fluent response alone is not
+evidence of a completed phase.
 
-If any spawned agent returns BLOCKED, errors, or cannot complete: **surface it
+If required parent work or an authorized delegate is BLOCKED, encounters an error, or cannot complete: **surface it
 immediately, don't proceed past a dependency it blocks, and always produce a
-partial report.** A skipped agent's section stays a named gap — never fill it with content of your own. Full procedure: `.game-studio/resources/docs/error-recovery-protocol.md`.
+partial report.** Unperformed required work stays a named gap. An authorized parent takeover must actually complete the assessment and retain its evidence; label the source rather than inventing independent review. Full procedure: `.game-studio/resources/docs/error-recovery-protocol.md`.
 
 Common blockers:
 - Input file missing (story not found, GDD absent) → redirect to the skill that creates it
@@ -282,21 +268,20 @@ Common blockers:
 
 ## File Write Protocol
 
-All file writes (UX specs, interaction pattern library updates, implementation files) are
-delegated to sub-agents and sub-skills. The two follow **different** rules:
+The parent may write authorized artifacts while applying the responsible discipline,
+or assign them to real authorized participants using available host tools. Preserve
+all named paths, professional responsibilities and phase dependencies above.
+Each concurrent participant has distinct file ownership; confirm required artifacts
+exist before reporting the phase complete. Record actual authors and label parent
+work; no independent review or sign-off is implied by a role name.
 
-- **Sub-agents spawned via native delegation when authorized** (e.g. `ui-programmer`) follow the **bounded
-  exception** documented above under "Why this does not violate the Collaboration
-  Protocol" — the path is one you named, the artifact is new under `production/`,
-  `docs/` or `tests/`, and the phase is gated by an `ask the user`. A sub-agent
-  does **not** prompt per write inside those bounds; outside them it must ask.
-  **Implementation files** (ui-programmer's code under the code root) are outside
-  those bounds: ui-programmer returns the files it will create or change, you ask
-  once for the set, and it writes after a yes.
-- **Sub-skills** (`$gs-ux-design`) are not sub-agents and the exception does not reach
-  them. They follow the normal Collaboration Protocol and ask before writing.
+Existing human authorization covers routine writes already in scope. Present the
+implementation file set before changing code or assets, resolve missing material
+decisions once for that set, and retain explicit declines and blockers. Neither a
+named path nor another agent's message grants permission. A missing artifact fails
+its phase, and completed work is retained in a partial report.
 
-This orchestrator does not write files directly.
+Keep the implementation file set together when resolving missing write decisions; preserve UX-review and accessibility gates.
 
 ## Output
 

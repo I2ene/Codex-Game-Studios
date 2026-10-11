@@ -1,27 +1,19 @@
-## Summary
+## Problem and resulting behavior
 
-Brief description of what this PR does.
+Describe the user-visible change and why it is needed.
 
-## Type of Change
+## Compatibility and scope
 
-- [ ] New agent
-- [ ] New skill
-- [ ] New hook or rule
-- [ ] Bug fix
-- [ ] Documentation improvement
-- [ ] Other:
+List affected skills, roles, runtime interfaces, managed files and upgrade behavior.
+Preserve professional contracts and source attribution. Explain removals.
 
-## Changes
+## Validation
 
--
--
--
+- FORMAT: metadata, documentation links, catalog and release integrity checks.
+- EXECUTED: actual test commands/results, fixture scope and platform checks.
+- NOT ASSESSED: unavailable host/game inputs or unexecuted capabilities.
 
-## Checklist
+## Review notes
 
-- [ ] I've tested this in a Claude Code session
-- [ ] New agents include the Collaboration Protocol section
-- [ ] New skills use the subdirectory format (`.claude/skills/<name>/SKILL.md`)
-- [ ] Reference docs are updated (agent-roster, skills-reference, hooks-reference, rules-reference)
-- [ ] Hooks use `grep -E` (POSIX) and fail gracefully without jq/python
-- [ ] No hardcoded paths or platform-specific assumptions
+Note remaining risks or decisions requiring maintainer review. Keep private data,
+chat history and intermediate process records out of committed repository content.

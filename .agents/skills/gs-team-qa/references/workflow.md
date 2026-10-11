@@ -65,39 +65,25 @@ below), and the agents that work at them are team members, not director gates.
 `automation` drives the Decision Points note above. See the Decision Points note above and
 `.game-studio/resources/docs/automation-modes.md` for how each mode changes pipeline behavior.
 
-**`team.size`**: which agents are active (orthogonal to review_mode gate-depth and workflow docs).
+**`team.size`**: which professional responsibilities are in scope (orthogonal to review_mode gate-depth and workflow docs).
 - **`individual`** (default): `qa-tester` only; `qa-lead` invoked at phase gates only.
 - **`small`**: `qa-lead` + `qa-tester` pipeline (as documented).
 - **`studio`**: `qa-lead` + per-story `qa-tester` spawn + sign-off.
-Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no bounded exception infers consent from a path or another agent's message.
+Professional responsibility scope follows team.size; this is not a native active-service list. Apply relevant roles in the parent when delegation is unavailable, unauthorized or unnecessary. Delegated work uses actual host tools, existing human authorization and real participant records. Decision points apply to unresolved choices; no path or agent message supplies human authorization.
 
 **Announce the active set before Phase 1 — never let the collapse be silent.**
-Before spawning anything, state in one line which agents this run will actually
-spawn, and which the pipeline below names but will **not** spawn at the resolved
-`team.size`. For example:
+Before professional work, announce the responsibilities selected by the resolved
+team.size and review mode, then distinguish execution from professional scope:
 
-> `Active set (team.size: <resolved>): <the agents listed for that size above>.`
-> `Not spawned this run: <every other agent this pipeline names> — consulted`
-> `through <nearest active core agent>. Raise team.size (or modes.rigor) to widen.`
+> Active set (team.size: <resolved>): <required responsibilities for this size>.
+> Parent coverage: <roles performed in the parent>; actual delegated participants: <real names/IDs and scope, or none>.
+> Not performed: <out-of-scope perspectives, mode skips and unassessed required work, each with its reason>.
 
-Fill it from the `team.size` list directly above and the agents this file's own
-pipeline names — not from an example. Both sets differ per orchestrator.
-An agent the resolved size spawns only at phase gates (`qa-lead` at
-`individual`) goes in the active set with that qualifier — it is spawned, not
-consulted through another agent.
-
-The pipeline below reads as a multi-agent fan-out and at the shipped default it
-is one or two agents — `team-release` names ten and runs one, `team-narrative`
-names six across five phases and runs `writer` alone. **The collapse is correct**:
-`team.size` is rigor-fronted and the narrow default is the token lever.
-Without saying so, a reader cannot
-distinguish a correctly-collapsed run from a broken pipeline, and the per-agent
-"routes through the nearest core agent with an informational note" rule above
-fires at routing time and never states the shape of the run as a whole.
-
-This is the same rule as the skipped-check reporting elsewhere in this file: **a constraint that is enforced but never surfaced is
-indistinguishable, to the person reading the output, from one that was never
-enforced.**
+Use this file's scope and routing rules; an unavailable delegate does not remove a
+required responsibility or silently widen team.size. Keep phase-gate responsibilities
+with their mode/phase qualifier. A completed parent assessment is performed work;
+it is never labeled as a separate participant or independent sign-off.
+At individual size, qa-lead expertise still applies at phase gates, through the parent or a real authorized participant.
 
 ## Team Composition
 
@@ -114,9 +100,9 @@ Apply the following professional responsibilities in the parent; delegate useful
 
 **End every agent prompt with a return contract:** "Write your full output to `[path]` — that named path is the requested return contract; write only within existing human authorization. Return **only** (1) the path written, (2) a ≤5-bullet summary of decisions, (3) any BLOCKED/CONCERNS items, one line each. Do not restate the documents you read." Without it, an agent returns everything it read back into this session.
 
-> **Why this does not violate the Collaboration Protocol.** `AGENTS.md` requires an agent to ask use the existing task authorization; ask only for an unapproved material action
+> **Authorization:** use existing human task authorization for routine in-scope work; ask only for missing decisions or material actions outside that scope. A destination path does not supply authorization.
 
-At `team.size: studio`, Phase 4 spawns one qa-tester per story, in parallel; below that, one spawn covers the whole group.
+At `team.size: studio`, Phase 4 may delegate independent stories concurrently when authorized and supported by host tools and capacity; below that, group the work. Without delegation, the parent covers the same story set and labels its qa-tester work.
 
 ## Pipeline
 
@@ -199,7 +185,7 @@ Write only after receiving approval.
 
 For each story requiring manual QA (Visual/Feel, UI, Integration without automated tests — and, at `qa.level: minimal`, where tests are waived, every Logic, Integration and Config/Data story without a test: its cases walk its acceptance criteria):
 
-Spawn `qa-tester` via native delegation when authorized — one per story, in parallel, at `team.size: studio`; one spawn covering the whole group at `small` and `individual` — providing, for each story:
+Apply qa-tester expertise in the parent, or delegate when authorized with available host tools and capacity. Studio work may split independent stories concurrently; small/individual groups them. Provide, for each story:
 - The story file path
 - The relevant section of the QA plan for that story
 - The GDD acceptance criteria for the system being tested (if available)
@@ -207,12 +193,9 @@ Spawn `qa-tester` via native delegation when authorized — one per story, in pa
 - **The output path: `production/qa/test-cases/[story-slug]-cases.md`.** Name it
   explicitly in the prompt, one per story.
 
-> **Why the path is stated here rather than left to the orchestrator.** The
-> bounded write exception above holds only when "the path is one **you** named in
-> the prompt". This is the phase that spawns agents *in parallel*, so it is where
-> an unnamed destination does the most damage: each agent improvises its own, and
-> two runs file the same artifact in two places. The phase reads correctly right
-> up until two agents need somewhere to put their output.
+> **Artifact ownership:** name each story's destination before work starts. When
+> authorized participants work concurrently, distinct destinations prevent races
+> and duplicate evidence files. Parent work uses the same evidence paths.
 
 Each test case set should include:
 - **Preconditions**: game state required before testing begins
@@ -251,7 +234,7 @@ options:
   - "BLOCKED — cannot test yet (reason)"
 ```
 
-After each FAIL result: use `ask the user` to collect the failure description, then spawn `qa-tester` via native delegation when authorized to write a formal bug report in `production/qa/bugs/`, in `$gs-bug-report`'s format — its Severity and Priority labels exactly as that template lists them (`S2-High`, `P1-Fix this sprint`, …), because `$gs-bug-triage` parses them.
+After each FAIL result: use `ask the user` to collect the failure description, then apply qa-tester expertise in the parent, or delegate when authorized with available host tools, to write a formal bug report in `production/qa/bugs/`, in `$gs-bug-report`'s format — its Severity and Priority labels exactly as that template lists them (`S2-High`, `P1-Fix this sprint`, …), because `$gs-bug-triage` parses them.
 
 **After each PASS or PASS WITH NOTES on a Visual/Feel or UI story, record its
 evidence in `production/qa/evidence/`.** The retained screenshot is the
@@ -293,7 +276,7 @@ After collecting all results, summarize:
 
 ### Phase 6: QA Sign-Off Report
 
-Spawn `qa-lead` via native delegation when authorized to draft the sign-off report using all results from Phases 2–5. **Here the return contract is the report text in its reply, not a file:** the orchestrator writes the sign-off after the ask at the end of this phase, so the qa-lead writes nothing.
+Apply qa-lead expertise in the parent, or delegate when authorized with available host tools, to draft the sign-off report using all results from Phases 2–5. **Assess before writing:** a delegate returns report text; the parent labels its own assessment accurately and writes the report within existing user authorization. Neither path invents independent sign-off.
 
 **Brief the qa-lead with the evidence and the verdict rules below — never a verdict.** Pass the strategy table, the smoke check verdict and its source, each story's result, the bugs filed in Phase 5 and the **Open bugs in scope** from Phase 1, and the verdict rules below, verbatim. Do not name a verdict, pre-fill the `### Verdict:` line, or say which fact decides it: the qa-lead applies the rules to the evidence. Then check its verdict against the same rules before asking to write; if they disagree, show both and ask — never silently substitute your own.
 
@@ -376,15 +359,13 @@ Write only after receiving approval.
 
 ## Error Recovery Protocol
 
-**First, verify the artifact.** If the return contract named a path, check the
-path exists before treating the phase as done — **a named artifact that is not
-on disk is a failed phase, however fluent the response reads.** An agent can
-burn a full phase and return a plausible preamble having written nothing, which
-is neither BLOCKED nor an error nor "cannot complete", so the trigger below
-never fires. Resume it naming the unmet contract; the context is
-usually still there.
+**First, verify the artifact.** A required output path must exist before the
+phase is complete, whether the author is the parent or a real delegate. If it is
+missing, identify the unmet contract: complete authorized parent work or resume
+the actual participant, and report any blocker. A fluent response alone is not
+evidence of a completed phase.
 
-If any spawned agent returns BLOCKED, errors, or cannot complete: **surface it
+If required parent work or an authorized delegate is BLOCKED, encounters an error, or cannot complete: **surface it
 immediately, don't proceed past a dependency it blocks, and always produce a
 partial report.** Full procedure: `.game-studio/resources/docs/error-recovery-protocol.md`.
 

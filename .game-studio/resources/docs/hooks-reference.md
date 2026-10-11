@@ -17,5 +17,5 @@ No PermissionRequest hooks, allow decisions, tool rewriting, transcript parsing,
 Notification emulation or automatic commits/pushes. Shell interceptors cannot cover
 every tool path or command continuation. Use explicit checks in skills and CI.
 
-Original script dispositions and verified limits: docs/migration/automation.md in the
-framework repository. Source: https://learn.chatgpt.com/docs/hooks (verified 2026-10-05).
+Read native-runtime.md for explicit helper interfaces and verification boundaries.
+Source: https://learn.chatgpt.com/docs/hooks (verified 2026-10-05).

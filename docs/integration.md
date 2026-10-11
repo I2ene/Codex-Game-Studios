@@ -26,8 +26,7 @@ commands:
 Commands are reviewed argv lists. Keep paths with spaces as one element. For a shell
 pipeline, write a project-owned script and name its executable/arguments explicitly.
 Only execute commands within the user's authorized scope. `run test --root <root>`
-records actual exit/output/time; `run build` needs a real build adapter. Source archive
-creation in the framework sample is not engine build or platform certification.
+records actual exit/output/time; `run build` needs a real build adapter. A source archive is not an engine build or platform certification.
 
 Optional context interface (.game-studio/context.json):
 
@@ -48,8 +47,8 @@ Review modes and stage gates retain the professional upstream contracts and stri
 verdict handling. A missing prerequisite, skipped gate or unavailable input must be
 named. NOT ASSESSED never becomes a clean pass.
 
-Adaptation from upstream 1.x: legacy review/stage mirrors remain fallbacks, but old
-Markdown preferences require an explicit reviewed mapping to YAML. Claude .claude
-settings, @ imports, tool grants and injected shell are archival source, not Codex
-configuration. New native receipts use SHA-256 JSON; re-review before setting a new
-baseline. No old private design branch is required or merged by this integration.
+For upstream 1.x projects, follow the [upgrade guide](../UPGRADING.md). Native
+review receipts require a fresh reviewed SHA-256 JSON baseline. Read
+[configuration resolution](../.game-studio/resources/docs/config-resolution.md),
+[context management](../.game-studio/resources/docs/context-management.md) and
+[runtime tooling](tooling.md) for exact interfaces.

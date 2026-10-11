@@ -1,4 +1,4 @@
-# Install Codex Game Studios 2.0.0
+# Install Codex Game Studios 2.0.1
 
 Requires Python 3.11+ and PyYAML 6.x. Review the release, install requirements.txt
 in a local virtual environment, then invoke the distribution entry point with that
@@ -32,9 +32,8 @@ preflighted; an exactly identical existing file can be adopted. Unowned differen
 and edited managed files fail without overwriting. Dry run does not create the target.
 
 Open Codex in the consumer and invoke $gs-start, $gs-help or a relevant skill. Native
-discovery may refresh automatically; restart if the host hasn't refreshed. Check
-docs/migration/platform-evidence.md for the tested host and unassessed boundaries.
+discovery may refresh automatically; restart if the host hasn't refreshed. See [validation boundaries](validation.md) for discovery and unassessed host capabilities.
 
 Optional hooks: generate and review definitions; register only through normal native
 configuration/trust mechanisms. Do not bypass trust or replace an existing hooks file.
-See docs/integration.md for context and command adapters.
+See [integration](integration.md) for context and command adapters.

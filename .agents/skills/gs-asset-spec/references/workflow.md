@@ -233,7 +233,7 @@ Do NOT proceed to Phase 3 without user confirmation of the asset list.
 
 ## Phase 3: Spec Generation
 
-Spawn specialist agents based on review mode. **Issue all native delegation when authorized calls simultaneously — do not wait for one before starting the next.**
+Cover the specialist disciplines required by review mode. With user authorization, available host tools and sufficient capacity, delegate independent reviews concurrently; otherwise apply the expertise in the parent and label it accurately. Collect all required results before dependent work.
 
 ### Full mode — spawn in parallel:
 
@@ -391,7 +391,7 @@ If a match is found: reference the existing ASSET-ID rather than creating a dupl
 
 ## Error Recovery Protocol
 
-If any spawned agent returns BLOCKED or cannot complete:
+If required parent work or an authorized delegate is BLOCKED or cannot complete:
 
 1. Surface immediately: "[AgentName]: BLOCKED — [reason]"
 2. In `lean` mode or if `technical-artist` blocks: proceed with art-director output only — note that technical constraints were not validated

@@ -18,4 +18,5 @@ result, gaps and rollback criteria. Structural tests are not model-quality evalu
 Consumer edits to managed skills are preserved as upgrade conflicts. Prefer a new
 project-owned extension skill when customizing a project; framework maintainers edit
 the distribution. Do not grant tools, pin models or require per-file approvals already
-covered by the user's task. Archived upstream test specs are rubrics, not native tests.
+covered by the user's task. Native evaluation scenarios and the quality rubric live in
+.game-studio/resources/testing; they are guidance, not executed test results.

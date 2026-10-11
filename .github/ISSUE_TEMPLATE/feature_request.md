@@ -13,7 +13,7 @@ A brief description of what you'd like added or changed.
 ## Type
 
 - [ ] New agent
-- [ ] New skill (slash command)
+- [ ] New repository skill
 - [ ] New hook
 - [ ] New rule
 - [ ] New template
@@ -27,7 +27,7 @@ What problem does this solve? What workflow does it improve?
 ## Proposed Solution
 
 How do you think this should work? Include details like:
-- For agents: what domain, what tier, what tools
+- For agents: what domain, what responsibilities and escalation path
 - For skills: what the workflow looks like, what it outputs
 - For hooks: what event triggers it, what it validates
 

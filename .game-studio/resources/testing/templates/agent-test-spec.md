@@ -12,7 +12,7 @@ delegates vs. handles directly. Include which gates it triggers (if any).]
 
 **Domain**: [files/directories this agent owns]
 **Escalates to**: [parent agent — e.g., creative-director for design conflicts]
-**Delegates to**: [sub-agents this agent typically spawns]
+**Delegates to**: [sub-agents this agent typically consult]
 
 ---
 
