@@ -23,6 +23,10 @@ Missing evidence means NOT ASSESSED — NO DATA. Resolve engine/version from thi
 project; engine reference versions are examples and require current verification.
 
 
+# Asset Spec
+
+
+
 If no argument is provided, check whether `design/assets/entity-inventory.md` exists:
 - If it exists: read it, find the first entity or screen with status "Needed" but no spec file yet, and use `ask the user`:
   - Prompt: "The next unspecced item is **[name]**. Generate specs for it?"
@@ -47,7 +51,9 @@ This flow produces `design/assets/entity-inventory.md` — the master list of ev
 the game needs visually. Run once before asset spec work begins.
 
 ### Step 1 — Gather from docs
-Read all available source material in parallel:
+Read all available source material in parallel, each doc by section: find the
+headings you need with the Grep tool (pattern `^#`, content mode) and Read those
+ranges with offset and limit.
 - `design/gdd/systems-index.md` — extract every system listed
 - GDD asset content — do **not** full-read every GDD. The two wanted sections are
   standard headings, and named entities live in the registry:
@@ -158,7 +164,9 @@ run only.
 
 ## Phase 1: Gather Context
 
-Read all source material **before** asking the user anything.
+Read all source material **before** asking the user anything. Read the art bible and
+the GDD by section: find the headings you need with the Grep tool (pattern `^#`,
+content mode) and Read those ranges with offset and limit.
 
 ### Required reads:
 - **Art bible**: Read `design/art/art-bible.md` — fail if missing:
@@ -174,7 +182,7 @@ Read all source material **before** asking the user anything.
   `> **Art direction**: design/game-brief.md (Art & audio direction) — no art bible`
   in place of the `> **Art Bible**:` line, each asset carries
   `**Brief anchor:** [the brief line applied]` in place of the **Art Bible
-  Anchors** block, and no spec cites an Art Bible section or §8 tier.
+  Anchors** block, and no spec cites an Art Bible section or `8 tier.
   Extract: Visual Identity Statement, Color System (semantic colors), Shape Language, Asset Standards (art bible Section 8 — dimensions, formats, polycount budgets, texture resolution tiers).
 
 - **Project config**: Read `performance.*` and `naming.*` from `project.yaml`; for any key absent or empty (including when `project.yaml` has no `performance` or `naming` block), fall back to `docs/project-reference/technical-preferences.md`. Extract performance budgets and naming conventions.
@@ -273,14 +281,14 @@ Combine the agent outputs into a draft spec per asset. Present all specs in conv
 | Format | [PNG / SVG / WAV / etc.] |
 | Naming | [e.g. vfx_frost_hit_01.png] |
 | Polycount | [if 3D — e.g. <800 tris] |
-| Texture Res | [e.g. 512px — matches Art Bible §8 Tier 2] |
+| Texture Res | [e.g. 512px — matches Art Bible `8 Tier 2] |
 
 **Visual Description:**
 [2–3 sentences. Specific enough for two artists to produce consistent results.]
 
 **Art Bible Anchors:**
-- §3 Shape Language: [relevant rule applied]
-- §4 Color System: [color role — e.g. "uses Threat Blue per semantic color rules"]
+- `3 Shape Language: [relevant rule applied]
+- `4 Color System: [color role — e.g. "uses Threat Blue per semantic color rules"]
 
 **Generation Prompt:**
 [Ready-to-use prompt. Include: style keywords, composition notes, color palette anchors, lighting direction, negative prompts.]

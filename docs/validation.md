@@ -40,3 +40,7 @@ Professional gates retain their missing-input, mode applicability and strictest-
 rules. A report must name skipped/unavailable checks, actual execution failures and
 remaining risks. Synthetic game-shaped documents cannot establish game quality or
 release readiness.
+
+The upstream alignment compares full input-to-result behavior separately from format.
+Static phase and evaluation checks are not model execution. Optional Bash fixtures
+exercise data utilities; they do not run game engines or install host permissions.

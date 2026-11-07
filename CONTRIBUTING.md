@@ -59,3 +59,9 @@ and limitations. Use the PR description and review conversation for task plans,
 review rounds and handoffs; keep lasting usage/maintenance knowledge in formal docs.
 Do not include private paths, chat IDs or consumer adaptation histories. Prefer
 Conventional Commits. No global settings, hook trust or automatic main merging.
+
+For upstream synchronization, compare both implementations against real inputs and
+document the narrow native differences. Keep the upstream commits as ancestors of
+the integration commit. Preserve that ancestry when integrating a synchronization
+PR; do not squash or rebase away its upstream parent. See the
+[compatibility map](docs/upstream-compatibility.md).

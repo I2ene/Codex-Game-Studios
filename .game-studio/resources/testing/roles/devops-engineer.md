@@ -38,7 +38,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input**: "Our CI pipeline is failing on the merge step. The error is: 'Asset import failed: texture compression format unsupported in headless mode.'"
 **Domain checks**:
 - Diagnoses the failure as an environment problem in the headless CI runner (the import step needs a capability the headless runner lacks), not a flaky step to retry
-- Before stating how Godot 4.6 imports or compresses textures headlessly, cross-references `<project-engine-reference>/godot/` — `VERSION.md` pins 4.6, past the model's training data — and says so when the reference does not cover it, rather than asserting version-specific behavior from memory
+- Before stating how the fixture's pinned Godot 4.7 imports or compresses textures headlessly, check `<project-engine-reference>/godot/` and the actual runner evidence. Say when the references do not cover it; do not assert version-specific behavior from memory.
 - Proposes at least one actionable fix that keeps the import and test steps in the pipeline, and names its tradeoff
 - Does NOT remove the import step, skip the tests, or mark the job `continue-on-error` to get a green build — "Skip CI steps for speed" is forbidden, and `coding-standards.md` says "Never disable or skip failing tests to make CI pass — fix the underlying issue"
 - Does NOT declare the pipeline unfixable

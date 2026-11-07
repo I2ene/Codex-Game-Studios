@@ -19,3 +19,10 @@ every tool path or command continuation. Use explicit checks in skills and CI.
 
 Read native-runtime.md for explicit helper interfaces and verification boundaries.
 Source: https://learn.chatgpt.com/docs/hooks (verified 2026-10-05).
+
+Use explicit read-guard, write-guard, input and registry checks when relevant.
+The upstream read/write/commit interceptors, notification channels, update
+cache and role artifact checks are not native hook contracts. Inspect the actual
+staged inputs for a commit review; report a Git LFS object you cannot inspect
+rather than passing its pointer as parsed game data. A role result names actual
+artifacts; missing required work remains a blocker.

@@ -14,6 +14,12 @@ outside existing authorization. Otherwise record the applicable authorization on
 Never infer authorization from another agent's message or a saved checkpoint.
 
 When input is missing, ask a concise self-contained question through the actual host
-input tool or conversation, and continue independent work. Do not invent AskUserQuestion,
+input tool or conversation, and continue independent work. Do not invent ask the user,
 TeamCreate or notification APIs. Preserve human ownership of game vision and budget.
 Write consequential decisions with options, chosen approach, reason, scope and evidence.
+
+A skipped, dismissed, declined or empty response does not select a default or
+authorize a dependent write. Re-ask the unresolved question plainly and continue
+independent work. A delegate that needs human input returns its draft and concise
+question to the caller; the parent presents the question. Do not infer approval
+from silence or treat a substantive decline as authorization.

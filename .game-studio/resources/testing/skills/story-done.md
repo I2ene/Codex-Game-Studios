@@ -188,6 +188,25 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Variant — AC-4 is a checkable criterion that the user answers `Not tested yet`: it is UNTESTED in the traceability table and the verdict is NOT ASSESSED, naming what would settle it
 - [ ] Variant — another criterion also FAILS: the verdict is BLOCKED (BLOCKED is evaluated before NOT ASSESSED)
 
+---
+
+### Case 8: Read only references needed by the completion branch
+
+**Fixture:** As Case 1: standard/lean Godot Logic story with three covered criteria and retained execution
+evidence, no sprint/status file and no advisory deviations. Variant: full review, sprint has
+another story and there is an advisory deviation; user chooses to close and log debt.
+
+**Input:** `$gs-story-done production/epics/core/story-light-pickup.md`
+
+**Domain checks:**
+- [ ] Lean case offers the appropriate code review without loading the branch-only
+  `review-gates.md`, `sprint-next.md` or `tech-debt-row.md`. Required common procedure still
+  applies.
+- [ ] Variant reads each actual branch reference before that work: review brief before the
+  review, debt row before logging, sprint-next before Next Up. Preserve review/QA/automation
+  settings and unresolved closure decisions; do not add duplicate authorization prompts.
+
+---
 
 ## Applicable domain checks
 

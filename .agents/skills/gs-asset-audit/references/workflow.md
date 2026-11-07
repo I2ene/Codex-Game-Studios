@@ -22,6 +22,8 @@ participant IDs, independent reviews or sign-off. Record real delegated particip
 Missing evidence means NOT ASSESSED — NO DATA. Resolve engine/version from this
 project; engine reference versions are examples and require current verification.
 
+# Asset Audit
+
 ## Measuring file sizes and formats requires Bash
 
 This skill's report asks for **file sizes against budgets**, **texture dimensions**
@@ -57,11 +59,10 @@ not a filled-in report.** Check first, and stop if the check fails.
 
 **A verdict of `NOT ASSESSED` is a success.** It is the correct, useful answer to
 "what does the data say?" when there is no data. The failure mode this prevents is
-specific and has been observed in practice: report templates whose verdict
-enum had no "could not run" state produced **false clean passes** — an asset audit
-returning COMPLIANT on a project with no assets and no standards, and a
-performance profile reporting ">99% headroom against a 16.67ms budget" with zero
-profiler data and no budget ever set.
+specific: a report whose verdict enum has no "could not run" state produces
+**false clean passes** — an asset audit returning COMPLIANT on a project with no
+assets and no standards, or a performance profile reporting ">99% headroom against
+a 16.67ms budget" with zero profiler data and no budget ever set.
 
 **Absence of evidence is never evidence of absence.** A scan that finds no
 matches because there are no files to scan has not verified anything. Say which of
@@ -74,7 +75,9 @@ the two happened — a reader cannot tell from a green result.
 Read the art bible's Asset Standards section (`design/art/art-bible.md`) and any
 asset standards in the relevant design docs — size budgets and format rules come
 from there. The naming patterns are the ones in Phase 3 below, unless the art
-bible states its own.
+bible states its own. Read the art bible by section: find the heading with
+the Grep tool (pattern `^#`, content mode) and Read that range with offset
+and limit.
 
 If neither states a size budget — or there is no art bible — the Size section is
 `NOT ASSESSED — no size budget set`, and the report names `$gs-art-bible`, whose

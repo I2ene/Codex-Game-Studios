@@ -63,6 +63,7 @@ case's inputs, professional scope, artifact destinations and expected verdict.
 ### Case 2: Performance Blocker — Frame budget violation cannot be fully resolved
 
 **Fixture:**
+- Explicit standard workflow for the sprint scheduling branch.
 - Resolved config block: `team.size: small`, `automation: collaborative`
 - Feature being polished: `particle-storm` VFX system
 - Phase 1 identifies a frame budget violation: particle-storm costs 12ms on target hardware (budget is 6ms for this system)
@@ -122,6 +123,7 @@ case's inputs, professional scope, artifact destinations and expected verdict.
 ### Case 5: Regression Found — Polish change broke an existing feature
 
 **Fixture:**
+- Explicit standard workflow for the sprint scheduling branch.
 - Resolved config block: `team.size: small`, `automation: collaborative`
 - Feature being polished: `inventory-ui`
 - Phases 1–4 complete successfully; performance and polish changes are applied
@@ -173,6 +175,22 @@ case's inputs, professional scope, artifact destinations and expected verdict.
 - [ ] Verdict is never READY FOR RELEASE at `individual`
 - [ ] An over-budget metric the handed-off item targets makes the verdict NEEDS MORE WORK
 
+---
+
+### Case 8: Minimal follow-up schedules the measured remaining issue
+
+**Fixture:** As Case 2 with minimal workflow, small roster, collaborative automation, a brief and no sprint.
+Observed optimized particle-storm cost is 9 ms against the committed 6 ms budget.
+
+**Input:** `$gs-team-polish particle-storm`
+
+**Domain checks:**
+- [ ] Resolve workflow; report NEEDS MORE WORK and the 3 ms gap using the same evidence and
+  ownership as Case 2.
+- [ ] Recommend the brief's build order for that issue and rerun after the fix; do not recommend
+  `$gs-sprint-plan update`.
+
+---
 
 ## Applicable domain checks
 

@@ -91,7 +91,7 @@ Read the most recently modified file in `production/sprints/` to understand:
 - Stories in scope (for assignment target)
 - Sprint capacity constraints (if noted)
 
-If no sprint file exists: note "No sprint plan found — assigning to backlog only."
+If no sprint file exists: note "No sprint plan found — assigning to backlog only." At `workflow: minimal` there are no sprints by design — say that instead, and name the P1 bugs as the next fixes, ahead of the next story in the brief's build order.
 
 ### Step 2c — Load severity reference
 

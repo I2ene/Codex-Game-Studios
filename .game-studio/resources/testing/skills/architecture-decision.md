@@ -87,7 +87,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The registry is read before any existing ADR file
 - [ ] The conflict warning names ADR-0003 and offers exactly the three options above
 - [ ] The confirm/adjust assumptions prompt (Step 4) does not appear until the conflict is resolved
-- [ ] On supersede, the old registry entry is marked `superseded_by`, not edited or deleted
+- [ ] On authorized supersession, use a valid quoted YAML scalar such as `status: "superseded_by: ADR-[NNNN]"`. Preserve all other old-entry fields and add the new entry.
 
 ---
 
@@ -109,6 +109,22 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] Stories are matched only under `production/epics/`
 - [ ] (b) All three stories are found — the Blocked grep matches `> **Status**: Blocked` and `**Status:** Blocked`, not only the literal `Status: Blocked`
+
+---
+
+### Case 5b: A successor reference does not unblock an old ADR's story
+
+**Fixture:** ADR-0005 is Proposed and depends on Accepted ADR-0001. Three Blocked stories: 001 waits for
+ADR-0005 itself; 002 still names superseded ADR-0003 as governing and mentions ADR-0005 only as
+the replacement; 003 is unrelated. The human accepts ADR-0005.
+
+**Input:** `$gs-architecture-decision accept ADR-0005`
+
+**Domain checks:**
+- [ ] Before acceptance identify exactly one story that will move. On acceptance set ADR-0005 to
+  Accepted and move only 001 to Ready.
+- [ ] Leave 002 and 003 Blocked and byte-for-byte unchanged. Report the accepted ADR and 001; do
+  not report the others as moved or repoint their governing fields.
 
 ---
 

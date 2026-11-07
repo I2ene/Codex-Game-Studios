@@ -133,6 +133,25 @@ case's inputs, professional scope, artifact destinations and expected verdict.
 - [ ] gameplay-programmer still runs in Step 4
 - [ ] Verdict is `COMPLETE — engine validation NOT ASSESSED (…)`, never a plain COMPLETE (engine not configured is a graceful case, not a blocker)
 
+---
+
+### Case 6: Review mode does not add or remove audio disciplines
+
+**Fixture:** Same Godot combat GDD and sound bible, no accessibility gap, `team.size: studio`; A explicit
+full, B configured lean, C explicit solo. Keep execution authorization/capacity constant per
+comparison.
+
+**Input:** `$gs-team-audio combat` (full, lean and solo variants)
+
+**Domain checks:**
+- [ ] All modes preserve audio direction, sound design/accessibility, technical audio plus
+  Godot, and gameplay integration in the same dependency order. Run each through the documented
+  parent or authorized delegation path.
+- [ ] Report the same discipline scope, unresolved transition decisions,
+  `design/audio/audio-combat.md` delivery and COMPLETE verdict. No external phase gate is
+  introduced.
+
+---
 
 ## Applicable domain checks
 

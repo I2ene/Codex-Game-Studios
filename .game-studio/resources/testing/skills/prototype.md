@@ -16,6 +16,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 1: Happy Path — Engine Prototype, PROCEED
 
 **Fixture:**
+- Explicit standard workflow for the concept prototype handoff (Case 6 covers minimal).
 - `design/gdd/game-concept.md` describes a 2D platformer; `project.yaml` has
   `engine.name: Godot` and `engine.language: GDScript`
 - `prototypes/` has no `grapple-hook-concept/`
@@ -73,6 +74,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 4: Spike Mode — No Debrief, No Gate, No PROCEED/PIVOT/KILL
 
 **Fixture:**
+- Explicit standard workflow with sprint-004 as the current sprint, recorded in the active checkpoint.
 - Project is in Production
 - Review mode: `full`
 
@@ -86,6 +88,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Output is `SPIKE-NOTE.md` in a `-spike-[date]` folder, not a REPORT.md
 - [ ] No CD-PLAYTEST consults or skip note, even though review mode is `full`
 - [ ] No PROCEED / PIVOT / KILL verdict is issued
+- [ ] The note's next decision includes adding to the current sprint, investigating further or
+  abandoning. After the authorized write, the checkpoint returns to sprint-004; Case 7 covers
+  minimal.
 
 ---
 
@@ -126,6 +131,24 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Run A's report and `prototypes/index.md` row both read NOT ASSESSED until a playtest happens
 - [ ] Run B's recommended path is the `workflow: minimal` route (`$gs-create-stories`, `$gs-dev-story`), not the `standard`/`full` GDD pipeline
 
+---
+
+### Case 7: Minimal spike restores the current story instead of a sprint
+
+**Fixture:** Minimal workflow/full review; brief/build order, no sprints, story-002 In Progress and named in
+active checkpoint. User answers YES to rope-physics spike.
+
+**Input:** `$gs-prototype rope-physics --spike`
+
+**Domain checks:**
+- [ ] SPIKE-NOTE records question, result and next decision: add to brief/build order,
+  investigate further or abandon. Do not offer adding to a current sprint.
+- [ ] On authorized write restore checkpoint to story-002, with no sprint reference or creation.
+  No CD-PLAYTEST or PROCEED/PIVOT/KILL.
+- [ ] Keep the same spike-only scope and approximate four-hour cap as Case 4. No CD-PLAYTEST
+  skip note is needed; the gate is inapplicable, not skipped by mode.
+
+---
 
 ## Applicable domain checks
 

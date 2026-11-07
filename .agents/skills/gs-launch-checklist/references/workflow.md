@@ -31,6 +31,8 @@ every file write follows `.game-studio/resources/docs/automation-modes.md`
 
 Resolve settings explicitly with the native config command; retain its values and provenance.
 
+# Launch Checklist
+
 **Scope this checklist to the project.** Emitting every item for every platform
 trains the reader to skip the list, which defeats the gate:
 
@@ -58,11 +60,10 @@ trains the reader to skip the list, which defeats the gate:
   - `console` — full platform certification (TRC / XR / Lotcheck), save-data
     rules, controller-mapping rules, age-rating boards. The heaviest tier.
 
-  > **Branch on the `cert_tier` values above, not on platform names.** "Emit
-  > console/mobile certification items only for the platforms the project targets"
-  > is the wrong test: it treats an `itch` project and a `steam` project
-  > identically, conflates `none` with unset, and keys on `mobile`, which is not a
-  > `cert_tier` value at all. Use the vocabulary the config defines.
+  > **Branch on the `cert_tier` values above, not on platform names.** A test on
+  > target platforms treats an `itch` project and a `steam` project identically,
+  > conflates `none` with unset, and keys on `mobile`, which is not a `cert_tier`
+  > value at all. Use the vocabulary the config defines.
 
 If an item cannot be scoped because the config is absent, mark it
 **`NOT ASSESSED — platform/stage unknown`**. Do not silently include it: a
@@ -72,8 +73,6 @@ ratings, of which ~140 are unassessable.
 
 ---
 
-
-> **Explicit invocation only**: This skill should only run when the user explicitly requests it with `$gs-launch-checklist`. Do not auto-invoke based on context matching.
 
 ## Phase 1: Parse Arguments
 
@@ -104,13 +103,11 @@ Read the argument for the launch date or `dry-run` mode. Dry-run mode generates 
 > (resolve per `.game-studio/resources/docs/code-root-resolution.md`); assets live in
 > `assets/`, `Assets/` or `Content/`.
 >
-> This is written once, over the whole phase, rather than under **one** of the
-> four bullets. All four search the code root the same way — for placeholder assets,
-> TODOs, debug output and hardcoded test values — so if only one carries the
-> warning, an empty or absent code root returns zero
-> hits three times and read as three clean results. With no `assets/` directory,
-> for example, the placeholder scan returns zero hits, and "All placeholder art
-> replaced" would be ticked green.
+> This applies to all four bullets below: each searches the same way, for
+> placeholder assets, TODOs, debug output and hardcoded test values, and each
+> returns zero hits on an empty or absent root. With no `assets/` directory, for
+> example, the placeholder scan returns zero hits, and a bare tick would mark
+> "All placeholder art replaced" green.
 
 - Count `TODO`, `FIXME`, `HACK` comments and their locations
 - Check for any `console.log`, `print()`, or debug output left in production code
@@ -237,14 +234,10 @@ do not fall back to emitting all of them.
 **Every tier**, because these are not certification-gated:
 - [ ] Accessibility: minimum standards met (remapping, text scaling, colorblind)
 
-> **Keep this template gated by tier.** An ungated list — PC *and* Console *and*
-> Mobile rows emitted at every tier — contradicts the `cert_tier` rule at the top
-> of this skill, which says an `itch` project gets no console and no Steamworks
-> items. When a rule and a template disagree, the template wins in practice,
-> because a template is what gets copied.
->
-> Changing the branching vocabulary is only half the job: the rows that branching
-> governs have to move with it, or the rule describes behaviour nothing reaches.
+> **Emit this section gated by tier, never as one ungated list.** PC *and*
+> Console *and* Mobile rows emitted at every tier contradict the `cert_tier` rule
+> at the top of this skill, which says an `itch` project gets no console and no
+> Steamworks items.
 
 ### Performance
 - [ ] Target FPS met on minimum spec hardware

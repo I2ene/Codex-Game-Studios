@@ -68,3 +68,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - States the documented 4.6 change: glow now processes before tonemapping (it was after), with screen blending — so glow intensity/blend tuned on an earlier version will look different and may need re-tuning
 - Does NOT invent renamed or removed glow properties that `breaking-changes.md` and `modules/rendering.md` do not document
 - Flags any properties that the LLM's training data may have incorrect information about due to the post-cutoff timing
+
+## Applicable domain checks
+
+- [ ] For the 4.6 glow case, use the migration notes specific to the fixture and the installed
+  editor. Do not substitute the newest version notes simply because they are newer.

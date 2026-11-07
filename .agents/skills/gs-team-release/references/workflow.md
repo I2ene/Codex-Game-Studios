@@ -33,6 +33,8 @@ participant IDs, independent reviews or sign-off. Record real delegated particip
 Missing evidence means NOT ASSESSED — NO DATA. Resolve engine/version from this
 project; engine reference versions are examples and require current verification.
 
+# Team Release
+
 **Argument check:** If no version number is provided:
 1. Read `<resolved-checkpoint>` and the most recent file in `production/milestones/` (if they exist) to infer the target version.
 2. If a version is found: report "No version argument provided — inferred [version] from milestone data. Proceeding." Then confirm with `ask the user`: "Releasing [version]. Is this correct?"

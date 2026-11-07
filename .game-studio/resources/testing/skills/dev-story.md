@@ -264,3 +264,19 @@ The `full` column of the file-check table has its own STOP rule, so the
 - [ ] No STOP and no BLOCKED for the `N/A` ADR field at `full`
 - [ ] No ADR file is looked up for `N/A`
 - [ ] Variant — the story names `ADR-0006`, whose `## Status` reads `Superseded by ADR-0009`: the story is BLOCKED at every tier, naming ADR-0009 and saying to edit its ADR field (`$gs-create-stories` never rewrites an existing story)
+
+---
+
+### Case 11: Exact TR-ID matching despite a shared prefix
+
+**Fixture:** Full workflow; Ready Logic stories under `production/epics/combat/`, ADR N/A and no
+dependencies. Registry lists `TR-combat-0010` first (enemies drop loot on death), then
+`TR-combat-001` (damage is clamped to remaining health). Story A references 001, B references
+0010.
+
+**Input:** `$gs-dev-story <story-A-path>`, then `$gs-dev-story <story-B-path>`
+
+**Domain checks:**
+- [ ] A's implementation brief uses only the 001 damage requirement; B's uses only the 0010 loot
+  requirement. Resolve the whole ID and its matching record regardless of entry order; a prefix
+  search is insufficient.

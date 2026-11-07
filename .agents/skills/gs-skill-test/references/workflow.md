@@ -16,3 +16,13 @@ Read .game-studio/resources/testing/README.md and catalog.yaml for native evalua
 scenarios, domain checks and the category rubric. Scenarios are guidance, not
 executed test results; the current native procedure governs host mechanics.
 Missing game/engine input cannot produce a passed balance/performance/build report.
+
+## Static checks across split procedures
+
+Read the phase references from the selected skill, following installed, confined
+links. Only SKILL.md defines skill metadata. Native `skill-lint` reports
+structural observations about names, metadata, resources and roles; it does not
+launch the skill. Check unverified host APIs, mistaken permissions, description
+collisions, missing phase/verdict/next-step requirements and a role instructed
+to ask the user itself. Use isolated planted-defect fixtures. Report findings
+separately from evidence that an actual workflow ran.

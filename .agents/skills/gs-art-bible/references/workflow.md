@@ -26,6 +26,8 @@ project; engine reference versions are examples and require current verification
 Explicitly resolved — use as-is; `--review` overrides `review_mode`. No block →
 defaults in `.game-studio/resources/docs/config-resolution.md`.
 
+# Art Bible
+
 
 ## Phase 0: Parse Arguments and Context Check
 
@@ -52,7 +54,9 @@ rationale per choice. Apply it to every section you author.
 - `minimal` — not required. Can still be run voluntarily.
 
 Read `design/gdd/game-concept.md` — or `design/game-brief.md`, the one-page brief
-that replaces it at `rigor: minimal`. If neither exists, fail with:
+that replaces it at `rigor: minimal`. Read it by section: find the headings you need
+with the Grep tool (pattern `^#`, content mode) and Read those ranges with offset
+and limit. If neither exists, fail with:
 > "No game concept found. Run `$gs-brainstorm` first — the art bible is authored after the game concept is approved."
 
 Extract from game-concept.md (from the brief: working title, pitch, "Who it's for /

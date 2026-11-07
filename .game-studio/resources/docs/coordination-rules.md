@@ -27,3 +27,9 @@ Resolve config explicitly. Use the engine-reference resolver for project-owned
 version/API records, story JSON for routing and linked JSON receipts for review
 freshness. Save authored state only when enabled, using the configured checkpoint
 interface. Recover data does not override current instructions or authorize new work.
+
+Read large GDDs, ADRs and checkpoints by complete sections when practical.
+The explicit read guard reports headings and size; it does not intercept host
+calls. At a vendor issue or PR boundary, draft the report for the human; do not
+file it as a side effect of a framework workflow. Apply the scoped scene/asset
+file rules before editing engine resources.

@@ -111,8 +111,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 6: Minimal Workflow — Look back over the closed stories
 
 **Fixture:**
-- `project.yaml` sets neither `modes.rigor` nor `modes.workflow`, so the injected
-  block reads `workflow: minimal (rigor:minimal)`
+- `project.yaml` sets neither `modes.rigor` nor `modes.workflow`, so native config resolves `workflow: minimal` from rigor
 - `production/sprints/`, `production/milestones/` and
   `production/retrospectives/` do not exist
 - 3 stories under `production/epics/core/` have `Status: Complete`; 1 has
@@ -126,3 +125,5 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The `In Progress` story is not reported as completed work
 - [ ] The sections that need sprint data read `NOT ASSESSED — NO DATA` rather than invented figures
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
+- [ ] After the authorized write, name the retrospective file and route its action items to the
+  brief's build order; do not offer `$gs-sprint-plan new` at minimal.

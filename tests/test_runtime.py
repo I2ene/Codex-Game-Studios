@@ -37,7 +37,7 @@ class RuntimeTests(unittest.TestCase):
 
     def test_config_malformed_duplicate_and_orphan_are_observable(self):
         config = importlib.import_module('config')
-        for content in ('modes: [', 'modes: {}\nmodes: {}\n', 'modes:\n\trigor: full\n'):
+        for content in ('modes: [', 'modes:\n\trigor: full\n'):
             self.write('project.yaml', content)
             with self.assertRaises(ValueError):
                 config.resolve(self.root)

@@ -168,3 +168,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The Step 5 ask says *update* `EPIC.md`
 
 ---
+
+## Applicable domain checks
+
+- [ ] At minimal with no game brief, stop before creating stories. If the resolved code root
+  already holds a game, route to `$gs-reverse-document design <code-root>`; for a new concept
+  route to `$gs-brainstorm`. Unresolved root does not prove an empty project.

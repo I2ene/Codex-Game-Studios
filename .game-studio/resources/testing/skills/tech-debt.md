@@ -112,7 +112,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 **Domain checks:**
 - [ ] On “add anyway”, append one new entry alongside the existing matching Open entry; on “update”, edit the matching row without adding a duplicate.
-- [ ] A new entry with the same file and category as an existing `Open` entry is never appended without first showing the match and asking
+- [ ] Show the matching Open entry. Declining the update does not decline the distinct append; offer it when the human has not resolved that choice. Do not write either branch without applicable authorization.
 - [ ] "Update" edits the matched row rather than adding a new one
 
 ---
@@ -134,6 +134,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 5: Prioritize in Full Review Mode — Scored, re-sorted, approved
 
 **Fixture:**
+- Explicit standard workflow; this case exercises next-sprint prioritization.
 - `project.yaml`: `modes.review_mode: full`
 - `docs/tech-debt-register.md` has 4 entries: TD-001 High/S, TD-002 Low/L, TD-003
   Critical/M, TD-004 Med/— (Effort not yet estimated)
@@ -143,7 +144,22 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] Items are scored `impact ÷ effort` from their own columns and re-sorted: TD-001, TD-003, TD-002
 - [ ] TD-004 gets no invented score; it is listed as not scored, naming the missing Effort
-- [ ] A next-sprint recommendation is given
+- [ ] Priorities are recommended for the next sprint and the closing route names `$gs-sprint-plan`.
 - [ ] No director gate is invoked in any review mode
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] Verdict is COMPLETE
+
+---
+
+### Case 5b: Minimal prioritization names the next build
+
+**Fixture:** `modes.rigor: minimal`, automation unset; brief with three build-order entries and no sprint.
+Open TD-001 High/S, TD-002 Low/L and TD-003 Critical/M.
+
+**Input:** `$gs-tech-debt prioritize`
+
+**Domain checks:**
+- [ ] Score and sort TD-001 3.0, TD-003 2.0, TD-002 0.3. Save the authorized register update and
+  report COMPLETE.
+- [ ] Recommend the brief's build order for high priorities, not a sprint; keep `$gs-tech-debt
+  report` in the handoff.

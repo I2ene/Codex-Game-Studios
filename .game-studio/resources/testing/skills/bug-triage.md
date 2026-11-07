@@ -91,6 +91,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 5: Director Gate Check — Full mode, no P1 bugs
 
 **Fixture:**
+- Explicit standard workflow: sprints apply here, but no sprint file is present.
 - No sprint file in `production/sprints/`
 - `production/qa/bugs/` holds two bugs, S3/P3 and S4/P3
 
@@ -101,3 +102,18 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Both bugs are dispositioned Backlog
 - [ ] "No P1 bugs — build is in good shape for QA hand-off." appears with Verdict COMPLETE
 - [ ] No director gate is invoked and no gate skip messages appear
+
+---
+
+### Case 6: P1 fixes precede the next brief story at minimal
+
+**Fixture:** Minimal workflow, no sprint. Brief's next unbuilt feature is Inventory screen. BUG-0001 S1/P1
+Audio; BUG-0002 S3/P1 UI; BUG-0003 S4/P3 Tutorial.
+
+**Input:** `$gs-bug-triage`
+
+**Domain checks:**
+- [ ] Full triage mode explains there are no sprints by design; do not report a missing required
+  sprint plan.
+- [ ] Place both P1 fixes ahead of Inventory screen, BUG-0003 in backlog. No sprint assignment
+  or priority overflow; retain the authorized triage report and COMPLETE verdict.

@@ -95,6 +95,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 5: Enforcement Level `off` in Full Review Mode — Informational only, no gates
 
 **Fixture:**
+- Explicit standard workflow; this fixture exercises sprint scheduling rather than the minimal route in Case 6.
 - `project.yaml`: `engine.name: godot`, `modes.review_mode: full`, `performance.enforce: off`, all four budgets set
 - `src/` contains a `_process()` whose estimated frame cost exceeds `performance.frame_budget_ms`
 
@@ -106,3 +107,35 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The over-budget metric is not raised as a violation finding or a fix recommendation
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] Next steps name `$gs-architecture-decision`, `$gs-scope-check` and `$gs-sprint-plan update`
+
+---
+
+### Case 6: Accepted optimization follows workflow
+
+**Fixture:** As Case 1, with the nested-loop optimization rated M/L and the operator choosing to implement
+it. Run A: minimal workflow; Run B: explicit standard.
+
+**Input:** `$gs-perf-profile combat`
+
+**Domain checks:**
+- [ ] A: the implementation option and scheduling handoff name the brief's build order; neither
+  schedules a sprint.
+- [ ] B: offer to fix now or schedule via `$gs-sprint-plan update`, without the minimal
+  build-order wording.
+- [ ] Preserve the scope-check, Polish deferral and ADR alternatives. Both runs end COMPLETE
+  with the same performance evidence limits.
+
+---
+
+### Case 7: Subdirectory invocation resolves root budgets
+
+**Fixture:** Start in `src/gameplay/`. Root config sets Godot and target 60 fps, 16.6 ms frame, 200 draw
+calls and 2048 MB. `src/gameplay/combat/enemy_manager.gd` has a nested loop in `_process()`.
+
+**Input:** `$gs-perf-profile combat`
+
+**Domain checks:**
+- [ ] Resolve the actual project root and effective config there. The budgets table shows the
+  four committed values; working directory alone never makes them unset or NOT ASSESSED.
+- [ ] Find the nested loop with a file and line. Estimated code cost is not an executed timing
+  measurement.

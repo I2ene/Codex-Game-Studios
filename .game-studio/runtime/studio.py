@@ -8,14 +8,19 @@ import checks
 import config
 import context
 import hooks
-from paths import atomic_write, confined, digest, plain
+import checkpoint_ops
+import config_edit
+import markdown_ops
+import observations
+from paths import atomic_write, confined, plain
 
 
 def parser():
     p = argparse.ArgumentParser(description='Codex Game Studios explicit project helpers')
     sub = p.add_subparsers(dest='command', required=True)
     for name in ['config', 'recover', 'artifacts', 'stories', 'dependencies', 'coherence', 'engine-reference',
-                 'gdd-structure', 'review-scope', 'receipts', 'checkpoint', 'settings', 'run', 'hooks']:
+                 'gdd-structure', 'review-scope', 'receipts', 'checkpoint', 'settings', 'run', 'hooks',
+                 'markdown', 'project-state', 'read-guard', 'write-guard', 'test-scaffold', 'skill-lint']:
         s = sub.add_parser(name)
         s.add_argument('--root', required=True, type=Path, help='Explicit consumer project root')
         s.add_argument('--output', help='Optional repository-relative JSON receipt path')
@@ -37,7 +42,36 @@ def parser():
         elif name == 'review-scope':
             s.add_argument('--receipt')
         elif name == 'checkpoint':
-            s.add_argument('--save', help='Read an explicitly authored repository-relative checkpoint and save it')
+            mode = s.add_mutually_exclusive_group()
+            mode.add_argument('--save', help='Read an explicitly authored repository-relative checkpoint and save it')
+            mode.add_argument('--append', help='Append a repository-relative authored narrative once')
+        elif name == 'markdown':
+            s.add_argument('action', choices=['list', 'status', 'extract', 'replace', 'insert-before', 'set-field'])
+            s.add_argument('path')
+            s.add_argument('targets', nargs='*')
+            s.add_argument('--body', action='store_true', help='Extract without the heading')
+            s.add_argument('--body-file', help='Read repository-relative replacement or insertion text; defaults to stdin')
+            s.add_argument('--after', help='An existing header field to insert after')
+        elif name == 'project-state':
+            s.add_argument('--stage', action='store_true', help='Only return stage and phase facts')
+        elif name == 'read-guard':
+            s.add_argument('action', choices=['check', 'sections'])
+            s.add_argument('path')
+            s.add_argument('--bounded', choices=['yes', 'no'], default='no')
+        elif name == 'write-guard':
+            s.add_argument('action', choices=['check', 'overwrite', 'config', 'prototype', 'freeze', 'artifact'])
+            s.add_argument('targets', nargs='+')
+            s.add_argument('--tool', choices=['Write', 'Edit'], default='Write')
+        elif name == 'test-scaffold':
+            s.add_argument('engine')
+            mode = s.add_mutually_exclusive_group()
+            mode.add_argument('--list', action='store_true', dest='listing')
+            mode.add_argument('--dry-run', action='store_true')
+            s.add_argument('--module')
+            s.add_argument('--project')
+            s.add_argument('--date', dest='setup_date')
+        elif name == 'skill-lint':
+            s.add_argument('name')
         elif name == 'settings':
             s.add_argument('assignment', nargs='?', help='dotted.key=YAML-value; omitted to inspect')
             s.add_argument('--local', action='store_true')
@@ -56,11 +90,15 @@ def settings(root, assignment, local=False, dry_run=False):
     if not assignment:
         return config.resolve(root)
     key, sep, value_text = assignment.partition('=')
-    if not sep or not key or any(not p for p in key.split('.')):
+    if not sep or not key or not value_text.strip() or any(not p for p in key.split('.')):
         raise ValueError('Expected dotted.key=YAML-value')
     if local and key not in config.LOCAL:
         raise ValueError(f'{key} is locked to project.yaml')
     value = yaml.load(value_text, Loader=config.Loader)
+    if isinstance(value, dict):
+        raise ValueError('Set a YAML leaf, not a mapping')
+    if key == 'features.read_guard_kb' and (type(value) is not int or value <= 0):
+        raise ValueError('features.read_guard_kb must be a positive integer')
     if key == 'engine.name' and (not isinstance(value, str) or not value.strip()):
         raise ValueError('engine.name must be a nonempty project engine name')
     if key in config.ENUMS and not any(type(value) is type(v) and value == v for v in config.ENUMS[key]):
@@ -75,40 +113,30 @@ def settings(root, assignment, local=False, dry_run=False):
         raise ValueError('testing.strict scalar must be true or false')
     if local and not confined(root, 'project.yaml').exists():
         raise ValueError('Local settings require project.yaml')
+    resolved = config.resolve(root, require_clean=True)
     path = confined(root, 'project.local.yaml' if local else 'project.yaml')
-    data = config.load(path)
-    node = data
-    parts = key.split('.')
-    for part in parts[:-1]:
-        node = node.setdefault(part, {})
-        if not isinstance(node, dict):
-            raise ValueError('Assignment would overwrite a scalar ancestor')
-    node[parts[-1]] = value
-    rendered = yaml.safe_dump(data, sort_keys=False, allow_unicode=True)
-    if not dry_run:
-        atomic_write(path, rendered.encode())
+    rendered, plan = config_edit.plan(path, key.split('.'), value)
+    notes = []
+    if key == 'modes.review_mode':
+        notes.append('Explicit review mode shadows the rigor-derived review mode.')
+    if not local and resolved['sources'].get(key) == 'project.local.yaml':
+        notes.append('A whitelisted project.local.yaml value shadows the project assignment.')
+    if not dry_run and plan['status'] != 'UNCHANGED':
+        atomic_write(path, rendered)
+        plan['status'] = 'UPDATED'
     return {'path': path.name, 'assignment': key, 'value': value, 'dry_run': dry_run,
-            'note': 'YAML serialized; original comments are not retained. Inspect diff.'}
+            **plan, 'notes': notes}
 
 
-def checkpoint(root, save=None):
-    recovered = context.recover(root)
-    current = recovered['checkpoint']
-    if not save:
+def checkpoint(root, save=None, append=None):
+    if save or append:
+        config.resolve(root, require_clean=True)
+    current = context.recover(root)['checkpoint']
+    if not (save or append):
         return current
     if current['status'] == 'DISABLED':
         raise ValueError('Session state disabled')
-    source = confined(root, save)
-    data = source.read_bytes()
-    if not data.strip():
-        raise ValueError('An empty checkpoint is not saved state')
-    destination = confined(root, current['path'])
-    if destination.exists():
-        prior = destination.read_bytes()
-        backup = destination.with_name('previous-' + digest(prior)[:12] + '.md')
-        atomic_write(backup, prior)
-    atomic_write(destination, data)
-    return {'status': 'SAVED', 'path': current['path'], 'bytes': len(data), 'hash': digest(data)}
+    return checkpoint_ops.save(root, current['path'], save or append, append=bool(append))
 
 
 def main(argv=None):
@@ -126,7 +154,10 @@ def main(argv=None):
         if args.keys:
             aliases = {'automation': 'modes.automation', 'workflow': 'modes.workflow', 'review_mode': 'modes.review_mode',
                        'rigor': 'modes.rigor', 'story_granularity': 'modes.story_granularity', 'automation_always_ask': 'modes.automation_always_ask'}
-            wanted = [aliases.get(k, k) for k in args.keys.split(',')]
+            wanted = [aliases.get(k.strip(), k.strip()) for k in args.keys.split(',')]
+            requested = config.derived(result, wanted)
+            if requested:
+                result['derived'] = requested
             result['values'] = {k: v for k, v in result['values'].items() if any(k == w or k.startswith(w + '.') for w in wanted)}
             result['sources'] = {k: v for k, v in result['sources'].items() if k in result['values']}
     elif name == 'recover':
@@ -144,7 +175,29 @@ def main(argv=None):
     elif name == 'gdd-structure':
         result = checks.gdd_structure(root, args.patterns)
     elif name == 'checkpoint':
-        result = checkpoint(root, args.save)
+        result = checkpoint(root, args.save, args.append)
+    elif name == 'markdown':
+        if args.body and args.action != 'extract' or args.after and args.action != 'set-field':
+            raise ValueError('--body applies to extract, --after applies to set-field')
+        edits_body = args.action in {'replace', 'insert-before'}
+        if args.body_file and not edits_body:
+            raise ValueError('--body-file applies to replace or insert-before')
+        content = None
+        if edits_body:
+            content = confined(root, args.body_file).read_bytes() if args.body_file else sys.stdin.buffer.read()
+        result = markdown_ops.command(root, args.action, args.path, args.targets, body=args.body,
+                                      body_data=content, after=args.after)
+    elif name == 'project-state':
+        result = observations.project_state(root, args.stage)
+    elif name == 'read-guard':
+        result = observations.read_guard(root, args.action, args.path, args.bounded == 'yes')
+    elif name == 'write-guard':
+        result = observations.write_guard(root, args.action, args.targets, args.tool)
+    elif name == 'test-scaffold':
+        result = observations.test_scaffold(root, args.engine, listing=args.listing, dry_run=args.dry_run,
+                                            module=args.module, project=args.project, setup_date=args.setup_date)
+    elif name == 'skill-lint':
+        result = observations.skill_lint(root, args.name)
     elif name == 'settings':
         result = settings(root, args.assignment, args.local, args.dry_run)
     elif name == 'run':
@@ -172,6 +225,6 @@ def main(argv=None):
 if __name__ == '__main__':
     try:
         raise SystemExit(main())
-    except (ValueError, OSError, KeyError) as e:
+    except (ValueError, OSError, KeyError, yaml.YAMLError) as e:
         print(f'Game Studios: {e}', file=sys.stderr)
         raise SystemExit(2)

@@ -22,6 +22,8 @@ participant IDs, independent reviews or sign-off. Record real delegated particip
 Missing evidence means NOT ASSESSED — NO DATA. Resolve engine/version from this
 project; engine reference versions are examples and require current verification.
 
+# Team Audio
+
 If no argument is provided, output usage guidance and exit without spawning any agents:
 > Usage: `$gs-team-audio [feature or area to design audio for] [--review full|lean|solo]` — specify the feature or area to design audio for (e.g., `combat`, `main menu`, `forest biome`, `boss encounter`). Do not use `ask the user` here; output the guidance directly.
 
@@ -74,7 +76,9 @@ it is never labeled as a separate participant or independent sign-off.
    `main menu`, `forest biome`, `boss encounter`).
 
 2. **Gather context**:
-   - Read relevant design docs in `design/gdd/` for the feature
+   - Read relevant design docs in `design/gdd/` for the feature, by section: find the
+     headings you need with the Grep tool (pattern `^#`, content mode) and Read
+     those ranges with offset and limit
    - Read the sound bible at `design/audio/sound-bible.md` if it exists. If only
      `design/gdd/sound-bible.md` exists (where earlier versions put it), read that
      and recommend moving it to `design/audio/` — in `design/gdd/` the GDD checks

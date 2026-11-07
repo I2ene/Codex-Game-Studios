@@ -30,6 +30,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The concept document includes a Visual Identity Anchor section
 - [ ] Next-step handoff lists `$gs-map-systems`
 - [ ] Verdict is COMPLETE
+- [ ] Collect discovery context before the three concept options and resolve the concept choice.
+  Treat pillars and visual anchor as distinct human decisions; they may be presented together
+  once neither blocks the other.
 
 ---
 
@@ -46,7 +49,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] CD-PILLARS feedback is shown to the user
 - [ ] User is offered `Revise [specific pillar]` and `Discuss further` (and may `Lock in as-is`)
-- [ ] The first question after the REJECT has no Visual anchor tab
+- [ ] The first decision after REJECT concerns the pillars alone; no visual anchor selection is bundled with it.
 - [ ] Visual anchor selection is not requested until the pillar issue is resolved
 - [ ] `design/gdd/game-concept.md` is not written at this point
 
@@ -83,6 +86,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] No director agent is consulted
 - [ ] Next steps list `$gs-create-stories` and `$gs-dev-story`, not `$gs-map-systems` or `$gs-setup-engine`
 - [ ] Verdict is COMPLETE
+- [ ] Ask the user to choose or combine the brief concepts before refining the brief; this does
+  not require a host-specific widget.
 
 ---
 

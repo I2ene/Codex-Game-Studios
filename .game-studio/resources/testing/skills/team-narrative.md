@@ -130,6 +130,24 @@ case's inputs, professional scope, artifact destinations and expected verdict.
 - [ ] Orchestrator does not fabricate voice profiles or invent character voices
 - [ ] Phase 3 is not launched while writer is BLOCKED without explicit user authorization
 
+---
+
+### Case 6: Pipeline consistency review survives all six mode/size combinations
+
+**Fixture:** Same faction-intro GDD, character voices and existing lore. Runs A–C: studio with
+full/lean/solo; D–F: small with full/lean/solo. Compare with the same execution path and
+available capacity.
+
+**Input:** `$gs-team-narrative faction introduction cutscene` (full, lean and solo at each size)
+
+**Domain checks:**
+- [ ] A–C preserve all six roster disciplines and phase decisions. D–F retain director and
+  writer; small/full adds separate localization and world-building coverage, while small/lean
+  and solo cover lore/i18n through the writer or labeled parent and explain the roster choice.
+- [ ] ND-CONSISTENCY is a pipeline review in all six runs. APPROVE/CONCERNS/REJECT controls
+  Phase 5 as before; no external phase gate. Do not claim absent roles delegated or independent.
+
+---
 
 ## Applicable domain checks
 

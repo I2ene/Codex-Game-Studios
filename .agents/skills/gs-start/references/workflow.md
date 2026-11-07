@@ -1,3 +1,23 @@
+## Native execution contract
+
+Use current project instructions, user authorization and inherited model/permissions.
+Read `.game-studio/resources/docs/native-runtime.md` for platform mechanics and only
+the domain references needed for this task. Config is an explicit command, not shell
+preprocessing. Workflow inputs come from the user's request, not injected variables.
+Tool-shaped examples below are procedural briefs; use tools actually exposed by the
+host. They do not declare APIs or grant permissions. Existing task authorization
+satisfies routine writes already in scope; do not repeat per-file approval questions.
+
+Roles describe expertise. Delegate only when authorized and useful; otherwise apply
+the role yourself and label the review as performed by the parent. Never fabricate
+participant IDs, independent reviews or sign-off. Record real delegated participants.
+Missing evidence means NOT ASSESSED — NO DATA. Resolve engine/version from this
+project; engine reference versions are examples and require current verification.
+
+
+Explicitly resolved — use as-is; `--review` overrides `review_mode`. No block →
+defaults in `.game-studio/resources/docs/config-resolution.md`.
+
 ## Project engine reference contract
 
 When engine facts or APIs matter, explicitly run the native engine-reference command
@@ -6,20 +26,217 @@ project.root and project.documents. Use actual project version/verification reco
 missing records remain unknown. Packaged engine versions are historical background,
 never project authority. Confirm current official APIs and actual toolchain before claims.
 
-# Start or resume
 
-1. Read current project instructions and run the explicit config/recover commands.
-   Inspect existing design, code and production records, and resolve actual engine/
-   roots if present. Missing engine/root is unknown, not a new-project verdict.
-2. For returning work, summarize objective, phase, existing evidence, pending choices
-   and next applicable action from actual artifacts. Keep existing authorization.
-3. For new work, use what the user already provided. Ask only essential missing input:
-   starting point (no idea/vague/clear/existing), intended scope, rigor and automation.
-   Existing work routes to gs-adopt; concept exploration routes to gs-brainstorm.
-4. Write only selected project.stage, modes.rigor and modes.automation. Do not seed
-   the six rigor-derived leaves, overwrite existing preferences or create a new review
-   mirror. Set engine/version only through gs-setup-engine when relevant.
-5. At minimal use engine → one-page brief → stories → development/story-done.
-   At standard/full use the appropriate phase ladder and professional gate contracts.
-6. Save actual state when useful; state what was assessed and what still needs data.
-   No game project, build or balance result is implied by successful onboarding.
+## Native phase execution
+
+Every referenced phase inherits the native contracts above. Role or agent wording
+describes a professional responsibility: apply it in the parent when delegation is
+unavailable or unauthorized, read its gate file yourself, and label parent work.
+Only actual delegated participants count as independent reviews. Existing task
+authorization covers in-scope writes and implementation; later example approval
+questions are for unresolved choices, not a requirement to ask again per file.
+Bash helpers under .game-studio/scripts require a compatible shell and the consumer
+root as working directory; inspect their TSV output. Native studio.py commands use
+--root explicitly and emit JSON; never parse them as historical colon-prefixed rows.
+
+# Guided Onboarding
+
+The entry point for a new user. It assumes no game idea, no engine and no experience: it reads
+the project, asks where the user is starting from, shows what it assumes about the project, and
+names the one next step. It never runs that step itself.
+
+It writes these settings to `project.yaml`, all through helpers, and under existing authorization or after resolving the missing decision:
+`project.stage`, `modes.rigor` and
+`modes.automation`. It never writes `modes.review_mode` or `production/review-mode.txt`, and none
+of the other knobs rigor fronts (`modes.workflow`, `docs.density`, `qa.level`,
+`modes.story_granularity`, `team.size`): a written value pins that knob over the rigor expansion,
+and a mirror file outranks it.
+
+Ask with the question tool. Without one, list the options numbered and end your turn to wait. The
+question is the last thing in the reply: no path, note or advice after it. A skipped or dismissed
+question is not an answer: ask again in plain text.
+
+The questions in Phases 2, 4 and 5 shape the project, so they are asked in every automation mode.
+The engine is not one of them: `$gs-setup-engine` chooses it. Phase 6's last question follows a
+`modes.automation` already in `project.yaml`, per `.game-studio/resources/docs/automation-modes.md`; with none
+set, ask it.
+
+## Phase 1: Read the project
+
+Run `python .game-studio/runtime/studio.py project-state --root <project-root>` and read its JSON facts dictionary (each fact has value/source). Do not show them yet; they check
+the user's answer in Phase 2.
+
+| Fact | Use |
+|---|---|
+| `engine`, `code_root`, `source_files` | Is an engine set, and how much code is there. `source_files` of `unknown` means the code root could not be found: say that, never "no code" |
+| `concept` | `design/gdd/game-concept.md` or `design/game-brief.md` exists |
+| `gdd_files`, `adr` | Design documents and architecture decisions on disk (they set the stage in Phase 4) |
+| `prototype`, `sprint`, `milestone`, `story` | Other existing work |
+| `origin_url` | Contains `donchitos/claude-code-game-studios`, matched case-insensitively: the clone still points at the template repo, so a push or pull request would go there. A fork under another owner is the user's own |
+| `stage` | The stage already recorded, if any |
+
+Treat the inferred `phase` as a hint only: it guesses from file counts, and a project with code but no design
+documents is not in Production. If the helper fails, say so and read the same facts by hand
+(engine in `project.yaml`, the two concept files, the code root's files, `design/gdd/`).
+
+The helper does not report rigor or automation. Read `project.yaml`, if it exists, and note
+whether `modes.rigor` and `modes.automation` are set: a set value is kept, and its question is
+not asked (Phases 4 and 5).
+
+**Returning user** (an engine is set and `concept` is present): ask nothing. Say the engine, the
+concept or brief found, and the effective review mode from native config JSON (including local settings and legacy fallback provenance). Suggest `$gs-help` for the next step, add the
+template-remote note if it applies, and stop.
+
+## Phase 2: Ask where the user is
+
+Ask with the question tool: "Welcome! Where are you starting from with your game?" Options:
+- `A) No idea yet`: no game concept; explore and find what to make.
+- `B) Vague idea`: a theme, feeling or genre ("something with space", "a cozy farming game").
+- `C) Clear concept`: the core idea and genre are known, nothing is written down yet.
+- `D) Existing work`: design documents, prototypes, code or plans already exist.
+
+Wait for the answer. If it contradicts Phase 1, say what you found once and ask again: D on an
+empty project ("this looks like a fresh template; would A or B fit better?"), or A with code on
+disk ("I found code in `[code_root]`; did you mean D?"). If no option fits, let the user describe
+their situation and route from that.
+
+## Phase 3: Route
+
+Name the immediate next step only. The full path waits for Phase 6, after the rigor is known.
+
+- **A, no idea:** starting from zero is fine. `$gs-brainstorm open` explores freely; `$gs-brainstorm
+  [hint]` starts from a word or theme. Next step: `$gs-brainstorm open`, or a hint if one comes to
+  mind. Describe it as "turns no idea into a written design the next step builds from"; how long
+  that design is depends on the rigor, so leave that for Phase 6.
+- **B, vague idea:** ask for the idea in a few words, take it as it is, and name
+  `$gs-brainstorm [their words]`.
+- **C, clear concept:** ask for the concept in one sentence (genre and core mechanic), as plain
+  text. Then ask: "How would you like to proceed?" Options: `Formalize it first` (`$gs-brainstorm
+  [concept]` writes it down) / `Jump straight in` (`$gs-setup-engine` now, write the design after).
+  The next step is their pick.
+- **D, existing work:** say what Phase 1 found ("N source files under `[code_root]`, N design
+  documents, engine [X / not set]"). Next step: `$gs-setup-engine` when no engine is set and there is
+  no more than a concept; otherwise `$gs-project-stage-detect`.
+
+Then say: "I'll lay out the full path in a moment."
+
+## Phase 4: Show what you assume, then save it
+
+Work out two values.
+
+**Stage.** Paths A, B and C: `Concept`. Path D, from the Phase 1 rows:
+
+| On disk | Stage |
+|---|---|
+| no engine, or nothing beyond a concept (`gdd_files` 0) | `Concept` |
+| `gdd_files` 1 or more, `adr` 0 | `Systems Design` |
+| `adr` 1 or more | `Technical Setup` |
+
+**Rigor.** If `modes.rigor` is already set in `project.yaml`, keep it and say so. Otherwise infer
+it from what the user said in Phases 2 and 3, using the signals in
+`.game-studio/resources/docs/settings-guidance.md` `3:
+
+| The user's words mention | Rigor |
+|---|---|
+| open world, RPG, sim, sandbox, factions, crafting, economy, MMO, multiplayer, many systems | `full` |
+| release, commercial, Steam, one clear core loop | `standard` |
+| jam, weekend, prototype, first game, small, just trying | `minimal` |
+| nothing above, or no idea yet | `minimal` (the default) |
+
+A path B hint is still a description: "some kind of open-world survival sim" is `full`.
+
+Show the card:
+
+```
+What I'll set up
+  Stage:  [stage]  ([why, from what was found or picked])
+  Rigor:  [value]  ([why, in the user's words] | already set)
+          minimal: short brief, coarse stories, tests optional; about 4 steps to code
+          standard: about 8 design documents before code; standard QA evidence
+          full: everything in standard plus validation builds; evidence everywhere
+  $gs-settings changes either of these any time.
+```
+
+Then ask with the question tool: "Save these to `project.yaml`?" Options: `Save them` / `Don't save`. Ask no question about the rigor
+itself: the card shows it, and `$gs-settings` changes it.
+
+- **Save them:** run `python .game-studio/runtime/studio.py settings "project.stage=[stage]" --root <project-root>`, then, only when rigor was not
+  already set, `python .game-studio/runtime/studio.py settings modes.rigor=[value] --root <project-root>`. Read native config again and verify the effective values and provenance. Say: "Saved. Rigor `[value]` sets six other settings; `$gs-settings` shows them and changes
+  any of them."
+- **Don't save**, or anything other than an explicit yes: write nothing, keep the values for this
+  run, and say they were not saved.
+
+If a helper exits non-zero, show its output, say which setting was not written, and go on with the
+value for this run.
+
+## Phase 5: Ask how much to confirm
+
+If `modes.automation` is already set, say "Automation is `[value]`" and go on. Otherwise ask:
+"Last one: how much should I confirm with you as we work?" Options:
+- `Guided (Recommended)`: I decide small things and still stop for big ones (scope changes,
+  deletions, schema changes).
+- `Collaborative`: I ask before each significant step and show drafts before writing.
+- `Autonomous`: I proceed and log decisions, stopping only for the always-ask categories. Fastest,
+  most tokens.
+
+Mapping: `Guided` → `guided`, `Collaborative` → `collaborative`, `Autonomous` → `autonomous`. The
+pick is the consent to write it: run `python .game-studio/runtime/studio.py settings modes.automation=[value] --root <project-root>`,
+unless the Phase 4 save was declined (then say it was not saved).
+
+## Phase 6: Show the path
+
+Say: "Here's your path at rigor `[value]`. Every skill still runs at any rigor; rigor changes
+what's required, not what's allowed."
+
+The path starts with the step Phase 3 named. When that was `$gs-brainstorm` (paths A and B, and C's
+`Formalize it first`), list `$gs-brainstorm` first and `$gs-setup-engine` second: each runs without the
+other.
+
+**`minimal`: 4 steps to running code**
+1. `$gs-setup-engine`: choose and configure the engine
+2. `$gs-brainstorm`: write the one-page `design/game-brief.md`
+3. `$gs-create-stories`: turn the brief's MVP list into stories (no epics or sprint plan needed)
+4. `$gs-dev-story`: the first line of game code
+
+**`standard`**
+- Concept: `$gs-setup-engine` → `$gs-brainstorm` → `$gs-prototype` → `$gs-art-bible` → `$gs-gate-check`
+- Systems Design: `$gs-map-systems` → `$gs-design-system` (once per system) → `$gs-review-all-gdds` →
+  `$gs-gate-check`
+- Architecture: `$gs-create-architecture` → `$gs-architecture-decision` (once per decision) →
+  `$gs-create-control-manifest` → `$gs-architecture-review` → `$gs-test-setup` → `$gs-ux-design`
+  (accessibility and interaction patterns) → `$gs-gate-check`
+- Pre-Production: `$gs-ux-design` (HUD and key screens) → `$gs-create-epics` → `$gs-create-stories` →
+  `$gs-sprint-plan` → `$gs-gate-check`
+- Production: `$gs-dev-story`
+
+Each `$gs-gate-check` moves the project one stage, and only when it passes.
+
+**`full`:** everything in `standard`, plus `$gs-vertical-slice` and `$gs-playtest-report` in
+Pre-Production and `$gs-design-review` after each GDD.
+
+**Path D with existing work** (stage `Systems Design` or later, or code on disk) gets this instead.
+Print only the steps that apply, and for the brief only the one source that applies. At `minimal`:
+1. `$gs-project-stage-detect`: what stage the project is at and what is missing
+2. `$gs-adopt`: whether the existing files are in the format the skills read
+3. `$gs-setup-engine`: only when no engine is set; leave it out when `engine` names one
+4. The brief, only if `concept` is absent: `$gs-reverse-document design [code_root]` when the code
+   root holds 10 or more source files (it writes the brief from the game), and then do not mention
+   `$gs-brainstorm` at all; `$gs-brainstorm` only when it holds fewer
+
+At `standard` and `full`, steps 1 to 3, then `$gs-design-system retrofit [path]`,
+`$gs-architecture-decision retrofit [path]`, `$gs-architecture-review` and `$gs-gate-check`.
+
+Present `minimal` as the documented floor, not a lesser mode, and name its trade once: no GDDs, so
+design problems show up in code.
+
+If the remote identifies the upstream template, explain that publishing would target that repository and suggest configuring the user's intended remote. Do not change remotes as an onboarding side effect. Native consumer upgrades use the ownership-based installer described in UPGRADING.md; do not prescribe pulling template history into a game repository.
+
+Ask: "Would you like to start with [first step]?" Options: `Yes, start with [first step]` /
+`Something else first`. Use Phase 7 to hand off or continue within existing end-to-end authorization.
+
+## Phase 7: Hand off
+
+Name the next skill and why. For onboarding alone, finish with that handoff. If the user already authorized continuing the end-to-end workflow, proceed to that skill within the requested scope; do not require a redundant manual invocation.
+
+Verdict: **COMPLETE**, the user is oriented and handed off. If the user stopped before Phase 7,
+say which settings were saved and which were not.
