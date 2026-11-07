@@ -30,6 +30,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Figures are rounded to half days, not hours
 - [ ] The closing summary names budget, confidence and the biggest risk
 - [ ] No files are written
+- [ ] For affected files, show nonblank line and branch-line counts as size evidence. Branch
+  count is an approximation, not measured complexity.
 
 ---
 

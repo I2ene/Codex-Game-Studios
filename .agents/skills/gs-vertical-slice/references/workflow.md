@@ -37,6 +37,8 @@ project; engine reference versions are examples and require current verification
 Explicitly resolved — use as-is; `--review` overrides `review_mode` for this run. No
 block → defaults in `.game-studio/resources/docs/config-resolution.md`.
 
+# Vertical Slice
+
 
 
 ## Purpose
@@ -74,7 +76,10 @@ Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.
 (collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
 `automation_always_ask` categories require input only outside existing authorization).
 
-Read the following files to understand the full design intent:
+Read the following files to understand the full design intent. Read each GDD, ADR
+and the control manifest by section: find the headings you need with
+the Grep tool (pattern `^#`, content mode) and Read those ranges with offset
+and limit.
 - `AGENTS.md` — tech stack and engine
 - `design/gdd/game-concept.md` — core fantasy and game pillars (or
   `design/game-brief.md`, the one-page brief that replaces it at `rigor: minimal` —
@@ -276,7 +281,8 @@ Track velocity throughout the build. Log:
 - etc.
 
 This is the most honest data you will ever have about your production rate. Do not
-skip it. It feeds directly into sprint planning.
+skip it. It feeds directly into sprint planning (at `workflow: minimal`, which has
+no sprints, into the brief's build order).
 
 Read `.game-studio/resources/docs/templates/vertical-slice-report.md` to get the report structure.
 If the template file is not found, use this fallback structure:
@@ -355,7 +361,10 @@ Link to `prototypes/[concept-name]-vertical-slice/REPORT.md`.
 Your vertical slice validated the full game loop. The project is ready for
 Production.
 
-Recommended next steps:
+At `workflow: minimal`: `$gs-create-stories` (from the brief), then `$gs-dev-story`
+on the first story — the rest of this list is the `standard`/`full` path.
+
+Recommended next steps (`standard`/`full`):
 - `$gs-create-epics layer:foundation` — plan Foundation layer epics
 - `$gs-create-epics layer:core` — plan Core layer epics
 - `$gs-create-stories [epic-slug]` — break each epic into implementable stories

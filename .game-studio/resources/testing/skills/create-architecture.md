@@ -27,7 +27,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-create-architecture`
 
 **Domain checks:**
-- [ ] The baseline uses `TR-[gdd-slug]-[NNN]` IDs and is built from the scanned GDD sections, not whole-file reads
+- [ ] Build the baseline from requirement-bearing sections using `TR-[system]-[NNN]`. This fixture has no registry: report its absence and label every proposed ID provisional.
 - [ ] The knowledge gap inventory and its three-option `host input tool` come before Phase 1
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] The master document is written only after the Phase 7 `host input tool` approval
@@ -144,3 +144,21 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] (a) Only the chosen section is re-authored and written; the other sections are left as they were
 - [ ] (a) The version is raised, not reset to v1.0
 - [ ] (b) A focus-area run with no document writes nothing and offers the full walkthrough
+
+---
+
+### Case 7: Registered requirements keep their IDs
+
+**Fixture:** As Case 1, with `docs/architecture/tr-registry.yaml`: TR-combat-001 active (per-frame hitbox
+detection), TR-combat-002 deprecated (old combo timing). Combat adds a combo state machine and
+inventory has no registry entries.
+
+**Input:** `$gs-create-architecture`
+
+**Domain checks:**
+- [ ] Read the registry before numbering. Keep TR-combat-001 for hitboxes; never reuse
+  TR-combat-002. Assign TR-combat-003 provisionally to the new combo and TR-inventory-001 onward
+  provisionally to inventory.
+- [ ] Label every unregistered ID provisional and report registered/provisional counts. With no
+  registry, say it is absent and mark all IDs provisional. Drafting the baseline does not
+  register or accept them.

@@ -188,6 +188,55 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Each platform is reported on its own line
 - [ ] The Play Mode failure makes the verdict FAIL — the Edit Mode pass does not cover it
 
+---
+
+### Case 10: Quick run reports coverage and performance as outside scope
+
+**Fixture:** As Case 1: 12/12 executed tests pass, build launched, Batches 1–2 pass. Sprint/QA plan exists
+and one Logic story lacks a test, which would be MISSING only if scanned.
+
+**Input:** `$gs-smoke-check quick`
+
+**Domain checks:**
+- [ ] Run tests and Batches 1–2. Explicitly skip coverage scan and Batch 3; no story coverage
+  rows and no clean full-coverage claim.
+- [ ] Both coverage and missing-evidence sections say not checked. Label scoped `PASS (quick —
+  coverage and Batch 3 not checked)` on the observed evidence; a batch never offered is not an
+  offered-but-skipped check. Authorized report keeps the quick argument.
+
+---
+
+### Case 11: Platform results remain separate and drive the overall verdict
+
+**Fixture:** As Case 1, all tests and shared Batches 1–3 pass, with complete story coverage. Console tester
+reports clipped pause-menu text in TV safe zone. B: all platform checks pass; C: quick PC only,
+all selected checks pass.
+
+**Input:** `$gs-smoke-check sprint --platform console` (B: --platform all; C: quick --platform pc)
+
+**Domain checks:**
+- [ ] A: only console platform checks (including TV safe zone) run; record the tester's
+  description, one failed Console row, no PC/Mobile rows and overall FAIL despite shared pass.
+- [ ] B: PC, Console and Mobile each have a PASS row and overall PASS on their observed checks.
+  C: retain PC checks/row but skip coverage and Batch 3, labeling the quick scope. No invented
+  platform evidence.
+
+---
+
+### Case 12: Resume smoke coverage without re-running completed tests
+
+**Fixture:** As Case 1 with valid evidence. Compact during Phase 3 after test run completes and before its
+coverage work is used.
+
+**Input:** `$gs-smoke-check`
+
+**Domain checks:**
+- [ ] Read actual `1-detect-setup.md` through `6-write-gate.md` before their own phase; shared
+  setup rules still apply. Re-read `3-coverage.md` before resuming the interrupted phase.
+- [ ] Reuse the retained results/receipt from this run without re-running finished tests or
+  claiming work not observed. Preserve Case 1's observed PASS and authorized report.
+
+---
 
 ## Applicable domain checks
 

@@ -175,3 +175,6 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ## Applicable domain checks
 
 - [ ] Resolve severity per story type from `testing.strict.<type>`; when unset, use the legacy plain-boolean `testing.strict` for every type, then the coding-standards default. A missing per-type override is not itself false.
+
+- [ ] When Integration evidence needs a playtest record, check `production/qa/playtests/` for
+  evidence naming the story and behavior. A file's presence alone is not execution evidence.

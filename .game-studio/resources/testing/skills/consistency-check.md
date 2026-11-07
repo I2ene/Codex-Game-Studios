@@ -173,3 +173,23 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The Tuning Knobs value in `loot.md` is compared, because its effective tier is `full` — the project tier alone would have skipped it (Case 6)
 - [ ] The report names the GDD whose effective tier differs from the project's
 - [ ] Verdict is CONFLICTS FOUND, not PASS
+
+---
+
+### Case 7: A registry edit races with another session
+
+**Fixture:** Full workflow. Registry lists `goblin` (health 40, owner `combat.md`), `orc` and
+`health_potion`. Combat changes goblin to 50; combat and loot name unregistered `iron_sword`.
+Between the scan and authorized writes, another session adds `troll` and `iron_axe` and changes
+goblin's `referenced_by`.
+
+**Input:** `$gs-consistency-check`
+
+**Domain checks:**
+- [ ] Report goblin as STALE REGISTRY and iron_sword as an unregistered cross-GDD item.
+- [ ] Re-read current `design/registry/entities.yaml` before each edit. Change goblin's value
+  without losing its changed references; append iron_sword after iron_axe, the current last
+  item.
+- [ ] Preserve troll, iron_axe and the new referenced_by list; never rewrite the Phase 1
+  snapshot over concurrent work. If a choice about the stale value or new entry remains open,
+  resolve it before that write.

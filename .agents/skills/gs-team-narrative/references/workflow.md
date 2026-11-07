@@ -22,6 +22,8 @@ participant IDs, independent reviews or sign-off. Record real delegated particip
 Missing evidence means NOT ASSESSED — NO DATA. Resolve engine/version from this
 project; engine reference versions are examples and require current verification.
 
+# Team Narrative
+
 If no argument is provided, output usage guidance and exit without spawning any agents:
 > Usage: `$gs-team-narrative [narrative content description] [--review full|lean|solo]` — describe the story content, scene, or narrative area to work on (e.g., `boss encounter cutscene`, `faction intro dialogue`, `tutorial narrative`). Do not use `ask the user` here; output the guidance directly.
 

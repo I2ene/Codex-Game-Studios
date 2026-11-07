@@ -16,6 +16,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 1: Happy Path — 2-hour, all-focus soak on Godot
 
 **Fixture:**
+- Explicit standard workflow; the post-session triage route uses `$gs-bug-triage sprint`.
 - `project.yaml` has `engine.name: Godot` and `performance.target_framerate: 60`
 - `design/gdd/game-concept.md` states the intended session length
 - The user approves the write
@@ -30,6 +31,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Memory, stability and balance observation items are all present (focus `all`)
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] The skill issues no verdict itself — the protocol's Verdict section is left for the tester
+- [ ] The closing run steps use sprint triage at standard; the minimal variant is Case 6.
 
 ---
 
@@ -93,6 +95,20 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] No gate skip messages appear
 - [ ] The run ends at "Protocol written." with the run steps — no gate verdict, and no soak verdict issued by the skill
 
+---
+
+### Case 6: Minimal protocol routes post-session triage without a sprint
+
+**Fixture:** Minimal Godot, no sprint directory, protocol write authorized.
+
+**Input:** `$gs-soak-test 1h all`
+
+**Domain checks:**
+- [ ] Generate and retain the protocol, not a performed soak. Steps 1–4 and the post-fix
+  `$gs-smoke-check` handoff remain unchanged; only post-session triage becomes `$gs-bug-triage
+  full`, not sprint.
+
+---
 
 ## Applicable domain checks
 

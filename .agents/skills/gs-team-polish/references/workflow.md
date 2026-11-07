@@ -22,6 +22,8 @@ participant IDs, independent reviews or sign-off. Record real delegated particip
 Missing evidence means NOT ASSESSED — NO DATA. Resolve engine/version from this
 project; engine reference versions are examples and require current verification.
 
+# Team Polish
+
 If no argument is provided, output usage guidance and exit without spawning any agents:
 > Usage: `$gs-team-polish [feature or area to polish] [--review full|lean|solo]` — specify the feature or area to polish (e.g., `combat`, `main menu`, `inventory system`, `level-1`). Do not use `ask the user` here; output the guidance directly.
 
@@ -69,8 +71,6 @@ Use this file's scope and routing rules; an unavailable delegate does not remove
 required responsibility or silently widen team.size. Keep phase-gate responsibilities
 with their mode/phase qualifier. A completed parent assessment is performed work;
 it is never labeled as a separate participant or independent sign-off.
-
-**Director gate skip rule**: Before spawning any Tier 1 director or lead for review (outside of PHASE-GATE triggers), apply the resolved mode: skip if solo mode; skip if lean mode and this is not a PHASE-GATE.
 
 ## Team Composition
 - **performance-analyst** — Profiling, memory analysis, frame budget, and the optimisation list — it writes no game code
@@ -238,7 +238,7 @@ A summary report covering: performance before/after metrics, visual polish chang
 ## Next Steps
 
 - If READY FOR RELEASE: run `$gs-release-checklist` for the final pre-release validation.
-- If NEEDS MORE WORK: schedule remaining issues in `$gs-sprint-plan update` and re-run `$gs-team-polish` after fixes.
+- If NEEDS MORE WORK: schedule remaining issues in `$gs-sprint-plan update` (at `workflow: minimal`, which has no sprints, add them to the brief's build order) and re-run `$gs-team-polish` after fixes.
 - If NOT ASSESSED: supply what was missing — commit the unset `performance.*` budgets in `project.yaml` (`$gs-settings`), or run the phases that did not run (raise `team.size`) — then re-run `$gs-team-polish`. Do not treat the area as release-ready.
 - If the report handed an optimisation list to `$gs-dev-story`: implement those items there, then re-run `$gs-team-polish` to measure the gain.
 - Run `$gs-gate-check` for a formal phase gate verdict before handing off to release.

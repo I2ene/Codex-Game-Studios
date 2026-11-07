@@ -38,6 +38,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 2: Update — Fixed Bug Without a Regression Test
 
 **Fixture:**
+- Explicit standard workflow; next-sprint wording is applicable here.
 - `qa.level: standard`; `project.stage: Polish`
 - `production/sprints/sprint-007.md` is the current sprint plan; its one
   `Status: Complete` story is `production/epics/inventory/story-003.md`
@@ -109,3 +110,20 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] No subagent is consulted
 - [ ] The status report is shown in conversation
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
+
+---
+
+### Case 6: Minimal workflow schedules at the next story boundary
+
+**Fixture:** Minimal workflow, standard QA, Polish; no sprint, brief exists, completed inventory story lacks
+tests; closed BUG-0012 has no regression test. Existing manifest has 6 entries and a stale date.
+Variant B: full QA at Production.
+
+**Input:** `$gs-regression-suite update`
+
+**Domain checks:**
+- [ ] Report BUG-0012 as missing regression coverage plus the completed story and stale manifest
+  as drift. Preserve the 6 existing entries on authorized append.
+- [ ] Both variants use next story/story boundary for missing and HIGH tests and the audit
+  follow-up. A: advisory and no claim that gates require the suite; B: full QA gate requirement
+  is explicit. Verdict COMPLETE after authorized update.

@@ -110,3 +110,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] No director gate is invoked in any review mode
 - [ ] Output offers to identify the additions with the best cut ratio and references `$gs-sprint-plan update`
 - [ ] No files are written
+
+## Applicable domain checks
+
+- [ ] For a computable net-change percentage, ≤10% is PASS, >10% through 25% is CONCERNS, and
+  >25% is FAIL. The exact 10% boundary belongs only to PASS.

@@ -65,3 +65,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - Produces the GDScript class using `@abstract` on the class and its abstract methods, following the reference docs (`current-best-practices.md`) rather than training data
 - Flags that `VERSION.md` records `Installed at pin time` as NOT DETERMINED — the installed editor must be 4.5 or later for `@abstract` to parse
 - Uses static typing for all method signatures in the abstract class
+
+## Applicable domain checks
+
+- [ ] Check the applicable 4.4–4.7 change history when those APIs matter, independent of the
+  host model's training cutoff. Distinguish project pin, installed evidence and unverified API
+  behavior.

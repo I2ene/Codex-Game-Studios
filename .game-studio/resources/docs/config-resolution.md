@@ -25,3 +25,9 @@ Per-system tiers override workflow only. False section flags cannot relax full.
 Use `$gs-settings` for explicit edits; inspect the generated diff. The runtime does
 not migrate old Markdown preferences automatically or choose an engine from examples.
 See workflow-modes.md, effects-map.md and native-runtime.md for policy and schema.
+
+Read-only resolution reports duplicate keys with source line numbers and merges
+mapping blocks, using later values for overlapping leaves. This is inspection
+and repair evidence. Fix duplicates before writing configuration or executing
+commands; a dotted-path collision with nested settings is rejected.
+Use the project's actual tool commands and keep local overrides whitelisted.

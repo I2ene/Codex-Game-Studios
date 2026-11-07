@@ -138,3 +138,39 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Category, Layer and Priority are derived from the brief and marked inferred in the Quick reference
 - [ ] No systems index is created; §5d reports nothing to update
 - [ ] Read back Summary and Quick reference from the completed GDD; inferred Layer/Priority and actual Key deps are populated rather than left as placeholders.
+
+---
+
+### Case 7: Load the current phase reference before work and on resume
+
+**Fixture:** Standard/solo Godot; `stamina` is Gameplay in the systems index, concept exists, no stamina GDD.
+Compact during Section D (Formulas) before the user's pending answer.
+
+**Input:** `$gs-design-system stamina`
+
+**Domain checks:**
+- [ ] Read actual phase references `1-parse-arguments.md` through `5-post-design.md` before
+  their phase work; no skeleton/section draft before its governing reference.
+- [ ] Resume Section D by re-reading `4-section-design.md`; do not repeat completed phases,
+  reread unrelated phase files merely because of compaction or ask again for known workflow,
+  review, automation or density.
+
+---
+
+### Case 8: Block-form references and numbered GDD headings
+
+**Fixture:** Standard/solo Godot; stamina depends on combat. Live registry: `stagger_threshold: 40` owned by
+combat, block-form `referenced_by` includes stamina; `stamina_cost_dodge: 25` owned by stamina,
+block-form reference to combat. A comment illustrates `gold_carry_limit: 9999`. `combat.md` uses
+numbered Formulas, Edge Cases, Dependencies and Tuning Knobs headings.
+
+**Input:** `$gs-design-system stamina`
+
+**Domain checks:**
+- [ ] Discover both locked values with their actual owning GDDs, including the cross-owner
+  block-form reference; ignore commented examples.
+- [ ] Read the four relevant numbered sections of combat (including the threshold in
+  formulas/tuning) without depending on a single-line reference match or loading irrelevant
+  sections.
+- [ ] Use the concrete dependency headings `## 4. Formulas`, `## 5. Edge Cases`, `## 6.
+  Dependencies` and `## 7. Tuning Knobs`.

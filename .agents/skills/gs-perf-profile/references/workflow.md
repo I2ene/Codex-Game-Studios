@@ -47,11 +47,10 @@ not a filled-in report.** Check first, and stop if the check fails.
 
 **A verdict of `NOT ASSESSED` is a success.** It is the correct, useful answer to
 "what does the data say?" when there is no data. The failure mode this prevents is
-specific and has been observed in practice: report templates whose verdict
-enum had no "could not run" state produced **false clean passes** — an asset audit
-returning COMPLIANT on a project with no assets and no standards, and a
-performance profile reporting ">99% headroom against a 16.67ms budget" with zero
-profiler data and no budget ever set.
+specific: a report whose verdict enum has no "could not run" state produces
+**false clean passes** — an asset audit returning COMPLIANT on a project with no
+assets and no standards, or a performance profile reporting ">99% headroom against
+a 16.67ms budget" with zero profiler data and no budget ever set.
 
 **Absence of evidence is never evidence of absence.** A scan that finds no
 matches because there are no files to scan has not verified anything. Say which of
@@ -100,17 +99,15 @@ resolved config value performance.draw_call_limit
 resolved config value performance.memory_ceiling_mb
 ```
 
-> Written as four literal keys rather than a loop over leaf names, deliberately.
-> The dead-settings audit matches the **full dotted key**, so a loop building
-> `performance.$k` leaves three of the four spelled nowhere and the audit
-> reports them DEAD while this skill reads them. Spell each key out in full.
+Run each line as its own plain command, one key per call: the helper moves to
+the project root itself, so it works when the session was started in a
+subfolder, and this skill pre-approves that form only (a `source` or `cd ... &&`
+wrapper asks the user every time). Empty output means that budget is not set.
 
 > **Resolve these budgets from `project.yaml`, not from prose.** Phase 0 above
-> states these four budgets "are profiled the same way at every level". Sending
-> the reader to *"design docs or AGENTS.md"* instead means a user who set
-> `performance.target_framerate: 60` in `project.yaml` has it ignored by the one
-> skill that profiles against budgets. The keys resolve correctly — this phase
-> has to actually ask for them.
+> states these four budgets "are profiled the same way at every level". A user
+> who set `performance.target_framerate: 60` in `project.yaml` has it ignored if
+> the budget is read from design docs or AGENTS.md instead.
 
 Then fall back to design docs or AGENTS.md for anything config does not carry:
 
@@ -218,7 +215,7 @@ Activate this phase only if any hotspot has Fix Effort rated M or L.
 
 Present significant-effort items and ask the user to choose for each:
 
-- **A) Implement the optimization** (proceed with fix now or schedule it)
+- **A) Implement the optimization** (proceed with fix now or schedule it — at `workflow: minimal`, which has no sprints, add it to the brief's build order)
 - **B) Reduce feature scope** (run `$gs-scope-check [feature]` to analyze trade-offs)
 - **C) Accept the performance hit and defer to Polish phase** (log as known issue)
 - **D) Escalate to technical-director for an architectural decision** (run `$gs-architecture-decision`)
@@ -240,7 +237,7 @@ other outcome is the `NOT ASSESSED — NO DATA` path above.
 
 - If bottlenecks require architectural change: run `$gs-architecture-decision`.
 - If scope reduction is needed: run `$gs-scope-check [feature]`.
-- To schedule optimizations: run `$gs-sprint-plan update`.
+- To schedule optimizations: run `$gs-sprint-plan update` (at `workflow: minimal`, which has no sprints, add them to the brief's build order instead).
 
 ### Rules
 - Never optimize without measuring first — gut feelings about performance are unreliable

@@ -1,5 +1,19 @@
 # Upgrading Codex Game Studios
 
+## 2.0.0 or 2.0.1 to 2.1.0
+
+Use the same installer and preview with --dry-run. Review the list of updated
+and retired managed references; nested copies of moved phase files are retired.
+If an edited managed path or unowned destination conflicts, reconcile it before
+retrying. Keep your original configuration, context, engine pin, and design records.
+No automatic engine upgrade or native hook trust is performed.
+
+Read-only config inspection now exposes duplicate-key diagnostics. Fix the named
+keys before writing settings or running a configured command. Bash and awk are
+needed only for the optional upstream data utilities. See
+[upstream compatibility](docs/upstream-compatibility.md).
+
+
 For native 2.x projects, review the new release and run the same ownership-based
 installer using its source and a separate consumer target:
 

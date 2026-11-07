@@ -1,0 +1,1 @@
+# Copy as production/.gdignore in a Godot game to keep QA captures and logs out of engine imports.

@@ -56,10 +56,10 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 ---
 
-### Case 5: Context pass — Godot 4.6 API correctness
-**Input:** Engine version context: Godot 4.6. Request: "Connect a signal using the new typed signal delegate pattern."
+### Case 5: Context pass — Godot 4.7 API correctness
+**Input:** Engine version context: Godot 4.7. Request: "Connect a signal using the new typed signal delegate pattern."
 **Domain checks:**
 - Produces C# signal connection using the typed delegate pattern introduced in Godot 4 C# (`+=` operator on typed signal)
-- Checks the 4.6 context to confirm no breaking changes to the signal delegate API in 4.4, 4.5, or 4.6
+- Checks the 4.7 context to confirm no breaking changes to the signal delegate API in 4.4, 4.5, 4.6 and 4.7 from the actual project references
 - Does NOT use the old string-based `Connect("signal_name", callable)` pattern (deprecated in Godot 4 C#)
-- Produces code compatible with the project's pinned 4.6 version as documented in VERSION.md
+- Produces code compatible with the project's pinned 4.7 version as documented in VERSION.md

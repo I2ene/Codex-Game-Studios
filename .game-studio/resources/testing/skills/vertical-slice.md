@@ -16,6 +16,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 1: Happy Path — slice built, played unaided, PROCEED
 
 **Fixture:**
+- Explicit standard workflow; the PROCEED handoff for minimal is Case 6.
 - `project.yaml`: `engine.name: Godot`, `engine.language: GDScript`,
   `modes.review_mode: solo`
 - `design/gdd/game-concept.md` (core fantasy, pillars), `design/gdd/systems-index.md`,
@@ -34,6 +35,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The debrief questions are asked one at a time, after the from-scratch playthrough
 - [ ] REPORT.md and the `prototypes/index.md` row are written only after one ask naming both; the row records PROCEED
 - [ ] The formal stage step is `$gs-gate-check production` (Pre-Production → Production), not `$gs-gate-check pre-production`
+- [ ] The standard route feeds velocity into sprint planning and offers the applicable
+  epic/story/sprint handoff; the minimal routing variant is separate.
 
 ---
 
@@ -109,3 +112,19 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Run B: the user decides; the recommendation changes only if the user revises it
 - [ ] Run C: NOT ASSESSED is not treated as APPROVE
 - [ ] Every REPORT.md / `prototypes/index.md` update follows an ask naming both
+
+---
+
+### Case 6: Minimal PROCEED uses the brief's build order
+
+**Fixture:** Minimal workflow with solo review; Godot/GDScript. Brief has pitch, target feeling and three
+build-order entries; no concept/sprint. Player finishes unaided, first meaningful action at 40
+seconds, confirms the fantasy with no fun blocker; user chooses PROCEED.
+
+**Input:** `$gs-vertical-slice`
+
+**Domain checks:**
+- [ ] Use the brief rather than requiring a concept. Tie the velocity log to its build order; do
+  not create or reference a sprint plan.
+- [ ] Recommend `$gs-create-stories` then `$gs-dev-story`, not epics or sprint planning. On
+  authorized writes both `REPORT.md` and `prototypes/index.md` record PROCEED.

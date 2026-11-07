@@ -157,6 +157,26 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The escalation block appears and has no `$gs-gate-check` line
 - [ ] Verdict is COMPLETE
 
+---
+
+### Case 8: Missing brief routing distinguishes existing game from exploration
+
+**Fixture:** Godot config with no modes block; no brief, concept or stories. A: resolved `src/` has 12 source
+files and already holds a game. B: 3 files of early experiments with no existing game.
+
+**Input:** `$gs-help`
+
+**Domain checks:**
+- [ ] Use the observed minimal route; A recommends `$gs-reverse-document design src/`, B
+  recommends `$gs-brainstorm`, followed by creating stories. The source-file count is a routing
+  cue, not proof of completion.
+- [ ] No phase ladder, GDD, art bible or gate is required. Advise only, without writes or
+  invoking the next skill.
+- [ ] For the native routing heuristic, compare otherwise equivalent fixtures at 9 and 10 source
+  files in the known root. The boundary changes the recommendation only, never the assessed
+  stage.
+
+---
 
 ## Applicable domain checks
 

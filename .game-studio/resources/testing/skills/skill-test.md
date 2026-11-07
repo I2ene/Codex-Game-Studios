@@ -24,12 +24,18 @@ is met by coding-standards.md rather than repeated in the skill; the user declin
 an optional results write. Evaluate each applicable domain check, cite the actual
 source, retain worst-result handling and do not write declined output. Missing
 criteria remain NOT ASSESSED rather than being omitted or marked PASS.
+- [ ] Use a sandbox-only planted criterion and inspect the entry plus the linked procedure. An
+  assertion satisfied in the correct reference or governing project contract is not absent just
+  because it is not in SKILL.md.
 
 ### Case 4: Skill and role coverage audit
 
 Fixture: enumerate installed skills and catalogued roles. Show every entry, accurate
 spec coverage and gaps against the actual denominators. Do not sample or imply
 behavior passed from coverage. The release catalog covers 74 skills and 49 roles.
+- [ ] Variant: omit one evaluation spec from the sandbox catalog. Report the missing spec
+  honestly and derive the coverage denominators from that fixture; never mutate the shipped
+  catalog.
 
 ### Case 5: Category rubric reveals a gate failure
 
@@ -78,3 +84,19 @@ from behavioral NOT ASSESSED, and do not fabricate independent reviewers.
 
 Fixture: balance analysis has no formulas or playtest data. Name missing inputs;
 no passed game-quality verdict follows from a valid scenario or template.
+
+---
+
+### Case 13: Split procedure body and entry metadata are assessed separately
+
+**Fixture:** Sandbox A: valid entry metadata and a linked procedure whose reference holds its verdict, write
+boundary and handoff. Sandbox B: required `description` exists only in a reference frontmatter
+block, missing from `SKILL.md`.
+
+**Input:** `$gs-skill-test` (structural inspection of each sandbox skill)
+
+**Domain checks:**
+- [ ] A: use the complete linked procedure to assess required behavior; do not fail because the
+  details are in the reference. B: name the entry metadata defect even though reference text
+  contains a description.
+- [ ] Both are structural inspections, write nothing, and must not claim executed task behavior.

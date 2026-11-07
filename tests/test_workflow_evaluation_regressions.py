@@ -200,8 +200,10 @@ class WorkflowBranchTests(unittest.TestCase):
 
     def test_specialist_required_means_expertise_not_mandatory_agent_call(self):
         text = (ROOT / ".agents/skills/gs-design-system/references/workflow.md").read_text(encoding="utf-8")
+        self.assertIn("references/4-section-design.md", text)
+        authoring = (ROOT / ".agents/skills/gs-design-system/references/4-section-design.md").read_text(encoding="utf-8")
         for letter in ["B", "C"]:
-            paragraph = next(line for line in text.splitlines()
+            paragraph = next(line for line in authoring.splitlines()
                              if line.startswith("**Do NOT draft Section " + letter))
             self.assertRegex(paragraph, r"applicable[^\n]*expertise[^\n]*parent[^\n]*authorized")
         protocol = section(text, "## Collaborative Protocol")

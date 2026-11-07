@@ -42,6 +42,8 @@ the pre-1.1 name for the same flag: treat `--depth <mode>` exactly as
 wins and `--depth` is ignored — say so. No block → defaults in
 `.game-studio/resources/docs/config-resolution.md`.
 
+# Design Review
+
 
 ## Phase 0: Parse Arguments
 
@@ -105,7 +107,7 @@ record bytes; they never supply a professional approval or independent participa
 Companion: design/gdd/reviews/[doc-name]-review-receipt.json.
 Report: design/gdd/reviews/[doc-name]-review-log.md.
 
-Read the target design document in full. Read AGENTS.md to understand project context and standards.
+Read the target design document in full. This step needs the whole GDD: read it in ranges by its headings (found with the Grep tool: pattern `^#`, content mode), since a whole-file Read over 40 KB is refused. Read AGENTS.md to understand project context and standards.
 
 **For cross-document facts, prefer the registry over sibling GDDs.** If
 `design/registry/entities.yaml` exists **and lists entries for this system**,
@@ -143,10 +145,7 @@ everything "implied". Do not glob-read all of `design/gdd/`.
 Bash: python .game-studio/runtime/studio.py gdd-structure --root <project-root> [target-doc-path]
 ```
 
-It returns documents JSON with present/absent section-name arrays and a document count. It reports
-**presence only** and makes no REQUIRED/ADVISORY judgment — that is Step 2b's
-job. It already accepts `## Detailed Design` as satisfying the `Detailed Rules`
-requirement, so do not flag that as missing.
+Read the native artifacts JSON observations. Missing or unresolved required inputs are gaps; existing files alone are not review evidence.
 
 **Step 2b — apply the tier.** Using the Step 2a lists, evaluate against the
 Design Document Standard checklist below. **Mark each section REQUIRED or
@@ -189,6 +188,25 @@ spot-read any section the verdict actually turns on.
 - Does this conflict with any existing mechanic?
 - Does this create unintended interactions with other systems?
 - Is this consistent with the game's established tone and pillars?
+
+**Registry values, wherever the GDD states them.** A value restated in a table,
+a catalogue entry or a variant note contradicts the registry as surely as one in
+Detailed Rules, and reading by section makes those bodies easy to skim. List the
+registry's entry names (`grep -E '^  - name:' design/registry/entities.yaml`),
+then search the whole target document once for all of them plus the numeric
+keys they carry, case-insensitive, writing each `_` as `[_ ]` so `goblin_scout`
+also matches "Goblin scouts":
+
+```
+grep -n -i -E 'goblin[_ ]scout|iron[_ ]sword|health|value[_ ]gold' [target-doc-path]
+```
+
+Check every line it prints against the registry, whatever section it sits in.
+A line that gives an entry a different value, even for one room, variant, level
+or exception, contradicts the owning GDD: list it under Required Before
+Implementation with its line number, this document's value and the registry's.
+With no registry entries, run the same search for the entities and values the
+related GDDs define.
 
 ---
 
@@ -243,7 +261,9 @@ specialist review. Parallelism is optional for independent work; dependent work 
 > Your job is NOT to validate this design — your job is to find problems.
 > Challenge the design choices from your domain expertise. What is wrong,
 > underspecified, likely to cause problems, or missing entirely?
-> Be specific and critical. Disagreement with the main review is welcome."
+> Be specific and critical. Disagreement with the main review is welcome.
+> Read the GDD by section: find the headings with the Grep tool (pattern `^#`,
+> content mode) and Read those ranges with offset and limit."
 
 **Additional instructions per agent type:**
 
@@ -281,17 +301,20 @@ separately as "advisory at `standard`" — do not list them as missing.]
 
 > **N is not 8 unless `workflow: full`.** The tier table earlier in this skill is
 > authoritative: 8 required at `full`, 5 at `standard` (+ Formulas when the system
-> defines numeric rules), 0 at `minimal`. Hardcoding `/8` here
-> reintroduces the tier confusion in the presentation layer after the logic
-> layer already handles it — reporting a `standard` project as "5/8 missing Player
-> Fantasy, Formulas, Tuning Knobs" warns about three sections that project's own
-> configuration says it does not need, which trains the reader to ignore the
-> review.
+> defines numeric rules), 0 at `minimal`. Do not hardcode `/8` here: reporting a
+> `standard` project as "5/8 missing Player Fantasy, Formulas, Tuning Knobs"
+> warns about three sections that project's own configuration says it does not
+> need, which trains the reader to ignore the review.
 
 ### Dependency Graph
 [List each declared dependency and whether its GDD file exists on disk]
 - ✓ enemy-definition-data.md — exists
 - ✗ loot-system.md — NOT FOUND (file does not exist yet)
+
+### Registry Values
+[The whole-document search from Phase 3: the terms searched, how many lines it
+printed, and each conflict with its line number. With nothing to search, say so:
+"No registry entries or related-GDD values: values not cross-checked."]
 
 ### Required Before Implementation
 [Numbered list — blocking issues only. Each item tagged with source agent.]
@@ -398,6 +421,7 @@ Use a third `ask the user`:
 If yes, append an entry in this format:
 ```
 ## Review — [YYYY-MM-DD] — Verdict: [APPROVED / NEEDS REVISION / MAJOR REVISION NEEDED]
+Review mode: [full / lean / solo] · Workflow: [full / standard / minimal]
 Scope signal: [S/M/L/XL]
 Specialists: [list]
 Blocking items: [count] | Recommended: [count]
@@ -412,8 +436,7 @@ Receipt: design/gdd/reviews/[doc-name]-review-receipt.json (linked JSON generate
 Findings rules: one line per finding, named by the section it lives in;
 write `- none` when the verdict carried no findings. This is documentation
 for a human reader of the revision history, not a mechanism the skill reads
-back — a delta re-review that skipped re-analyzing unchanged sections was
-tried and reverted (see Phase 1) after measuring it against a full review.
+back.
 
 The linked JSON companion, not embedded log text, supplies the next-run hash comparison. Follow .game-studio/resources/docs/review-receipts.md, including report linkage, same scope/mode and changed/deleted/unavailable inputs.
 
@@ -424,7 +447,7 @@ The linked JSON companion, not embedded log text, supplies the next-run hash com
 Once the systems-index and review-log widgets are answered, check project state and show one final `ask the user`:
 
 Before building options, read:
-- `design/gdd/systems-index.md` — find any system with Status: In Review or Needs Revision (other than the one just reviewed)
+- `design/gdd/systems-index.md` — find any system with Status: In Review or Needs Revision (other than the one just reviewed). Read it by section: find the headings with the Grep tool (pattern `^#`, content mode) and Read those ranges with offset and limit.
 - Count `.md` files in `design/gdd/` (excluding game-concept.md, systems-index.md) to determine if `$gs-review-all-gdds` is worth offering (≥2 GDDs)
 - Find the next system with Status: Not Started in design order
 

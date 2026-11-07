@@ -25,6 +25,8 @@ project; engine reference versions are examples and require current verification
 
 Resolve settings explicitly with the native config command; retain its values and provenance.
 
+# UX Review
+
 ## Overview
 
 Validates UX design documents before they enter the implementation pipeline.
@@ -95,7 +97,9 @@ Before validating any spec, load:
    (if it exists)
 3. The interaction pattern library at `design/ux/interaction-patterns.md` (if
    it exists)
-4. The GDDs referenced in the spec's header (read their UI Requirements sections)
+4. The GDDs referenced in the spec's header (read their UI Requirements sections:
+   find the headings with the Grep tool (pattern `^#`, content mode) and Read
+   those ranges with offset and limit)
 5. The player journey map at `design/player-journey.md` (if it exists) for
    context-arrival validation
 

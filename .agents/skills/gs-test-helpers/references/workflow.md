@@ -129,7 +129,9 @@ generic template.
 
 Also read:
 - `design/gdd/systems-index.md` — to know which systems exist
-- In-scope GDD(s) — to understand what data types and values need testing
+- In-scope GDD(s) — to understand what data types and values need testing. Read
+  them by section: find the headings you need with the Grep tool (pattern `^#`,
+  content mode) and Read those ranges with offset and limit.
 - `docs/architecture/tr-registry.yaml` — to map requirements to tested systems
 
 ---
@@ -140,7 +142,7 @@ Also read:
 
 > **`FAIL_IF(...)` in the example below is a PLACEHOLDER, not an API.** It marks
 > the one line you must resolve from the project's actual test framework before
-> emitting any of this, per the rule in §2. Substitute the framework's real
+> emitting any of this, per the rule in `2. Substitute the framework's real
 > failure call — the form that **registers a failure with the runner and lets the
 > suite continue** — and delete the marker comment.
 >
@@ -149,11 +151,11 @@ Also read:
 > not covered by `.game-studio/resources/engine-reference/`** — so writing any of them here would be
 > asserting an API this repo cannot source, in the file whose whole job is to stop
 > people doing that. If you cannot confirm the correct call for the configured
-> framework, §2 already tells you the answer: **generate no helper.** An
+> framework, `2 already tells you the answer: **generate no helper.** An
 > unresolved `FAIL_IF` reaching disk is a bug; a missing helper is a task.
 >
-> Worked examples must obey §2 too — a bare `assert()` here would be the exact
-> form §2 forbids, sixty lines below §2 forbidding it. A rule stated in prose
+> Worked examples must obey `2 too — a bare `assert()` here would be the exact
+> form `2 forbids, sixty lines below `2 forbidding it. A rule stated in prose
 > does not reach its own worked example unless someone makes it.
 
 **Base helper** (`tests/helpers/game_assertions.gd`):
