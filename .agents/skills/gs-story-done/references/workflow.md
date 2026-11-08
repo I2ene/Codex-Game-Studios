@@ -211,13 +211,13 @@ A missing item is a gap at the gate level: BLOCKING stops COMPLETE, ADVISORY goe
 in the notes. Name what is missing and where it goes. An evidence doc with no image
 beside it is not evidence: a described check is an assertion.
 
-**Is the evidence older than its code?** Read the actual evidence report and its
-JSON companion. Run `python .game-studio/runtime/studio.py receipts check <source-and-image-patterns...> --receipt <evidence.receipt.json> --root <project-root>`.
-Use observations, required_unresolved, report_status and unchanged_inputs. Changed
-source, a missing image or report drift does not establish current visual evidence:
-name the affected criterion and re-capture/re-review, applying its evidence gate.
-A missing companion means freshness is NOT ASSESSED; do not claim current evidence
-from a legacy text stamp. Preserve any independent current observation honestly.
+**Is the evidence older than its code?** For retained visual evidence, locate the
+actual report/companion pair per [story capture receipts](.game-studio/resources/docs/review-receipts.md#story-capture-receipts). If found, run
+`python .game-studio/runtime/studio.py receipts check <source-and-image-patterns...> --receipt <evidence.receipt.json> --root <project-root>`
+with the companion's saved patterns. Report freshness separately; apply the
+existing evidence gate only when the required evidence itself is missing,
+unreadable or inadequate. No companion means freshness is NOT ASSESSED, not a
+failed criterion.
 
 **Run result, every other type.** Take the `Run result:` line from the `$gs-dev-story`
 checkpoint (only when its **Current task** names this story) or the story's Completion Notes.
@@ -308,7 +308,9 @@ exists yet.
    or ADR a deviation would be judged against is missing. Name each one and what
    would settle it. It outranks the two passes and never hides a failure.
 3. **COMPLETE WITH NOTES:** every criterion passes or is DEFERRED, with advisory
-   items listed. An absent sprint file alone is informational. Evidence freshness and run observations are evaluated against the applicable criterion and evidence gate; stale required visual evidence cannot be dismissed as an information line.
+   items listed. An absent sprint file and capture freshness alone are informational.
+   Known criterion failures and actual required evidence gaps still use their
+   applicable gate; do not infer either from a freshness observation.
 4. **COMPLETE:** every criterion passes, nothing advisory.
 
 **Then ask, before writing anything:** "How do you want to proceed?" Options:

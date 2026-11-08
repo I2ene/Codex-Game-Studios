@@ -32,6 +32,50 @@ class WorkflowAdapterTests(unittest.TestCase):
                 self.assertNotIn('--root <project-root> checkpoint', text)
                 self.assertNotIn('production/session-state/active.md', text)
 
+    def test_split_checkpoint_routes_keep_disabled_work_and_recover_real_artifacts(self):
+        phases = {
+            'design-system': ('3-file-skeleton.md', '4-section-design.md', '5-post-design.md'),
+            'ux-design': ('3-file-skeleton.md', '4-authoring.md', '5-crossref-handoff.md'),
+            'prototype': ('4-plan.md', 'spike-mode.md'),
+        }
+        for skill, files in phases.items():
+            route = self.text(skill)
+            for phase in files:
+                with self.subTest(skill=skill, phase=phase):
+                    self.assertIn(phase, route)
+                    body = self.text(skill, phase)
+                    self.assertNotIn('production/session-state/active.md', body)
+                    self.assertRegex(body, r"(?is)checkpoint.{0,140}enabled.{0,240}checkpoint --save")
+                    self.assertRegex(body, r"(?i)DISABLED[^\n]*(?:skip|continue|omit)")
+            if skill != 'prototype':
+                resume = route.split('## 7. Recovery & Resume', 1)[1].split('\n## ', 1)[0]
+                self.assertNotIn('production/session-state/active.md', resume)
+                self.assertRegex(resume, r"(?s)recover --root <project-root>.*?PRESENT.*?DISABLED.*?actual")
+                self.assertIn('next incomplete section', resume)
+        spike = self.text('prototype', 'spike-mode.md')
+        self.assertRegex(spike, r"(?s)SPIKE-NOTE\.md.*?DISABLED[^\n]*(?:skip|continue|omit)")
+        self.assertIn('brief', spike)
+        self.assertIn('sprint', spike)
+
+    def test_story_evidence_producer_and_both_consumers_share_receipt_contract(self):
+        docs = ROOT / '.game-studio/resources/docs/review-receipts.md'
+        link = '.game-studio/resources/docs/review-receipts.md#story-capture-receipts'
+        producer = self.text('dev-story')
+        self.assertIn(link, producer)
+        self.assertIn('--report <evidence.md> --output <evidence.receipt.json>', producer)
+        for skill in ('story-done', 'test-evidence-review'):
+            with self.subTest(skill=skill):
+                text = self.text(skill)
+                self.assertIn(link, text)
+                self.assertIn('--receipt <evidence.receipt.json>', text)
+                self.assertNotIn('stamp.json', text)
+        contract = docs.read_text(encoding='utf-8').split('## Story capture receipts', 1)[1]
+        self.assertIn('production/qa/evidence/<story-slug>/evidence.receipt.json', contract)
+        self.assertRegex(contract, r"(?s)report_status.*?required_unresolved.*?unchanged_inputs")
+        self.assertRegex(contract, r"(?is)companion is absent[^.]*freshness as NOT ASSESSED")
+        self.assertRegex(contract, r"(?is)source.{0,120}POTENTIALLY STALE")
+        self.assertRegex(contract, r"(?is)required image.{0,200}evidence gate")
+
     def test_no_obsolete_host_or_shadow_phases(self):
         for name in NAMES:
             base = ROOT / '.agents/skills' / ('gs-' + name)

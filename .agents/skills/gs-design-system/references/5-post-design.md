@@ -169,7 +169,9 @@ Ask: "May I update the systems index at `design/gdd/systems-index.md`?"
 
 ### 5e: Update Session State
 
-Update `<resolved-checkpoint>` with:
+If checkpoint recovery is enabled, save `<resolved-checkpoint>` via
+`checkpoint --save <authored-file> --root <project-root>`. If DISABLED, skip the
+state write and continue to the next steps. Include:
 - Task: [system-name] GDD
 - Status: Complete (or In Review if design-review was run)
 - File: design/gdd/[system-name].md

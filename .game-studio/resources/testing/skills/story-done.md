@@ -104,7 +104,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-story-done` (no argument)
 
 **Domain checks:**
-- [ ] Skill reads `production/session-state/active.md` first when no argument is given
+- [ ] With no story argument, recovery resolves the configured checkpoint and uses its active story when present
 - [ ] The report's `**Story**:` line names the auto-detected story file
 - [ ] With several in-progress stories in the sprint, skill asks which one via `host input tool` instead of picking one
 - [ ] If no story is found anywhere, skill asks the user to provide a path

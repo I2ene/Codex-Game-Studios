@@ -42,7 +42,9 @@ When all sections are approved and written:
 
 ### 6a: Update Session State
 
-Update `production/session-state/active.md` with:
+If checkpoint recovery is enabled, save `<resolved-checkpoint>` via
+`checkpoint --save <authored-file> --root <project-root>`. If DISABLED, skip the
+state write and continue to the handoff. Include:
 - Task: [screen-name] UX spec
 - Status: Complete (or In Review)
 - File: design/ux/[filename].md

@@ -81,9 +81,10 @@ Context  ->  Questions  ->  Options  ->  Decision  ->  Draft  ->  Approval  ->  
    - If new (not in registry): flag it as a candidate for registry registration
      (will be handled in Phase 5).
 
-After writing each section, update `<resolved-checkpoint>` with the
-completed section name. Use Glob to check if the file exists — use Write to create
-it if absent, Edit to update it if present.
+After writing each section, if checkpoint recovery is enabled, record the
+completed section in `<resolved-checkpoint>` via `checkpoint --save <authored-file>
+--root <project-root>`. If DISABLED, skip the state write; the approved section
+is still saved in the GDD.
 
 ### Section-Specific Guidance
 

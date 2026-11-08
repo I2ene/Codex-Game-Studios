@@ -180,8 +180,10 @@ controls the depth of each section, not which sections exist.
 
 If the session is interrupted (compaction, crash, new session):
 
-1. Read `production/session-state/active.md` — it records the current screen
-   and which sections are complete.
+1. Run `recover --root <project-root>`. If the checkpoint is PRESENT, use the
+   recovered screen and section progress as context. If DISABLED or ABSENT,
+   continue from the actual authored document and current input; do not read or
+   create a fallback checkpoint.
 2. Read `design/ux/[filename].md` — sections with real content are done;
    sections with `[To be designed]` still need work.
 3. Resume from the next incomplete section — no need to re-discuss completed ones.
@@ -229,7 +231,7 @@ This skill follows the collaborative design principle at every step:
    - Phase 5: "Run cross-reference check? What's next?"
 3. **"May I write to [filepath]?"** before the skeleton and before each section write
 4. **Incremental writing**: Each section is written to file immediately after approval
-5. **Session state updates**: After every section write
+5. **Session state updates**: After each section write when checkpoint recovery is enabled
 
 **Aesthetic deference**: When layout or visual choices come down to personal taste,
 present the options and ask. Do not select a layout because it is "standard" — always
