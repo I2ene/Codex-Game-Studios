@@ -22,6 +22,8 @@ participant IDs, independent reviews or sign-off. Record real delegated particip
 Missing evidence means NOT ASSESSED — NO DATA. Resolve engine/version from this
 project; engine reference versions are examples and require current verification.
 
+# Team Level
+
 If no argument is provided, output usage guidance and exit without spawning any agents or reading any design files:
 > Usage: `$gs-team-level [level name or area to design] [--review full|lean|solo]` — specify the level or area to design (e.g., `forest temple`, `tutorial village`, `final boss arena`). Do not use `ask the user` here; output the guidance directly.
 
@@ -73,7 +75,9 @@ it is never labeled as a separate participant or independent sign-off.
 1. **Read the argument** for the target level or area (e.g., `tutorial`,
    `forest dungeon`, `hub town`, `final boss arena`).
 
-2. **Gather context**:
+2. **Gather context** (read each design doc by section: find the headings you need
+   with the Grep tool with pattern `^#` in content mode, and Read those ranges
+   with offset and limit):
    - Read the game concept at `design/gdd/game-concept.md` — or `design/game-brief.md`,
      the one-page brief that replaces it at `rigor: minimal` — if either exists
    - Read game pillars at `design/gdd/game-pillars.md`
@@ -137,7 +141,7 @@ Apply the `art-director` expertise in the parent, or delegate to an authorized p
 - Define the color temperature and lighting mood for this area (how does it differ from adjacent areas?)
 - Specify shape language direction (angular fortress? organic cave? decayed grandeur?)
 - Name the primary visual landmarks that will orient the player
-- Read `design/art/art-bible.md` if it exists — anchor all direction in the established art bible
+- Read `design/art/art-bible.md` if it exists — anchor all direction in the established art bible. Read it by section: find the headings you need with the Grep tool (pattern `^#`, content mode) and Read those ranges with offset and limit.
 
 **The art-director's visual targets from Step 1 must be passed to the level-designer in Step 2** as explicit constraints. Layout decisions happen within the visual direction, not before it.
 

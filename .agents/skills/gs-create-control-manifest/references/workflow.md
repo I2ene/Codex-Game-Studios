@@ -26,19 +26,23 @@ project; engine reference versions are examples and require current verification
 Explicitly resolved — use as-is; `--review` overrides `review_mode` for this run. No
 block → defaults in `.game-studio/resources/docs/config-resolution.md`.
 
+Ask with the question tool. Without one, list the options numbered and end your turn
+to wait. A skipped or dismissed question is not an answer: ask again in plain text.
+
 # Create Control Manifest
 
-The Control Manifest is a flat, actionable rules sheet for programmers. It
-answers "what do I do?" and "what must I never do?" — organized by architectural
-layer, extracted from all Accepted ADRs, technical preferences, and engine
-reference docs. Where ADRs explain *why*, the manifest tells you *what*.
+The control manifest is a flat rules sheet for programmers: what to do and what
+never to do, by architectural layer, taken from the Accepted ADRs, the project's
+technical preferences and the engine reference docs. The ADRs say *why*; the
+manifest says *what*.
 
-**Output:** `docs/architecture/control-manifest.md`
+**Writes:** `docs/architecture/control-manifest.md`, after the user's yes.
+**When:** after `$gs-architecture-review` passes and the ADRs are Accepted. Run it
+again whenever an ADR is accepted or revised.
 
-**When to run:** After `$gs-architecture-review` passes and ADRs are in Accepted
-status. Re-run whenever new ADRs are accepted or existing ADRs are revised.
-
----
+Asks follow `.game-studio/resources/docs/automation-modes.md` (collaborative resolves open decisions, guided
+asks on major choices, autonomous logs and goes on; `automation_always_ask`
+categories always ask).
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
 (collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
@@ -47,18 +51,14 @@ Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.
 ## 1. Load All Inputs
 
 ### ADRs
-**Establish the denominator first.** Glob `docs/architecture/adr-*.md`. Call the
-count **N**. If N is 0: "No ADRs found — run `$gs-architecture-decision` before
-building a control manifest." Stop.
 
-**Resolve status without reading the ADRs** — the filter must precede the read,
-not follow it:
-```
-Grep pattern="^## Status" glob="docs/architecture/adr-*.md" output_mode="content" -A 3
-```
-Interpret against N:
+`bash .game-studio/scripts/adr-status.sh` reads every `docs/architecture/adr-*.md` in one
+pass: the counts first (`adrs`, then `accepted`, `proposed`, `deprecated`,
+`superseded`, `unfilled`, `other`, `no_status`), then one row per ADR with its
+status and layer. Establish the denominator first: decide from the counts, before
+reading any ADR:
 
-| Result | Meaning | Action |
+| Counts | Meaning | Action |
 |---|---|---|
 | **N matches, some read `Accepted`** | Normal. | The Accepted set is **A**; proceed with A. Name every ADR left out, with its status, in the Phase 4 preview — the user approves a manifest knowing what it does not cover. |
 | **N matches, none `Accepted`** | Genuinely no Accepted ADRs. | "[N] ADRs found, none Accepted. A manifest built from Proposed ADRs would encode decisions that may still change." Ask whether to proceed with Proposed or stop. **Do not silently emit an empty manifest.** |
@@ -84,7 +84,8 @@ Interpret against N:
   `production/epics/*/EPIC.md` (present → epics exist). Phase 6 picks its next
   step from both.
 
-Report: "Loaded [N] Accepted ADRs, engine: [name + version]."
+Each stop above ends with `Verdict: BLOCKED — [the reason]`. Note the number and
+title of every ADR a rule comes from.
 
 ---
 
@@ -137,51 +138,100 @@ Classify each rule by the architectural layer of the system it governs:
 
 If an ADR spans multiple layers, duplicate the rule into each relevant layer.
 
----
+- `naming.*` and `performance.*` from `project.yaml`; for any key absent or empty,
+  `.game-studio/resources/docs/technical-preferences.md`.
+- Approved libraries and forbidden patterns from
+  `.game-studio/resources/docs/technical-preferences.md` (not migrated to `project.yaml`).
 
-## 3. Add Global Rules
+### Engine reference
 
-Combine rules that apply to all layers. Each carries its source into the manifest, as a layer rule does — the `project.yaml` key, `technical-preferences.md`, or the engine-reference file:
+- `.game-studio/resources/engine-reference/[engine]/VERSION.md` for the engine and version.
+- `.game-studio/resources/engine-reference/[engine]/deprecated-apis.md`: these become forbidden APIs.
+- `.game-studio/resources/engine-reference/[engine]/current-best-practices.md`, when it exists.
 
-### From project config (`project.yaml`, else `technical-preferences.md`):
-- Naming conventions — `naming.*`: classes, variables, signals/events, files, constants
-- Performance budgets — `performance.*`: target framerate, frame budget, draw call limits, memory ceiling
+### What exists already
 
-### From deprecated-apis.md:
-- Deprecated APIs → Forbidden API entries, **filtered for relevance to this
-  project**. Do not copy the deprecation table wholesale.
-  > Each entry must apply to what this project actually builds. `deprecated-apis.md`
-  > mixes dimensions and subsystems: its `GodotPhysics3D → Jolt Physics 3D` row is
-  > **3D-only**, so emitting it unqualified gives a 2D project a global rule about
-  > a physics engine it never uses. If you cannot tell whether an entry applies —
-  > 2D vs 3D, a module the project does not include — either scope the rule
-  > ("when using 3D physics: ...") or omit it and note it as unresolved. A manifest
-  > of rules that do not apply is one nobody reads, and `$gs-create-stories` consumes
-  > this file.
+`docs/architecture/control-manifest.md` present: this run regenerates it; read it
+before the Phase 5 write, which replaces it. `production/epics/*/EPIC.md` present:
+epics exist. Phase 6 picks its next step from both.
 
-### From current-best-practices.md (if available):
-- Engine-recommended patterns → Required entries
+Report: "Loaded [A] Accepted ADRs of [N], engine: [name + version]."
 
-### From technical-preferences.md forbidden patterns:
-- Copy any "Forbidden Patterns" entries directly
+## Phase 2: Extract the rules from each ADR
 
----
+For each ADR in **A**, read only four sections, never the whole file:
 
-## 4. Present Rules Summary Before Writing
+```
+python .game-studio/runtime/studio.py markdown --root <project-root> extract docs/architecture/[adr-file].md "Decision"
+```
 
-Before writing the manifest, present a summary to the user:
+and the same for `Alternatives Considered`, `Performance Implications` and `Engine
+Compatibility`. Context, Consequences, Migration Plan and Validation Criteria say why
+a decision was made; the manifest records what to do. A section an ADR lacks: note
+it for that ADR and go on. A section missing from **every** ADR in A: report "No
+Accepted ADR has a `[section]` section — the manifest's [category] rules will be
+empty. Verify this is intended." Read beyond the four only when a section points
+outside itself ("subject to the constraints in Context"), and then that one section.
+
+From each ADR:
+
+- **Required patterns** (Decision): every "must", "should", "required to",
+  "always", and every pattern or approach it mandates, including any `### Implementation
+  Guidelines` inside it. Never look for that sub-heading alone: many ADRs state
+  their mandates directly under Decision, and a scan for the sub-heading alone
+  yields an empty section.
+- **Forbidden approaches** (Alternatives Considered): every rejected alternative,
+  with why it was rejected as the rule ("never use X because Y"), and any named
+  anti-pattern.
+- **Performance guardrails** (Performance Implications): budgets ("max N ms per
+  frame for this system") and memory limits.
+- **Engine API constraints** (Engine Compatibility): post-cutoff APIs that need
+  verifying, behaviour that differs from what a model would assume, fields or
+  methods that changed in the pinned version.
+
+**Layer.** Each rule goes under the layer of the system it governs, the ADR's
+`layer` column where it has one:
+
+- **Foundation:** scene management, event architecture, save/load, engine start-up
+- **Core:** core gameplay loop, main player systems, physics and collision
+- **Feature:** secondary systems and mechanics, AI
+- **Presentation:** rendering, audio, UI, VFX, shaders
+
+An ADR that spans layers puts its rule in each one.
+
+## Phase 3: Add the global rules
+
+Rules for every layer, each with its source (the `project.yaml` key,
+`technical-preferences.md`, or the engine-reference file), as a layer rule has:
+
+- **Naming** from `naming.*`: classes, variables, signals and events, files,
+  constants.
+- **Performance budgets** from `performance.*`: target frame rate, frame budget,
+  draw calls, memory ceiling.
+- **Forbidden APIs** from `deprecated-apis.md`, **only those that apply to what this
+  project builds.** Never copy the table whole: its `GodotPhysics3D → Jolt Physics
+  3D` row is 3D-only, and a 2D project does not use that engine. When you cannot
+  tell whether an entry applies (2D or 3D, a module the project may not include),
+  scope the rule ("when using 3D physics: …") or leave it out and list it as
+  unresolved. `$gs-create-stories` reads this file, and rules that do not apply are
+  rules nobody reads.
+- **Required patterns** from `current-best-practices.md`, when it exists.
+- **Forbidden patterns** from `technical-preferences.md`, copied as written.
+
+## Phase 4: Show the summary, then the review
 
 ```
 ## Control Manifest Preview
 Engine: [name + version]
-ADRs covered: [list ADR numbers]
-ADRs excluded: [ADR-NNNN ([status]), … — every ADR not in the Accepted set, or "None"]
-Total rules extracted:
+ADRs covered: [ADR numbers]
+ADRs left out: [ADR-NNNN ([status]), … — every ADR not in A, or "None"]
+Rules extracted:
   - Foundation layer: [N] required, [M] forbidden, [P] guardrails
   - Core layer: [N] required, [M] forbidden, [P] guardrails
-  - Feature layer: ...
-  - Presentation layer: ...
+  - Feature layer: …
+  - Presentation layer: …
   - Global: [N] naming conventions, [M] forbidden APIs, [P] approved libraries
+Unresolved: [engine entries left out because whether they apply is unclear, or "None"]
 ```
 
 Use `ask the user`:
@@ -237,25 +287,24 @@ Format:
 > **Last Updated**: [date]
 > **Manifest Version**: [date]
 > **ADRs Covered**: [ADR-NNNN, ADR-MMMM, ...]
-> **Status**: [Active — regenerate with `$gs-create-control-manifest update` when ADRs change]
+> **Status**: Active — regenerate with `$gs-create-control-manifest update` when ADRs change
 
-`Manifest Version` is the date this manifest was generated. Story files embed
-this date when created. `$gs-story-readiness` compares a story's embedded version
-to this field to detect stories written against stale rules. Always matches
-`Last Updated` — they are the same date, serving different consumers.
+`Manifest Version` is the date this manifest was generated. Stories embed it when
+they are written, and `$gs-story-readiness` compares a story's version with this one
+to find stories written against old rules. It always equals `Last Updated`: the
+same date, for different readers.
 
-This manifest is a programmer's quick-reference extracted from all Accepted ADRs,
-technical preferences, and engine reference docs. For the reasoning behind each
-rule, see the referenced ADR.
+This manifest is a programmer's quick reference taken from the Accepted ADRs, the
+technical preferences and the engine reference docs. For the reason behind a rule,
+read its ADR.
 
 ---
 
 ## Foundation Layer Rules
 
-*Applies to: scene management, event architecture, save/load, engine initialisation*
+*Applies to: scene management, event architecture, save/load, engine start-up*
 
 ### Required Patterns
-- **[rule]** — source: [ADR-NNNN]
 - **[rule]** — source: [ADR-NNNN]
 
 ### Forbidden Approaches
@@ -310,19 +359,19 @@ rule, see the referenced ADR.
 ### Naming Conventions
 | Element | Convention | Example | Source |
 |---------|-----------|---------|--------|
-| Classes | [from naming.* in project.yaml, else technical-preferences.md] | [example] | [`naming.classes` in project.yaml, or technical-preferences.md] |
-| Variables | [from naming.* in project.yaml, else technical-preferences.md] | [example] | [`naming.variables` in project.yaml, or technical-preferences.md] |
-| Signals/Events | [from naming.* in project.yaml, else technical-preferences.md] | [example] | [`naming.signals` in project.yaml, or technical-preferences.md] |
-| Files | [from naming.* in project.yaml, else technical-preferences.md] | [example] | [`naming.files` in project.yaml, or technical-preferences.md] |
-| Constants | [from naming.* in project.yaml, else technical-preferences.md] | [example] | [`naming.constants` in project.yaml, or technical-preferences.md] |
+| Classes | [convention] | [example] | [`naming.classes` in project.yaml, or technical-preferences.md] |
+| Variables | [convention] | [example] | [`naming.variables` in project.yaml, or technical-preferences.md] |
+| Signals/Events | [convention] | [example] | [`naming.signals` in project.yaml, or technical-preferences.md] |
+| Files | [convention] | [example] | [`naming.files` in project.yaml, or technical-preferences.md] |
+| Constants | [convention] | [example] | [`naming.constants` in project.yaml, or technical-preferences.md] |
 
 ### Performance Budgets
 | Target | Value | Source |
 |--------|-------|--------|
-| Framerate | [from performance.* in project.yaml, else technical-preferences.md] | [`performance.target_framerate` in project.yaml, or technical-preferences.md] |
-| Frame budget | [from performance.* in project.yaml, else technical-preferences.md] | [`performance.frame_budget_ms` in project.yaml, or technical-preferences.md] |
-| Draw calls | [from performance.* in project.yaml, else technical-preferences.md] | [`performance.draw_call_limit` in project.yaml, or technical-preferences.md] |
-| Memory ceiling | [from performance.* in project.yaml, else technical-preferences.md] | [`performance.memory_ceiling_mb` in project.yaml, or technical-preferences.md] |
+| Framerate | [value] | [`performance.target_framerate` in project.yaml, or technical-preferences.md] |
+| Frame budget | [value] | [`performance.frame_budget_ms` in project.yaml, or technical-preferences.md] |
+| Draw calls | [value] | [`performance.draw_call_limit` in project.yaml, or technical-preferences.md] |
+| Memory ceiling | [value] | [`performance.memory_ceiling_mb` in project.yaml, or technical-preferences.md] |
 
 ### Approved Libraries / Addons
 - [library] — approved for [purpose] — source: technical-preferences.md
@@ -333,32 +382,16 @@ These APIs are deprecated or unverified for [engine + version]:
 - Source: `<project-engine-reference>/deprecated-apis.md`
 
 ### Cross-Cutting Constraints
-- [constraint that applies everywhere, regardless of layer] — source: [ADR-NNNN, preference key or engine-reference file]
+- [constraint that applies in every layer] — source: [ADR-NNNN, preference key or engine-reference file]
 ```
 
----
-
-## 6. Suggest Next Steps
-
-After writing the manifest:
-
-- If epics/stories don't exist yet: "Run `$gs-create-epics layer: foundation` then `$gs-create-stories [epic-slug]` — programmers
-  can now use this manifest when writing story implementation notes."
-- If this is a regeneration (manifest already existed): "Updated. Recommend
-  notifying the team of changed rules — especially any new Forbidden entries."
-
----
-
-## Collaborative Protocol
+## Phase 6: Next steps
 
 **Applies in `collaborative` mode (the default).** For `guided` and
 `autonomous` modes, see `.game-studio/resources/docs/automation-modes.md` — the rules below
 describe what collaborative mode requires, not universal behavior.
 
-1. **Load silently** — read all inputs before presenting anything
-2. **Show the summary first** — let the user see the scope before writing
-3. **Ask before writing** — always confirm before creating or overwriting the manifest. On write: Verdict: **COMPLETE** — control manifest written. On decline: Verdict: **BLOCKED** — user declined write.
-4. **Source every rule** — never add a rule that doesn't trace to an ADR, a
-   technical preference, or an engine reference doc
-5. **No interpretation** — extract rules as stated in ADRs; do not paraphrase
-   in ways that change meaning
+Every rule traces to an ADR, a technical preference or an engine reference doc;
+none is invented, and none is paraphrased in a way that changes its meaning. End
+with `Verdict: COMPLETE — control manifest written` after the write, or `Verdict:
+BLOCKED — user declined the write` when declined.

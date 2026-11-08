@@ -124,3 +124,21 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The path is `design/[system-name]-brief.md`
 - [ ] The provenance banner appears under the title
 - [ ] Verdict is COMPLETE
+
+---
+
+### Case 7: A code-root target produces a whole-game brief
+
+**Fixture:** Godot minimal, no system overrides; resolved `src/` contains an existing game (14 files), with
+health system, enemy AI and game loop, no existing brief. Human answers intent questions and
+authorizes the output. Variant: target `src/gameplay/health_system.gd`.
+
+**Input:** `$gs-reverse-document design src/` (or the variant file)
+
+**Domain checks:**
+- [ ] At the root, present findings and uncertainties before drafting the one-page whole-game
+  `design/game-brief.md` with pitch, loop and implemented scope. Never write a system brief or
+  GDD for that root target.
+- [ ] The contained file instead writes `design/health-system-brief.md`, not
+  `design/game-brief.md`. Both keep provenance directly beneath the title and label unconfirmed
+  intent `INTENT UNKNOWN`; report COMPLETE after the authorized write.

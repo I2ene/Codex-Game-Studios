@@ -20,3 +20,12 @@ project-owned extension skill when customizing a project; framework maintainers 
 the distribution. Do not grant tools, pin models or require per-file approvals already
 covered by the user's task. Native evaluation scenarios and the quality rubric live in
 .game-studio/resources/testing; they are guidance, not executed test results.
+
+## Apply and verify the exact proposed change
+
+Identify the real phase file containing the defect before editing. Capture the
+original content and change only the implicated entry or reference; re-run the
+same static checks against all affected files. If results do not improve or a
+regression appears, restore only the edited lines/files to their captured
+pre-edit bytes; preserve unrelated changes. A static score or fixture result
+does not prove execution of the repaired procedure.

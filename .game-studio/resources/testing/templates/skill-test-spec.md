@@ -34,6 +34,13 @@ Inspect the native entry, complete procedure and relevant contract; no execution
 
 ---
 
+## Fixture defaults
+
+Use the [native fixture policy](../README.md#fixture-defaults-for-new-cases).
+Pin any setting that selects the behavior under test. Leave inputs absent when
+testing an unset value, unresolved scope or missing project. Name each variant
+and keep its expected outcome distinct.
+
 ## Test Cases
 
 ### Case 1: Happy Path — [brief name]
@@ -47,7 +54,7 @@ Inspect the native entry, complete procedure and relevant contract; no execution
 2. [Step 2]
 3. [Step 3]
 
-**Assertions**:
+**Domain checks**:
 - [ ] [Assertion 1]
 - [ ] [Assertion 2]
 - [ ] [Assertion 3]
@@ -66,7 +73,7 @@ Inspect the native entry, complete procedure and relevant contract; no execution
 2. [Skill reports FAIL/BLOCKED]
 3. [Skill does NOT proceed]
 
-**Assertions**:
+**Domain checks**:
 - [ ] Skill stops before producing the artifact and reports BLOCKED or NOT ASSESSED, naming the missing input
 - [ ] Correct error/block message displayed
 - [ ] No files written outside existing user authorization
@@ -84,7 +91,7 @@ Inspect the native entry, complete procedure and relevant contract; no execution
 **Expected behavior**:
 1. [Behavior differs from happy path because of mode]
 
-**Assertions**:
+**Domain checks**:
 - [ ] [Mode-specific assertion]
 - [ ] [Output differs correctly from Case 1]
 
@@ -100,7 +107,7 @@ Inspect the native entry, complete procedure and relevant contract; no execution
 **Expected behavior**:
 1. [Skill handles gracefully]
 
-**Assertions**:
+**Domain checks**:
 - [ ] [Edge case handled without crash or silent failure]
 - [ ] [Correct output or message]
 
@@ -118,7 +125,7 @@ Inspect the native entry, complete procedure and relevant contract; no execution
 1. [Gate fires / does not fire based on mode]
 2. [Correct director agents consult or skipped]
 
-**Assertions**:
+**Domain checks**:
 - [ ] In full mode: [specific gates consult]
 - [ ] In lean mode: [phase gates only, at the width `modes.workflow` sets — or each gate skipped with `[GATE-ID] skipped — Lean mode`]
 - [ ] In solo mode: no director gates consult, and the output names each skip
@@ -138,7 +145,7 @@ Inspect the native entry, complete procedure and relevant contract; no execution
 2. [Skill reports NOT ASSESSED, naming what it could not assess and why]
 3. [Skill does NOT resolve the unknown to a pass]
 
-**Assertions**:
+**Domain checks**:
 - [ ] Verdict is NOT ASSESSED — never the pass value — and names the missing or unreadable input
 - [ ] A failure found alongside it still takes the failure verdict (NOT ASSESSED ranks above the pass value, below the failure values)
 - [ ] The check that could not run is named in the output, not silently omitted

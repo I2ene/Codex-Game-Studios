@@ -36,7 +36,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Output includes "Required Before Implementation", "Recommended Revisions" and "Scope Signal" sections, and "Re-review: No — first review"
 - [ ] Output ends with `### Verdict:` APPROVED when all REQUIRED sections are present and no blocking issue is found
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
-- [ ] If the review-report option is selected, the actual report has a linked SHA-256 JSON companion covering the document and required context
+- [ ] If the review report is authorized, it records the actual lean review mode. Its linked SHA-256 JSON receipt covers the target, applicable skill files and related GDDs actually read, with other required context. A changed dependency or shallower prior review must not silently satisfy a requested deeper re-review.
 
 ---
 

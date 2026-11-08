@@ -100,10 +100,6 @@ the list of story file paths from the sprint plan.
 > all fine*. This skill gates story closure, and `coding-standards.md` marks Logic,
 > Integration, Visual/Feel and UI evidence BLOCKING, so a false-clean closes stories nobody
 > reviewed.
->
-> This is a recurring shape: the sophisticated inner rule present, the outer
-> boundary unguarded. Ask it of any skill that aggregates —
-> **what does this emit when the set is empty?**
 
 For the resulting story set, collect the fields below with **targeted section
 greps, not a full read of each story**:
@@ -135,7 +131,7 @@ contains the story slug or its system. Test files are named per
 
 **Integration stories**: the same, under the integration root (`tests/integration/[system]/`,
 `Assets/Tests/PlayMode/`, or Unreal's test root)
-  - Also check `production/session-logs/` for playtest records mentioning the story
+  - Also check `production/qa/playtests/` for playtest records mentioning the story
 
 **Visual/Feel and UI stories**: Glob `production/qa/evidence/` for a retained image
 (`*.png`, `*.jpg`, `*.gif`) belonging to this story, and for
@@ -200,12 +196,11 @@ it by name is harder to maintain when the formula changes.
 
 For each evidence document found, read it and evaluate the checks below.
 
-**A UI story needs no evidence document.** When it has none, its retained
-screenshots are the evidence: apply only Screenshot / artefact completeness (an
-image of each screen the story changes — a screen a criterion only navigates to,
-such as the title screen after Quit, needs none of its own) and Date coverage (the images'
-dates). A UI story is ADEQUATE on those two — never INCOMPLETE for lacking a doc,
-its criterion linkage or a sign-off.
+**A UI story needs no evidence document.** When it has none, judge adequacy from
+its retained screenshots and their dates: require an image of each screen the
+story changes, not a screen it only navigates to (such as the title screen after
+Quit). Still report capture freshness separately. Missing documentation, its
+criterion linkage, or a sign-off does not make a UI story INCOMPLETE.
 
 ### Criterion linkage
 
@@ -232,6 +227,16 @@ default, and a description is an assertion rather than evidence.
 
 For UI stories: require the same retained screenshot of each screen touched.
 A walkthrough log is welcome but not required.
+
+### Evidence older than its code
+
+For each story with retained visual evidence, locate its actual report/companion
+pair per [story capture receipts](.game-studio/resources/docs/review-receipts.md#story-capture-receipts). If found, run
+`python .game-studio/runtime/studio.py receipts check <source-and-image-patterns...> --receipt <evidence.receipt.json> --root <project-root>`
+using its saved patterns. Report source drift, report changes and required input
+gaps separately from adequacy. If no companion is available, mark freshness
+NOT ASSESSED and use the date check below. Freshness alone does not change the
+verdict; apply the existing evidence checks to the actual screenshot and sign-off.
 
 ### Date coverage
 
@@ -279,7 +284,7 @@ and demoting a real failure behind an access problem would bury it. `WAIVED`
 ranks below `ADEQUATE`: the overall verdict reads WAIVED only when every story
 in scope was waived, and the report names each waived story either way.
 
-> Why this needed saying: evidence review **gates story completion**, and
+> Why this matters: evidence review **gates story completion**, and
 > `coding-standards.md` makes Logic, Integration, Visual/Feel and UI evidence BLOCKING. A verdict
 > vocabulary with no way to express "I could not check" forces every unknown
 > into one of three claims about the story — which is how a story nobody

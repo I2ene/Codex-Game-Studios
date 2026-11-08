@@ -35,3 +35,6 @@ production/session-state/
 *.key
 credentials.json
 secrets.json
+
+# Consumer test and capture output
+production/qa/evidence/**/*.wav

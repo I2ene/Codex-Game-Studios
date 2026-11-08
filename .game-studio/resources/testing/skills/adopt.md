@@ -95,10 +95,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Input:** `$gs-adopt`
 
 **Domain checks:**
-- [ ] `host input tool` is used (not a plain text message) when no artifacts are found
-- [ ] `$gs-start` is presented as a named option
-- [ ] Skill stops after the question — no audit phases run
-- [ ] No adoption plan file is written
+- [ ] Offer `$gs-start`, cancellation, and help finding artifacts in nonstandard locations as distinct choices.
+- [ ] Choosing start or cancel ends this audit without writing an adoption plan.
+- [ ] Variant: choosing help finding artifacts searches the actual project by document content; preserve custom paths and existing files. Propose any moves explicitly and require authorization for them before rescanning.
 
 ---
 

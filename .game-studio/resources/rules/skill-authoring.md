@@ -93,10 +93,10 @@ list.** A gate that fires on forty files does not get fixed, it gets muted — a
 a muted gate is worse than a narrow one, because it reads as coverage. When you
 keep a list, record *why* derivation failed and state the obligation to extend it.
 
-Two further gate rules earned the hard way:
+Two further gate rules:
 
 - **Assert something that cannot be true by accident.** A check for the word
-  "unity" was satisfied by a file path, and case-insensitively by "community".
+  "unity" is satisfied by a file path, and case-insensitively by "community".
   Assert a distinctive token instead.
 - **A gate you have not watched fail is not a gate.** Break the thing it guards,
   confirm it fails, restore. One mutation per tool invocation — a batch that

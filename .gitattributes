@@ -13,3 +13,8 @@ fixtures/** text eol=lf
 .gitattributes text eol=lf
 .gitignore text eol=lf
 .github/** text eol=lf
+
+# Preserve reusable helper tables and scripts across checkouts.
+*.awk text eol=lf
+*.tsv text eol=lf
+LICENSE text eol=lf

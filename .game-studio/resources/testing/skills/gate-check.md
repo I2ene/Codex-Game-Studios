@@ -238,3 +238,19 @@ lean` (so a panel would otherwise run); a filled `design/game-brief.md`; no GDDs
 - [ ] Verdict is PASS, not NOT ASSESSED — the not-applicable gate is the named exception to "a gate with no required artifacts left may not PASS"
 - [ ] The gate file's note is printed, and no director is consulted
 - [ ] Absent GDDs are not reported as blockers
+
+---
+
+### Case 10: Minimal missing-brief gate routes to the relevant source
+
+**Fixture:** Minimal Godot with no brief, concept or GDDs. Run A: resolved `src/` has 15 source files and
+holds an existing game. Run B: resolved code root is empty.
+
+**Input:** `$gs-gate-check systems-design`
+
+**Domain checks:**
+- [ ] Missing brief blocks the gate in both runs; report FAIL, name `design/game-brief.md` and
+  do not advance stage.
+- [ ] Use the first incomplete minimal step without phase-ladder options. A: recommend
+  `$gs-reverse-document design src/`; B: recommend `$gs-brainstorm`. Do not auto-run either. An
+  unresolved root is not equivalent to B.

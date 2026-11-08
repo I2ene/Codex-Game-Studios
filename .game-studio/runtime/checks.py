@@ -139,7 +139,7 @@ def receipts(root, action, patterns, receipt=None, report=None, optional_pattern
                 if not isinstance(sha, str) or len(sha) != 64:
                     raise ValueError('Invalid receipt hash')
     optional_patterns = baseline.get('optional_patterns', []) if optional_patterns is None else optional_patterns
-    if not isinstance(optional_patterns, list) or not all(isinstance(p, str) and p in patterns for p in optional_patterns):
+    if not isinstance(optional_patterns, list) or not all(isinstance(p, str) and p in (baseline.get('patterns', patterns) if baseline else patterns) for p in optional_patterns):
         raise ValueError('Optional patterns must be an explicit subset of reviewed patterns')
     optional_patterns = list(dict.fromkeys(optional_patterns))
     current = {}
@@ -155,12 +155,28 @@ def receipts(root, action, patterns, receipt=None, report=None, optional_pattern
                 current.update({rel + '#' + h: sha for h, sha in sections(p.read_text(encoding='utf-8-sig')).items()})
             else:
                 current[rel] = digest(p.read_bytes())
+    # Upstream checks all previously stamped inputs even when the caller asks
+    # about a narrower set. A new scope cannot hide drift in the old report.
+    previous_sections = {}
+    for key in old:
+        if key in current:
+            continue
+        relative, _, heading = key.partition('#') if action.startswith('sections-') else (key, '', '')
+        path = confined(root, relative)
+        if not path.is_file():
+            continue
+        if action.startswith('sections-'):
+            if relative not in previous_sections:
+                previous_sections[relative] = sections(path.read_text(encoding='utf-8-sig'))
+            if heading in previous_sections[relative]:
+                current[key] = previous_sections[relative][heading]
+        else:
+            current[key] = digest(path.read_bytes())
     for key, sha in current.items():
         observations.append({'path': key, 'hash': sha, 'status': 'UNCHANGED' if old.get(key) == sha else 'CHANGED' if key in old else 'NEW'})
     if action.endswith('check'):
         for key in old:
-            relative = key.split('#', 1)[0] if action.startswith('sections-') else key
-            if key not in current and any(Path(relative).match(p) for p in patterns):
+            if key not in current:
                 observations.append({'path': key, 'status': 'REMOVED'})
     linked_report = report if action.endswith('hash') else baseline.get('report')
     report_hash, report_status = None, 'UNLINKED'
@@ -182,6 +198,7 @@ def receipts(root, action, patterns, receipt=None, report=None, optional_pattern
             'baseline_status': 'PRESENT' if baseline else 'MISSING',
             'report': linked_report, 'report_hash': report_hash, 'report_status': report_status,
             'unchanged_inputs': bool(baseline and current and current == old and unresolved == baseline.get('unresolved', [])
+                                     and all(p in optional_patterns for p in unresolved)
                                      and list(patterns) == baseline.get('patterns') and report_status == 'UNCHANGED'),
             'status': 'OBSERVED' if current else NO_DATA}
 
@@ -189,8 +206,12 @@ def receipts(root, action, patterns, receipt=None, report=None, optional_pattern
 def dependencies(root):
     root = plain(root)
     adrs = files(root, 'docs/architecture/adr-*.md')
-    lookup = {p.stem.lower(): p.relative_to(root).as_posix() for p in adrs}
-    graph, missing, missing_sections = {}, [], []
+    lookup = {}
+    for p in adrs:
+        m = re.match(r'adr-(\d+)(?:-|$)', p.stem, re.I)
+        key = f'adr-{int(m[1]):04d}' if m else p.stem.lower()
+        lookup.setdefault(key, []).append(p.relative_to(root).as_posix())
+    graph, missing, missing_sections, unfilled, ambiguous = {}, [], [], [], []
     for p in adrs:
         rel = p.relative_to(root).as_posix()
         text = p.read_text(encoding='utf-8-sig')
@@ -203,12 +224,19 @@ def dependencies(root):
             dependency_text = depends_row.group()
         elif '|' in dependency_text:
             dependency_text = ''  # A table without Depends On is unknown, not all ADR references.
-        names = re.findall(r'(?i)\badr-[\w-]+(?:\.md)?', dependency_text)
+        if re.search(r'\[.*\]', dependency_text) and not re.search(r'\badr-\d+\b', dependency_text, re.I):
+            unfilled.append(rel)
+            dependency_text = ''
+        names = re.findall(r'(?i)\badr-(?:\d+|[\w-]+)', dependency_text)
         graph[rel] = []
-        for name in names:
-            key = name.removesuffix('.md').lower()
-            if key in lookup:
-                graph[rel].append(lookup[key])
+        for name in dict.fromkeys(names):
+            suffix = name[4:]
+            key = f'adr-{int(suffix):04d}' if suffix.isdecimal() else name.lower()
+            matches = lookup.get(key, [])
+            if len(matches) == 1:
+                graph[rel].append(matches[0])
+            elif matches:
+                ambiguous.append({'from': rel, 'target': name, 'matches': matches})
             else:
                 missing.append({'from': rel, 'target': name})
     cycles, visited = [], set()
@@ -236,8 +264,24 @@ def dependencies(root):
                 if pending[other] == 0:
                     ready.append(other)
                     ready.sort()
+    # Nodes left by topological sorting include cycles AND consumers of cycles.
+    unresolved_nodes = set(graph) - set(order)
+    def reaches_self(start):
+        seen, queue = set(), list(graph[start])
+        while queue:
+            current = queue.pop()
+            if current == start:
+                return True
+            if current not in seen:
+                seen.add(current)
+                queue.extend(graph[current])
+        return False
+
+    cycle_members = {node for node in unresolved_nodes if reaches_self(node)}
     return {'status': 'OBSERVED' if adrs else NO_DATA, 'nodes': len(adrs), 'graph': graph, 'missing': missing, 'cycles': cycles,
             'missing_sections': missing_sections, 'order': order,
+            'unfilled_dependencies': unfilled, 'ambiguous_targets': ambiguous,
+            'cycle_members': sorted(cycle_members), 'blocked_by_cycle': sorted(unresolved_nodes - cycle_members),
             'note': 'Order covers declared edges only. Missing/unknown declarations and absent targets are gaps, not a clean dependency verdict.'}
 
 
@@ -246,13 +290,19 @@ def gdd_structure(root, patterns):
     rows = []
     for pattern in patterns:
         for p in files(root, pattern):
-            headings = re.findall(r'(?m)^#{1,3}\s+(.+)', p.read_text(encoding='utf-8-sig'))
+            from markdown_sections import parse
+            parsed = [row for row in parse(p.read_text(encoding='utf-8-sig')) if row['level'] <= 3]
+            headings = [row['title'] for row in parsed]
             expected = {'Overview': r'Overview', 'Player Fantasy': r'Player Fantasy', 'Detailed Rules': r'Detailed (Rules|Design)',
                         'Formulas': r'Formulas', 'Edge Cases': r'Edge Cases', 'Dependencies': r'Dependencies',
                         'Tuning Knobs': r'Tuning Knobs', 'Acceptance Criteria': r'Acceptance Criteria'}
-            present = [name for name, expr in expected.items() if any(re.match(r'(?i)^(?:[0-9]+[.)]?\s*)?' + expr, h) for h in headings)]
-            rows.append({'path': p.relative_to(root).as_posix(), 'headings': headings,
-                         'present': present, 'absent': [name for name in expected if name not in present]})
+            matched = {name: [row for row in parsed if re.match(r'(?i)^(?:[0-9]+[.)]?\s*)?' + expr, row['title'])]
+                       for name, expr in expected.items()}
+            present = [name for name, group in matched.items() if group]
+            rows.append({'path': p.relative_to(root).as_posix(), 'headings': headings, 'present': present,
+                         'absent': [name for name in expected if name not in present],
+                         'placeholder': [name for name in present if any(r['status'] == 'PLACEHOLDER' for r in matched[name])],
+                         'empty': [name for name in present if all(r['status'] == 'EMPTY' for r in matched[name])]})
     return {'status': 'OBSERVED' if rows else NO_DATA, 'count': len(rows), 'documents': rows,
             'note': 'Headings are observations. The authoring/review skill applies its tier contract.'}
 
@@ -347,7 +397,7 @@ def coherence(root, probe=False):
 
 def run_command(root, name, timeout=300):
     root = plain(root)
-    argv = resolve(root)['values'].get('commands.' + name)
+    argv = resolve(root, require_clean=True)['values'].get('commands.' + name)
     if argv is None:
         return {'command': name, 'status': NO_DATA, 'reason': 'No configured argv command'}
     if not isinstance(argv, list) or not argv or not all(isinstance(p, str) and p for p in argv):

@@ -2,8 +2,11 @@
 
 This repository distributes Codex Game Studios; it is not a game project. Preserve
 MIT/Donchitos attribution, professional lifecycle procedures, templates and contracts.
-Native content is authoritative. Retired host sources are available in Git history;
-do not restore runtime entries or regenerate reviewed content from historical files.
+The upstream release is the professional workflow and behavior baseline. Compare its
+changes to the native implementation before reusing or adapting them. Reviewed native
+content governs execution. Keep only necessary host, safety and compatibility
+differences. Do not restore retired host entry points or regenerate reviewed content
+blindly from Git history. See docs/upstream-compatibility.md.
 
 Use Python 3.11+ with requirements.txt in a local environment. Validate changed
 runtime behavior with targeted unittest checks. Run tools/validate.py for content,

@@ -31,7 +31,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - Does NOT produce Unity MonoBehaviour code
 - Clearly identifies that this is a Unity pattern, not a Godot pattern
 - Maps the concepts to Godot: `_ready()` instead of `Start()`, and a typed Godot `signal` connected in `_ready()` instead of a UnityEvent
-- Grounds the answer in the project's engine pin (`<project-engine-reference>/godot/VERSION.md`, Godot 4.6) rather than asking which engine the project uses
+- Grounds the answer in the project's engine pin (`<project-engine-reference>/godot/VERSION.md`, Godot 4.7 in this fixture) rather than asking which engine the project uses
 - Routes the actual node script to godot-gdscript-specialist or godot-csharp-specialist rather than writing it itself
 - Variant: with `engine.name: Unity` in `project.yaml`, it says it is the wrong specialist for this project instead of mapping the concepts
 
@@ -67,3 +67,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - States what the reference documents: Jolt is the default 3D engine for new projects, but existing projects keep their setting — so it checks Project Settings → Physics → 3D → Physics Engine before assuming Jolt
 - Carries over the documented Jolt differences that apply: collision margins may behave differently, and Jolt emits runtime warnings for properties it does not support (e.g. HingeJoint3D `damp`)
 - Does NOT invent RigidBody3D property changes between GodotPhysics and Jolt — the reference documents none, and it says so
+
+## Applicable domain checks
+
+- [ ] When applicable, check 4.4–4.7 API changes against the actual project version and its
+  reference, rather than assuming a fixed model cutoff or treating the fixture pin as installed
+  evidence.

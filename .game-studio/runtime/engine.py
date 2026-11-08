@@ -77,6 +77,28 @@ def coherence(root, probe=False):
         compare('installed-at-pin', declared, installed, note='Recorded historical probe, not current binary execution')
     else:
         observe('installed-at-pin', 'NOT ASSESSED', recorded=installed, reason='No recorded installed-version probe')
+    if isinstance(name, str) and name.casefold() == 'unreal':
+        selected_root = values.get('engine.path')
+        try:
+            if not isinstance(selected_root, str) or not selected_root.strip():
+                raise ValueError('No explicit engine.path')
+            candidate = Path(selected_root)
+            directory = plain(candidate) if candidate.is_absolute() else confined(root, selected_root)
+            version_file = confined(directory, 'Engine/Build/Build.version')
+            if not version_file.is_file() or version_file.stat().st_size > 65536:
+                raise ValueError('No readable bounded Engine/Build/Build.version under engine.path')
+            recorded = json.loads(version_file.read_text(encoding='utf-8-sig'))
+            if not isinstance(recorded, dict):
+                raise ValueError('Build.version is not a JSON object')
+            parts = [recorded.get(key) for key in ('MajorVersion', 'MinorVersion', 'PatchVersion')]
+            if any(type(part) is not int or part < 0 for part in parts[:2]) or (
+                    parts[2] is not None and (type(parts[2]) is not int or parts[2] < 0)):
+                raise ValueError('Build.version does not contain a numeric engine version')
+            observed = '.'.join(str(part) for part in parts if part is not None)
+            compare('installed-build-version', declared, observed, source=str(version_file),
+                    note='Static metadata from explicit engine.path; no editor executed')
+        except (OSError, ValueError) as error:
+            observe('installed-build-version', 'NOT ASSESSED', reason=str(error))
     if probe:
         execution = run_command(root, 'engine_probe', 30)
         output = execution.get('stdout', '').splitlines()

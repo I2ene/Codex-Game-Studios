@@ -208,6 +208,24 @@ case's inputs, professional scope, artifact destinations and expected verdict.
 - [ ] The Phase 6 brief names no verdict and no deciding fact; the qa-lead reaches NOT APPROVED from the rules
 - [ ] A closed bug is not counted as open
 
+---
+
+### Case 9: Review mode leaves the QA cycle and evidence criteria intact
+
+**Fixture:** `team.size: small`, standard QA, sprint-04 has a Logic story with passing test and a UI story
+with screenshot; latest smoke PASS. Tester marks both PASS; no bugs. Runs A–C use full, lean and
+solo with matched execution conditions.
+
+**Input:** `$gs-team-qa sprint-04` (full, lean and solo variants)
+
+**Domain checks:**
+- [ ] Each mode retains QA strategy, cases and the evidence-based sign-off with the same
+  unresolved decisions, no external director gate. The sign-off brief contains evidence but no
+  preselected verdict.
+- [ ] Identical complete evidence supports the same APPROVED result in each mode. Apply the
+  parent/delegation paths without fabricating participants or independence.
+
+---
 
 ## Applicable domain checks
 

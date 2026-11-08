@@ -13,10 +13,11 @@ EVENTS = {'SessionStart', 'PreCompact', 'PostCompact', 'Stop', 'SubagentStart', 
 def project_root(cwd):
     current = plain(cwd)
     for p in [current, *current.parents]:
-        if (p / '.game-studio').is_dir():
-            return plain(p)
-        if (p / '.git').exists():
-            break
+        if confined(p, '.game-studio').is_dir():
+            return p
+        nested_config = p / 'project.yaml'
+        if (p / '.git').exists() or nested_config.exists() or nested_config.is_symlink():
+            break  # A nested project must not recover the parent project's records.
     raise ValueError('No installed framework in this session project')
 
 

@@ -66,3 +66,8 @@ Roles may be applied by the current agent or delegated with available tools and
 human authorization. Parent work is not independent sign-off. Engine references,
 playtests, visual capture and builds need the consumer's real tools and inputs.
 See [validation boundaries](validation.md) before interpreting a result as readiness.
+
+Resume split workflows from the current phase reference rather than re-reading
+the full procedure or repeating completed execution. A focused review is evidence
+only for the dimensions it covered. A gate cannot advance while any required
+check remains unexecuted, even if its aggregate label is CONCERNS.

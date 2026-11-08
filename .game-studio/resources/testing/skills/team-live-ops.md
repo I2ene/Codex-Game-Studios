@@ -33,6 +33,7 @@ case's inputs, professional scope, artifact destinations and expected verdict.
 ### Case 1: Happy Path — All 7 phases complete, season plan produced
 
 **Fixture:**
+- Explicit standard workflow, which retains the sprint-planning handoff.
 - Resolved config block: `team.size: studio`, `automation: collaborative`
 - `design/live-ops/economy-rules.md` exists with current economy configuration
 - `design/live-ops/ethics-policy.md` exists with the project ethics policy
@@ -123,6 +124,22 @@ case's inputs, professional scope, artifact destinations and expected verdict.
 - [ ] Gap flag appears in the season design output document (not just in conversation)
 - [ ] Next steps recommend creating `design/live-ops/ethics-policy.md`
 
+---
+
+### Case 6: Minimal scheduling keeps the season pipeline
+
+**Fixture:** Minimal workflow, studio roster, collaborative automation, brief/build order and no sprint.
+Economy and ethics records exist; no ethics flag; the human accepts the season plan.
+
+**Input:** `$gs-team-live-ops "Season 5: Harvest Moon"`
+
+**Domain checks:**
+- [ ] Resolve workflow and retain Case 1's phase, role, ethics and season output requirements.
+  The execution path determines only how the disciplines are performed.
+- [ ] At COMPLETE handoff, route content work to the brief's build order, not sprint planning.
+  Keep design review and team release when content is ready.
+
+---
 
 ## Applicable domain checks
 

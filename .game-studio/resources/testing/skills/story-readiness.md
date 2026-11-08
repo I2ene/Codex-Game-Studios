@@ -177,3 +177,36 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks (7c):**
 - [ ] Verdict is BLOCKED ("referenced ADR is missing"), not NOT ASSESSED or READY; the finding names ADR-0007 and its missing path.
 - [ ] Resolve the missing referenced decision before implementation; do not report an empty story scope or a malformed existing ADR.
+
+---
+
+### Case 8: Dead governing ADRs block even at standard
+
+**Fixture:** Standard workflow. Otherwise complete stories A and B respectively govern under ADR-0006
+(Superseded by ADR-0009) and ADR-0008 (Deprecated).
+
+**Input:** `$gs-story-readiness <story-A-path>`, then `$gs-story-readiness <story-B-path>`
+
+**Domain checks:**
+- [ ] Both are BLOCKED and name the actual ADR and status. A's fix names ADR-0009 and directs
+  editing the existing story's governing ADR field; `$gs-create-stories` does not rewrite
+  existing stories.
+- [ ] The review changes no files.
+
+---
+
+### Case 9: Inactive TRs need work with quoted, legacy and active controls
+
+**Fixture:** Full workflow and otherwise Ready stories. Separate records for active TR-light-001, deprecated
+TR-light-004, quoted `status: "superseded-by: TR-light-009"` for TR-light-005, and legacy
+unquoted `status: superseded-by: TR-light-010` for TR-light-006.
+
+**Input:** `$gs-story-readiness <each-story-path>`
+
+**Domain checks:**
+- [ ] The native readiness lookup recognizes all three inactive records, including the legacy
+  text representation. Each yields NEEDS WORK, not BLOCKED, with a fix to point to the current
+  requirement or remove the obsolete reference. The active control is READY.
+- [ ] Legacy text recognition is not valid YAML emission. Do not create or rewrite an unquoted
+  colon-containing status. If a genuinely unreadable record cannot be evaluated, report that
+  missing evidence rather than treating it as active.

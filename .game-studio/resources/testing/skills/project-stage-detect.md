@@ -87,7 +87,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 **Domain checks:**
 - [ ] No absent GDD, art bible, ADR, epic or sprint plan is listed as a gap
-- [ ] `$gs-reverse-document` and `$gs-sprint-plan` are not suggested
+- [ ] Do not recommend `$gs-reverse-document` for absent GDDs when the brief exists. Do not recommend sprint planning; missing brief routing is Case 7.
 - [ ] The Production completeness line refers to the brief's build order
 - [ ] The configured Concept stage is not reported as a disagreement with the observed stage
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
@@ -130,3 +130,19 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The code root is not assumed to be `src/`
 - [ ] Stage Confidence is NOT ASSESSED and names the check that did not run — not PASS
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
+
+---
+
+### Case 7: Minimal stage follow-up addresses a missing brief
+
+**Fixture:** Minimal Godot, no configured stage, mirror, brief, GDDs or sprint plan. A: resolved `src/`
+contains 14 source files and an existing game; B: 3 early source files.
+
+**Input:** `$gs-project-stage-detect`
+
+**Domain checks:**
+- [ ] Report the absent brief and the observed basis for its follow-up. A names
+  `$gs-reverse-document design src/`; B names `$gs-brainstorm`. Distinguish unknown root from
+  little or no code.
+- [ ] Do not mark absent GDDs, ADRs, epics or sprints as minimal-tier gaps or recommend sprint
+  planning. A report write still follows actual scope/authorization.

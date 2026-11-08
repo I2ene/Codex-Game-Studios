@@ -173,7 +173,7 @@ Skip mechanisms, by engine — name only the one for the project's engine:
 - **Godot (gdUnit4), GDScript**: a skip parameter on the test function —
   `func test_x(_do_skip := true, _skip_reason := "flaky: [cause]")`. gdUnit4 reads
   the argument names `do_skip` and `skip_reason` (a leading `_` is allowed) in
-  `addons/gdUnit4/src/core/GdUnitTestSuiteScanner.gd`, as of gdUnit4 6.1.3;
+  `addons/gdUnit4/src/core/GdUnitTestSuiteScanner.gd`, as of gdUnit4 6.2.2;
   confirm them there for the installed version.
 - **Godot (gdUnit4), C#**: **NOT SOURCEABLE** — gdUnit4's C# test attributes are
   not in the `addons/gdUnit4/` source, and `<project-engine-reference>/` does not

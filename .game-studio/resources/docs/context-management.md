@@ -16,3 +16,9 @@ With features.session_state=off, recovery/saving checkpoints is disabled.
 Read references as needed; do not reload all professional manuals per task. Helpers
 emit observations, never verdicts. Hash receipts support focused repeat reviews;
 new/changed/removed/unresolved inputs invalidate an unchanged claim.
+
+Recover before resuming a split phase after interruption. Re-read the current
+procedure and actual artifacts without repeating completed execution. A
+checkpoint from another branch is historical context, not current progress.
+Preserve authored records and the live checkpoint; do not infer authorization
+from recovery.
