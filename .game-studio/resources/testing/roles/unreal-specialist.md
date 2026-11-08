@@ -38,7 +38,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 3: Domain boundary — UE5.4 API requirement
 **Input**: "I need to use the new Motion Matching API introduced in UE5.4."
 **Domain checks**:
-- Flags that UE5.4 is past the model's training coverage (`<project-engine-reference>/unreal/VERSION.md` lists 5.4 as a post-cutoff, HIGH-risk version)
+- Reports the fixture's UE5.4 Motion Matching verification gap using the project's VERSION record, without assuming the current host model's knowledge cutoff
 - Checks `<project-engine-reference>/unreal/` before trusting any API suggestion
 - States that no file under `<project-engine-reference>/unreal/` documents Motion Matching, and labels any class or node names it offers as unverified against the pinned version
 - Does NOT silently produce stale or incorrect API signatures without a caveat
@@ -64,3 +64,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - Does NOT reference APIs introduced after UE5.3 without flagging them as potentially unavailable
 - References the project's stated engine version in its response
 - Provides concrete, version-anchored code or Blueprint node names
+
+## Applicable domain checks
+
+- [ ] If Unreal discipline work is delegated, limit it to the applicable Blueprint, GAS,
+  replication or UMG scopes, with real authorization and tool support. Parent discipline work
+  stays labeled; do not assert a host tool allowlist or independent sign-off.

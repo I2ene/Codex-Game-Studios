@@ -152,7 +152,9 @@ Generate a translator context briefing document. This document is sent to the
 external translation team or localisation vendor alongside the string table export.
 
 Read:
-- `design/gdd/` — extract game genre, tone, setting, character names
+- `design/gdd/` — extract game genre, tone, setting, character names. Read the
+  GDDs by section: find the headings you need with the Grep tool (pattern `^#`,
+  content mode) and Read those ranges with offset and limit.
 - `assets/data/strings/strings-en.json` — the source string table
 - Any existing lore or narrative documents in `design/narrative/`
 

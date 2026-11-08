@@ -101,3 +101,19 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The fix is either re-verified with a real result or deferred to 1.1
 - [ ] No creative-director, technical-director, producer or art-director is consulted
 - [ ] Any written record states the QA verdict and what was not assessed
+
+---
+
+### Case 6: Deferred fixes feed the brief when there is no sprint
+
+**Fixture:** Release stage and minimal workflow; latest release gate PASS, brief present, no sprints.
+BUG-0030 S2/P1 is a one-hour fix; BUG-0031 S2 needs an architecture change. Human approves patch
+scope.
+
+**Input:** `$gs-day-one-patch`
+
+**Domain checks:**
+- [ ] Patch/verify BUG-0030 with actual available evidence; record BUG-0031 under Deferred to
+  1.1 and its architecture reason.
+- [ ] Route via `$gs-bug-triage` and the brief's build order; never require or create a 1.1
+  sprint file in this fixture.

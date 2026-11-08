@@ -102,3 +102,19 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] `modes.review_mode: full` does not change the skill's behavior
 - [ ] Specialist output is presented to the user; agents never write files
 - [ ] The verdict is `COMPLETE`, with `$gs-ux-review` named as the validation step
+
+---
+
+### Case 6: Key screen handoff distinguishes Production gate tiers
+
+**Fixture:** An approved and written `design/ux/settings-menu.md` has passed the cross-reference check.
+Standard workflow; repeat after choosing to design another screen first.
+
+**Input:** `$gs-ux-design settings-menu` (resume at handoff)
+
+**Domain checks:**
+- [ ] Update the applicable checkpoint. Before routing, name `$gs-gate-check production` and
+  explain `$gs-ux-review` is required for key screens at full and recommended at standard.
+- [ ] Offer the applicable next steps (review this spec, design another, patterns, stop).
+  Deferring review adds the reminder to review completed specs before the Production gate; the
+  closing route retains that gate and ends COMPLETE.

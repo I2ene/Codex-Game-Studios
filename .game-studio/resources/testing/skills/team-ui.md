@@ -134,6 +134,23 @@ case's inputs, professional scope, artifact destinations and expected verdict.
 - [ ] Final report documents pattern library status (created / absent / updated)
 - [ ] Skill does NOT fail entirely — the gap is noted and user is given a choice
 
+---
+
+### Case 6: Team size, not review mode, controls UI roster
+
+**Fixture:** Small team runs A–C at full/lean/solo; individual team D at lean. Concept, journey, interaction
+patterns and committed Standard accessibility exist; UX review evidence is APPROVED.
+
+**Input:** `$gs-team-ui inventory screen` (the four fixture variants)
+
+**Domain checks:**
+- [ ] A–C include UI programming, UX, accessibility and art direction. Art direction contributes
+  to visual design and review; Phase 4 keeps all three discipline checks in every mode.
+- [ ] D routes the omitted art/accessibility disciplines through applicable roles or labeled
+  parent work and attributes roster change to team size. Record real delegates only and use no
+  external phase gate.
+
+---
 
 ## Applicable domain checks
 

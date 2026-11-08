@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.1.0
+
+Integrates Donchitos' upstream 1.2.0 workflow, including the 1.1.3 changes.
+Stage-specific references and the rebuilt story and onboarding paths preserve
+professional checks when resuming work. Registry IDs, ADR dependencies, gate
+coverage, story file scope and playtest evidence follow the updated contracts.
+
+The native CLI adds explicit observations for Markdown sections, project state,
+read and write checks, skill lint and test scaffolding. Optional Bash utilities
+reuse upstream data analyses. Configuration inspection reports and merges duplicate
+keys; writes and configured command execution require the ambiguity to be repaired.
+The owner-tracked installer preserves consumer configuration and context while
+replacing or retiring only unedited managed references.
+
+See the [source map and compatibility differences](docs/upstream-compatibility.md)
+and [upgrade instructions](UPGRADING.md).
+
+
 See [UPGRADING.md](UPGRADING.md) for compatibility and reconciliation instructions.
 
 ## [2.0.1] — 2026-10-07

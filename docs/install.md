@@ -37,3 +37,6 @@ discovery may refresh automatically; restart if the host hasn't refreshed. See [
 Optional hooks: generate and review definitions; register only through normal native
 configuration/trust mechanisms. Do not bypass trust or replace an existing hooks file.
 See [integration](integration.md) for context and command adapters.
+
+The optional upstream data utilities use Bash and awk (on Windows, Git for Windows Bash).
+Python and PyYAML remain sufficient for the ownership installer and context recovery.

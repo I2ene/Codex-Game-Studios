@@ -2,7 +2,7 @@
 # Installation preserves an existing consumer project.yaml.
 schema_version: 1
 framework:
-  version: 2.0.1
+  version: 2.1.0
 
 # $gs-start records modes.rigor and modes.automation for the game project.
 # Leave derived leaves absent unless intentionally overriding rigor:

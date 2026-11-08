@@ -18,6 +18,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 1: Happy Path — every requirement covered by an Accepted ADR
 
 **Fixture:**
+- Explicit full review mode; the report's review mode and workflow are both full.
 - `project.yaml` sets `modes.workflow: full`, `engine.name: Godot`, `engine.version: 4.6`
 - `design/gdd/systems-index.md` plus two system GDDs (`combat.md`, `inventory.md`),
   each with a `## Summary` and technical requirements in its Detailed Rules
@@ -39,9 +40,11 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] A Traceability Matrix lists each TR-ID with its GDD, system, requirement, ADR coverage and status; every row is ✅
 - [ ] The ADR dependency order comes from `<runtime> dependencies`, not hand-tracing, and puts `adr-0001` first; the native missing-dependency-declaration list is empty, so the acyclic result is a clean graph rather than a structural gap
 - [ ] Verdict is PASS only because all requirements are covered by **Accepted** ADRs, no conflicts exist, and engine references agree
-- [ ] The actual report has a linked SHA-256 JSON companion covering reviewed ADRs, GDDs and required context
+- [ ] Record mode and workflow as full in the actual report. Its linked SHA-256 JSON receipt covers the reviewed ADRs, GDDs, TR registry, actual engine references, project config and applicable skill files. Record the receipt against the final reviewed context, including the registry after any authorized update.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] The closing widget offers `$gs-gate-check pre-production`, because every pre-gate checklist item is ✅
+- [ ] No missing, unresolved or placeholder dependency declarations may be treated as a clean
+  graph; use the native dependency result's fields.
 
 ---
 

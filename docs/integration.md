@@ -52,3 +52,7 @@ review receipts require a fresh reviewed SHA-256 JSON baseline. Read
 [configuration resolution](../.game-studio/resources/docs/config-resolution.md),
 [context management](../.game-studio/resources/docs/context-management.md) and
 [runtime tooling](tooling.md) for exact interfaces.
+
+Use the installed [native execution interfaces](../.game-studio/resources/docs/native-runtime.md)
+for section, registry, write guard, and story helpers. Preserve the project engine pin.
+For Godot, setup can propose a production/.gdignore to exclude QA evidence from imports.

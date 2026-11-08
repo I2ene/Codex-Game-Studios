@@ -18,10 +18,10 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Fixture:**
 - `project.yaml` has no `engine` block; `technical-preferences.md` holds only placeholders
 - No `design/gdd/game-concept.md` and no `design/game-brief.md`
-- `<project-engine-reference>/godot/VERSION.md` already pins 4.6
+- `<project-engine-reference>/godot/VERSION.md` already pins 4.7
 - No `project.godot` at the repo root; the user approves every write
 
-**Input:** `$gs-setup-engine godot 4.6`
+**Input:** `$gs-setup-engine godot 4.7`
 
 **Domain checks:**
 - [ ] `engine.name` is Godot and `engine.language` is GDScript in `project.yaml`
@@ -58,10 +58,10 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - Placeholders only; the user never states that the project is Blueprint-primary
 - The session runs on Windows (`uname -s` is neither `Linux` nor `Darwin`), so the Windows `commands` block applies
 
-**Input:** `$gs-setup-engine unreal 5.7`
+**Input:** `$gs-setup-engine unreal 5.8`
 
 **Domain checks:**
-- [ ] In the baseline fixture, Engine is Unreal Engine 5.7 and `engine.language` is `C++`; no `.uproject` is scaffolded
+- [ ] In the baseline fixture, Engine is Unreal Engine 5.8 and `engine.language` is `C++`; no `.uproject` is scaffolded
 - [ ] Routing table includes `.uasset` and `.umap` entries
 - [ ] ue-blueprint-specialist is assigned for Blueprint graphs
 - [ ] `commands` carry the `# TODO: confirm these` comment
@@ -69,7 +69,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 **Variant — explicit Blueprint-primary choice:**
 - Same project, but the user explicitly selects Blueprint as the primary language.
-- Input: `$gs-setup-engine unreal 5.7`, with the Blueprint-primary answer.
+- Input: `$gs-setup-engine unreal 5.8`, with the Blueprint-primary answer.
 
 **Domain checks (Blueprint-primary):**
 - [ ] Records Blueprint as `engine.language` and the primary language, with C++ where needed; the baseline C++-primary expectation does not apply.
@@ -80,12 +80,12 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 4: Re-run on a Configured Project — blocks edited in place
 
 **Fixture:**
-- `project.yaml` already has `engine` (Godot 4.6), `specialists`, `naming`, a
+- `project.yaml` already has `engine` (Godot 4.7), `specialists`, `naming`, a
   `modes` block, and a `commands` block missing its `smoke` key
 - `project.godot` exists at the repo root
-- `<project-engine-reference>/godot/VERSION.md` pins 4.6
+- `<project-engine-reference>/godot/VERSION.md` pins 4.7
 
-**Input:** `$gs-setup-engine godot 4.6`
+**Input:** `$gs-setup-engine godot 4.7`
 
 **Domain checks:**
 - [ ] No block is duplicated in `project.yaml`, and the missing `commands.smoke` key is added
@@ -113,11 +113,11 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 6: Installed Editor Older Than the Chosen Version — ask, then record
 
 **Fixture:**
-- As Case 1; `<project-engine-reference>/godot/VERSION.md` pins 4.6
+- As Case 1; `<project-engine-reference>/godot/VERSION.md` pins 4.7
 - `godot --version` reports `4.5.1.stable`
 - The user picks "pin the newer one and upgrade later"
 
-**Input:** `$gs-setup-engine godot 4.6`
+**Input:** `$gs-setup-engine godot 4.7`
 
 **Domain checks:**
 - [ ] Both versions are stated and all three options are offered
@@ -131,10 +131,10 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 **Fixture:**
 - As Case 1, on Windows; `godot --version` fails — `godot` is not on `PATH`
-- The probe finds `C:/Program Files/Godot/Godot_v4.6.1-stable_win64.exe`, which reports `4.6.1.stable`
+- The probe finds `C:/Program Files/Godot/Godot_v4.7.2-stable_win64.exe`, which reports `4.7.2.stable`
 - The user names the export preset `Windows Desktop`
 
-**Input:** `$gs-setup-engine godot 4.6`
+**Input:** `$gs-setup-engine godot 4.7`
 
 **Domain checks:**
 - [ ] No `commands.*` value names bare `godot`
@@ -142,6 +142,23 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] `engine.path` records the editor executable
 - [ ] Variant — the probe finds nothing and the user does not know where Godot is: bare `godot` is kept under a `# TODO: godot is not on PATH here` comment, and the skill says the commands will not run until the path is set
 
+---
+
+### Case 8: A dismissed engine choice supplies no answer
+
+**Fixture:** Fresh project with no configured engine. Required engine choice is dismissed; repeat in a
+headless or unattended run where no answer can be supplied.
+
+**Input:** `$gs-setup-engine`
+
+**Domain checks:**
+- [ ] Do not guess engine, version or language or infer authorization from dismissal. Restate
+  the missing decision in plain text where interaction is possible; otherwise stop with the
+  specific missing input.
+- [ ] No project configuration, technical-preferences, engine VERSION record or project
+  instructions are written while that input is missing.
+
+---
 
 ## Applicable domain checks
 

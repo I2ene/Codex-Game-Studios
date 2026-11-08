@@ -142,3 +142,52 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The report names `inventory.md` as present but not reviewable, and states `GDDs reviewed: 1 of 2 present`
 - [ ] A GDD that could not be read at all would be named on the report's `Not read:` line under every verdict, and is a NOT ASSESSED trigger like an empty one
 - [ ] The closing widget offers neither `$gs-create-architecture` nor `$gs-gate-check`
+
+---
+
+### Case 7: Load per-phase references and resume the active phase
+
+**Fixture:** Full workflow; Case 1's consistent GDDs, concept, pillars and index. Compact during the scenario
+walkthrough.
+
+**Input:** `$gs-review-all-gdds`
+
+**Domain checks:**
+- [ ] Read the applicable actual phase files `1-load.md` through `7-handoff.md` before their
+  work. Each discipline receives its checked reference checklist, whether handled by the labeled
+  parent or by authorized supported delegation.
+- [ ] Before continuing the walkthrough, re-read `4-scenarios.md`. Do not restart finished
+  passes or require a participant count.
+
+---
+
+### Case 8: Receipt-backed review includes the changed GDD and its dependency
+
+**Fixture:** Full workflow; four GDDs: combat, inventory, crafting and status-effects. A prior linked native
+cross-review receipt covers the four and unchanged shared context. Only combat changes and
+declares inventory as dependency; the other two are unchanged and unrelated.
+
+**Input:** `$gs-review-all-gdds since-last-review`
+
+**Domain checks:**
+- [ ] Use the native `review-scope` output for the resolved root and linked receipt. Announce
+  combat plus inventory before detailed reads; no custom Git diff or unrelated detailed review;
+  report 2 of 4 present.
+- [ ] Variant: no usable prior report/receipt. Explain full-scope fallback and review 4 of 4; do
+  not invent a baseline.
+
+---
+
+### Case 9: A focused review labels its limited verdict
+
+**Fixture:** Full workflow; Case 1's three consistent GDDs have no findings on either review pass.
+
+**Input:** `$gs-review-all-gdds consistency`; separately `$gs-review-all-gdds design-theory`
+
+**Domain checks:**
+- [ ] Consistency run performs only the consistency pass and names design theory as not run;
+  design-theory run mirrors this. Use the selected checklist in the parent or authorized path,
+  not a prescribed number of launches.
+- [ ] With clean in-scope evidence, label PASS for that focus in the report and
+  checkpoint/extract, identifying the unrun pass. Do not claim full review or offer the
+  gate/architecture handoff that needs both passes.

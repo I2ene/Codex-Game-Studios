@@ -1,10 +1,11 @@
 # Codex Game Studios
 
 A Codex native game production framework for new and existing game repositories.
-Version **2.0.1** provides **74 repository skills**, **49 expertise roles**, and
+Version **2.1.0** provides **74 repository skills**, **49 expertise roles**, and
 professional procedures, contracts, templates and phase gates across the game lifecycle.
-Adapted from Donchitos' MIT-licensed [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios);
-see [source attribution](NOTICE.md) and [license](LICENSE).
+A Codex adaptation of Donchitos' MIT-licensed [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios);
+based on upstream **1.2.0**. See [source attribution](NOTICE.md), [license](LICENSE),
+and the [upstream compatibility map](docs/upstream-compatibility.md).
 
 | Area | What it provides |
 |---|---|
@@ -17,7 +18,8 @@ see [source attribution](NOTICE.md) and [license](LICENSE).
 ## Install and start
 
 Use a Codex host with repository skill support, Python **3.11+** and **PyYAML 6.x**.
-Git is needed to clone and contribute. A game engine and its build/test tools belong
+Git is needed to clone and contribute. The optional upstream data helpers use Bash
+and awk; Windows users can use Git for Windows Bash. A game engine and its build/test tools belong
 to your game project; the framework does not install them.
 
 Clone this repository separately from your game, then use a local Python environment:

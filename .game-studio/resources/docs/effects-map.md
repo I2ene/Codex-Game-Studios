@@ -2,10 +2,11 @@
 
 > ## READ ONE SECTION, NEVER THIS WHOLE FILE
 >
-> This document is **a large policy reference** — Read only the requested setting section; token budgets belong to the actual host. It is organised as **36 sections of
-> ~900 tokens each**, one per setting, headed `## <key>`.
+> This document is very large, far more than any one lookup needs. It is
+> organised as one section per setting, headed `## <key>`, so a reader can take
+> only the section it wants.
 >
-> **So opening it costs 36× what you need.** To look up a setting:
+> **So opening it whole costs many times what you need.** To look up a setting:
 >
 > ```
 > Grep pattern="^## modes.review_mode" path=".game-studio/resources/docs/effects-map.md" -A 40
@@ -14,13 +15,12 @@
 > Read the section for your key and stop. The same rule the skills already apply
 > to their own reference files — `$gs-gate-check` loads only the row for the target
 > phase and says "never load the others" — applies here, and this is the largest
-> file in the framework by a factor of seven.
+> file in the framework.
 >
-> This banner exists because six skills cite this document and **none of them
-> scoped the citation**. None instructed a full read either, so
-> nothing was actually loading 31k — but "see effects-map.md for full schema" in
-> front of a file this size is an invitation, and the cost of accepting it is
-> silent.
+> Cite a section of this document, never the whole file. A pointer such as "see
+> effects-map.md for full schema" invites a full read of a file this size, and
+> the cost of accepting that invitation is silent. Name the `## <key>` section
+> you need instead.
 
 This document defines what each `project.yaml` setting actually does across
 every skill that reads it. It is the tracked, authoritative reference.
@@ -124,6 +124,8 @@ The rule for deciding which side a setting belongs on:
 | `performance.enforce` | Whether budget violations block your local work (CI enforces project defaults) |
 | `features.session_state` | Your session tracking preference |
 | `features.token_budget_warn_at` | Your personal cost threshold |
+| `features.read_guard` | Whether the explicit helper flags unbounded reads of large design docs |
+| `features.read_guard_kb` | Size threshold for the explicit read observation |
 
 **Locked to `project.yaml`** (project-wide — would create artifact divergence if local):
 
@@ -339,22 +341,17 @@ behavior: strict project defaults for CI, looser developer overrides for local w
 > **Hotfix / day-one-patch exception:** These skills are emergency or release-critical
 > pipelines. They are never gated by `review_mode` — all agents always run.
 
-> **Known inertness — `full` and `lean` barely differ in the nine `team-*`
-> orchestrators.** Each documents a three-way split: `full` spawns every director
-> and lead gate, `lean` skips director gates *unless* they are PHASE-GATE type,
-> `solo` skips gate spawning entirely. But the director gates the team skills name
-> are the four PHASE-GATEs, which `lean` keeps — and no team pipeline spawns one
-> (`$gs-gate-check` is their only spawner). Two things differ: `$gs-team-release`'s
-> technical-director release sign-off runs only at `full`, and `$gs-team-narrative` at
-> `team.size: small` adds `localization-lead` and `world-builder` only at `full`.
+> **`review_mode` in the nine `team-*` orchestrators.** `review_mode` sets
+> director-gate depth: `full` spawns every director gate a pipeline names, `lean`
+> skips director gates unless they are PHASE-GATE type, and `solo` skips gate
+> spawning entirely. No team pipeline spawns a PHASE-GATE (`$gs-gate-check` is their
+> only spawner), so in the orchestrators
+> `lean` and `solo` behave the same, and `full` adds two things:
+> `$gs-team-release`'s technical-director release sign-off, and, at
+> `team.size: small`, `$gs-team-narrative`'s `localization-lead` and `world-builder`.
 >
-> `solo` genuinely differs, and outside the orchestrators (`$gs-design-review`,
-> `$gs-architecture-review`) all three levels differ as documented.
->
-> **This is recorded, not fixed.** Making `lean` mean something in the
-> orchestrators requires deciding which non-phase-gate reviewers each of the nine
-> should call at `full` — a design decision about review depth, not a wording fix,
-> and one that changes how many agents a run spawns.
+> Outside the orchestrators, the skills in the *Core skills* table below read
+> `review_mode` as that table documents.
 
 ---
 
@@ -393,15 +390,18 @@ behavior: strict project defaults for CI, looser developer overrides for local w
 
 ---
 
-### Skills to be made review-mode aware (currently ignore the setting)
+### Skills that do not read `modes.review_mode`
 
-| Skill | full | lean | solo |
-|-------|------|------|------|
-| **review-all-gdds** | Phase 2 consistency pass + Phase 3 design theory pass (parallel) | Phase 2 consistency pass only, Phase 3 skipped | Phase 2 only, Phase 3 skipped |
-| **architecture-review** | Engine specialist + security-engineer (if online features) | Both skipped | Both skipped |
-| **dev-story** | Core programmer routing always runs + engine-specialist escalation on HIGH risk stories | Core programmer routing always runs, engine-specialist escalation skipped | Core programmer routing always runs, engine-specialist escalation skipped |
-| **code-review** | Language, shader, UI specialists + qa-tester | All optional specialists skipped | All optional specialists skipped |
-| **security-audit** | security-engineer spawned | Skipped | Skipped |
+These skills run the same way at `full`, `lean` and `solo`. None of them takes a
+`--review` flag.
+
+| Skill | What runs at every level |
+|-------|--------------------------|
+| **review-all-gdds** | Phase 2 consistency pass and Phase 3 design-theory pass, in parallel |
+| **architecture-review** | The primary engine specialist is consulted after the engine audit (recorded as NOT ASSESSED when no engine is configured) |
+| **dev-story** | Core programmer routing, plus the engine specialist's check of every code story |
+| **code-review** | Language, shader and UI specialists when an engine is configured, plus `qa-tester` for Logic and Integration stories |
+| **security-audit** | `security-engineer` is spawned to run the audit |
 
 ---
 
@@ -425,9 +425,9 @@ pipeline's own review steps run in every mode.
   required phase checks still apply without implying delegated sign-off. Only `solo` skips them. This is intentional: phase
   gates are the minimum quality bar, not optional extras. **How many directors
   run is a separate axis** — `modes.workflow` sets panel width (`minimal` → PR
-  only, `standard` → TD + PR, `full` → all four), because a fixed four-director
-  inherited model panel cost a two-system jam exactly what it cost a thirty-system
-  commercial project. Width never softens a verdict: the strictest verdict from
+  only, `standard` → TD + PR, `full` → all four), because directors are
+  inherited model-tier and a small project should not pay for the same four-director panel
+  as a large one. Width never softens a verdict: the strictest verdict from
   whoever ran still wins, and `$gs-gate-check` names the perspectives it skipped.
 - **art-bible** requires the professional expertise for every section in the
   chosen scope, regardless of review mode. The parent applies that expertise, or uses an authorized delegate.
@@ -651,8 +651,8 @@ checklists differ per phase per mode.
      `minimal`. -->
 
 **Director panel width** (`$gs-gate-check` Section 4b) is workflow's second effect
-here. Directors are inherited model-tier, so a fixed four-director panel charged a
-two-system jam exactly what it charged a thirty-system commercial project:
+here. Directors are inherited model-tier, so the panel is sized to the project rather than
+fixed at four:
 
 | `workflow` | Panel | Directors |
 |---|---|---|
@@ -734,7 +734,7 @@ has a value that opts out of a requirement the workflow level imposes.
 > This rule does not extend to it. On a
 > `full` project, `system_overrides.inventory: minimal` really does drop that
 > system's required sections to zero. Intended — see
-> `.game-studio/resources/docs/workflow-modes.md § workflow_overrides`. Stating the additive
+> `.game-studio/resources/docs/workflow-modes.md ` workflow_overrides`. Stating the additive
 > rule over the whole key is wrong: the guarantee never held for
 > `system_overrides`, so do not rely on it as a safety net.
 
@@ -806,7 +806,7 @@ or another agent's message supplies no new human consent.
 **Values:** `coarse` | `balanced` | `fine`
 **Default:** *none* — supplied by `modes.rigor` (`minimal`, the default, yields `coarse`; `standard` yields `balanced`; `full` yields `fine`)
 **Set by:** `$gs-start` (via `modes.rigor`), `$gs-settings`
-**Read by:** `$gs-create-epics`, `$gs-create-stories`, `$gs-dev-story`, `$gs-sprint-plan`, `$gs-story-done`, `$gs-sprint-status`
+**Read by:** `$gs-create-stories`, `$gs-sprint-plan`, `$gs-sprint-status`, `$gs-story-readiness`
 
 **Priority chain:** `modes.story_granularity` in `project.yaml` → `modes.rigor` expansion → *(no hardcoded default)*
 
@@ -826,11 +826,8 @@ or another agent's message supplies no new human consent.
 
 | Skill | coarse | balanced | fine |
 |-------|--------|----------|------|
-| **create-epics** | Generates 3–5 child stories per epic | Generates 5–10 child stories per epic | Generates 10–20 child stories per epic |
 | **create-stories** | Each story carries 5–10 ACs covering an entire feature | Each story carries 2–4 ACs covering one task | Each story carries 1 AC; story name = AC restatement |
-| **dev-story** | Routing prompt expects multi-day implementation cycle. Subagent given longer working context. | Standard 1–2 day expectation. | Each story implementable in hours; subagent given tighter context. |
 | **sprint-plan** | Allocates 2–4 stories per sprint based on velocity. | Allocates 6–10 stories per sprint. | Allocates 15–25 stories per sprint. |
-| **story-done** | Fires every 3–5 days on average. | Fires every 1–2 days on average. | Fires multiple times per day. |
 | **sprint-status** | Burn-down reads in feature-sized chunks. | Burn-down reads in task-sized chunks. | Burn-down reads in AC-sized chunks. |
 
 ---
@@ -845,9 +842,9 @@ or another agent's message supplies no new human consent.
 
 **Priority chain:** `docs.density` in `project.yaml` → `modes.rigor` expansion → *(no hardcoded default)*
 
-> **Distinct from `workflow`, but no longer independent by default.** `workflow`
+> **Distinct from `workflow`, but not independent by default.** `workflow`
 > controls which sections exist; `density` controls how deep each section goes.
-> `modes.rigor` now sets both together, so the diagonal (`rigor: full` → 8
+> `modes.rigor` sets both together, so the diagonal (`rigor: full` → 8
 > sections *and* thorough prose) is what you get without asking. The off-diagonal
 > is still reachable and is the reason `rigor` overrides both ways: `rigor: full`
 > + an explicit `docs.density: terse` gives "all sections but each is compact" —
@@ -999,14 +996,14 @@ closing, or produces a warning and lets work continue — per test type
 
 | Aspect | minimal | standard | full |
 |--------|---------|----------|------|
-| Logic stories | No test required, no gap flagged | Unit test required (strict.logic controls block) | Unit test + coverage minimum |
+| Logic stories | No test required, no gap flagged | Unit test required (strict.logic controls block) | Unit test, and every acceptance criterion covered |
 | Integration stories | No test required | Integration test or playtest doc required | Same + regression coverage |
 | Visual stories | Screenshot + lead sign-off required — the look is never waived (strict.visual controls block) | Same | Same |
 | UI stories | Screenshot of each screen touched required — never waived (strict.ui controls block) | Same | Same |
-| Config/Data stories | No evidence required | Smoke check advisory | Smoke check required |
+| Config/Data stories | No evidence required | Smoke check advisory | Smoke check required (blocking unless `testing.strict.config: false`) |
 | $gs-story-done test gate | Acceptance criteria only, except the UI and Visual/Feel screenshot, which is never waived | Enforced per story type | Enforced for every story type |
 | $gs-gate-check phase enforcement | No test gates | Logic + integration must pass | Full coverage + regression suite |
-| $gs-dev-story routing prompt | No "Test required: ..." line | Per-type test requirement included | Per-type + coverage target included |
+| $gs-dev-story routing prompt | No "Test required: ..." line | Per-type test requirement included | Per-type, and every criterion must be covered |
 | Regression suite required by | Never | Polish stage | Production stage |
 | Best for | Jam games, throwaway prototypes, fast iteration | Most projects | Commercial, console cert, learning, paranoid teams |
 
@@ -1016,9 +1013,9 @@ closing, or produces a warning and lets work continue — per test type
 
 | Skill | minimal | standard | full |
 |-------|---------|----------|------|
-| **story-done** | Acceptance criteria check only — no test evidence required, except the UI and Visual/Feel screenshot, which is never waived | Per-type evidence required; strictness from `testing.strict` | All types require evidence; strictness from `testing.strict` |
+| **story-done** | Acceptance criteria check only — no test evidence required, except the UI and Visual/Feel screenshot, which is never waived | Per-type evidence required; strictness from `testing.strict`; more than half the criteria untested blocks | Per-type evidence required; a Config/Data smoke report blocks by default; any untested criterion blocks |
 | **story-readiness** | No test requirement validated, except the UI and Visual/Feel screenshot requirement | Test requirement per story type validated | Test requirement + coverage target validated |
-| **dev-story** | Routing prompt has no "Test required" line | Per-type test requirement passed to programmer agent | Coverage target passed to programmer agent |
+| **dev-story** | Routing prompt has no "Test required" line | Per-type test requirement passed to programmer agent | Per-type requirement, and every criterion must be covered by a test |
 | **smoke-check** | Optional; with no game tests (WAIVED), `commands.smoke` (else `commands.build`) when set and the launch and critical-path checks carry the verdict; a build nobody launched is NOT ASSESSED | Required before phase transition | Required before every commit |
 | **gate-check** | No test enforcement at phase transitions | Logic + integration tests must pass | Full coverage check + regression suite |
 | **qa-plan** | Skipped entirely or minimal smoke plan | Full plan per story type | Full plan + coverage targets per system |
@@ -1058,7 +1055,7 @@ closing, or produces a warning and lets work continue — per test type
 > **No skill or hook reads this setting. Setting it has no effect.** Everything
 > below describes the intended design, not current behaviour.
 >
-> The value is checked for valid spelling when you set it, and then ignored.
+> The value is not checked when you set it, and nothing reads it.
 
 **Controls:** Whether phase gate failures block stage transition or just warn
 **Values:** `true` | `false`
@@ -1256,7 +1253,7 @@ must tell them apart)
 
 | Value | Required compliance | Best for |
 |-------|---------------------|----------|
-| `none` | No certification — internal release, alpha, jam game | Default |
+| `none` | No certification | Internal releases, alphas, jam games (an explicit choice — unset is not `none`) |
 | `itch` | itch.io upload requirements (build size, page setup, age tags) | Indie web/desktop releases |
 | `steam` | Steamworks integration, store page, achievements, depot build, system requirements, common content rules | Commercial PC releases |
 | `console` | Platform certification (PlayStation/Xbox/Switch) — heavy compliance: TRC/XR/Lotcheck, save data rules, controller mapping rules, age rating boards | Console releases |
@@ -1269,7 +1266,6 @@ must tell them apart)
 |-------|------|------|-------|---------|
 | **launch-checklist** | Internal launch only — no external requirements | + itch.io page setup, butler upload, build size | + Steamworks integration, store page, achievements depot, common content checks | + Platform-specific TRC, certification submission, console save format compliance |
 | **release-checklist** | Smoke pass + version bump only | + itch.io page live, build uploaded to butler | + Steam store page live, depot pushed, achievements live | + Platform submission accepted, age rating boards cleared |
-| **/pre-cert** (future) | Not applicable | Lightweight readiness check | Steam common content audit | Full TRC compliance audit |
 
 ---
 
@@ -1296,8 +1292,8 @@ must tell them apart)
 
 > **Default is `none`, not `standard`.** Most CCGS users are solo devs and jam-game
 > makers — defaulting to `standard` would auto-spawn the accessibility specialist
-> for projects where it's overhead. `$gs-start` asks the question explicitly so users
-> who care can opt into `standard` or `aaa` consciously.
+> for projects where it's overhead. `$gs-start` does not ask about it; you set it with
+> `$gs-settings`.
 
 ---
 
@@ -1383,9 +1379,9 @@ must tell them apart)
 >
 > **Unset is not zero and not a default.** A budget nobody set is not a budget
 > that was met — `$gs-perf-profile` must report `NOT ASSESSED` for a metric with no
-> committed target rather than measuring against a placeholder. That exact
-> failure (">99% headroom against a 16.67ms budget", from zero profiler data)
-> is one of the two instances that motivated `.game-studio/resources/rules/skill-authoring.md`.
+> committed target rather than measuring against a placeholder. A headroom figure
+> computed against an invented budget, with no profiler data behind it, reads as
+> a pass and is not one; see obligations 1 and 2 in `.game-studio/resources/rules/skill-authoring.md`.
 
 ## performance.enforce
 
@@ -1547,7 +1543,7 @@ implementation, review, and architecture validation
 
 | Skill | How engine.name is used |
 |-------|------------------------|
-| **dev-story** | Routes code stories to language specialist. Spawns engine specialist alongside for HIGH engine-risk stories or engine-specific API usage. |
+| **dev-story** | Routes code stories to a programmer agent, then hands the changed files to the language specialist (the generic engine specialist when none is set) for an engine-API check. |
 | **code-review** | Routes review to language, shader, or UI specialist based on file type being reviewed. |
 | **architecture-decision** | Loads `<project-engine-reference>/VERSION.md` before authoring. Spawns engine specialist to validate ADR for API correctness and post-cutoff compatibility. |
 | **create-architecture** | Includes engine-specific constraints and patterns in architecture doc based on engine choice. |
@@ -1635,7 +1631,7 @@ keys are inside the locked file, not a local override).
 When `$gs-setup-engine` runs, it populates `commands` based on engine choice — except
 the **build** row, which it must **ask** for. The build artifact is named by a
 project-defined string (a Godot export preset, a Unity build target), and no
-engine reference in this repo can source it. See `$gs-setup-engine` §"The Godot
+engine reference in this repo can source it. See `$gs-setup-engine` `"The Godot
 `build` row must not hardcode `'Linux/X11'`".
 
 | Engine | build | test | run | smoke |
@@ -1646,7 +1642,8 @@ engine reference in this repo can source it. See `$gs-setup-engine` §"The Godot
 
 The Unreal row is Windows'. `$gs-setup-engine` writes the Linux block (`Engine/Build/BatchFiles/RunUAT.sh`,
 `Engine/Binaries/Linux/UnrealEditor`) on Linux, and on macOS only `build`, leaving `test`, `run` and
-`smoke` as TODOs — see `<project-engine-reference>/current-best-practices.md`, "Command Line".
+`smoke` unset, with a comment in `project.yaml` asking you to set them via `$gs-settings` — see
+`.game-studio/resources/engine-reference/unreal/current-best-practices.md`, "Command Line".
 
 > **`<PRESET>` and `<TARGET>` are placeholders, not values to copy.** A Godot
 > export preset is whatever string the operator typed into `export_presets.cfg`;
@@ -1694,16 +1691,15 @@ conventions into a brief, manifest or spec. **NOT by `$gs-code-review` and NOT b
 > and `validate-commit.sh` does not warn on violations — neither contains any
 > naming logic. If you need enforcement, it has to be added.
 >
-> **Known rough edge — asset filenames.** `validate-assets.sh` warns unless files
-> under Godot's `assets/` are lowercase-with-underscores, and it takes no config
-> input, while `$gs-asset-spec` specifies asset names from `naming.*`. Unity's
-> `Assets/` and Unreal's `Content/` are not naming-checked: those engines name
-> assets in PascalCase. On Godot-C#, where `$gs-setup-engine` sets
-> `naming.files: PascalCase`, the hook will warn on assets named exactly as
-> `$gs-asset-spec` specified them. The two are
-> measuring different things — `naming.files` describes **source** files by its
-> own examples (`PlayerController.cs`), and no key currently governs asset
-> filenames — so treat the hook's naming warning as advisory on those engines.
+> **Asset filenames.** `validate-assets.sh` warns when a file under Godot's
+> `assets/` has an uppercase letter, a space or a hyphen in its name (it expects
+> lowercase with underscores), and it takes no config input. `$gs-asset-spec`
+> specifies asset names from `naming.*`. Unity's `Assets/` and Unreal's `Content/`
+> are not naming-checked: those engines name assets in PascalCase. On Godot-C#,
+> where `$gs-setup-engine` sets `naming.files: PascalCase`, the hook warns on assets
+> named exactly as `$gs-asset-spec` specified them. `naming.files` describes
+> **source** files by its own examples (`PlayerController.cs`), and no key governs
+> asset filenames, so treat the hook's naming warning as advisory there.
 
 > **Moved from `technical-preferences.md`**, which is being deleted. Naming
 > conventions are project-level facts shared by everyone on the project, so they
@@ -1761,14 +1757,14 @@ infer work, scrape transcripts, rotate unseen state or complete a task. See
 > **No skill or hook reads this setting. Setting it has no effect.** Everything
 > below describes the intended design, not current behaviour.
 >
-> The value is checked for valid spelling when you set it, and then ignored.
+> The value is not checked when you set it, and nothing reads it.
 > Nothing warns at any threshold.
 
 **Controls:** Context usage threshold at which session warnings fire
 **Values:** float between 0.0 and 1.0
 **Default:** `0.7` (warn at 70%)
 **Set by:** `$gs-settings`
-**Read by:** nothing yet (intended readers: `pre-compact.sh`, `session-start.sh`, `statusline.sh`)
+**Read by:** nothing yet (intended readers: `session-start.sh`, `statusline.sh`)
 
 **Priority chain:** `features.token_budget_warn_at` in `project.yaml` → hardcoded default of `0.7`
 
@@ -1816,8 +1812,8 @@ Godot project. Use this as the reference shape when authoring or migrating.
 schema_version: 1
 
 framework:
-  version: "1.1.0"
-  last_upgraded: "2026-05-15"
+  version: "<installed Codex release>"
+  last_upgraded: "2026-10-18"
 
 project:
   name: "Forge Knights"
@@ -1878,7 +1874,7 @@ platform:
 
 engine:
   name: "Godot"              # Godot | Unity | Unreal — set by $gs-setup-engine
-  version: "4.6"
+  version: "4.7"
   language: "GDScript"       # GDScript | C# | C++ | Blueprint
   rendering: "Forward+"
   physics: "Jolt"
@@ -1920,6 +1916,11 @@ commands:                    # simple string OR OS-aware map per command
 features:
   session_state: on          # off | on
   token_budget_warn_at: 0.7  # 0.0-1.0; warn at this context % usage
+  read_guard: on             # on | off; true and false also work. Flag whole-file reads in the explicit helper
+  read_guard_kb: 40          # size threshold, in KiB, for the observation
+
+updates:
+  check: true                # false: no new-release line at session start
 ```
 
 And a minimal sparse `project.local.yaml` example — a single developer who wants autonomous mode locally:

@@ -125,3 +125,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Variant B's Overall Status is NOT ASSESSED and names the unanswered Legal items
 - [ ] No "documented exception" is offered for an S2 or S3 at `workflow: full`
 - [ ] Next steps name `$gs-gate-check release` before `$gs-team-release`
+
+## Applicable domain checks
+
+- [ ] Run this checklist only on explicit invocation. Contextual similarity by itself does not
+  start launch planning or grant release authority.

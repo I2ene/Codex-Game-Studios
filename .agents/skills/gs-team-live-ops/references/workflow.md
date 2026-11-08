@@ -22,6 +22,8 @@ participant IDs, independent reviews or sign-off. Record real delegated particip
 Missing evidence means NOT ASSESSED — NO DATA. Resolve engine/version from this
 project; engine reference versions are examples and require current verification.
 
+# Team Live Ops
+
 **Argument check:** If no season name or event description is provided, output:
 > "Usage: `$gs-team-live-ops [season name or event description] [--review full|lean|solo]` — Provide the name or description of the season or live event to plan."
 Then stop immediately without spawning any subagents or reading any files.
@@ -236,7 +238,7 @@ Verdict: **COMPLETE** — season plan produced and handed off for production.
 ## Next Steps
 
 - Run `$gs-design-review` on the season design document for consistency validation.
-- Run `$gs-sprint-plan` to schedule content creation work for the season.
+- Run `$gs-sprint-plan` to schedule content creation work for the season (at `workflow: minimal`, which has no sprints, add it to the brief's build order instead).
 - Run `$gs-team-release` when the season content is ready to deploy.
 - If the run ended **BLOCKED** on an ethics flag: revise the economy design against
   `design/live-ops/ethics-policy.md` and re-run `$gs-team-live-ops`; the three steps

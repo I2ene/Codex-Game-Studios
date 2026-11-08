@@ -23,6 +23,19 @@ not establish semantic completeness. Inspect concrete scenarios against the curr
 procedure; FORMAT regressions can guard clauses and scope, but do not prove a model
 will perform them correctly.
 
+## Fixture defaults for new cases
+
+Start a newly constructed sandbox with `modes.rigor: minimal` and
+`modes.automation: collaborative`, and no `project.local.yaml`, unless the
+case pins another state. Explicit leaves override a rigor preset; a permitted
+local leaf overrides its shared counterpart. A fixture that tests absent
+configuration, omitted keys or a missing root stays absent as specified.
+
+Pin settings that affect the assertion and explain the branch they select.
+Do not backfill defaults into existing fixtures, live projects or missing-data
+controls. Use an isolated fixture or a clearly labeled simulated observation,
+not a live skill or external engine behaving exactly as an old example did.
+
 ## Evaluation policy
 
 - Resolve actual configuration and applicable prerequisites. Preserve full/standard/minimal domain requirements, review modes and strictest verdicts.

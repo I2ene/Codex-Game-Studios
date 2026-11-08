@@ -22,6 +22,8 @@ participant IDs, independent reviews or sign-off. Record real delegated particip
 Missing evidence means NOT ASSESSED — NO DATA. Resolve engine/version from this
 project; engine reference versions are examples and require current verification.
 
+# Hotfix
+
 > **Explicit invocation only**: This skill should only run when the user explicitly requests it with `$gs-hotfix`. Do not auto-invoke based on context matching.
 
 ## Phase 1: Assess Severity
