@@ -277,7 +277,9 @@ command, the exit code and any error lines:
 can see (every Visual/Feel and UI story, and any other with a surface): launch
 straight into the scene the story touched, capture a screenshot straight into
 `production/qa/evidence/[story-slug]/` (`[story-slug]` is the story file's name
-without `.md`; `mkdir -p` the folder first), open the image and compare it with the criteria. Write a short evidence Markdown report naming the retained image and actual observation, then snapshot the changed source and image inputs with
+without `.md`; `mkdir -p` the folder first), open the image and compare it with the
+criteria. Write the actual observation and retained image paths in `evidence.md`
+in that folder. Save its sibling companion using [story capture receipts](.game-studio/resources/docs/review-receipts.md#story-capture-receipts):
 `python .game-studio/runtime/studio.py receipts hash <source-and-image-patterns...> --report <evidence.md> --output <evidence.receipt.json> --root <project-root>`.
 Reconcile input changes during capture before publishing the snapshot. Not waived at `qa.level:
 minimal`. Report exactly one line, plain text starting `Run result:` (no bold:

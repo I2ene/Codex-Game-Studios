@@ -56,3 +56,31 @@ report drift or unavailable required inputs. Stable absent declared optional inp
 stay named unknowns and do not widen scope. Their appearance/removal/content change
 invalidates freshness. Required missing inputs still require conservative full scope
 and an unavailable-coverage finding; do not equate matching bytes with completeness.
+
+## Story capture receipts
+
+Dev Story writes `production/qa/evidence/<story-slug>/evidence.md` and its
+linked `production/qa/evidence/<story-slug>/evidence.receipt.json` for an
+observed capture. The Markdown report names the retained images and what was
+actually observed. It does not replace the Visual/Feel sign-off.
+
+Both Story Done and Test Evidence Review use that pair, or the actual pair
+identified by the story's evidence record. Use the companion's saved patterns
+for `receipts check` and verify its linked report matches the one being reviewed.
+If the companion is absent, unreadable, unlinked, or refers to a different
+report, record freshness as NOT ASSESSED. A legacy stamp is not a linked receipt.
+
+Read `observations` for changes, `report_status` for report drift,
+`required_unresolved` for required inputs that could not be found, and
+`unchanged_inputs` for whether the linked snapshot still matches. An unchanged
+receipt confirms matching bytes, not a passed criterion.
+
+- Source files changed or removed: name each path as POTENTIALLY STALE and
+  recommend re-capture. This freshness observation alone does not change the
+  story verdict.
+- Report changed or missing: do not reuse the linked observation unchanged.
+  Read the actual report and evidence again where available; distinguish an
+  unverifiable link from a failed criterion.
+- Missing required image, missing required sign-off, or evidence that cannot be
+  assessed: apply the story type's existing evidence gate. A missing capture
+  companion alone does not add a report or sign-off requirement to UI stories.

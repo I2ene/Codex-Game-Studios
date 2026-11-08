@@ -182,6 +182,8 @@ def main(argv=None):
         edits_body = args.action in {'replace', 'insert-before'}
         if args.body_file and not edits_body:
             raise ValueError('--body-file applies to replace or insert-before')
+        if edits_body or args.action == 'set-field':
+            config.resolve(root, require_clean=True)
         content = None
         if edits_body:
             content = confined(root, args.body_file).read_bytes() if args.body_file else sys.stdin.buffer.read()

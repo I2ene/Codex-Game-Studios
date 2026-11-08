@@ -373,7 +373,9 @@ the template gains or loses a section, this skeleton follows it, not the reverse
 
 ---
 
-After writing the skeleton, update `production/session-state/active.md` with:
+After writing the skeleton, if checkpoint recovery is enabled, save the state
+for `<resolved-checkpoint>` via `checkpoint --save <authored-file> --root <project-root>`.
+If DISABLED, skip the state write and continue with the approved skeleton. Include:
 - Task: Designing [screen/flow name] UX spec
 - Current section: Starting (skeleton created)
 - File: design/ux/[filename].md (or `design/accessibility-requirements.md` in `accessibility` mode)

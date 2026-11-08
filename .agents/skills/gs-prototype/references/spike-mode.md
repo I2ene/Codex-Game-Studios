@@ -28,12 +28,16 @@ gate implications. Hard cap: ~4 hours.
 
 5. **Observe and decide** — no formal playtest debrief. Ask: "Did the spike answer the question? YES or NO, and why in one sentence."
 
-6. **Write a spike note** (not a full report) to `prototypes/[concept-name]-spike-[date]/SPIKE-NOTE.md` — first ask once for this step and the next, naming both files: "May I write `prototypes/[concept-name]-spike-[date]/SPIKE-NOTE.md` and clear the spike from `production/session-state/active.md`?" The note holds:
+6. **Write a spike note** (not a full report) to `prototypes/[concept-name]-spike-[date]/SPIKE-NOTE.md` within existing authorization. If permission is still needed, name the note and any enabled checkpoint write that is outside scope. The note holds:
    - Question tested
    - Result (YES it works / NO it doesn't / PARTIAL — needs more investigation)
    - What to do next (add to current sprint — at `workflow: minimal`, the brief's build order — / investigate further / abandon the idea)
 
-7. **Update `production/session-state/active.md`** to clear the spike and return to the current sprint state (at `workflow: minimal`, the story in progress).
+7. **Return from the spike.** If checkpoint recovery is enabled, save
+   `<resolved-checkpoint>` via `checkpoint --save <authored-file> --root <project-root>`,
+   clearing the spike and recording the current sprint state (at `workflow: minimal`,
+   the story in progress). If DISABLED, skip the state write; retain the spike note
+   and present the next action.
 
 **No CD gate. No phase gate. No PROCEED/PIVOT/KILL.** Spike results inform decisions; they don't make them. The developer decides whether to add the mechanic/approach to the sprint backlog (at `workflow: minimal`, to the brief's build order) based on what the spike revealed.
 

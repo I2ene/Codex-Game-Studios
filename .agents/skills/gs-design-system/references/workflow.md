@@ -125,8 +125,10 @@ If two rows fit, cover the union of their primary expertise and say why. The par
 
 If the session is interrupted (compaction, crash, new session):
 
-1. Read `production/session-state/active.md` — it records the current system and
-   which sections are complete
+1. Run `recover --root <project-root>`. If the checkpoint is PRESENT, use the
+   recovered system and section progress as context. If DISABLED or ABSENT,
+   continue from the actual authored document and current input; do not read or
+   create a fallback checkpoint.
 2. Read `design/gdd/[system-name].md` — sections with real content are done;
    sections with `[To be designed]` still need work. Read it by section: find the
    headings with the Grep tool (pattern `^#`, content mode) and Read those
@@ -158,7 +160,7 @@ This skill follows the collaborative design principle at every step:
      session's design history. Phase 5c presents the hand-off; it never asks.
 3. **"May I write to [filepath]?"** before the skeleton and before each section write
 4. **Incremental writing**: Each section is written to file immediately after approval
-5. **Session state updates**: After every section write
+5. **Session state updates**: After each section write when checkpoint recovery is enabled
 6. **Cross-referencing**: Every section checks existing GDDs for conflicts
 7. **Specialist routing**: Apply the required expertise in the parent or through an authorized delegate; present material options to the user and record the actual source.
 

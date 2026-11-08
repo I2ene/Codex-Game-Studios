@@ -28,4 +28,7 @@ Context  ->  Questions  ->  Options  ->  Decision  ->  Draft  ->  Approval  ->  
    - Options: "Yes, write it", "Wait — one more change"
    Once confirmed, use `Edit` to replace the `[To be designed]` placeholder with approved content.
 
-After writing each section, update `production/session-state/active.md`.
+After writing each section, if checkpoint recovery is enabled, record the
+completed section in `<resolved-checkpoint>` via `checkpoint --save <authored-file>
+--root <project-root>`. If DISABLED, skip the state write; the approved section
+is still saved in the UX document.

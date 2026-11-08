@@ -112,12 +112,11 @@ If the user declines: Stop with the following message:
 > "Verdict: **BLOCKED** — skeleton creation declined. The design session cannot proceed without the skeleton file, as all subsequent phases use it as the base. Re-run `$gs-design-system [system]` when ready to create the file."
 Do not proceed to Section A.
 
-After writing, update `production/session-state/active.md`:
-- Use Glob to check if the file exists.
-- If it **does not exist**: use the **Write** tool to create it. Never attempt Edit on a file that may not exist.
-- If it **already exists**: use the **Edit** tool to update the relevant fields.
+After writing, if checkpoint recovery is enabled, save the state for
+`<resolved-checkpoint>` via `checkpoint --save <authored-file> --root <project-root>`.
+If DISABLED, skip the state write and continue with the approved skeleton.
 
-File content:
+Checkpoint content:
 - Task: Designing [system-name] GDD
 - Current section: Starting (skeleton created)
 - File: design/gdd/[system-name].md

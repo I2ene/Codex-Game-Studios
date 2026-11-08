@@ -196,12 +196,11 @@ it by name is harder to maintain when the formula changes.
 
 For each evidence document found, read it and evaluate the checks below.
 
-**A UI story needs no evidence document.** When it has none, its retained
-screenshots are the evidence: apply only Screenshot / artefact completeness (an
-image of each screen the story changes — a screen a criterion only navigates to,
-such as the title screen after Quit, needs none of its own) and Date coverage (the images'
-dates). A UI story is ADEQUATE on those two — never INCOMPLETE for lacking a doc,
-its criterion linkage or a sign-off.
+**A UI story needs no evidence document.** When it has none, judge adequacy from
+its retained screenshots and their dates: require an image of each screen the
+story changes, not a screen it only navigates to (such as the title screen after
+Quit). Still report capture freshness separately. Missing documentation, its
+criterion linkage, or a sign-off does not make a UI story INCOMPLETE.
 
 ### Criterion linkage
 
@@ -231,13 +230,13 @@ A walkthrough log is welcome but not required.
 
 ### Evidence older than its code
 
-If the evidence folder contains `stamp.json`, compare its saved source paths via
-`python .game-studio/runtime/studio.py receipts --root <project-root> check --receipt
-<stamp-path> <stamped-paths>`. Name each CHANGED or REMOVED path and ask for a new
-capture. An old text stamp or missing stamp is an explicit freshness limitation,
-not fresh evidence and not proof of a failure. Report it; freshness alone does
-not block a story. Check scoped playtest records under `production/qa/playtests/`
-or the actual project-mapped evidence location.
+For each story with retained visual evidence, locate its actual report/companion
+pair per [story capture receipts](.game-studio/resources/docs/review-receipts.md#story-capture-receipts). If found, run
+`python .game-studio/runtime/studio.py receipts check <source-and-image-patterns...> --receipt <evidence.receipt.json> --root <project-root>`
+using its saved patterns. Report source drift, report changes and required input
+gaps separately from adequacy. If no companion is available, mark freshness
+NOT ASSESSED and use the date check below. Freshness alone does not change the
+verdict; apply the existing evidence checks to the actual screenshot and sign-off.
 
 ### Date coverage
 

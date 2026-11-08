@@ -16,13 +16,11 @@ Define in 3–5 bullet points the minimum viable prototype:
 If scope covers more than one mechanic, cut it down. When in doubt, cut more.
 
 Present this plan to the user before building. Get confirmation before proceeding.
-Name the checkpoint file in that confirmation: "May I record this plan in
-`production/session-state/active.md`?"
 
-Once confirmed, write a session checkpoint to `production/session-state/active.md`
-(create `production/session-state/` if it does not exist). Include: concept name,
-hypothesis, path chosen, scope bullet points, and current phase ("Phase 5 —
-Implement"). This lets the next session resume without starting over if the session
-ends mid-build — especially important for multi-day Engine path work.
+Once confirmed, if checkpoint recovery is enabled, save the plan to
+`<resolved-checkpoint>` via `checkpoint --save <authored-file> --root <project-root>`.
+Include the concept name, hypothesis, path chosen, scope, and current phase
+("Phase 5 — Implement") so a resumed session can continue the approved plan.
+If DISABLED, skip the state write and continue with the confirmed plan.
 
 ---

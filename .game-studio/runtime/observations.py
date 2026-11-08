@@ -166,8 +166,12 @@ def write_guard(root, action, targets, tool="Write"):
     protected.update(scaffold_paths(None, None).keys())
     protected.update({f"Assets/Tests/{part}/{part}Tests.asmdef" for part in ("EditMode", "PlayMode")})
     protected.update({"tests/unit/.gitkeep", "tests/integration/.gitkeep"})
+    upstream_file = (relative in {"project.godot", "docs/tech-debt-register.md"}
+                     or relative.startswith(("tests/helpers/", "docs/engine-reference/"))
+                     or re.fullmatch(r"production/epics/.+/EPIC\.md", relative))
     if action in {"check", "overwrite"} and tool == "Write" and path.exists() and (
-            relative in protected or re.fullmatch(r"Source/[^/]+/Private/Tests/README\.md", relative)):
+            relative in protected or re.fullmatch(r"Source/[^/]+/Private/Tests/README\.md", relative)
+            or (upstream_file and path.is_file())):
         add("OVERWRITE", detail="Existing project-owned artifact; use a targeted edit.")
     if action in {"check", "config"}:
         if relative in {"project.yaml", "project.local.yaml"}:

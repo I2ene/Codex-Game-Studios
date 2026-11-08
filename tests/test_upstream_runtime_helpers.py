@@ -98,6 +98,44 @@ class UpstreamRuntimeHelpersTests(unittest.TestCase):
                 self.assertTrue(codes.issubset({r["code"] for r in out["findings"]}), out)
         self.assertEqual(self.cli("write-guard", "overwrite", "tests/README.md", "--tool", "Edit")["findings"], [])
 
+    def test_write_guard_observes_upstream_existing_file_protections(self):
+        protected = ("production/epics/core/EPIC.md", "project.godot",
+                     "tests/helpers/factories.gd", "docs/tech-debt-register.md",
+                     "docs/engine-reference/godot/modules/audio.md")
+        for relative in protected:
+            with self.subTest(path=relative):
+                self.assertEqual(self.cli("write-guard", "overwrite", relative)["findings"], [])
+                path = self.write(relative, "User-owned content.\n")
+                initial = path.read_bytes()
+                result = self.cli("write-guard", "overwrite", relative)
+                self.assertEqual([(r["code"], r["path"]) for r in result["findings"]],
+                                 [("OVERWRITE", relative)])
+                self.assertEqual(self.cli("write-guard", "overwrite", relative,
+                                          "--tool", "Edit")["findings"], [])
+                self.assertEqual(path.read_bytes(), initial)
+        unprotected = "tests/helpers-not/factories.gd"
+        self.write(unprotected, "Unrelated file.\n")
+        self.assertEqual(self.cli("write-guard", "overwrite", unprotected)["findings"], [])
+
+    def test_markdown_readers_stay_available_but_duplicate_config_blocks_edits(self):
+        project = self.write("project.yaml", "modes: {rigor: minimal}\nmodes: {rigor: full}\n")
+        doc = self.write("design/doc.md", "# Doc\nStatus: Ready\n\n## Rules\nOriginal rules.\n")
+        self.write("replacement.md", "Replacement content.\n")
+        initial = doc.read_bytes(), project.read_bytes()
+        self.assertTrue(self.cli("config")["duplicate_keys"])
+        self.assertIn("Rules", [r["title"] for r in self.cli("markdown", "list", "design/doc.md")["sections"]])
+        self.assertEqual(self.cli("markdown", "status", "design/doc.md", "Rules")["sections"][0]["status"],
+                         "COMPLETE")
+        self.assertIn("Original rules.", self.cli("markdown", "extract", "design/doc.md", "Rules")["text"])
+        for args in (("replace", "design/doc.md", "Rules", "--body-file", "replacement.md"),
+                     ("insert-before", "design/doc.md", "Rules", "--body-file", "replacement.md"),
+                     ("set-field", "design/doc.md", "Status", "Complete")):
+            with self.subTest(action=args[0]):
+                error = self.cli("markdown", *args, "--output", "edit-result.json", code=2)
+                self.assertIn("duplicate", error.lower())
+                self.assertEqual((doc.read_bytes(), project.read_bytes()), initial)
+                self.assertFalse((self.root / "edit-result.json").exists())
+
     def test_scaffold_dry_run_creates_nothing_and_create_never_clobbers(self):
         before = self.write("tests/README.md", b"user tests\r\n")
         result = self.cli("test-scaffold", "Godot", "--dry-run")
@@ -157,6 +195,54 @@ class UpstreamRuntimeHelpersTests(unittest.TestCase):
         self.assertIn("duplicate", self.cli("checkpoint", "--save", "checkpoint.md", code=2).lower())
         self.assertEqual(target.read_bytes(), b"# User state\n")
         self.assertEqual(project.read_bytes().count(b"commands:"), 2)
+
+    def test_recover_and_save_use_only_the_configured_checkpoint_when_enabled(self):
+        self.write(".game-studio/context.json", json.dumps({"checkpoint": "notes/设计进度.md"}))
+        self.write("notes/authored.md", "Current phase: confirmed section.\n")
+        target = self.root / "notes/设计进度.md"
+        fallback = self.root / "production/session-state/active.md"
+        config = self.write("project.yaml", "features: {session_state: off}\n")
+        disabled = self.cli("recover")["checkpoint"]
+        self.assertEqual(disabled, {"path": "notes/设计进度.md", "status": "DISABLED"})
+        self.assertIn("disabled", self.cli("checkpoint", "--save", "notes/authored.md", code=2).lower())
+        self.assertFalse(target.exists())
+        self.assertFalse(fallback.exists())
+        config.write_bytes(b"features: {session_state: on}\n")
+        self.assertEqual(self.cli("recover")["checkpoint"]["status"], "ABSENT")
+        self.cli("checkpoint", "--save", "notes/authored.md")
+        saved = self.cli("recover")["checkpoint"]
+        self.assertEqual(saved["path"], "notes/设计进度.md")
+        self.assertEqual(saved["status"], "PRESENT")
+        self.assertIn("confirmed section", saved["text"])
+        self.assertFalse(fallback.exists())
+
+    def test_linked_story_evidence_reports_source_report_and_required_image_drift(self):
+        evidence = "production/qa/evidence/story-001/"
+        source, image = "src/view.gd", evidence + "view.png"
+        report, companion = evidence + "evidence.md", evidence + "evidence.receipt.json"
+        self.write(source, "before\n")
+        self.write(image, b"retained image fixture")
+        self.write(report, "Observed the accepted screen.\n")
+        self.cli("receipts", "hash", source, image, "--report", report, "--output", companion)
+        args = ("receipts", "check", source, image, "--receipt", companion)
+        current = self.cli(*args)
+        self.assertEqual(current["report"], report)
+        self.assertTrue(current["unchanged_inputs"])
+        self.write(source, "changed\n")
+        drift = self.cli(*args)
+        self.assertFalse(drift["unchanged_inputs"])
+        self.assertEqual(drift["report_status"], "UNCHANGED")
+        self.assertIn((source, "CHANGED"), {(r["path"], r["status"]) for r in drift["observations"]})
+        self.write(report, "Changed observation.\n")
+        self.assertEqual(self.cli(*args)["report_status"], "CHANGED")
+        (self.root / image).unlink()
+        missing_image = self.cli(*args)
+        self.assertEqual(missing_image["required_unresolved"], [image])
+        self.assertIn((image, "REMOVED"), {(r["path"], r["status"]) for r in missing_image["observations"]})
+        (self.root / companion).unlink()
+        missing_companion = self.cli(*args)
+        self.assertEqual(missing_companion["baseline_status"], "MISSING")
+        self.assertFalse(missing_companion["unchanged_inputs"])
 
     def test_config_derives_named_bootstrap_facts_from_effective_sources(self):
         self.write("project.yaml", """modes: {rigor: standard}
