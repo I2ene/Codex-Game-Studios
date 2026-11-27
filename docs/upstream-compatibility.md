@@ -9,9 +9,9 @@ implementation. The installed native entry points govern actual execution. See
 | --- | --- | --- |
 | Original upstream source | 1.1.2 | `b21fa0f7f289fc3e726cf36fb12b9bc1e7a51e4d` |
 | Previous integrated source | 1.2.0 (includes 1.1.3) | `05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418` |
-| Earlier Codex distribution | 2.0.1 | `4889c2b1fa938073670dc855c76072fe742c307a` |
+| Earlier Codex distribution | 2.0.1 | `f3c2ad36917cb9c5ccab435f85d1b5a32a064634` |
 | Integrated upstream source | 1.3.0 | `abc0de79d6ceb0b5d7aa693945849b3937afbe6a` |
-| Previous Codex distribution | 2.1.0 | `3e7289ffe09e3222f0d3dd6e34b49f6c27dfb7fa` |
+| Previous Codex distribution | 2.1.0 | `d25f763918e568cd90c009b84680d21f3f615148` |
 
 The [upstream file map](upstream-file-map.tsv) accounts for every entry in the
 [fixed Git comparison](https://github.com/Donchitos/Claude-Code-Game-Studios/compare/b21fa0f7f289fc3e726cf36fb12b9bc1e7a51e4d...05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418).

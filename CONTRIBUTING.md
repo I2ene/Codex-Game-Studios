@@ -33,6 +33,24 @@ Use [evaluation guidance](.game-studio/resources/testing/README.md) and reusable
 not a substitute for actual task execution. New native API claims need current
 primary documentation and host evidence; distinguish unavailable capabilities.
 
+## Public contribution review
+
+Write for a contributor working from a fresh checkout. Use repository-relative
+paths for tracked resources, configurable roots for runtime inputs and synthetic
+fixtures for examples. Keep real workstation paths (including relative paths to
+private workspaces), local account or host identifiers, private project names,
+requirements, workbench layouts and session or handoff details on the contributor's
+machine. This applies even when the information contains no secret.
+
+Before the first push of any branch, inspect the outgoing commits individually,
+including messages, filenames and files later removed. Review branch names, PR
+titles and bodies, comments, screenshots, logs, CI output and release artifacts
+before publishing them. Use a private local search for known identifiers and read
+the surrounding material for descriptions that could identify a private workspace
+without naming it. Keep the search terms themselves local. If a draft commit
+contains local material, clean it from the outgoing history before pushing.
+Start new ports from the current public history after any history rewrite.
+
 ## Validation and packaging
 
 After reviewed payload edits, rebuild hashes, then run release checks:
