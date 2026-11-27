@@ -5,23 +5,27 @@
 
 ## 12. Output Summary
 
-After setup is complete, output:
+Use Section 8's readback and Section 8.5's observations. Fill each field from what
+was read, changed or verified on this run. Report unresolved discrepancies or missing
+evidence with their reason.
 
 ```
-Engine Setup Complete
+Engine Setup Summary
 =====================
-Engine:          [name] [version]
-Language:        [GDScript | C# | GDScript + C# | C# | C++ + Blueprint | Blueprint + C++ | TypeScript]
+Engine:          [configured name and version read back]
+Language:        [configured language read back]
 Knowledge Risk:  [LOW/MEDIUM/HIGH]
-Reference Docs:  [created/skipped]
-AGENTS.md:       [updated]
-Tech Prefs:      [created/updated]
-project.yaml:    [created/updated]
-Agent Config:    [verified]
+Reference Docs:  [resolved directory and actual outcome | NOT ASSESSED — reason]
+AGENTS.md:       [actual outcome, normally unchanged]
+Tech Prefs:      [created | updated | unchanged | skipped — reason]
+project.yaml:    [created | updated | unchanged]
+Agent Config:    [actual verification or skipped — reason]
 
 Next Steps:
-1. Review docs/engine-reference/<engine>/VERSION.md
+1. Review [resolved VERSION.md from project.documents, when present]
 ```
+
+When VERSION.md is absent, identify the missing record and give the next verification step.
 
 Then print **one** Next-Steps list: the main path, at every tier, in `$gs-next-step`'s
 order (make a game, change it after you play it, grow it). Pick it by `$gs-next-step`'s
@@ -50,4 +54,6 @@ $gs-design-system, then $gs-sprint-plan new.
 
 ---
 
-Verdict: **COMPLETE** — engine configured and reference docs populated.
+Verdict: **COMPLETE** when the applicable setup work and readback agree. When they
+do not, report **INCOMPLETE** and what remains. Report separately any check that
+was **NOT ASSESSED**.

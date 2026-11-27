@@ -108,22 +108,26 @@ project value. Say it in your first reply: `Tier: workflow [value]`. That value,
 ## Phase 2: Can it start?
 
 **Selected cut-story guard — all workflow tiers, including `minimal`.** Read the
-selected story's own Status before ADR/dependency checks or Phase 3. A Blocked
-status containing `cut by /cut` (the helper's persisted marker) or `cut by $gs-cut`
-means this feature is still cut: no In Progress write, no implementation, and no
-implementer is started. Do not treat a bare `$gs-dev-story` invocation as permission
-to reverse the scope decision, or bypass this guard with the dependency-risk option.
+selected story's own Status and Requirement before ADR/dependency checks or Phase 3.
+Confirm a `Brief Out of scope:` requirement from the cut helper against the
+brief's `[-]` cut item. A matching cut item or a Blocked status containing
+`cut by /cut` or `cut by $gs-cut` means the feature is still cut: no In Progress write,
+no implementation. Restore scope only under actual user authorization.
 
 If existing scope authorization explicitly restores this feature, follow `$gs-cut`'s
 Afterwards restore procedure in this parent thread without another permission ask:
 identify the exact cut item and authoritative brief, restore it with the helper,
 then re-read both the brief's Features/Out of scope lists and this story's Status.
 Only after the item is restored and the story reads `Ready` may the remaining
-prerequisites and Phase 3 continue. A failed/ambiguous restoration remains blocked;
-never manually erase the marker to make the check pass. Without restoration
+prerequisites and Phase 3 continue. If the brief restores the item and the story
+still has an independent Blocked status, report the restored scope and that
+blocker in Phase 7. Keep the story's status intact and stop before Phase 3.
+Report a failed or ambiguous restoration as BLOCKED. Without restoration
 authorization, present Restore this feature / Keep it cut and await the scope
 choice. Keep it cut or no answer: report BLOCKED and perform no implementation.
-This guard is specific to a cut decision; other blocker rules remain unchanged.
+
+For a selected story with a Blocked status outside the cut guard, report the
+recorded blocker in Phase 7 before starting work.
 
 | Input | `full` | `standard` | `minimal` |
 |---|---|---|---|
@@ -209,10 +213,8 @@ from a GDScript one, which `engine.name` cannot), plus `shader` when the story
 touches shaders or materials and `ui` for a UI story; `primary` (the generic engine
 specialist) when `code` is `unset`. Name no specialist from memory: the line is the project's
 choice. Every value `unset` and no `primary`: say "No engine specialist configured"
-and go on without one. On Web there is no engine specialist: `primary` is
-`lead-programmer`, and the engine check below goes to it, against
-`docs/engine-reference/web/`. Say so in one line ("Web: engine check by
-lead-programmer against docs/engine-reference/web/").
+and go on without one. On Web, use `lead-programmer` expertise for the engine check
+and report the resolved project reference directory in the handoff.
 
 ## Phase 5: Hand out the work
 
@@ -261,11 +263,13 @@ passed — it does not exist at this tier; do not go looking for it", and tell t
 user one line before handing out: `Briefing omits: [inputs] — implementing against
 the acceptance criteria and the [GDD | brief].`
 
-**Then hand the engine check to the specialist** once the programmer reports.
-Brief: check the changed files for engine-API use that is wrong or changed in
-[engine + version], against `docs/engine-reference/<engine>/`; return a list of
-file, line, problem, fix; edit nothing. A problem that breaks a criterion goes back
-to the programmer once; the rest go in the summary.
+**Then run the engine check** once the programmer reports. Use the same brief
+for the parent applying the chosen expertise or for an authorized delegate:
+check changed files against this run's resolved engine and version, `project.root`
+and `project.documents` from the native engine-reference read. Return file, line,
+problem and fix, with no edits. Missing project reference evidence makes the
+affected API check **NOT ASSESSED** with the reason. A problem that breaks a
+criterion goes back to the programmer once; the rest go in the summary.
 
 ## Phase 6: Check the result
 
@@ -348,11 +352,13 @@ last one the person accepted (its `against` row: `accepted`, else the grow step'
   under it say (a scene, a value, the screen), with both screenshots, and ask: "This story
   changed the same-seed run: [what changed]. Is that what the story meant?" Options: Yes, it
   is meant — later stories are compared with this run / No — something broke, leave the
-  story open. Yes: `bash .game-studio/scripts/one-shot-grow.sh accept <name>`, then
-  `Same-seed run: CHANGED, accepted — [what changed]`. No: `Same-seed run: CHANGED, not
-  accepted — [what changed]`, and the story is INCOMPLETE until it is fixed.
-- **An `errors` row above 0** that the compared run did not have is a change too: ask the
-  same way.
+  story open. Yes: `bash .game-studio/scripts/one-shot-grow.sh accept <name>`. Report
+  `Same-seed run: CHANGED, accepted — [what changed]` only on exit 0 and an `accepted` row.
+  If acceptance fails, report the reason and keep the story INCOMPLETE with the previous
+  baseline. No: `Same-seed run: CHANGED, not accepted — [what changed]`, and the story is
+  INCOMPLETE until it is fixed.
+- **An `errors` row above 0**: show the observed errors. Resolve them and get a complete
+  replay with its screenshot before accepting a replacement baseline.
 - **`not_assessed`, or `match not_assessed`:** `Same-seed run: NOT ASSESSED — [its
   reason]`; still open the screenshot when there is one.
 
@@ -375,7 +381,8 @@ Inspect executable and argv and use inherited native permissions and existing us
 - [x] [criterion] — [file:function | test name | OBSERVED in <image path>]
 - [ ] [criterion] — DEFERRED: feel, needs a playtest
 **Deviations**: [None | files outside scope, an accepted dependency or version risk]
-**Engine risks**: [None | the specialist's findings]
+**Engine check**: [parent assessment | actual participant | NOT ASSESSED — reason],
+[resolved reference directory/documents used], [findings or verified clean scope]
 **Blockers**: [None | each]
 **Own calls**: [None | each choice the story and its design did not make, with where it is: `$gs-story-done` asks you to keep or change each]
 ```

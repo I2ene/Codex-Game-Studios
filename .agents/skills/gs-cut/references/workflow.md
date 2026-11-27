@@ -127,8 +127,11 @@ Run `bash .game-studio/scripts/cut-apply.sh` with `--brief <path>` for each `bri
 
 - `--cut <n> "<reason>"` for each picked item: it leaves Features for the end of Out of scope as
   `- [-] <item> · cut: <reason> (<date>)`, plus ` · was built` when it was `[x]`; its story's
-  Status becomes `Blocked — BLOCKED: cut by /cut <date>: <reason>` (the persisted marker; also recognize native `cut by $gs-cut` records), a status `$gs-dev-story` stops on
-  (a Complete story keeps its status: `story moved`).
+  Requirement moves to its cut Out of scope item. An already Blocked or Complete
+  story keeps its independent Status (`story moved`). Otherwise Status becomes
+  `Blocked — BLOCKED: cut by /cut <date>: <reason>`; `Cut Previous Status` and
+  `Cut Applied Status` record that one tool-owned change. The cut decision blocks
+  `$gs-dev-story` at all tiers, including when an independent Status is preserved.
 - `--mark <n>` for each mark brought up to date.
 - `--dates <target> <freeze> "<what>"` when dates were given.
 - `--polish "<row>"`, `--tick "<row>"` and `--drop "<row>"` for the polish list.
@@ -156,7 +159,11 @@ not-yet item in a project), and work down the polish list.
   for the applicable brief copies. Use `built` only while the feature is still in
   the game. Inspect the helper result and re-read the brief and associated story:
   the item must be back in Features, absent from its cut Out of scope entry, and
-  its cut-blocked story must read `Ready`. Failure or an ambiguous mapping does not
+  the resulting Status must be read back. The helper restores the previous Status
+  only when the current one still exactly matches `Cut Applied Status`, then removes
+  its two ownership fields. Prior `Ready` returns to `Ready`; an independent initial
+  block, a new block/status introduced while cut, or an older cut lacking ownership
+  evidence stays unchanged. Restoring scope does not resolve those blockers or
   authorize clearing Status by hand. A successful Ready readback allows
   `$gs-dev-story` to continue its remaining prerequisites under existing work
   authorization. Commit only the actual `wrote` paths as `docs: bring back <item>`

@@ -6,8 +6,18 @@
 
 ## 8. Verify project reference routing
 
-with `<engine>` the engine just configured. If there is no such line, or it still
-points at a different engine, Section 4 did not complete — go back and finish it rather than patching
+After the setup writes, run:
+
+```bash
+python .game-studio/runtime/studio.py engine-reference --root <project-root>
+```
+
+Compare `configured_engine` and `configured_version` with the accepted engine and pin.
+Use `project.root` and `project.documents` to read back the project records from Section 7,
+including the Engine Version in the resolved VERSION.md when present. A `DIFFERS` result
+returns to the configuration or reference step that owns the discrepancy. Missing evidence
+is `NOT ASSESSED` and gets a reason. Keep these resolved values and actual file outcomes
+for Section 12. Continue to Section 8.5 for the coherence observations.
 
 ## 8.5 Read Back What You Just Wrote
 

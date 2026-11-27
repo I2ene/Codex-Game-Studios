@@ -220,10 +220,13 @@ next. No stories, epics, design documents or gates: they run only when the perso
   words what changed. What the run cannot reach is not checked, and the person's play covers it.
   Write no robot player or tests of your own.
 - **Keep or undo:** show `story.png` and `Added: <what>` / `Errors: none | <each> | not checked:
-  <why>`, then ask "Keep this feature? It becomes a commit." Options: Keep / Undo it. Keep: mark
-  its Features line `[x]` in `design/game-brief.md` (add one when the brief has none), run
-  `one-shot-grow.sh accept <name>` when the run changed, then `git add -- <the files it changed>
-  design/game-brief.md` and `git commit -m "feat: <what>" -- <those paths>`. Undo it: put back
+  <why>`, then ask "Keep this feature? It becomes a commit." Options: Keep / Undo it. To replace
+  the baseline with a changed run, run `one-shot-grow.sh accept <name>` after approval. Require
+  exit 0 and an `accepted` row before reporting replacement; on refusal, show the reason, retain
+  the previous baseline, and repeat the failed check before accepting the replay. For a kept
+  feature, mark its Features line `[x]` in `design/game-brief.md` (add one when the brief has
+  none), then `git add -- <the files it changed> design/game-brief.md` and
+  `git commit -m "feat: <what>" -- <those paths>`. Undo it: put back
   each edit made for it; their hand edits stay.
 
 Then one line: "Say the next feature when you're ready."

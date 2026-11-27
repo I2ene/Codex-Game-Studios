@@ -72,7 +72,7 @@
 #          not_assessed <why>                         nothing was played
 #  record: engine written|kept|set <name> [<version>]   set: another engine; nothing is written
 #          claude_md written|kept|not_written <why>   on Web: AGENTS.md's engine import and stack
-#  accept: accepted <rows file> <png>                 not_assessed <why> (exit 4): no story run
+#  accept: accepted <rows file> <png>                 not_assessed <why> (exit 4): no valid, unchanged story run
 #
 # Exit codes: 0 done (guard: every check passed); 1 a file could not be read or written;
 # 2 usage error; 3 a guard check failed (copy: nothing written); 4 replay: not assessed.
@@ -352,6 +352,11 @@ said() { # said <row> <firstdiff output> -- "<row> yes", or "<row> no <row>" and
 replay() {
   local stop dir rc d base
   mkdir -p "$EVD" || exit 1
+  if [ "$AS" = story ]; then
+    gs_path "$EVD/story.replay" && gs_path "$EVD/story.png" || exit 2
+    # Even an early failure invalidates the previous story run for acceptance.
+    rm -f "$EVD/story.replay" "$EVD/story.png" || exit 1
+  fi
   if [ "$AS" = reference ]; then
     stop=${STOP:-3600}
     { printf 'stop\t%s\n' "$stop"; [ "$HAVE_LOG" = 1 ] && printf 'log\t%s\n' "$LOGIN"; [ "$HOOKLESS" = 1 ] && printf 'hookless\t1\n'; } > "$EVD/replay.args"
@@ -382,12 +387,21 @@ replay() {
 
   bash "$HERE/one-shot-run.sh" "$dir" "$EVD/$AS.png" "$@" --root "$ROOT" > "$EVD/$AS.tsv" 2>"$t/err"; rc=$?
   printf 'run\t%s\t%s\t%s\t%s\n' "$AS" "$EVD/$AS.tsv" "$EVD/$AS.png" "$rc"
-  if [ "$rc" = 3 ] || [ ! -s "$EVD/$AS.tsv" ]; then
+  if [ "$rc" != 0 ] || [ ! -s "$EVD/$AS.tsv" ]; then
     awk -F'\t' '$1 == "not_assessed"' "$EVD/$AS.tsv"
     [ -s "$t/err" ] && sed 's/^/not_assessed\t/' "$t/err" | head -3
     exit 4
   fi
   printf 'errors\t%s\n' "$(awk -F'\t' '$1 == "crash" || $1 == "error" || ($1 == "uncaught" && $2 + 0 > 0) { n++ } END { print n + 0 }' "$EVD/$AS.tsv")"
+  if [ "$AS" = story ]; then
+    if ! story_evidence; then
+      printf 'not_assessed\tstory replay has no complete run with a matching screenshot\n'
+      exit 4
+    fi
+    # Bind acceptance to both artifacts of this successful invocation. A mismatch
+    # against the baseline may be an intentional feature change, not a failed run.
+    cksum "$EVD/story.tsv" "$EVD/story.png" > "$EVD/story.replay" || exit 1
+  fi
 
   if [ "$AS" = reference ]; then
     bash "$HERE/one-shot-run.sh" "$dir" "$t/again.png" "$@" --root "$t" > "$EVD/reference-again.tsv" 2>/dev/null
@@ -408,10 +422,29 @@ replay() {
 }
 
 # ---- accept --------------------------------------------------------------------------------
+story_evidence() {
+  [ -s "$EVD/story.tsv" ] && [ -s "$EVD/story.png" ] || return 1
+  local bytes
+  bytes=$(wc -c < "$EVD/story.png" | tr -d ' ')
+  awk -F'\t' -v shot="$EVD/story.png" -v absolute="$ROOT/$EVD/story.png" -v bytes="$bytes" '
+    $1 == "not_assessed" || $1 == "crash" || $1 == "error" || ($1 == "uncaught" && $2 + 0 > 0) { bad = 1 }
+    $1 == "done" && $2 + 0 > 0 { done = 1 }
+    $1 == "shot" && ($2 == shot || $2 == absolute) && $3 + 0 == bytes + 0 { seen = 1 }
+    END { exit !(done && seen && !bad) }' "$EVD/story.tsv"
+}
 accept() {
-  [ -f "$EVD/story.tsv" ] || { printf 'not_assessed\tno story run: replay --as story first\n'; exit 4; }
+  local current recorded
+  gs_path "$EVD/story.replay" && gs_path "$EVD/accepted.tsv" && gs_path "$EVD/accepted.png" || exit 2
+  if ! story_evidence || [ ! -s "$EVD/story.replay" ]; then
+    printf 'not_assessed\tno successful story replay with matching evidence: replay --as story first\n'; exit 4
+  fi
+  current=$(cksum "$EVD/story.tsv" "$EVD/story.png") || exit 1
+  recorded=$(cat "$EVD/story.replay") || exit 1
+  if [ "$current" != "$recorded" ]; then
+    printf 'not_assessed\tstory evidence changed after its successful replay: replay --as story again\n'; exit 4
+  fi
   cp "$EVD/story.tsv" "$EVD/accepted.tsv" || exit 1
-  [ -f "$EVD/story.png" ] && { cp "$EVD/story.png" "$EVD/accepted.png" || exit 1; }
+  cp "$EVD/story.png" "$EVD/accepted.png" || exit 1
   printf 'accepted\t%s\t%s\n' "$EVD/accepted.tsv" "$EVD/accepted.png"
 }
 

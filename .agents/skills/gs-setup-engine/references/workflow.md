@@ -110,7 +110,7 @@ Modes:
 
 **Read `.agents/skills/gs-setup-engine/references/7.5-scaffold.md` now and follow it** — this phase's steps are in that file, not here. Read it again if the conversation was compacted or resumed during this phase.
 
-## 8. Verify the AGENTS.md Import
+## 8. Verify project reference routing
 
 **Read `.agents/skills/gs-setup-engine/references/8-verify.md` now and follow it** — this phase's steps are in that file, not here. Read it again if the conversation was compacted or resumed during this phase.
 
@@ -126,7 +126,8 @@ For the chosen engine's specialist agents, verify they have a
 the existing Godot specialist agents.
 
 The section should instruct the agent to:
-1. Read `docs/engine-reference/<engine>/VERSION.md`
+1. Use `engine-reference` to resolve the project's `project.root` and read the VERSION.md
+   listed in `project.documents`
 2. Check deprecated APIs before suggesting code
 3. Check breaking changes for relevant version transitions
 4. Search the web to verify uncertain APIs
@@ -137,8 +138,8 @@ The section should instruct the agent to:
 
 If invoked as `$gs-setup-engine refresh`:
 
-1. Read the existing `docs/engine-reference/<engine>/VERSION.md` to get
-   the current engine and version
+1. Resolve `engine-reference` and read its `project.documents` VERSION.md
+   for the recorded engine and version
 2. Search the web for:
    - New engine releases since last verification
    - Updated migration guides
@@ -165,9 +166,8 @@ If invoked as `$gs-setup-engine refresh`:
   mirror). If the two ever diverge, `project.yaml` is authoritative.
 - Ask before overwriting reference docs (they hold checked notes); append or update
 - If reference docs already exist for a different engine, ask before replacing
-- Always show the user what you're about to change before making AGENTS.md edits
 - If a web search returns ambiguous results, show the user and let them decide
-- When the user chose **GDScript**: copy the GDScript AGENTS.md template from **A1** in `.agents/skills/gs-setup-engine/references/godot-language-config.md` exactly. Do not add "C++ via GDExtension" to the Language field. GDScript projects may use GDExtension, but it is not a primary project language. The `godot-gdextension-specialist` in the routing table is available for when native extensions are needed — it does not make C++ a project language.
+- When the user chose **GDScript**, record GDScript as the primary language in the native project facts. GDExtension can be an integration without changing the primary language. The `godot-gdextension-specialist` in the routing table is available for when native extensions are needed — it does not make C++ a project language.
 
 ---
 
@@ -179,7 +179,7 @@ Moved out of this file so it costs nothing on non-Godot runs.
 `.agents/skills/gs-setup-engine/references/godot-language-config.md`
 and use the subsection for the chosen language:
 
-- **A1** — AGENTS.md Technology Stack templates (GDScript / C# / Both)
+- **A1** — technology stack facts for the selected language (GDScript / C# / Both)
 - **A2** — naming conventions
 - **A3** — engine specialist routing and file-extension tables
 

@@ -9,7 +9,7 @@ TABLE = Path(__file__).resolve().parents[1] / "resources/engines/engines.tsv"
 COLUMNS = ("engine", "code_root", "test_root", "asset_root", "run", "build", "test", "smoke")
 SKIP_TOP = {".claude", ".game-studio", ".agents", ".codex", ".git", ".specify", ".scratch",
             ".venv", ".worktrees", "production", "design", "docs", "tests", "studio-tests",
-            "prototypes", "tools", "node_modules", "dist", "dist-single", "coverage", "test-results",
+            "prototypes", "tools", "node_modules", "vendor", "build", "dist", "dist-single", "coverage", "test-results",
             "playwright-report"}
 DENY_CODE = {".claude", ".game-studio", ".agents", ".codex", ".git", ".specify", "production",
              "design", "docs", "tests", "studio-tests", "prototypes"}
@@ -49,7 +49,7 @@ def root_value(root, value, key, *, explicit=False, kind=None):
     if _root_unset(value):
         return result
     try:
-        if not isinstance(value, str):
+        if not isinstance(value, str) or value.startswith("/"):
             raise ValueError("expected a repository-relative directory")
         normalized = value.rstrip("/")
         while normalized.startswith("./"):

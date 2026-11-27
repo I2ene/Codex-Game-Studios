@@ -101,7 +101,7 @@ if [ -z "$PATHS" ]; then
   PATHS="$CR$NL"
   # A root of `.` (a flat web game) leaves out the framework's own folders, and
   # find does not enter them. The same list as CODE_ROOT_SKIP in yaml-helper.sh.
-  CODE_ROOT_SKIP=".game-studio .agents .codex .specify dist-single .claude .git production design docs tests studio-tests prototypes tools node_modules dist"
+  CODE_ROOT_SKIP=".game-studio .agents .codex .specify dist-single .claude .git production design docs tests studio-tests prototypes tools node_modules vendor build dist"
   [ "$CR" = "." ] && SKIP_TOP="$CODE_ROOT_SKIP"
 fi
 

@@ -156,10 +156,14 @@ Errors: none | <each, in a few words> | not checked: <why>
 Ask with the question tool: "Accept this change? It becomes checkpoint iteration <N>." Options:
 Accept / Undo it. The question is the last thing in the reply.
 
-- **Accept:** `git add prototypes/<name>`, with `design/game-brief.md` when it is this game's, then
-  `git commit -m "iteration <N>: <what>" -m "Brief: <the brief's path>" -- <the paths added>`:
-  the paths keep every other file out of the commit, staged or not. N is one more than the
-  iteration commits in `git log --oneline -- prototypes/<name>`. A change that adds something
+- **Accept:** list the exact project-relative files in this approved round. Compare their
+  contents with the round diff and user hand edits. Include the brief and evidence files only
+  when changed as part of that round. If a file also contains unapproved edits, separate the
+  changes or get approval for its full contents before committing it. Quote each path as its own
+  argument. Run `git --literal-pathspecs add -A -- <agreed file paths>`, then
+  `git --literal-pathspecs commit --only -m "iteration <N>: <what>" -m "Brief: <the brief's path>" -- <agreed file paths>`.
+  Use the same explicit file list both times so other files and their staged contents stay
+  intact. N is one more than the iteration commits in `git log --oneline -- prototypes/<name>`. A change that adds something
   new (a mode, levels, saves, menus, a system) is `iteration <N>: added <what>`. With no git,
   say "Not a checkpoint: this project has no git." Say in one line what happened.
 - **Undo it:** put back each edit you made for this change, the brief and the feel log included;
@@ -175,8 +179,8 @@ Then go back to where you were: the debrief's next question, or the person's nex
 -- prototypes/<name>`, or the tag `one-shot/<name>` (`baseline/<name>`: a game brought in, as it
 came). Uncommitted changes in the game's files would
 be lost: ask first. Then run `git restore --source <commit> -- prototypes/<name>`, with the brief
-when it is this game's, run the light check (Check before accept), and commit as
-`iteration <N>: back to <checkpoint>`.
+when it is this game's, run the light check (Check before accept), and use the same explicit
+file list procedure for `iteration <N>: back to <checkpoint>`.
 Going back is a checkpoint too.
 
 ## Share it

@@ -16,7 +16,8 @@
 #                      [x]; its story's Status becomes "Blocked — BLOCKED: cut by /cut <today>: REASON"
 #   --mark N           Features item N becomes [x]
 #   --back ITEM built|not_yet   ITEM's [-] row goes back to the end of Features, [x] when built;
-#                      its story points at it again and goes back to Ready
+#                      its story points at it again; restore only an unchanged cut-owned Status,
+#                      preserving independent blocks and status edits made after the cut
 #   --dates TARGET FREEZE WHAT  the brief's line "**Dates:** target TARGET (WHAT) · freeze FREEZE":
 #                      ISO dates, the freeze before the target, the target after today
 #   --polish ROW       a row "- [ ] ROW" in design/polish-list.md; ROW ends " · from: <source>"
@@ -220,7 +221,9 @@ if [ -s "$TMP/map" ] && [ ! -s "$TMP/bad" ]; then
         END {
           for (i = 1; i <= n; i++) {
             s = strip(L[i])
-            if (!si && s ~ /^Status:/) { si = i; sv = tolower(substr(s, 8)); sub(/^[ \t]+/, "", sv) }
+            if (!si && s ~ /^Status:/) { si = i; original = substr(s, 8); sub(/^[ \t]+/, "", original); sv = tolower(original) }
+            if (s ~ /^Cut Previous Status:/) { pi = i; prior = substr(s, 21); sub(/^[ \t]+/, "", prior) }
+            if (s ~ /^Cut Applied Status:/) { ai = i; applied = substr(s, 20); sub(/^[ \t]+/, "", applied) }
             if (!ri && s ~ /^Requirement:/) ri = i
           }
           if (!ri) exit
@@ -229,8 +232,12 @@ if [ -s "$TMP/map" ] && [ ! -s "$TMP/bad" ]; then
             k = substr(l, RSTART + 18, RLENGTH - 18)
             if (k in ci) {
               L[ri] = substr(l, 1, RSTART - 1) "Brief Out of scope: " ci[k] substr(l, RSTART + RLENGTH)
-              if (si && sv !~ /^(complete|done)([^a-z]|$)/) {
-                status(si, "Blocked — BLOCKED: cut by /cut " today ": " cw[k]); print "story\tblocked\t" path "\tfeature " k >> rows
+              if (si && sv !~ /^(complete|done|blocked)([^a-z]|$)/) {
+                owned = "Blocked — BLOCKED: cut by /cut " today ": " cw[k]
+                # Persist ownership of this change, not permission to clear future blocks.
+                if (pi) L[pi] = "Cut Previous Status: " original; else L[++n] = "Cut Previous Status: " original
+                if (ai) L[ai] = "Cut Applied Status: " owned; else L[++n] = "Cut Applied Status: " owned
+                status(si, owned); print "story\tblocked\t" path "\tfeature " k >> rows
               } else print "story\tmoved\t" path "\tfeature " k ", its status kept" >> rows
             } else if (k in nn) {
               L[ri] = substr(l, 1, RSTART - 1) "Brief MVP feature " nn[k] substr(l, RSTART + RLENGTH)
@@ -240,10 +247,14 @@ if [ -s "$TMP/map" ] && [ ! -s "$TMP/bad" ]; then
             it = substr(l, p + 20); sub(/`.*$/, "", it); sub(/[ \t]+$/, "", it)
             if (!(it in bn)) exit
             L[ri] = substr(l, 1, p - 1) "Brief MVP feature " bn[it] substr(l, p + 20 + length(it))
-            if (si && sv ~ /^blocked/) status(si, "Ready")
-            print "story\tback\t" path "\tfeature " bn[it] >> rows
+            if (si && pi && ai && original == applied && prior != "") status(si, prior)
+            # A different current Status belongs to the user or another workflow.
+            # Old cuts without ownership fields cannot prove which block to clear.
+            if (pi) omit[pi] = 1
+            if (ai) omit[ai] = 1
+            print "story\tback\t" path "\tfeature " bn[it] ", status: " strip(L[si]) >> rows
           } else exit
-          for (i = 1; i <= n; i++) printf "%s%s\n", L[i], eol > out
+          for (i = 1; i <= n; i++) if (!(i in omit)) printf "%s%s\n", L[i], eol > out
         }' "$s"
       [ -f "$TMP/story-$i" ] && printf '%s\t%s\n' "$TMP/story-$i" "$s" >> "$TMP/stories"
     done

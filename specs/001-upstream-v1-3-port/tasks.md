@@ -63,3 +63,15 @@ Deliver the entire bounded release, testing the first-playable story first as an
 ## Phase 10: Convergence
 
 - [X] T032 Make empty/placeholder nested engine roots continue to compatible legacy keys or table defaults in .game-studio/runtime/engine_table.py, while invalid explicit values still stop fallback; regress code/test roots and actual derived output in tests/test_v13_runtime.py per FR-005/FR-008 and US3/AC1 (partial).
+
+## Phase 11: Convergence
+
+- [X] T033 Restore only the cut-owned story status and re-read the real blocker before dev-story proceeds; regress initial and later blockers, Ready and Complete in tests/test_v13_cut_replay_regressions.py per FR-004/FR-006 and US2/AC4 (partial).
+- [X] T034 Commit the exact approved one-shot files and preserve the user's index and hand edits; execute the documented commands against a temporary index in tests/test_v13_review_workflows.py per FR-003 and US1/AC4 (partial).
+- [X] T035 Exclude installed framework carrier files from Web language, hook and code-root discovery; exercise installed JavaScript and TypeScript projects in tests/test_v13_flat_projects.py per FR-005 and US3/AC2 (partial).
+- [X] T036 Exclude vendor and build output from flat-root code counts and marker scans; exercise project state before and after real source reaches the phase threshold in tests/test_v13_flat_projects.py per FR-005 and US3/AC1 (partial).
+- [X] T037 Verify native engine name, pin and resolved project reference readback before reporting setup outcomes; execute the documented command and check its summary consumer in tests/test_v13_review_workflows.py per FR-005/FR-006 and US3/AC2 (partial).
+- [X] T038 Use resolved project documents in both dev-story engine check paths and report actual authorship; cover routing, brief and result in tests/test_v13_review_workflows.py per FR-005/FR-006 and US4/AC2 (partial).
+- [X] T039 Accept only a successful current replay and its matching screenshot; test failed, missing, changed and valid evidence against the prior baseline in tests/test_v13_cut_replay_regressions.py per FR-004 and US2/AC2–3 (partial).
+- [X] T040 Reject explicit absolute '/' for code and test roots while allowing '.' and supported legacy keys; exercise both config shapes in tests/test_v13_flat_projects.py per FR-005/FR-008 and US3/AC1 (partial).
+- [X] T041 Read upstream test fixtures directly from the pinned Git commit into temporary files; retain both executable comparisons without a developer-specific source archive per FR-001/FR-010 and US6/AC1 (partial).

@@ -44,6 +44,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 **Domain checks:**
 - [ ] Engine field is set to Unity and Language to C#
+- [ ] The setup summary uses the engine pin, resolved reference directory and documents read back by the native command; file-change fields reflect actual writes
 - [ ] Naming conventions reflect C# conventions
 - [ ] Routing table includes `.cs` and `.unity` entries
 - [ ] No project-shape question is asked for Unity
