@@ -1,7 +1,7 @@
 # Research decisions
 
 ## Frozen sources
-- Fork/base: `3e7289ffe09e3222f0d3dd6e34b49f6c27dfb7fa` (2.1.0).
+- Fork/base: `d25f763918e568cd90c009b84680d21f3f615148` (2.1.0).
 - Previously integrated upstream: `05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418` (1.2.0).
 - Target upstream: `abc0de79d6ceb0b5d7aa693945849b3937afbe6a` (1.3.0).
 - Verified remote heads at start; 409 entries: 156 added, 250 modified, three renamed.
