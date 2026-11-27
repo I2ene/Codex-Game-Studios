@@ -8,7 +8,7 @@
 - [X] T003 Compare upstream and native implementations by independent runtime/workflow/resource ownership; capture decisions in specs/001-upstream-v1-3-port/plan.md.
 
 ## Phase 2: Foundation
-- [ ] T004 Merge abc0de79 as a genuine ancestor; resolve each conflict after comparing the pinned source.
+- [X] T004 Merge abc0de79 as a genuine ancestor; resolve each conflict after comparing the pinned source.
 - [X] T005 Extend docs/upstream-file-map.tsv for every 409 delta, preserving prior source rows; implement SourceMapping.source_version, SourceMapping.disposition, SourceMapping.paths and SourceMapping.verification per data-model.md and verify against fixed Git diff.
 - [X] T006 Establish shared script/resource/native path interfaces in specs/001-upstream-v1-3-port/contracts/port.md; exclude Spec Kit from manifest and discovery validation in tools/validate.py.
 
@@ -45,7 +45,7 @@
 - [X] T026 [P] [US6] Port 20 changed skill/three role evaluation deltas and three renames to .game-studio/resources/testing; preserve fixtures/subscenarios/domain checks and reviewed native extras; update catalog.yaml and tests/test_v13_resources.py.
 - [X] T027 [US6] Update README/NOTICE/CHANGELOG/UPGRADING, docs/upstream-compatibility.md and native indexes/config docs to final behavior, licenses, prerequisites and real limits; manually review every mapping family.
 - [X] T028 [US6] Review payload, update VERSION/release.json with tools/build_release.py, validate links/catalog/manifest and run targeted/full unittest plus integration checks.
-- [ ] T029 [US6] Run Spec Kit analyze/converge against specs/001-upstream-v1-3-port, append uncovered work and implement it; independently inspect full workflow-output-consumer relations and preserve previous regression fixes.
+- [X] T029 [US6] Run Spec Kit analyze/converge against specs/001-upstream-v1-3-port, append uncovered work and implement it; independently inspect full workflow-output-consumer relations and preserve previous regression fixes.
 - [ ] T030 [US6] Commit/push candidate, create draft PR with exact refs/maps/differences/FORMAT-EXECUTED-NOT ASSESSED and wait exact-head CI; return independent review handoff without merging.
 
 ## Dependencies and parallel execution
