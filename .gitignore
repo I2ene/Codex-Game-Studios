@@ -38,3 +38,11 @@ secrets.json
 
 # Consumer test and capture output
 production/qa/evidence/**/*.wav
+
+# Local Spec Kit developer infrastructure (never consumer payload)
+.specify/*
+!.specify/memory/
+.specify/memory/*
+!.specify/memory/constitution.md
+!.specify/README.md
+.agents/skills/speckit-*/
