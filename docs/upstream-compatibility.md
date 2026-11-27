@@ -9,7 +9,7 @@ implementation. The installed native entry points govern actual execution. See
 | --- | --- | --- |
 | Previous upstream source | 1.1.2 | `b21fa0f7f289fc3e726cf36fb12b9bc1e7a51e4d` |
 | Integrated upstream source | 1.2.0 (includes 1.1.3) | `05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418` |
-| Previous Codex distribution | 2.0.1 | `4889c2b1fa938073670dc855c76072fe742c307a` |
+| Previous Codex distribution | 2.0.1 | `f3c2ad36917cb9c5ccab435f85d1b5a32a064634` |
 
 The [upstream file map](upstream-file-map.tsv) accounts for every entry in the
 [fixed Git comparison](https://github.com/Donchitos/Claude-Code-Game-Studios/compare/b21fa0f7f289fc3e726cf36fb12b9bc1e7a51e4d...05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418).
