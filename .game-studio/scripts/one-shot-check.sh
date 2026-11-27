@@ -387,7 +387,8 @@ if [ -f "$RUNS" ] && [ "$(wc -l < "$RUNS" | tr -d ' ')" -ge 2 ]; then
   exit 2
 fi
 TMP=$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/one-shot-check-$$")
-mkdir -p "$TMP"
+mkdir -p "$TMP" || exit 1
+TMP=$(cd "$TMP" && pwd -P) || exit 1
 trap 'rm -rf "$TMP"' EXIT
 REPORT="$TMP/report.tsv"
 : > "$REPORT"

@@ -140,7 +140,8 @@ fi
 grep -qi '<script' "$DIR/index.html" || { printf 'not_assessed\tindex.html has no script to run\n'; exit 3; }
 
 TMP=$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/one-shot-run-$$")
-mkdir -p "$TMP/game"
+mkdir -p "$TMP/game" || exit 1
+TMP=$(cd "$TMP" && pwd -P) || exit 1
 trap 'rm -rf "$TMP"' EXIT
 ( cd "$DIR" && tar cf - --exclude=./evidence . ) | ( cd "$TMP/game" && tar xf - ) || { echo "one-shot-run: could not copy $DIR" >&2; exit 1; }
 

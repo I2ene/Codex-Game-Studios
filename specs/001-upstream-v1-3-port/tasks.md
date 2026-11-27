@@ -53,3 +53,8 @@ T001–T003 precede T004–T006. Resource T007/T008/T022/T026, workflow T009/T01
 
 ## Implementation strategy
 Deliver the entire bounded release, testing the first-playable story first as an integration slice rather than reducing the requested release to an MVP. Task boxes record actual completion only; evidence and remaining limitations go to the PR/review conversation. FORMAT checks and synthetic execution never substitute for all-model or game-quality proof.
+
+
+## Phase 9: Convergence
+
+- [X] T031 Canonicalize tool-created temporary directories before native path checks in .game-studio/scripts/cut-apply.sh and the associated browser/Grow internal call chain; preserve rejection of caller-supplied links, and add OS temporary-alias regression in tests/test_v13_helpers.py per FR-005/FR-008 and US2/AC4 (partial).

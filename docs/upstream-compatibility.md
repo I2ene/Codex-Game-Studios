@@ -52,6 +52,10 @@ matrix is not a current capability. `project.goal` is optional shared state: a
 start-card guess is saved only when accepted, and cut dates/freezes apply only to
 the three selling goals. Missing configuration is distinct from a saved value.
 
+Tool-created scratch directories are resolved to physical OS paths before native
+checks (including macOS temporary-directory aliases). Explicit consumer path and
+link/reparse rejection remain unchanged.
+
 ### Reproduce the checks
 
 Run `tools/upstream_audit.py --source-base 05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418

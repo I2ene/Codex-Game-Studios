@@ -53,7 +53,10 @@ TAB=$(printf '\t'); NL='
 '
 B1=""; B2=""; TODAY=""; ROOT_ARG=""
 TMP=$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/cut-apply-$$")
-mkdir -p "$TMP" && trap 'rm -rf "$TMP"' EXIT
+mkdir -p "$TMP" || exit 1
+# Only this tool-created scratch directory may cross an OS temporary-path alias.
+TMP=$(cd "$TMP" && pwd -P) || exit 1
+trap 'rm -rf "$TMP"' EXIT
 OPS="$TMP/ops"; : > "$OPS"
 use() { echo "cut-apply: $1 (try --help)" >&2; exit 2; }
 line() { case "$1" in *"$TAB"*|*"$NL"*|"") use "$2 takes one line of text, no tabs" ;; esac; }

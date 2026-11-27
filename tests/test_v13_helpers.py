@@ -71,6 +71,55 @@ class V13HelperTests(unittest.TestCase):
         self.assertEqual(proc.returncode, code, proc.stderr + proc.stdout)
         return proc.stdout.replace("\r\n", "\n")
 
+    def aliased_tmpdir(self):
+        physical = self.root.parent / "scratch physical"
+        physical.mkdir()
+        alias = self.root.parent / "scratch-alias"
+        try:
+            alias.symlink_to(physical, target_is_directory=True)
+        except OSError:
+            if os.name != "nt":
+                self.skipTest("OS denied temporary-directory symlink creation")
+            command = "New-Item -ItemType Junction -Path '" + str(alias).replace("'", "''") + "' -Target '" + str(physical).replace("'", "''") + "' | Out-Null"
+            made = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", command],
+                                  capture_output=True)
+            if made.returncode:
+                self.skipTest("OS denied temporary-directory junction creation")
+        if alias.is_symlink():
+            self.addCleanup(alias.unlink)
+        else:
+            self.addCleanup(os.rmdir, alias)  # Removes the junction, preserving its target.
+        return alias.as_posix()
+
+    def test_cut_restore_accepts_tool_scratch_under_aliased_tmpdir(self):
+        from unittest.mock import patch
+        self.write("design/game-brief.md", "# Game Brief: Fixture\n\n## Features\n- [ ] Coins\n\n## Out of scope\n\n")
+        source = self.write("src/main.ts", "// User game source\n")
+        with patch.dict(os.environ, {"TMPDIR": self.aliased_tmpdir()}):
+            cut = self.run_script("cut-apply", "--brief", "design/game-brief.md", "--cut", "1", "Later", "--today", "2026-11-27")
+            self.assertIn("cut\t1\tCoins", cut)
+            restored = self.run_script("cut-apply", "--brief", "design/game-brief.md", "--back", "Coins", "not_yet", "--today", "2026-11-27")
+            self.assertIn("back\t", restored)
+        self.assertIn("- [ ] Coins", (self.root / "design/game-brief.md").read_text(encoding="utf-8"))
+        self.assertEqual(source.read_text(encoding="utf-8"), "// User game source\n")
+
+    def test_one_shot_run_canonicalizes_its_copied_page_before_native_boundary(self):
+        from unittest.mock import patch
+        self.write("prototypes/tiny/index.html", "<canvas></canvas><script>window.game={};</script>")
+        browser = self.write("browser-fixture", "#!/usr/bin/env bash\nexit 1\n")
+        browser.chmod(0o755)
+        with patch.dict(os.environ, {"TMPDIR": self.aliased_tmpdir(), "PAGE_SHOT_BROWSER": browser.as_posix()}):
+            result = self.run_script("one-shot-run", "prototypes/tiny", "evidence/run.png", "--log", "Enter", "--stop", "180", code=3)
+        self.assertIn("not_assessed\t", result)
+
+    def test_user_input_and_output_links_remain_rejected_under_tmp_alias(self):
+        alias = self.aliased_tmpdir()
+        (Path(alias) / "index.html").write_text("<canvas></canvas>", encoding="utf-8")
+        self.write("index.html", "<canvas></canvas>")
+        self.run_script("page-shot", alias + "/index.html", "evidence/input.png", code=2)
+        self.run_script("page-shot", "index.html", alias + "/output.png", code=2)
+        self.assertFalse((Path(alias) / "output.png").exists())
+
     def test_web_scaffold_preview_creates_nothing_then_preserves_existing_files(self):
         self.write("src/hook.ts", "// user hook\n")
         preview = self.run_script("web-scaffold", "--dry-run", "--starter", "three", "--title", "A < B & C")
@@ -229,6 +278,12 @@ class V13HelperTests(unittest.TestCase):
 
 
     def test_internal_replays_delegate_their_temporary_output_root(self):
+        self.check_internal_replays()
+
+    def test_internal_replays_canonicalize_tool_scratch_under_aliased_tmpdir(self):
+        self.check_internal_replays(self.aliased_tmpdir())
+
+    def check_internal_replays(self, tmpdir=None):
         # A strict child stub exercises the caller/child output boundary without
         # making screenshots or requiring a browser on every unit-test host.
         copied = self.root / ".fixture-studio"
@@ -243,6 +298,7 @@ class V13HelperTests(unittest.TestCase):
                         copied / "resources/engines/engines.tsv")
         stub = scripts / "one-shot-run.sh"
         stub.write_text("""#!/usr/bin/env bash
+. "$(dirname "$0")/native-runtime.sh"
 dir=$1; out=$2; shift 2
 root=''; hash=inputs
 while [ $# -gt 0 ]; do
@@ -259,6 +315,8 @@ case "$out" in
   /*|[A-Za-z]:*) echo 'refused outside delegated root' >&2; exit 2 ;;
   *) out="$root/$out" ;;
 esac
+gs_native tree "$dir" --root "$root" --external >/dev/null || exit 2
+gs_native path "$out" --root "$root" >/dev/null || exit 2
 mkdir -p "$(dirname "$out")"; printf x > "$out"
 printf 'shot\\t%s\\t1\\n' "$out"
 printf 'screen\\t60\\t1280x720\\t%s\\tdrawn\\n' "$hash"
@@ -267,15 +325,19 @@ printf 'playinput\\t2\\nscene\\t1\\tplay\\nuncaught\\t0\\ndone\\t60\\t1\\tplay\\
         stub.chmod(0o755)
         self.write("prototypes/tiny/index.html", "<canvas></canvas>")
         env = dict(os.environ, GAME_STUDIO_PYTHON=sys.executable, PYTHONUTF8="1")
+        if tmpdir is not None:
+            env["TMPDIR"] = tmpdir
         def run(name, *args):
             proc = subprocess.run([self.bash, (scripts / name).as_posix(), *args, "--root", self.root.as_posix()],
                                   cwd=self.root, capture_output=True, encoding="utf-8", env=env, timeout=25)
             self.assertEqual(proc.returncode, 0, proc.stderr + proc.stdout)
             return proc.stdout
-        checked = run("one-shot-check.sh", "prototypes/tiny", "--keys", "Enter ArrowRight")
-        self.assertIn("responds\tchanged", checked)
-        replayed = run("one-shot-grow.sh", "replay", "tiny", "--as", "reference", "--stop", "180", "--log", "Enter")
-        self.assertIn("exact\tyes", replayed)
+        with self.subTest(lane="responds"):
+            checked = run("one-shot-check.sh", "prototypes/tiny", "--keys", "Enter ArrowRight")
+            self.assertIn("responds\tchanged", checked)
+        with self.subTest(lane="grow-reference"):
+            replayed = run("one-shot-grow.sh", "replay", "tiny", "--as", "reference", "--stop", "180", "--log", "Enter")
+            self.assertIn("exact\tyes", replayed)
 
 
     def test_page_shot_persistent_profile_survives_browser_failure(self):

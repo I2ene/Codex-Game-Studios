@@ -137,7 +137,8 @@ guard() {
 
   # 1. Node, read the way web-scaffold.sh reads it (its first row), from an empty folder.
   t=$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/one-shot-grow-$$")
-  mkdir -p "$t"
+  mkdir -p "$t" || exit 1
+  t=$(cd "$t" && pwd -P) || exit 1
   node=$(bash "$HERE/web-scaffold.sh" --dry-run --root "$t" 2>/dev/null | awk -F'\t' '$1 == "node" { print $2 "\t" $3 "\t" $4; exit }')
   rm -rf "$t"
   [ -n "$node" ] || node="-	absent	^22.12 || ^24 || >=26"
@@ -215,7 +216,8 @@ put() { # put <path> <source file> -- a new file, never over one that is there
 copy() {
   local title slug rc=0 f
   [ -f "$GROW/tune.ts" ] && [ -f "$GROW/config.js" ] || { echo "one-shot-grow: .game-studio/resources/engines/web/grow/ is missing" >&2; exit 1; }
-  t=$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/one-shot-grow-$$"); mkdir -p "$t/s" "$t/w"
+  t=$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/one-shot-grow-$$"); mkdir -p "$t/s" "$t/w" || exit 1
+  t=$(cd "$t" && pwd -P) || exit 1
   trap 'rm -rf "$t"' EXIT
   title=$(tr -d '\r' < "$OS/index.html" | sed -n 's:.*<title>\(.*\)</title>.*:\1:p' | head -1)
   [ -n "$title" ] || title=$NAME
@@ -366,7 +368,8 @@ replay() {
   set -- "$@" --stop "$stop" --trace $((stop - 120))
   [ "$HOOKLESS" = 1 ] && set -- "$@" --hookless
 
-  t=$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/one-shot-grow-$$"); mkdir -p "$t/game"
+  t=$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/one-shot-grow-$$"); mkdir -p "$t/game" || exit 1
+  t=$(cd "$t" && pwd -P) || exit 1
   trap 'rm -rf "$t"' EXIT
   if [ "$AS" = reference ]; then
     case "$OS" in /*|[A-Za-z]:*) dir="$OS" ;; *) dir="$ROOT/$OS" ;; esac
