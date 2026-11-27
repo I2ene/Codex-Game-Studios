@@ -75,3 +75,8 @@ Deliver the entire bounded release, testing the first-playable story first as an
 - [X] T039 Accept only a successful current replay and its matching screenshot; test failed, missing, changed and valid evidence against the prior baseline in tests/test_v13_cut_replay_regressions.py per FR-004 and US2/AC2–3 (partial).
 - [X] T040 Reject explicit absolute '/' for code and test roots while allowing '.' and supported legacy keys; exercise both config shapes in tests/test_v13_flat_projects.py per FR-005/FR-008 and US3/AC1 (partial).
 - [X] T041 Read upstream test fixtures directly from the pinned Git commit into temporary files; retain both executable comparisons without a developer-specific source archive per FR-001/FR-010 and US6/AC1 (partial).
+
+## Phase 12: Convergence
+
+- [X] T042 Refine T039: compare game error observations in completed replays and restore the user decision for new errors; regress unchanged and changed error rows, explicit acceptance, and objectively incomplete or missing evidence in tests/test_v13_cut_replay_regressions.py and tests/test_v13_review_workflows.py per FR-004/FR-006 and US2/AC2–3 (contradicts).
+- [X] T043 Keep the project-state bridge used by T036 working with Bash 3.2 and both full and stage-only output; exercise the bridge through the existing flat marker regression per FR-005 and US3/AC1 (partial).

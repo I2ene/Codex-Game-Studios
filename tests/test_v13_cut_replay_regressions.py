@@ -104,6 +104,13 @@ if [ "$FIXTURE_RUN" = wrong_shot ]; then
 else
   printf 'shot\t%s/%s\t16\n' "$(pwd)" "$out"
 fi
+case "$FIXTURE_RUN" in
+  existing_error|new_error) printf 'error\t10\tpre-existing optional audio failure\n' ;;
+esac
+case "$FIXTURE_RUN" in
+  new_error) printf 'error\t35\tnew optional audio failure\nuncaught\t1\n' ;;
+  crash_stop) printf 'crash\t60\tstep failed\ndone\t60\tplay\tcrash\n'; exit 0 ;;
+esac
 printf 'scene\t1\tplay\ndone\t180\tplay\tcomplete\n'
 """, encoding="utf-8", newline="\n")
         self.write("prototypes/tiny/index.html", "<script>/* synthetic fixture */</script>")
@@ -130,11 +137,38 @@ printf 'scene\t1\tplay\ndone\t180\tplay\tcomplete\n'
     def test_unassessed_or_screenshotless_story_cannot_accept(self):
         scripts = self.grow_fixture()
         prior = self.accepted()
-        for mode in ("na_zero", "no_shot", "wrong_shot"):
+        for mode in ("na_zero", "no_shot", "wrong_shot", "crash_stop"):
             with self.subTest(mode=mode):
                 self.run_script("one-shot-grow", "replay", "tiny", "--as", "story", scripts=scripts, mode=mode, code=4)
                 self.run_script("one-shot-grow", "accept", "tiny", scripts=scripts, code=4)
                 self.assertEqual(self.accepted(), prior)
+
+    def test_completed_replay_compares_existing_game_error_as_an_observation(self):
+        scripts = self.grow_fixture()
+        self.write(self.ev + "/accepted.tsv",
+                   "error\t10\tpre-existing optional audio failure\nscene\t1\tplay\ndone\t180\tplay\tcomplete\n")
+        prior = self.accepted()
+        result = self.run_script("one-shot-grow", "replay", "tiny", "--as", "story", scripts=scripts, mode="existing_error")
+        self.assertIn("errors\t1\n", result)
+        self.assertIn("against\taccepted\nmatch\tyes\n", result)
+        self.assertEqual(self.accepted(), prior)
+
+    def test_complete_replay_with_new_error_can_be_declined_or_explicitly_accepted(self):
+        scripts = self.grow_fixture()
+        self.write(self.ev + "/accepted.tsv",
+                   "error\t10\tpre-existing optional audio failure\nscene\t1\tplay\ndone\t180\tplay\tcomplete\n")
+        prior = self.accepted()
+        result = self.run_script("one-shot-grow", "replay", "tiny", "--as", "story", scripts=scripts, mode="new_error")
+        self.assertIn("errors\t3\n", result)
+        self.assertIn("match\tno\terror\t35\tnew optional audio failure\n", result)
+        self.assertIn("was\tscene\t1\tplay\n", result)
+        # Decline the proposed replacement by leaving the accepted pair alone.
+        self.assertEqual(self.accepted(), prior)
+        # The approval path runs a separate command on the exact reviewed pair.
+        replacement = tuple((self.root / self.ev / name).read_bytes() for name in ("story.tsv", "story.png"))
+        accepted = self.run_script("one-shot-grow", "accept", "tiny", scripts=scripts)
+        self.assertIn("accepted\t", accepted)
+        self.assertEqual(self.accepted(), replacement)
 
     def test_successful_replay_accepts_matching_pair_but_modified_or_stale_pair_does_not(self):
         scripts = self.grow_fixture()

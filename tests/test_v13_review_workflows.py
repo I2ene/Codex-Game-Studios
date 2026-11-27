@@ -118,3 +118,12 @@ class ReviewWorkflowTests(unittest.TestCase):
             self.assertIn(value, brief)
         for value in ('engine check', 'participant', 'reference'):
             self.assertIn(value, summary.lower())
+
+    def test_dev_story_routes_new_replay_errors_through_the_difference_decision(self):
+        text = workflow('dev-story', 'workflow.md')
+        replay = text.split('**A grown game: the same-seed run.**', 1)[1].split('No such folder:', 1)[0]
+        difference = replay.split('**`match no`:**', 1)[1].split('- **', 1)[0]
+        self.assertIn('Options: Yes', difference)
+        self.assertIn('accepted` row', difference)
+        self.assertIn('INCOMPLETE', difference)
+        self.assertRegex(replay, r'(?is)errors.*already present.*new errors.*same difference decision')

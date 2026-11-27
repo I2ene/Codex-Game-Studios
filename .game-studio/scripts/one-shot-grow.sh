@@ -427,8 +427,10 @@ story_evidence() {
   local bytes
   bytes=$(wc -c < "$EVD/story.png" | tr -d ' ')
   awk -F'\t' -v shot="$EVD/story.png" -v absolute="$ROOT/$EVD/story.png" -v bytes="$bytes" '
-    $1 == "not_assessed" || $1 == "crash" || $1 == "error" || ($1 == "uncaught" && $2 + 0 > 0) { bad = 1 }
-    $1 == "done" && $2 + 0 > 0 { done = 1 }
+    # The done reason distinguishes a crash that stopped execution from
+    # game errors observed during a completed run.
+    $1 == "not_assessed" { bad = 1 }
+    $1 == "done" && $2 + 0 > 0 && $4 != "crash" { done = 1 }
     $1 == "shot" && ($2 == shot || $2 == absolute) && $3 + 0 == bytes + 0 { seen = 1 }
     END { exit !(done && seen && !bad) }' "$EVD/story.tsv"
 }

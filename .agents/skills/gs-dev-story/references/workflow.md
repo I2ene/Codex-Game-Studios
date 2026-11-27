@@ -357,8 +357,11 @@ last one the person accepted (its `against` row: `accepted`, else the grow step'
   If acceptance fails, report the reason and keep the story INCOMPLETE with the previous
   baseline. No: `Same-seed run: CHANGED, not accepted — [what changed]`, and the story is
   INCOMPLETE until it is fixed.
-- **An `errors` row above 0**: show the observed errors. Resolve them and get a complete
-  replay with its screenshot before accepting a replacement baseline.
+- **Observed errors:** If the `errors` row is above 0, compare the error observations in
+  the current and baseline TSVs. Report errors already present alongside the match result.
+  New errors in a completed replay follow the same difference decision above, even when
+  the first difference names something else. A replay that did not complete or has missing
+  evidence follows the NOT ASSESSED branch.
 - **`not_assessed`, or `match not_assessed`:** `Same-seed run: NOT ASSESSED — [its
   reason]`; still open the screenshot when there is one.
 
