@@ -83,7 +83,7 @@ Checklist (copy it and tick as you go):
 - [ ] Phase 3: story marked In Progress when authorized
 - [ ] Phase 4: programmer and engine specialist chosen
 - [ ] Phase 5: work handed out with a full brief
-- [ ] Phase 6: finished? parse check, run and look, one Run result line
+- [ ] Phase 6: finished? parse check, run and look, one Run result line; a grown game's same-seed run
 - [ ] Phase 7: summary, ## Files, checkpoint, closing block
 ```
 
@@ -106,6 +106,24 @@ project value. Say it in your first reply: `Tier: workflow [value]`. That value,
 `rigor` or `qa.level`, picks the Phase 2 column and the closing Next step.
 
 ## Phase 2: Can it start?
+
+**Selected cut-story guard — all workflow tiers, including `minimal`.** Read the
+selected story's own Status before ADR/dependency checks or Phase 3. A Blocked
+status containing `cut by /cut` (the helper's persisted marker) or `cut by $gs-cut`
+means this feature is still cut: no In Progress write, no implementation, and no
+implementer is started. Do not treat a bare `$gs-dev-story` invocation as permission
+to reverse the scope decision, or bypass this guard with the dependency-risk option.
+
+If existing scope authorization explicitly restores this feature, follow `$gs-cut`'s
+Afterwards restore procedure in this parent thread without another permission ask:
+identify the exact cut item and authoritative brief, restore it with the helper,
+then re-read both the brief's Features/Out of scope lists and this story's Status.
+Only after the item is restored and the story reads `Ready` may the remaining
+prerequisites and Phase 3 continue. A failed/ambiguous restoration remains blocked;
+never manually erase the marker to make the check pass. Without restoration
+authorization, present Restore this feature / Keep it cut and await the scope
+choice. Keep it cut or no answer: report BLOCKED and perform no implementation.
+This guard is specific to a cut decision; other blocker rules remain unchanged.
 
 | Input | `full` | `standard` | `minimal` |
 |---|---|---|---|
@@ -152,6 +170,9 @@ Any stop above: no agent runs. Go to Phase 7 and write the BLOCKED checkpoint.
 
 ## Phase 3: Mark it In Progress
 
+Do not enter this phase while the selected story's cut status remains; Phase 2 must
+confirm the authorized restoration and Ready readback first.
+
 Before implementation, describe the state changes. If not already authorized, ask: "May I mark this story In Progress? This sets `Status`
 and `Last Updated` in [story path] and its entry in `production/sprint-status.yaml`,
 and at the end lists the files changed under its `## Files`." Leave the sprint file
@@ -188,7 +209,10 @@ from a GDScript one, which `engine.name` cannot), plus `shader` when the story
 touches shaders or materials and `ui` for a UI story; `primary` (the generic engine
 specialist) when `code` is `unset`. Name no specialist from memory: the line is the project's
 choice. Every value `unset` and no `primary`: say "No engine specialist configured"
-and go on without one.
+and go on without one. On Web there is no engine specialist: `primary` is
+`lead-programmer`, and the engine check below goes to it, against
+`docs/engine-reference/web/`. Say so in one line ("Web: engine check by
+lead-programmer against docs/engine-reference/web/").
 
 ## Phase 5: Hand out the work
 
@@ -218,10 +242,14 @@ paste whole documents into it.
   - `full`: the same, and "every criterion must be covered: `$gs-story-done` blocks on
     any untested one."
 - **Output:** the files created or changed, the test functions written, any
-  question or blocker, and whether it finished.
+  question or blocker, whether it finished, and every choice it made that the
+  story and its design did not say (a value, a timing, a colour, a case nobody
+  named, a word on the screen), one line each with where it is.
 - **Boundaries:** write code only under the resolved code root and tests only under
   the test root. Code root unresolved: write nothing and report it. Touch no file
   outside the story's scope: report the need instead. Doc comments on public APIs.
+  New gameplay values go in the game's data file (`data/config.json` on a grown game, with
+  a line each in `data/config-notes.md`), never as literals in the code.
   An architectural choice the ADR does not cover: report the plan, don't decide it.
   No helper or abstraction for a one-time use, no error handling for cases that
   cannot happen (validate at input and data-file boundaries only), and general logic,
@@ -269,7 +297,17 @@ command, the exit code and any error lines:
   `commands.test` names when its file name says godot (a wrapper such as `bash
   run-tests.sh` is not the editor), else `engine.path`, else `godot`. Never search the disk for
   one: when none of the three runs, the check is not verified.
-- **Unity, Unreal:** read [engine-checks.md](engine-checks.md).
+- **Unity, Unreal:** read `.agents/skills/gs-dev-story/references/engine-checks.md`.
+- **Web:** the game's own smoke script, whenever `package.json` has a `smoke`
+  script: `npm run smoke`, after every story, a grown game's too. The scaffold's is
+  the type check (`tsc --noEmit`) and the single-file build, then Playwright's
+  `@boot` test on it. An `error TS` line names a file that does not compile; a
+  failing `@boot` means the page did not start. `npm run build:single` alone (the
+  same-seed run's first step) is not this check: it shows nothing about the page
+  starting. Never `commands.run`: it is a dev server and never exits. No
+  `node_modules/`: `parse NOT VERIFIED — npm ci has not run`. No `smoke` script (an
+  existing project, `$gs-setup-engine web`): its `commands.smoke`, else its build,
+  which shows the code compiles and nothing about the page starting.
 - **No engine executable:** `parse NOT VERIFIED — engine binary not available`.
   Never infer from reading the code that it parses.
 
@@ -279,7 +317,7 @@ straight into the scene the story touched, capture a screenshot straight into
 `production/qa/evidence/[story-slug]/` (`[story-slug]` is the story file's name
 without `.md`; `mkdir -p` the folder first), open the image and compare it with the
 criteria. Write the actual observation and retained image paths in `evidence.md`
-in that folder. Save its sibling companion using [story capture receipts](.game-studio/resources/docs/review-receipts.md#story-capture-receipts):
+in that folder. Save its sibling companion using [story capture receipts](../../../../.game-studio/resources/docs/review-receipts.md#story-capture-receipts):
 `python .game-studio/runtime/studio.py receipts hash <source-and-image-patterns...> --report <evidence.md> --output <evidence.receipt.json> --root <project-root>`.
 Reconcile input changes during capture before publishing the snapshot. Not waived at `qa.level:
 minimal`. Report exactly one line, plain text starting `Run result:` (no bold:
@@ -293,6 +331,32 @@ minimal`. Report exactly one line, plain text starting `Run result:` (no bold:
 
 Only the feel half of a Visual/Feel criterion (timing, weight) is DEFERRED to
 `$gs-team-qa`: a still cannot show it.
+
+**A grown game: the same-seed run.** A game grown from a one-shot has a folder
+`production/qa/evidence/grow-<name>/` with a `replay.args` file in it: the grow step played
+the game from one seed with the same inputs and kept that run. After every story, whatever
+its type and after the parse check's `npm run smoke`, play it again: `npm run build:single`, then
+`bash .game-studio/scripts/one-shot-grow.sh replay <name> --as story`. It plays the built game
+the same way, takes a screenshot (`story.png` in that folder) and compares the run with the
+last one the person accepted (its `against` row: `accepted`, else the grow step's
+`reference`). Open `story.png` beside that run's screenshot (`accepted.png` or
+`reference.png`), then report one line, plain text starting `Same-seed run:`:
+
+- **`match yes`:** `Same-seed run: SAME — sampled inputs, states and screens matched`, with the screenshot's path.
+- **`match no`:** the story changed how the game plays. Never pass over it, in any
+  automation mode: show the person, in plain words, what the `no` row and the `was` row
+  under it say (a scene, a value, the screen), with both screenshots, and ask: "This story
+  changed the same-seed run: [what changed]. Is that what the story meant?" Options: Yes, it
+  is meant — later stories are compared with this run / No — something broke, leave the
+  story open. Yes: `bash .game-studio/scripts/one-shot-grow.sh accept <name>`, then
+  `Same-seed run: CHANGED, accepted — [what changed]`. No: `Same-seed run: CHANGED, not
+  accepted — [what changed]`, and the story is INCOMPLETE until it is fixed.
+- **An `errors` row above 0** that the compared run did not have is a change too: ask the
+  same way.
+- **`not_assessed`, or `match not_assessed`:** `Same-seed run: NOT ASSESSED — [its
+  reason]`; still open the screenshot when there is one.
+
+No such folder: the game was not grown, and there is no `Same-seed run:` line.
 
 Inspect executable and argv and use inherited native permissions and existing user authorization. This skill grants no command permission and changes no host configuration.
 
@@ -313,6 +377,7 @@ Inspect executable and argv and use inherited native permissions and existing us
 **Deviations**: [None | files outside scope, an accepted dependency or version risk]
 **Engine risks**: [None | the specialist's findings]
 **Blockers**: [None | each]
+**Own calls**: [None | each choice the story and its design did not make, with where it is: `$gs-story-done` asks you to keep or change each]
 ```
 
 At `qa.level: standard` and `full`, add: "Run your test suite and confirm the new
@@ -342,6 +407,8 @@ implementation leaves the story's original scope untouched.
 **Blocked on:** [nothing, or the blocker]
 **Files in progress:** [changed files, comma-separated]
 **Run result:** [OBSERVED — … | NOT VERIFIED — … | N/A — …, as in the closing block: $gs-story-done reads it here]
+**Same-seed run:** [a grown game only: SAME — … | CHANGED, accepted — … | CHANGED, not accepted — … | NOT ASSESSED — …]
+**Own calls:** [the programmer's calls beyond the design, or none]
 **Open questions:** [none, or one line each]
 ```
 
@@ -349,11 +416,13 @@ implementation leaves the story's original scope untouched.
 is printed: print it nowhere else in the reply. The Next step goes by the tier you stated in Phase 1 (the `workflow` line,
 never `rigor` or `qa.level`). The Next step: at `minimal`, `$gs-story-done [path]`. At `standard` and `full`,
 `$gs-code-review [files]`, then `$gs-story-done [path]`. INCOMPLETE: `$gs-dev-story [path]`
-to resume. BLOCKED: the action that unblocks it (`$gs-architecture-decision accept
+to resume. A same-seed run changed and not accepted is INCOMPLETE too: `$gs-dev-story [path]`
+after the fix. BLOCKED: the action that unblocks it (`$gs-architecture-decision accept
 ADR-NNNN`, the dependency to finish, the diff to review).
 
 ```
 Story: [path] — [Implemented | INCOMPLETE — <breakage> | BLOCKED — <reason>]
 Run result: [OBSERVED — … | NOT VERIFIED — … | N/A — …]
+Same-seed run: [a grown game only, as in Phase 6]
 Next step: [Implemented, Tier: workflow minimal → $gs-story-done [path] | Implemented, Tier: workflow standard or full → $gs-code-review [changed files], then $gs-story-done [path] | INCOMPLETE → $gs-dev-story [path] to resume | BLOCKED → the unblocking action]
 ```

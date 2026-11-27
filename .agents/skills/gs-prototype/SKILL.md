@@ -1,6 +1,6 @@
 ---
 name: gs-prototype
-description: "Concept prototype before GDDs — throwaway HTML, Engine or Paper build, PROCEED/PIVOT/KILL/NOT ASSESSED. After $gs-brainstorm and $gs-setup-engine."
+description: "Use to build, import, change or grow a playable browser one-shot, or test one design hypothesis with an engine, paper prototype or spike before production."
 ---
 
 # Prototype

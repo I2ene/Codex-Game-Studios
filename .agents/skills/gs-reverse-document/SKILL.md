@@ -1,6 +1,6 @@
 ---
 name: gs-reverse-document
-description: "Generate missing design or architecture docs from existing implementation — works backwards from code and prototypes."
+description: "Writes missing design or architecture docs, or a game's brief, from code. Use when code or prototypes have no docs."
 ---
 
 # Reverse Document

@@ -1,5 +1,29 @@
 # Upgrading Codex Game Studios
 
+## 2.1.0 to 2.2.0
+
+Preview and run the ownership-based upgrade below. Native skills, roles, genre/
+engine data, templates and helpers change; the installer does not grow or change
+your game, install Web dependencies, run a browser, trust hooks or upgrade an
+engine. Existing configuration and instructions remain yours.
+
+New canonical entries are `$gs-next-step`, `$gs-project-settings` and
+`$gs-write-changelog`. `$gs-help`, `$gs-settings` and `$gs-changelog` forward the
+original arguments with one rename notice. `$gs-cut` adds the upstream finishing
+workflow. Aliases share evaluation guidance rather than duplicate scenarios.
+
+Shared `engine.code_root` and `engine.test_root` take priority over old shared
+`code_root` and `test_root`; old keys remain supported. Invalid explicit paths
+are diagnosed without scanning fallback directories. Root `.` means the project
+root with framework/generated trees excluded. Explicit argv and pins retain
+priority over engine-table suggestions.
+
+One-shot evidence and native SHA-256 report receipts retain distinct consumers.
+Old native receipts and checkpoints need no conversion. Grow copies the prototype
+and preserves the original. Accept replay/feature differences based on actual
+observations. Spec Kit development tooling is never an upgrade prerequisite.
+
+
 ## 2.0.0 or 2.0.1 to 2.1.0
 
 Use the same installer and preview with --dry-run. Review the list of updated

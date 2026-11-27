@@ -24,7 +24,7 @@ project; engine reference versions are examples and require current verification
 
 
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
-`project.yaml` → default `collaborative`). Every `ask the user` call and
+`project.yaml` → default `collaborative`). Every question and
 every file write follows `.game-studio/resources/docs/automation-modes.md`
 (collaborative resolves open choices · guided resolves major choices · autonomous records in-scope choices;
 `automation_always_ask` categories require input only outside existing authorization).
@@ -38,7 +38,7 @@ Run `python .game-studio/runtime/studio.py config --root <project-root>` explici
 `project.yaml` → default `collaborative`). Every `ask the user` call and
 every file write follows `.game-studio/resources/docs/automation-modes.md`
 (collaborative resolves open decisions · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+`automation_always_ask` categories require input outside existing authorization).
 
 # Test Setup
 

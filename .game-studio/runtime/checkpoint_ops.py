@@ -1,6 +1,6 @@
 """Explicit checkpoint edits, including the upstream marked active.md format."""
 from markdown_ops import FENCE, text_parts
-from paths import atomic_write, confined, digest
+from paths import atomic_write, confined, digest, plain
 
 OPEN = "<!-- CHECKPOINT -->"
 CLOSE = "<!-- /CHECKPOINT -->"
@@ -34,6 +34,7 @@ def markers(lines):
 
 
 def save(root, relative, source_relative, append=False):
+    root = plain(root)
     path = confined(root, relative)
     source = confined(root, source_relative)
     if path == source:

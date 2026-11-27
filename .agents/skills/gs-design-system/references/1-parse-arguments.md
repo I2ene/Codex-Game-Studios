@@ -12,12 +12,12 @@
 - Detect retrofit mode
 - `workflow` for this system, and `## Summary` at every tier
 
-See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the actual reviewer reads the gate file, including the parent when applying the role.
+This skill runs its one gate, CD-GDD-ALIGN, itself (Step 5a-bis), spawns no director, and reads `.game-studio/resources/docs/director-gates/cd-gdd-align.md` as its checklist.
 
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
 (collaborative resolves open decisions · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+`automation_always_ask` categories require input outside existing authorization).
 
 **`docs.density`** — it controls per-section *depth*, where `workflow`
 controls which sections exist. `modes.rigor` sets both together; set

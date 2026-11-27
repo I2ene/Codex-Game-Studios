@@ -1,5 +1,5 @@
 # Workflow Catalog
-# Used by $gs-help to determine where a user is and what comes next.
+# Used by $gs-next-step to determine where a user is and what comes next.
 #
 # Artifact checks:
 #   glob: file glob pattern — complete if ≥1 file matches (or min_count)
@@ -14,14 +14,14 @@
 # required: false → optional enhancement (shown as OPTIONAL)
 # repeatable: true → runs multiple times (one per system, story, etc.)
 #
-# Phase gates ($gs-gate-check): verdicts are ADVISORY — they guide the decision
-# but never hard-block advancement. The user always decides whether to proceed.
+# Phase gates ($gs-gate-check): verdicts guide the decision
+# but FAIL or NOT ASSESSED never advances the stage. The user decides eligible advancement.
 
 # Tier paths: a tier whose route is not the phase ladder. At `workflow: minimal`
 # nothing on the path runs $gs-gate-check, so project.stage never leaves Concept —
 # and walking the Concept phase names the concept doc, art bible and systems map
 # (all REQUIRED there) as blockers on a project that already has stories.
-# $gs-help reads paths.minimal instead of the ladder at that tier. Same step schema
+# $gs-next-step reads paths.minimal instead of the ladder at that tier. Same step schema
 # as phases; artifact-check.sh reports a path only when asked with --path <id>.
 
 paths:
@@ -38,7 +38,7 @@ paths:
         artifact:
           any_of:
             - glob: "project.yaml"
-              pattern: 'name:[[:space:]]*"?(Godot|Unity|Unreal)'
+              pattern: 'name:[[:space:]]*"?(Godot|Unity|Unreal|Web)'
             - glob: ".game-studio/resources/docs/technical-preferences.md"
               pattern: '\*\*Engine\*\*: [^[]'
         description: "Configure the engine and pin its version"
@@ -49,7 +49,7 @@ paths:
         required: true
         artifact:
           glob: "design/game-brief.md"
-        description: "One page: pitch, MVP features, build order. Replaces the concept doc, art bible, systems map and GDDs at this tier"
+        description: "One page: pitch, features, build order. Replaces the concept doc, art bible, systems map and GDDs at this tier"
 
       - id: create-stories
         name: "Stories"
@@ -88,10 +88,21 @@ phases:
         required: false
         description: "Explore the game concept using MDA, verb-first, and player psychology frameworks"
 
+      - id: game-concept
+        name: "Game Concept Document"
+        command: /brainstorm
+        required: true
+        artifact:
+          glob: "design/gdd/game-concept.md"
+        description: "Formalize concept with pillars, MDA analysis, and scope tiers"
+
       - id: engine-setup
         name: "Engine Setup"
         command: $gs-setup-engine
         required: true
+        # After the concept doc: playable first, engine last. With design docs and
+        # no prototypes/*/index.html, /next-step names /prototype before this step
+        # when no engine (or web) is set.
         # engine.name in project.yaml is the primary source; technical-
         # preferences.md is the legacy fallback. Either one completes the step.
         # $gs-setup-engine writes the value quoted (`name: "Godot"`), so the quote
@@ -101,7 +112,7 @@ phases:
         artifact:
           any_of:
             - glob: "project.yaml"
-              pattern: 'name:[[:space:]]*"?(Godot|Unity|Unreal)'
+              pattern: 'name:[[:space:]]*"?(Godot|Unity|Unreal|Web)'
             # technical-preferences.md writes "- **Engine**: Godot 4.7", so the
             # pattern must clear the bold markers. The [^[] guard rejects the
             # "[TO BE CONFIGURED]" placeholder.
@@ -478,7 +489,7 @@ phases:
 
       - id: changelog
         name: "Changelog"
-        command: $gs-changelog
+        command: $gs-write-changelog
         required: true
         description: "Internal changelog from commits, sprints, and design docs. The release gate needs the changelog or the patch notes drafted"
 

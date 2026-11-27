@@ -1,6 +1,6 @@
 ---
 name: gs-test-setup
-description: "Scaffold the test framework and CI — tests/ directory, engine test runner, GitHub Actions workflow. Once, before the first sprint."
+description: "Sets up the test framework and CI: tests/ directory, engine runner, GitHub Actions workflow. Use once, before the first sprint."
 ---
 
 # Test Setup

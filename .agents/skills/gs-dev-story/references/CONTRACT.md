@@ -24,6 +24,11 @@ Bridges planning and code by loading the full context for a single story (story 
 > or `Superseded`.
 
 ### Preconditions
+- A selected story still marked Blocked with `cut by /cut` or `cut by $gs-cut`
+  cannot be marked In Progress or implemented at any tier. Only an authorized
+  scope restoration through `$gs-cut`, with brief and Ready status readback,
+  clears this specific guard. The restore procedure owns its brief/story writes;
+  dev-story does not bypass the marker or broaden general blocked-story policy.
 - The target story must have `Status: Ready` (validated by `$gs-story-readiness` at `standard`/`full`; at `minimal`, `$gs-create-stories` writes stories `Ready` and `$gs-story-readiness` is not on the path)
 - The ADR referenced in the story must have `Status: Accepted` — if `Status: Proposed`, do not implement; surface this as a blocker and direct user to `$gs-architecture-decision accept [ADR-id]`; `Deprecated` or `Superseded` also blocks, naming the successor. A story whose ADR field reads `N/A` references none, at every tier
 - All `## Dependencies` stories listed in the story file must already have `Status: Complete` (or `Status: Done`)
@@ -50,7 +55,7 @@ Bridges planning and code by loading the full context for a single story (story 
 - The implementation summary states a **verification** result — what was run against the written code (Godot: `.game-studio/scripts/godot-parse-check.gd` over the changed scripts; Unity: `commands.smoke`; Unreal: the editor-target build) and its exit code. When the engine binary is unavailable this is **`NOT VERIFIED — <reason>`**, never an inference that the code is fine because it reads correctly
 - The implementation summary states a **run result** — `OBSERVED — <what was on screen>` with a retained screenshot under `production/qa/evidence/[story-slug]/`, `NOT VERIFIED — <reason>`, or `N/A — <reason>` (only for a story with genuinely nothing observable). `NOT VERIFIED` is a blocker at the default gate level for Visual/Feel and UI stories. The run is **not waived at `qa.level: minimal`** — tests are, the look is not. Procedure: `.game-studio/resources/docs/run-and-observe.md`
 - At `qa.level: minimal` no test file is written, and for a Logic or Integration story the summary says so explicitly (`Test evidence: waived at qa.level: minimal`); UI and Visual/Feel stories get no waiver line, because their screenshot still applies. A waived run and a run where tests were forgotten must not produce the same artifact
-- **`NOT ASSESSED` is an accepted inbound value of the story's `Risk` field** (`$gs-create-stories` emits it when `VERSION.md` assigns no level). The engine specialist checks every code story, so no Risk value can skip that check
+- **`NOT ASSESSED` is an accepted inbound value of the story's `Risk` field** (`$gs-create-stories` emits it when `VERSION.md` assigns no level). The engine specialist (on Web, lead-programmer) checks every code story, so no Risk value can skip that check
 - **Completion is not assumed.** If the programmer agent stopped early or its output fails to parse, the story is reported **INCOMPLETE** with the specific breakage named, and `Implementation Complete` is not emitted
 
 ## Immutability Rules

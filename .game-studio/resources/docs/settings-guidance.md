@@ -117,3 +117,8 @@ These skills each carry a **one-line pointer** to this doc.
 - **Always route to `$gs-settings`** — never edit `project.yaml` as a side effect of a
   recommendation.
 - **One line, then stop.** A nudge is a nudge, not a lecture.
+
+## Routing recommendations
+The next-step escalation may offer lower rigor when process overwhelms the user,
+or raising it when project size outgrows its current tier. Recommendations never
+edit configuration; use $gs-project-settings for the user's selected change.

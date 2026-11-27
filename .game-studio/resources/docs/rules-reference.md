@@ -10,3 +10,9 @@ Read only rules relevant to the requested changes; user/project instructions gov
 Read [scene and asset files](../rules/scene-files.md) before editing engine
 scenes, resources or serialized assets. Use supported editors where available.
 Paths select the rule, not automatic host permissions or hooks.
+
+## Browser scope
+The data rule includes data/**/*.json and the Web tuning objects in data/config.json;
+gameplay includes src/game/**. Tests use module.test.ts and system.spec.ts under
+their unit/integration roots. Prototype rules distinguish config/seed/offline
+one-shots from throwaway engine/paper experiments.

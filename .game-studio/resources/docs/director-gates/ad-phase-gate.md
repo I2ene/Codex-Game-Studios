@@ -12,13 +12,13 @@ never project authority. Confirm current official APIs and actual toolchain befo
 
 Agent: `art-director` | Responsibility tier: session (inherit) | Domain: Visual identity, art bible, visual production readiness
 
-**Trigger**: At `$gs-gate-check` when `modes.workflow` is `full` — the panel narrows by workflow, and only the full panel includes art-director; spawn in parallel with CD-PHASE-GATE, TD-PHASE-GATE, and PR-PHASE-GATE
+**Trigger**: At `$gs-gate-check` when `modes.workflow` is `full` — the panel narrows by workflow, and only the full panel includes art-director; apply alongside CD-PHASE-GATE, TD-PHASE-GATE, and PR-PHASE-GATE through labeled parent work or authorized available delegation
 
 **Context to pass**:
 - Target phase name and the resolved `workflow` tier
 - The target gate's required and recommended artifacts at the resolved tier (from `$gs-gate-check`'s loaded gate file)
 - List of all art/visual artifacts present (file paths)
-- Visual identity anchor from `design/gdd/game-concept.md` (if present; if there is no `design/gdd/game-concept.md`, the "Art & audio direction" line of `design/game-brief.md`)
+- Visual identity anchor from `design/gdd/game-concept.md` (if present; if there is no `design/gdd/game-concept.md`, the Look and references section (Label or Art & audio direction in older briefs) of `design/game-brief.md`)
 - Art bible path if it exists (`design/art/art-bible.md`)
 
 **Prompt**:

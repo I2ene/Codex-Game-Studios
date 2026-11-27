@@ -7,16 +7,63 @@ implementation. The installed native entry points govern actual execution. See
 
 | Role in the comparison | Version | Commit |
 | --- | --- | --- |
-| Previous upstream source | 1.1.2 | `b21fa0f7f289fc3e726cf36fb12b9bc1e7a51e4d` |
-| Integrated upstream source | 1.2.0 (includes 1.1.3) | `05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418` |
-| Previous Codex distribution | 2.0.1 | `4889c2b1fa938073670dc855c76072fe742c307a` |
+| Original upstream source | 1.1.2 | `b21fa0f7f289fc3e726cf36fb12b9bc1e7a51e4d` |
+| Previous integrated source | 1.2.0 (includes 1.1.3) | `05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418` |
+| Earlier Codex distribution | 2.0.1 | `4889c2b1fa938073670dc855c76072fe742c307a` |
+| Integrated upstream source | 1.3.0 | `abc0de79d6ceb0b5d7aa693945849b3937afbe6a` |
+| Previous Codex distribution | 2.1.0 | `3e7289ffe09e3222f0d3dd6e34b49f6c27dfb7fa` |
 
 The [upstream file map](upstream-file-map.tsv) accounts for every entry in the
 [fixed Git comparison](https://github.com/Donchitos/Claude-Code-Game-Studios/compare/b21fa0f7f289fc3e726cf36fb12b9bc1e7a51e4d...05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418).
-It records source and native paths before/after, rename/delete status, disposition
+The map preserves the 531 earlier rows and adds all 409 entries from the
+[1.2.0→1.3.0 comparison](https://github.com/Donchitos/Claude-Code-Game-Studios/compare/05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418...abc0de79d6ceb0b5d7aa693945849b3937afbe6a).
+Source-base/target columns distinguish the two ranges. It records source purpose,
+source and native paths before/after, rename/delete status, disposition
 and a contract category. A split section's earlier native location is the
 monolithic workflow. The map tracks maintenance provenance, not model test
 results. Source paths in the map are Git references, not installed entry points.
+
+## Upstream 1.3.0 behavior
+
+The main route is a genre-informed brief and browser playable, then play-driven
+iteration, tuning, sharing, import, Grow into Web, one-feature sittings and selected
+cuts. The 69 genre profiles, source gaps, mashup ownership and device/network
+substitutions are design guidance rather than tested game-quality guarantees.
+Web uses the shared engine table, scaffold, three optional starters and pinned
+lockfiles. Studio mode retains the full design/architecture/production/release
+ladder with new professional lenses and Features/Own calls story closure.
+
+### Necessary native differences
+
+| Source boundary | Native implementation and reason |
+| --- | --- |
+| Fixed models/effort, Skill calls, allow lists and private transcript attachments | Native skill routing, actual host tools/authorization and explicit accessible attachment files. Missing files/tools are named; no transcript scraping or permission grant. |
+| Mandatory source-host delegation | Preserve professional expertise and mode gates, permit labeled parent work, and record only real participants. Code-review has at most one authorized fresh-context engine helper; unavailable independence is explicit. Art Bible 1–4/9 uses art-director expertise; 5–8 applies shipped lenses and full-only assessment remains applicable. |
+| Root and command lookup | Shared nested engine roots outrank compatible old top-level keys. Invalid explicit paths remain invalid. A flat root excludes native framework/generated trees. Table command text is suggested; explicit consumer argv and engine pins retain authority. |
+| Prototype vs report receipts | Upstream one-shot TSV/YAML/screenshots retain prototype/Grow consumers. Existing SHA-256 JSON companions continue to govern reviewed report freshness. Neither format is falsely treated as the other. |
+| Selected cut story restart | Cut promises a blocked planning item stays out of implementation. Native dev-story first restores the selected brief/story under actual scope authority and reads Ready back, or stops for that unresolved decision. A cut alone never removes code. |
+| Conflicting browser-sketch prose | An existing non-Web engine's browser sketch returns to applicable prototype review/report. The intended one-shot route may Grow; engine/paper throwaway code is not silently productionized. |
+| Unscoped commits/undo and broad defer wording | Preserve authorized round files, unrelated staged/user edits and native ownership/checkpoint safety. Testable behavior still needs evidence; explicitly human-playtest-only work can remain deferred. Replay agrees only on observed paths/state, never all game behavior. |
+| Engine test preparation | Preserve explicit argv safety: required Godot import/Unreal build has its own configured argv, or is explicitly delegated to the test adapter; absent preparation is unassessed rather than stale-binary success. Web filters use effective nested/legacy test roots. |
+| Host events, mirrors and status UI | Explicit native recovery/checks and optional trusted hook definitions. No source-host runtime wrappers, dynamic instruction imports, automatic model switching, hidden dependency install or global configuration. |
+
+Source `project.kind` remains reserved/unimplemented; its hypothetical routing
+matrix is not a current capability. `project.goal` is optional shared state: a
+start-card guess is saved only when accepted, and cut dates/freezes apply only to
+the three selling goals. Missing configuration is distinct from a saved value.
+
+### Reproduce the checks
+
+Run `tools/upstream_audit.py --source-base 05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418
+--source-target abc0de79d6ceb0b5d7aa693945849b3937afbe6a --require-ancestry` as one
+command. This verifies mapping, destinations, exact reuse and ancestry (FORMAT).
+Run targeted `test_v13_*` tests, release-contract regressions and
+`tools/v13_integration_sample.py` for temporary-consumer helper/browser/upgrade
+execution. See [formal acceptance procedure](../specs/001-upstream-v1-3-port/quickstart.md).
+
+Neither source mapping nor a passed synthetic sample proves all Codex inference
+scenarios, real engine builds, human playtests, visual quality or host event delivery.
+The review candidate reports actual command and exact-head CI results separately.
 
 ## Workflow
 

@@ -77,6 +77,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The story is not BLOCKED: nothing requires outside action (no missing/DRAFT dependency, no unowned UNRESOLVED question)
 - [ ] Variant — the same `minimal` story with acceptance criteria traced to `design/game-brief.md`'s MVP feature (no `design/gdd/` path): "GDD requirement referenced" passes — the brief stands in for the GDD at `minimal`
 - [ ] Variant — the story also names `ADR-0005`, whose `## Status` is `Proposed`: the verdict is BLOCKED at `minimal` too — the referenced-ADR rule is the one Architecture Completeness item that is not N/A
+- [ ] A minimal story may trace its acceptance criteria to a Features item rather than a GDD; legacy MVP tracing still works. A referenced Proposed/Deprecated/Superseded ADR remains blocking.
 
 ---
 

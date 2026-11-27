@@ -29,7 +29,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The code root `src/` is scanned for this programmer role
 - [ ] The explanation covers the role, current task, architecture, naming standards, relevant scripts and review responsibilities without requiring a retired fixed report template
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
-- [ ] The completion summary distinguishes explained context from executed work and recommends a relevant next step such as `$gs-sprint-status` or `$gs-help`
+- [ ] The completion summary distinguishes explained context from executed work and recommends a relevant next step such as `$gs-sprint-status` or `$gs-next-step`
 
 ---
 

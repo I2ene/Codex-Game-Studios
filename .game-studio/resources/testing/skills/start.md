@@ -16,19 +16,20 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 1: Fresh project — propose minimal rigor, then save only selected settings
 
 **Fixture:** No project YAML, stage mirror, design docs, prototype or source; legacy technical preferences
-are placeholders and origin is the user's own. User selects No idea yet, saves Concept/minimal
+are placeholders and origin is the user's own. User selects An idea, or none yet (none), saves Concept/minimal
 and selects guided automation.
 
 **Input:** `$gs-start`
 
 **Domain checks:**
-- [ ] Read project-state before asking A–D; defer engine choice to setup-engine. Initially offer
+- [ ] Read project-state before asking A–D with Make me a game first; defer engine choice to setup-engine. Initially offer
   brainstorm open and defer the full path until the rigor is known.
 - [ ] Show why Concept and minimal fit; do not ask a second standalone rigor question. Save only
-  the selected project.stage, modes.rigor and modes.automation, in one modes block. Do not write
+  the selected project.stage and project.goal under one project block, and modes.rigor and modes.automation under one modes block. Do not write
   either legacy mirror or the six derived leaves.
-- [ ] Name the minimal four steps and close with the chosen handoff, without auto-starting it in
+- [ ] Name the minimal path with prototype after brainstorm and before setup-engine and close with the chosen handoff, without auto-starting it in
   this onboarding-only fixture. COMPLETE means oriented, not game work executed.
+- [ ] Show the goal on the card as guessed from the person's words (hobby for none, sell for commercial/Steam), with Save/Change/Don't save. Save only an accepted guess or explicit card edit; never seed derived mode leaves or legacy mirrors.
 
 ---
 
@@ -45,14 +46,14 @@ and selects guided automation.
 - [ ] The message names the configured engine (Godot) and the brief path
 - [ ] Review mode is reported as `solo`, resolved from rigor
 - [ ] No write is made to `project.yaml` or `production/stage.txt`
-- [ ] Direct the returning contributor to `$gs-help` after reporting the actual brief and
+- [ ] Direct the returning contributor to `$gs-next-step` after reporting the actual brief and
   resolved review mode.
 
 ---
 
 ### Case 3: Existing Unity work — observed stage and selected state are distinct
 
-**Fixture:** Unity, explicit standard rigor and collaborative automation; source under Assets/Scripts, three
+**Fixture:** Unity, project.goal sell, explicit standard rigor and collaborative automation; source under Assets/Scripts, three
 system GDDs, no concept/ADRs. The user selects Existing work and chooses to save the proposed
 Systems Design stage.
 
@@ -65,6 +66,7 @@ Systems Design stage.
   existing rigor and automation without asking them again or creating/synchronizing a mirror.
 - [ ] Show the applicable standard retrofit path including GDD, ADR and registry checks; end
   COMPLETE after handing off.
+- [ ] Fixture already sets project.goal sell: keep it as already set, without guessing, asking again or rewriting it.
 
 ---
 
@@ -111,6 +113,8 @@ configuration and selects collaborative. B: declines save.
 - [ ] A: persist only selected stage, rigor and automation in their proper parents. Keep a
   single modes block with no six derived leaves or new mirrors. B: report values not saved; do
   not write automation or any other config.
+- [ ] Show the goal on the card as guessed from the person's words (hobby for none, sell for commercial/Steam), with Save/Change/Don't save. Save only an accepted guess or explicit card edit; never seed derived mode leaves or legacy mirrors.
+- [ ] After saving the commercial/Steam card, project.goal sell is persisted alongside the selected stage and rigor; a declined save changes neither goal nor automation.
 
 ---
 
@@ -127,6 +131,7 @@ no idea yet, selects the proposed Concept/minimal settings, then chooses guided 
   knobs or a legacy mirror.
 - [ ] Use existing authorization for routine writes; keep the choice of stage and settings
   distinct from any observed project state.
+- [ ] Show the goal on the card as guessed from the person's words (hobby for none, sell for commercial/Steam), with Save/Change/Don't save. Save only an accepted guess or explicit card edit; never seed derived mode leaves or legacy mirrors.
 
 ---
 
@@ -144,3 +149,63 @@ with no existing game. C: brief exists.
   retrofit for minimal or treat file count as a completed phase.
 - [ ] C: retain the returning-work path instead of rerunning onboarding. No skill is started or
   stage persisted merely because a route is shown.
+
+---
+
+### Case 9: Make-game onboarding handoff writes no settings
+
+**Fixture:** Fresh project; typed start and user chooses Make me a game. Variant: configured Godot without concept.
+
+**Input:** $gs-start
+
+**Domain checks:**
+- [ ] Skip the stage/rigor/goal card, save and automation questions; write no settings. Name prototype as the next step.
+- [ ] Godot variant explains the throwaway engine route and optional browser sketch. Model-pin differences never prescribe tool calls or new authorization.
+
+---
+
+### Case 10: An existing plain-language build request continues directly
+
+**Fixture:** User already asks for a sheep-herding game; the system routes through start. Contrast: typed start alone.
+
+**Input:** make me a game where you herd sheep with a dog
+
+**Domain checks:**
+- [ ] Use the original request and continue the authorized prototype route without repeating onboarding or inventing intent; preserve required build-card decisions.
+- [ ] Do not write onboarding config or issue a competing completion verdict. Typed-start-only remains a handoff request, not automatic build authorization.
+
+---
+
+### Case 11: Clear concept offers build-now only as the appropriate route
+
+**Fixture:** Fresh no-engine project; clear top-down flood-racing concept. Variants: Unity configured, or Godot named in the sentence.
+
+**Input:** $gs-start
+
+**Domain checks:**
+- [ ] No-engine options place Build it now first, followed by formalize/jump routes. Choosing it skips settings and names prototype.
+- [ ] Known/named engine variants offer formalize, engine setup/continuation and a nonrecommended browser sketch; never silently convert the selected engine.
+
+---
+
+### Case 12: A changed goal on the card overrides its guess
+
+**Fixture:** Cozy farming description initially suggests hobby; user changes goal to selling on Steam, then saves. Variant: stored jam changed to portfolio.
+
+**Input:** $gs-start
+
+**Domain checks:**
+- [ ] Show hobby as guessed without a separate goal question. Redisplay sell as user-provided, write nothing before the applicable save choice, then save sell with selected settings.
+- [ ] A changed existing goal is saved too; unchanged stored goal is kept. Don't save preserves files, including automation and legacy mirrors.
+
+---
+
+### Case 13: Standard path retains the main route and studio ladder
+
+**Fixture:** Standard rigor; clear river-town trading concept, formalize first; compare existing-work route.
+
+**Input:** $gs-start
+
+**Domain checks:**
+- [ ] For new work place make/play/change/Grow before the correctly ordered standard studio path; explain studio fits team, long project or desired paperwork once.
+- [ ] Keep every applicable professional step. Existing-work variant retains the studio explanation and its own path without the new-game main-path preface.

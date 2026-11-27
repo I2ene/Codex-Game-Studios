@@ -1,6 +1,6 @@
 ---
 name: gs-code-review
-description: "Architectural code review — coding standards, SOLID, testability, performance concerns."
+description: "Architectural review of written code: coding standards, SOLID, testability, performance."
 ---
 
 # Code Review

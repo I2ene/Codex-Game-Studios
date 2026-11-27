@@ -66,9 +66,11 @@ and the story is marked Complete only on the user's yes.
 
 **Writes, after the user's yes:** the story file (`Status`, `Last Updated`, a
 `## Completion Notes` section) and its `production/sprint-status.yaml` entry;
-`docs/tech-debt-register.md` only when the user picks that option. The session
+`docs/tech-debt-register.md` only when the user picks that option; at `minimal`, the
+brief's Features line the story finished; the story's row in its `EPIC.md`. The close
+question names each file it will change. The session
 checkpoint is written at the end of every run, whatever the verdict.
-**Next:** the next story (Phase 8).
+**Next:** the next story (Phase 8). Follow the next native skill when the user has authorized that work; otherwise name the next step.
 
 Asks follow `.game-studio/resources/docs/automation-modes.md` (collaborative resolves open decisions, guided
 asks on major choices, autonomous logs and goes on; `automation_always_ask`
@@ -81,7 +83,7 @@ Checklist (copy it and tick as you go):
 - [ ] Phase 2: what the story is checked against, loaded for its tier
 - [ ] Phase 3: each criterion verified, traceability table built
 - [ ] Phase 4: test evidence and run result checked
-- [ ] Phase 5: deviations and scope checked
+- [ ] Phase 5: deviations and scope checked; the AI's own calls kept or changed by the person
 - [ ] Phase 6: review gates run, or their skip noted
 - [ ] Phase 7: report and verdict shown; close asked
 - [ ] Phase 8: next story named, checkpoint written, closing block printed
@@ -164,8 +166,11 @@ Take each acceptance criterion in turn:
 - **Asked:** behaviour ("the player takes damage when…"), feel, and performance
   criteria. Never mark one passed from reading the code: the code says what should
   happen, not what the build does. Up to four per ask: "Does [criterion]?" Options:
-  Yes — passes / No — fails / Not tested yet. `Not tested yet` is UNTESTED, and
-  keeps the verdict at best NOT ASSESSED until someone checks it.
+  Yes — passes / No — fails / I'll check it when I play / Not tested yet.
+  Only a genuinely human-playtest-only criterion may use `DEFERRED — requires playtest session`. A testable behavior or performance criterion still unverified is UNTESTED; saying it will be played later does not waive its evidence. `Not tested yet` is UNTESTED, and keeps the verdict at best NOT ASSESSED until
+  someone checks it. On a grown game, a criterion the same-seed run's screenshot plainly
+  shows is seen on screen (below) and is not asked: `production/qa/evidence/grow-<name>/`
+  `story.png`, or the image `$gs-dev-story`'s OBSERVED line names, once you opened it.
 - **Seen on screen:** a criterion about something visible is covered by a retained
   image under `production/qa/evidence/[story-slug]/` (`[story-slug]`: the story
   file's name without `.md`) that you opened and saw it in.
@@ -212,7 +217,7 @@ in the notes. Name what is missing and where it goes. An evidence doc with no im
 beside it is not evidence: a described check is an assertion.
 
 **Is the evidence older than its code?** For retained visual evidence, locate the
-actual report/companion pair per [story capture receipts](.game-studio/resources/docs/review-receipts.md#story-capture-receipts). If found, run
+actual report/companion pair per [story capture receipts](../../../../.game-studio/resources/docs/review-receipts.md#story-capture-receipts). If found, run
 `python .game-studio/runtime/studio.py receipts check <source-and-image-patterns...> --receipt <evidence.receipt.json> --root <project-root>`
 with the companion's saved patterns. Report freshness separately; apply the
 existing evidence gate only when the required evidence itself is missing,
@@ -227,6 +232,14 @@ story whose criteria name something on screen: a gap at the gate level. No line:
 advisory, "confirm the build was launched and looked at". A user's "Yes — passes"
 to an on-screen criterion with no retained image is an assertion, not an
 observation: a gap at the gate level.
+
+**A grown game's same-seed run, every story type.** When
+`production/qa/evidence/grow-<name>/replay.args` exists, take the `Same-seed run:` line
+from the same checkpoint or Completion Notes. `SAME` or `CHANGED, accepted`: note it. `CHANGED, not accepted`: BLOCKING in every mode,
+"this story changed how the game plays and the change was not accepted: fix it, then
+`$gs-dev-story [path]` plays the run again". No line: NOT ASSESSED, "the same-seed run was not
+played after this story: `$gs-dev-story [path]` plays it". `NOT ASSESSED — <reason>`: advisory,
+with the reason.
 
 ## Phase 5: Deviations and scope
 
@@ -254,6 +267,30 @@ Each deviation is **BLOCKING** (contradicts the GDD or ADR), **ADVISORY** (drift
 but works the same; the user decides) or **OUT OF SCOPE** (for awareness). State
 them as facts; the user judges them.
 
+**The AI's own calls.** Building a story means choosing things its design never
+said: a value, a timing, a colour, what happens in a case nobody named, a word on
+the screen. Those are the AI's calls, not the person's, and each one is shown
+before the story closes. Read the story's changed files (the `## Files` list, or
+the Scope step's list) beside what the story is built against (its criteria, and
+the GDD or the brief), and take the `**Own calls:**` line from the `$gs-dev-story`
+checkpoint when its Current task names this story. List each choice a player
+could notice, or a later story would have to agree with, that none of those says,
+one plain line each with where it is: "Coins fall at 70 a second
+(`data/config.json`); the brief names no speed." Code layout and names are not
+calls. Then ask about each, in every automation mode, and wait for the answers
+before Phase 6: the report shows each answer, and a call with no answer is not
+kept. The question: "Keep this, or change it?"
+Options: Keep it / Change it — say how. Several calls can share one question with
+one option each to keep, and a free answer for the rest.
+
+- **Kept:** recorded on the story on close (step 2 of the close).
+- **Changed:** a BLOCKING item, "[call]: change it to [the person's words]". The
+  story stays open; `$gs-dev-story [path]` makes the change, and the next
+  `$gs-story-done` lists the calls again.
+- **None found:** say `Own calls: none beyond the design`, naming what was read.
+- **No changed files to read** (none listed and a clean tree): `Own calls: NOT
+  ASSESSED — no changed files to read`, a NOT ASSESSED item.
+
 ## Phase 6: Review gates
 
 Read the `review_gate` line above.
@@ -267,10 +304,15 @@ Read the `review_gate` line above.
   `.game-studio/resources/docs/director-gates.md`, and run both gates now. On a skip, do not load
   it.
 
-**Reviewed by** is never blank: `lead-programmer` when LP-CODE-REVIEW ran;
-`$gs-code-review (you said you ran it; not verified here)` for the lean Yes; `self, no
-independent review` in solo mode, for either No, and when no implementation file
-exists yet.
+**Reviewed by** records the actual reviewer, never merely a role name:
+- LP-CODE-REVIEW performed here: `parent assessment (lead-programmer lens); no independent review`.
+- An actual authorized delegate performed it: record the actual participant ID or
+  observed identity together with `role: lead-programmer` and the returned verdict.
+  Do not invent an ID or imply the parent was a separate reviewer.
+- Lean Yes: `$gs-code-review (you said you ran it; not verified here)`.
+- Solo, either lean No, or no implementation files: `self, no independent review`.
+Carry the same attribution into Completion Notes and the closing Review line;
+record missing gate inputs as NOT ASSESSED, never as completed independent review.
 
 ## Phase 7: Report, verdict, and the close
 
@@ -289,9 +331,13 @@ exists yet.
 ### Test Evidence
 **Required**: [what the type needs at this qa.level, or "waived at qa.level minimal"]
 **Found**: [YES — path | NO — BLOCKING | NO — ADVISORY]
+**Same-seed run**: [a grown game only: the line $gs-dev-story gave, or NOT ASSESSED — not played after this story]
 
 ### Deviations
 [NONE, or each: BLOCKING / ADVISORY / OUT OF SCOPE — description — reference]
+
+### Own calls
+[each call: kept | change to <the person's words> (BLOCKING) · or "none beyond the design" · or NOT ASSESSED — why]
 
 ### Review
 **Reviewed by**: [value]
@@ -305,7 +351,8 @@ exists yet.
 2. **NOT ASSESSED:** a criterion could not be evaluated: it names no observable
    outcome, the user answered "Not tested yet", a review gate returned NOT ASSESSED
    and its input was not supplied, evidence exists but cannot be read, or the GDD
-   or ADR a deviation would be judged against is missing. Name each one and what
+   or ADR a deviation would be judged against is missing, or the own calls could
+   not be read. Name each one and what
    would settle it. It outranks the two passes and never hides a failure.
 3. **COMPLETE WITH NOTES:** every criterion passes or is DEFERRED, with advisory
    items listed. An absent sprint file and capture freshness alone are informational.
@@ -335,14 +382,29 @@ close.
    **Deviations**: [None, or the advisory ones]
    **Test Evidence**: [path, or "waived at qa.level minimal", or "none required"]
    **Reviewed by**: [value]
+   **Same-seed run**: [a grown game only: the line as $gs-dev-story gave it]
+
+   ## Calls beyond the design
+   - [each call the person kept, with where it is] · kept [date]
    ```
-3. "Close and log as tech debt": read [tech-debt-row.md](tech-debt-row.md) and add one
+   With no calls, the section reads `- none beyond the design`.
+3. "Close and log as tech debt": read `.agents/skills/gs-story-done/references/tech-debt-row.md` and add one
    row per advisory deviation.
 4. `production/sprint-status.yaml`, when it exists: this story's entry gets
    `status: done` and `completed: [date]`, and the top-level `updated` gets today.
    The close answer covers it.
-5. Print a suggested commit: `git add [the changed code and test files] [story path]`
-   and `git commit -m "feat: [story title] ([TR-ID])"`.
+5. At `workflow: minimal`, when the story's Requirement reads `Brief MVP feature N`
+   and it is the last story for item N that is not `Complete`, set that Features line in
+   `design/game-brief.md` to `[x]`; a `deepen — <system>` story ticks the Features line
+   that names its system, when one does. The brief is the design record that `$gs-next-step`,
+   `$gs-create-stories` and `$gs-cut` read.
+6. On close, set this story's Status cell in `production/epics/[epic-slug]/EPIC.md`'s
+   Stories table to `Complete`, when the table lists it.
+7. Ask "Commit this story? (`feat: [story title]`)" with `Yes, commit` / `Not now`, in
+   every mode, so each closed story is a point the person can go back to. On a yes, run
+   git add -- [the story's `## Files` paths] [story path] (with any other file this close
+   changed), then `git commit -m "feat: [story title] ([TR-ID])" -- [only the approved story and close paths]`. Never `git add -A` or
+   `.`: other changes stay out of it. The yes is the instruction a commit needs.
 
 **On "Don't close yet":** change no story file. List what the user flagged. Never
 fix a failing criterion yourself: report it and ask what to do.

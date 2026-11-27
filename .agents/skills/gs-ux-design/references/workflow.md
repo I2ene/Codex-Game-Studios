@@ -81,7 +81,7 @@ When this skill is invoked:
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
 (collaborative resolves open decisions · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+`automation_always_ask` categories require input outside existing authorization).
 
 **Authoring guidance**: the skeletons below are self-contained — author from them
 directly. When a section needs depth (worked examples, pattern catalogs,

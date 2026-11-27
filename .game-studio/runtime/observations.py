@@ -1,38 +1,34 @@
 """Explicit project-state, guard, scaffold, and native skill observations."""
 from datetime import date
+from pathlib import Path
 import configparser
 import json
 import re
+import shlex
 from urllib.parse import urlsplit, urlunsplit
 
 import checks
 import config
 from markdown_ops import sections, text_parts, visible_lines
-from paths import confined
+from paths import confined, plain
+import engine_table
 
 SOURCE_EXTENSIONS = {".gd", ".gdshader", ".cs", ".cpp", ".cc", ".c", ".h", ".hpp", ".rs",
                      ".py", ".js", ".ts", ".lua", ".java", ".kt"}
-CODE_ROOTS = {"godot": "src", "unity": "Assets", "unreal": "Source"}
+CODE_ROOTS = {key: row["code_root"] for key, row in engine_table.table().items()}
 WATCHED = ("design/", "docs/architecture/", "production/session-state/")
 NON_TEXT = {".pdf", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".bmp", ".tif", ".tiff"}
 
 
 def code_root(root, resolved):
-    value = resolved["values"].get("code_root")
-    if value is not None:
-        if not isinstance(value, str) or not value.strip():
-            raise ValueError("code_root must be a repository-relative directory")
-        target = confined(root, value)
-        return target.relative_to(root).as_posix(), resolved["sources"]["code_root"]
-    engine = str(resolved["values"].get("engine.name") or "").lower()
-    if engine in CODE_ROOTS:
-        return CODE_ROOTS[engine], "engine.name"
-    candidates = [entry.name for entry in root.iterdir() if entry.name in CODE_ROOTS.values()
-                  and confined(root, entry.name).is_dir()]
-    return (candidates[0], "detected") if len(candidates) == 1 else (None, "unset")
+    record = engine_table.describe(resolved)["code_root"]
+    if record["status"] == "INVALID":
+        return None, "invalid: " + record["reason"]
+    return record["value"], record["source"]
 
 
 def project_state(root, stage_only=False):
+    root = plain(root)
     resolved = config.resolve(root)
     facts = {}
 
@@ -56,7 +52,7 @@ def project_state(root, stage_only=False):
     relative, source = code_root(root, resolved)
     fact("code_root", relative, source)
     code = confined(root, relative) if relative else None
-    count = (sum(p.suffix.lower() in SOURCE_EXTENSIONS for p in checks.files(code, "**/*"))
+    count = (sum(p.suffix.lower() in SOURCE_EXTENSIONS for p in engine_table.source_files(root, relative))
              if code and code.is_dir() else None)
     fact("source_files", count, relative if count is not None else "unset")
     concept = next((path for path in ("design/gdd/game-concept.md", "design/game-brief.md")
@@ -102,6 +98,7 @@ def project_state(root, stage_only=False):
 
 
 def read_guard(root, action, relative, bounded=False):
+    root = plain(root)
     path = confined(root, relative)
     relative = path.relative_to(root).as_posix()
     if action == "sections":
@@ -145,7 +142,63 @@ def config_findings(root, relative, content, previous=None):
     return findings
 
 
+def git_observations(segments):
+    """Observe explicit command segments without running Git or intercepting any tool."""
+    findings = []
+    for segment in segments:
+        lexer = shlex.shlex(segment, posix=True, punctuation_chars=";&|")
+        lexer.whitespace_split = True
+        lexer.commenters = ""
+        tokens = list(lexer)
+        commands, command = [], []
+        for token in tokens + [";"]:
+            if token in {";", "&&", "||", "|", "&"}:
+                if command:
+                    commands.append(command)
+                command = []
+            else:
+                command.append(token)
+        for command in commands:
+            while command and (re.match(r"^[A-Za-z_][A-Za-z0-9_]*=", command[0]) or command[0] in {"env", "sudo", "command"}):
+                command = command[1:]
+            if not command or Path(command[0].replace("\\", "/")).name.casefold() not in {"git", "git.exe"}:
+                continue
+            index = 1
+            while index < len(command) and command[index].startswith("-"):
+                index += 2 if command[index] in {"-c", "-C", "--git-dir", "--work-tree", "--namespace"} else 1
+            if index >= len(command):
+                continue
+            action, args = command[index], command[index + 1:]
+            if action not in {"commit", "tag", "merge", "push"}:
+                continue
+            all_tracked, i = False, 0
+            while action == "commit" and i < len(args):
+                token = args[i]
+                if token == "--":
+                    break
+                if token == "--all":
+                    all_tracked = True
+                elif token.startswith("-") and not token.startswith("--"):
+                    for letter in token[1:]:
+                        if letter == "a":
+                            all_tracked = True
+                        if letter in "mFCctSUu":
+                            if len(token) == 2:
+                                i += 1
+                            break
+                elif token in {"--message", "--file", "--reuse-message", "--reedit-message", "--author", "--date", "--cleanup"}:
+                    i += 1
+                i += 1
+            findings.append({"code": "GIT_ACTION", "action": action, "segment": segment,
+                             **({"all_tracked": all_tracked} if action == "commit" else {})})
+    return {"status": "OBSERVED", "findings": findings,
+            "note": "Explicit lexical observations only; no tool enforcement or authorization decision."}
+
+
 def write_guard(root, action, targets, tool="Write"):
+    root = plain(root)
+    if action == "git":
+        return git_observations(targets)
     findings = []
     if action == "artifact":
         for relative in targets:
@@ -165,7 +218,7 @@ def write_guard(root, action, targets, tool="Write"):
                  "production/session-state/active.md", "design/registry/entities.yaml"}
     protected.update(scaffold_paths(None, None).keys())
     protected.update({f"Assets/Tests/{part}/{part}Tests.asmdef" for part in ("EditMode", "PlayMode")})
-    protected.update({"tests/unit/.gitkeep", "tests/integration/.gitkeep"})
+    protected.update({"tests/unit/.gitkeep", "tests/integration/.gitkeep", "playwright.config.ts"})
     upstream_file = (relative in {"project.godot", "docs/tech-debt-register.md"}
                      or relative.startswith(("tests/helpers/", "docs/engine-reference/"))
                      or re.fullmatch(r"production/epics/.+/EPIC\.md", relative))
@@ -184,6 +237,13 @@ def write_guard(root, action, targets, tool="Write"):
     if action in {"check", "prototype"} and path.suffix.lower() in SOURCE_EXTENSIONS | {".tscn", ".tres"}:
         resolved = config.resolve(root)
         source, _ = code_root(root, resolved)
+        # A missing folder prevents scanning; its safe declared spelling still
+        # identifies a cross-boundary import in the prototype being inspected.
+        if not source:
+            raw = resolved["values"].get("engine.code_root", resolved["values"].get("code_root"))
+            declared = engine_table.root_value(root, raw, "engine.code_root")
+            if declared["status"] != "INVALID":
+                source = declared["value"]
         in_prototype = relative.startswith("prototypes/")
         in_code = bool(source and (source == "." or relative.startswith(source.rstrip("/") + "/")))
         if in_prototype or in_code:
@@ -216,8 +276,11 @@ def write_guard(root, action, targets, tool="Write"):
 def scaffold_paths(engine, module):
     paths = {"tests/README.md": None, "production/qa/evidence/.gitkeep": b"",
              ".github/workflows/tests.yml": None, "tests/smoke/critical-paths.md": None}
-    if engine == "godot":
+    if engine in {"godot", "web"}:
         paths.update({"tests/unit/.gitkeep": b"", "tests/integration/.gitkeep": b""})
+    if engine == "web":
+        template = Path(__file__).resolve().parents[1] / "resources/engines/web/scaffold/playwright.config.ts"
+        paths["playwright.config.ts"] = template.read_bytes()
     if engine == "unity":
         for part in ("EditMode", "PlayMode"):
             name = part + "Tests"
@@ -232,9 +295,10 @@ def scaffold_paths(engine, module):
 
 
 def test_scaffold(root, engine, *, listing=False, dry_run=False, module=None, project=None, setup_date=None):
+    root = plain(root)
     engine = engine.casefold()
     if engine not in CODE_ROOTS:
-        raise ValueError("Test scaffolds are provided for Godot, Unity, and Unreal")
+        raise ValueError("Test scaffolds are provided for Godot, Unity, Unreal, and Web")
     today = date.fromisoformat(setup_date) if setup_date else date.today()
     if module is None and engine == "unreal":
         markers = checks.files(root, "*.uproject")
@@ -245,8 +309,18 @@ def test_scaffold(root, engine, *, listing=False, dry_run=False, module=None, pr
     if project is not None and not re.fullmatch(r"[\w .-]+", project):
         raise ValueError("Project name must be plain text")
     paths = scaffold_paths(engine, module)
-    version = None if listing else config.resolve(root, require_clean=not dry_run)["values"].get("engine.version")
-    runner = {"godot": "GdUnit4", "unity": "Unity Test Framework", "unreal": "Unreal Automation"}[engine]
+    resolved = None if listing else config.resolve(root, require_clean=not dry_run)
+    version = resolved["values"].get("engine.version") if resolved else None
+    selected_test_root = None
+    if resolved:
+        values = resolved["values"]
+        selected = next((key for key in ("engine.test_root", "test_root") if values.get(key) is not None), None)
+        if selected:
+            record = engine_table.root_value(root, values[selected], selected, explicit=True)
+            if record["status"] == "INVALID":
+                raise ValueError(selected + ": " + record["reason"])
+            selected_test_root = record["value"]
+    runner = {"godot": "GdUnit4", "unity": "Unity Test Framework", "unreal": "Unreal Automation", "web": "Vitest and Playwright"}[engine]
     needs = [{"id": "test_runner", "path": "tests/README.md", "detail": f"Verify {runner} and configure the reviewed test argv."},
              {"id": "ci_adapter", "path": ".github/workflows/tests.yml", "detail": "Author CI from the reviewed runner, actual engine version and platform requirements."}]
     if not version:
@@ -259,6 +333,14 @@ def test_scaffold(root, engine, *, listing=False, dry_run=False, module=None, pr
                                 "Record the reviewed test command in project.yaml. The scaffold is not executed evidence.\n").encode()
     paths["tests/smoke/critical-paths.md"] = (
         b"# Smoke critical paths\n\n| Path | Steps | Expected result | Evidence |\n| --- | --- | --- | --- |\n")
+    if selected_test_root:
+        old_root = ("Assets/Tests" if engine == "unity" else
+                    f"Source/{module}/Private/Tests" if engine == "unreal" and module else "tests")
+        paths = {(selected_test_root + relative[len(old_root):] if relative.startswith(old_root + "/") else relative): data
+                 for relative, data in paths.items()}
+        if engine == "web":
+            paths["playwright.config.ts"] = paths["playwright.config.ts"].replace(
+                b"'tests/integration'", json.dumps(selected_test_root + "/integration", ensure_ascii=False).encode())
     planned = [(relative, confined(root, relative), data) for relative, data in paths.items()]
     rows = []
     for relative, path, data in planned:

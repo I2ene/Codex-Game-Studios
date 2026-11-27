@@ -6,7 +6,7 @@ record actual participants and tool evidence separately.
 # Skill Quality Rubric
 
 Used by `$gs-skill-test category [name|all]` to evaluate skills beyond structural compliance.
-Each category defines 4–5 binary PASS/FAIL metrics specific to the skill's job.
+Each category defines 2–5 metrics per skill or role, marked PASS, FAIL, WARN or NOT ASSESSED.
 
 A metric is PASS when the skill's written instructions clearly satisfy the criterion.
 A metric is FAIL when the instructions are absent, ambiguous, or contradictory.
@@ -167,7 +167,7 @@ They have a PR-SPRINT or PR-MILESTONE gate at specific mode thresholds.
 launch-checklist, release-checklist, smoke-check, soak-test, test-setup, test-helpers,
 regression-suite, qa-plan, bug-triage, bug-report, playtest-report, asset-spec,
 reverse-document, project-stage-detect, setup-engine, skill-test, skill-improve,
-day-one-patch, and any other skills not in categories above
+day-one-patch, cut, and any other skills not in categories above
 
 Utility skills pass the applicable native static checks. If they happen to consult director
 gates, the gate mode logic must also be correct.

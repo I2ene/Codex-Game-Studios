@@ -4,7 +4,7 @@
 Only gs-* skills, gs-* roles and .game-studio are managed. Spec Kit project tooling, specs and generated development skills are not consumed or needed by the installer.
 
 ## Reused shell helpers
-Retain upstream command names, argument grammar, exit distinctions, stdout observations and file effects unless a named host boundary requires an adapter. Rewrite internal source paths consistently. `--keep` preserves temporary evidence; `--record` writes evidence and is not a read-only synonym. Run/install/network/Git actions remain visible and authorized.
+Retain upstream command names, argument grammar, exit distinctions, stdout observations and file effects unless a named host boundary requires an adapter. Rewrite internal source paths consistently. `one-shot-check --keep` only reports Keep/pin observations without runs or writes; `--record` writes validated evidence and is not a read-only synonym. Run/install/network/Git actions remain visible and authorized.
 
 ## Configuration
 Effective native resolver drives scripts and workflows. Engine table supplies shared facts; user argv/pin and nested-root precedence remain authoritative. Unset, unknown or invalid paths do not become a guessed valid project.

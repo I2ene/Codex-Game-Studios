@@ -59,7 +59,7 @@ def parser():
             s.add_argument('path')
             s.add_argument('--bounded', choices=['yes', 'no'], default='no')
         elif name == 'write-guard':
-            s.add_argument('action', choices=['check', 'overwrite', 'config', 'prototype', 'freeze', 'artifact'])
+            s.add_argument('action', choices=['check', 'overwrite', 'config', 'prototype', 'freeze', 'artifact', 'git'])
             s.add_argument('targets', nargs='+')
             s.add_argument('--tool', choices=['Write', 'Edit'], default='Write')
         elif name == 'test-scaffold':

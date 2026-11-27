@@ -31,7 +31,7 @@ unsafe paths, source/target overlap and corrupt ownership state. All collisions 
 preflighted; an exactly identical existing file can be adopted. Unowned differences
 and edited managed files fail without overwriting. Dry run does not create the target.
 
-Open Codex in the consumer and invoke $gs-start, $gs-help or a relevant skill. Native
+Open Codex in the consumer and invoke $gs-start, $gs-next-step or a relevant skill. Native
 discovery may refresh automatically; restart if the host hasn't refreshed. See [validation boundaries](validation.md) for discovery and unassessed host capabilities.
 
 Optional hooks: generate and review definitions; register only through normal native

@@ -231,7 +231,7 @@ A walkthrough log is welcome but not required.
 ### Evidence older than its code
 
 For each story with retained visual evidence, locate its actual report/companion
-pair per [story capture receipts](.game-studio/resources/docs/review-receipts.md#story-capture-receipts). If found, run
+pair per [story capture receipts](../../../../.game-studio/resources/docs/review-receipts.md#story-capture-receipts). If found, run
 `python .game-studio/runtime/studio.py receipts check <source-and-image-patterns...> --receipt <evidence.receipt.json> --root <project-root>`
 using its saved patterns. Report source drift, report changes and required input
 gaps separately from adequacy. If no companion is available, mark freshness

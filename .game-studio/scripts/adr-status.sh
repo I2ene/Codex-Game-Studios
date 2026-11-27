@@ -85,7 +85,7 @@ else
 fi
 
 ADR_DIR="docs/architecture"
-TEMPLATE=".claude/docs/templates/architecture-decision-record.md"
+TEMPLATE=".game-studio/resources/docs/templates/architecture-decision-record.md"
 # adr_id PATH — adr-dep-graph.sh's id: the first adr-<digits> in the name, lower case.
 adr_id() { printf '%s\n' "${1##*/}" | tr '[:upper:]' '[:lower:]' | grep -oE 'adr-[0-9]+' | head -1; }
 

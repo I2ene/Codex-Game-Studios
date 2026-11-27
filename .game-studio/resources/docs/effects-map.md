@@ -150,7 +150,7 @@ The rule for deciding which side a setting belongs on:
 | `testing.framework` | Whole project uses one framework |
 
 > **A locked key written into `project.local.yaml` by hand is reported, not
-> swallowed.** `$gs-settings --local` refuses to write one, but the
+> swallowed.** `$gs-project-settings --local` refuses to write one, but the
 > file is meant to be hand-edited and that path had no guard: `modes.rigor: full`
 > there is a real key with a legal value, so enum validation passes it, and then
 > resolution never consults the local file for that path — the setting vanishes
@@ -165,11 +165,11 @@ The rule for deciding which side a setting belongs on:
 
 ---
 
-### `$gs-settings --local` flag behavior
+### `$gs-project-settings --local` flag behavior
 
 ```
-$gs-settings workflow=minimal               → writes to project.yaml (team-wide)
-$gs-settings --local automation=autonomous  → writes to project.local.yaml (just you)
+$gs-project-settings workflow=minimal               → writes to project.yaml (team-wide)
+$gs-project-settings --local automation=autonomous  → writes to project.local.yaml (just you)
 ```
 
 **Behavior rules:**
@@ -178,7 +178,7 @@ $gs-settings --local automation=autonomous  → writes to project.local.yaml (ju
 - `--local` flag: writes to `project.local.yaml` (creates it if absent)
 - `--local` on a locked setting → error:
   > *"`<setting>` cannot be locally overridden — it's a project-wide setting.
-  > Use `$gs-settings <setting>=<value>` (no `--local`) to change it for the whole team."*
+  > Use `$gs-project-settings <setting>=<value>` (no `--local`) to change it for the whole team."*
 - Writing to `project.yaml` when the same setting is currently locally overridden → warning:
   > *"This setting is currently locally overridden in `project.local.yaml`.
   > Writing to `project.yaml` will not affect your effective value."*
@@ -202,7 +202,7 @@ When skills or hooks read either file:
 | Scenario | Behavior |
 |----------|----------|
 | `$gs-start` on fresh project | Creates `project.yaml` only. Does NOT create `project.local.yaml`. |
-| `$gs-settings --local <x>=<y>` when local.yaml doesn't exist | Creates `project.local.yaml` containing just that setting. |
+| `$gs-project-settings --local <x>=<y>` when local.yaml doesn't exist | Creates `project.local.yaml` containing just that setting. |
 | `project.local.yaml` exists but `project.yaml` doesn't | Hard error: *"`project.yaml` missing — run `$gs-start` to create one. Local overrides require a base."* |
 | Both files exist | Read `project.yaml` first, deep-merge `project.local.yaml` on top. Normal operation. |
 | Both files set the same key | `project.local.yaml` wins. No prompting. |
@@ -328,7 +328,7 @@ behavior: strict project defaults for CI, looser developer overrides for local w
 **Controls:** How many specialist and director agents are spawned during skill execution
 **Values:** `full` | `lean` | `solo`
 **Default:** *none* — supplied by `modes.rigor` (`minimal`, the default, yields `solo`; `standard` yields `lean`; `full` yields `full`)
-**Set by:** `$gs-settings`, or explicit reviewed legacy preference reconciliation via `$gs-adopt` when it carries over a v1.0 `production/review-mode.txt`. `$gs-start` and `$gs-adopt` never write it themselves — unset, it follows `modes.rigor`
+**Set by:** `$gs-project-settings`, or explicit reviewed legacy preference reconciliation via `$gs-adopt` when it carries over a v1.0 `production/review-mode.txt`. `$gs-start` and `$gs-adopt` never write it themselves — unset, it follows `modes.rigor`
 **Read by:** See skill table below
 
 **Priority chain (all skills):** inline argument flag → `modes.review_mode` in `project.yaml` → `production/review-mode.txt` (legacy fallback) → `modes.rigor` expansion (no terminal default; `minimal`→`solo`, `standard`→`lean`, `full`→`full`)
@@ -339,7 +339,7 @@ behavior: strict project defaults for CI, looser developer overrides for local w
 > them: `solo` at `minimal` (the default), `lean` at `standard`.
 
 > **Hotfix / day-one-patch exception:** These skills are emergency or release-critical
-> pipelines. They are never gated by `review_mode` — all agents always run.
+> pipelines. They are never gated by `review_mode` — all required professional responsibilities are covered.
 
 > **`review_mode` in the nine `team-*` orchestrators.** `review_mode` sets
 > director-gate depth: `full` spawns every director gate a pipeline names, `lean`
@@ -371,8 +371,8 @@ behavior: strict project defaults for CI, looser developer overrides for local w
 |-------|------|------|------|
 | **design-review** | 5–15 specialist agents spawned in Phase 3b | No specialist agents — single-session analysis only | Phases 1–4 only, no delegation, no next-steps prompt |
 | **gate-check** | Director expertise applied by the parent, or authorized independent participants — **width set by `modes.workflow`**, not by this axis | Director expertise applied by the parent, or authorized independent participants — same width rule; required phase checks still apply without implying delegated sign-off | Artifact existence checks only, no directors spawned |
-| **design-system** | All section specialists + CD-GDD-ALIGN sign-off gate | Specialists for Sections D and H only (+ G when its knobs interact, + Visual/Audio when visual feedback is central); CD-GDD-ALIGN skipped | No section specialists; CD-GDD-ALIGN skipped |
-| **art-bible** | Required expertise for scoped sections + AD-ART-BIBLE assessment | Required expertise for scoped sections, AD-ART-BIBLE skipped | Required expertise for scoped sections, AD-ART-BIBLE skipped |
+| **design-system** | Applicable section lenses and CD-GDD-ALIGN assessment in the authoring thread | High-risk D/H lenses, G and Visual/Audio when applicable; CD-GDD-ALIGN skipped | Draft in the authoring thread; CD-GDD-ALIGN skipped |
+| **art-bible** | Art-director expertise for Sections 1–4 and 9; Sections 5–8 use their lenses; AD-ART-BIBLE assessment in the authoring thread | Same section split; AD-ART-BIBLE skipped | Same section split; AD-ART-BIBLE skipped |
 | **architecture-decision** | Engine specialist + TD-ADR gate | Engine specialist; TD-ADR skipped | Engine specialist; TD-ADR skipped |
 | **create-architecture** | TD-ARCHITECTURE + LP-FEASIBILITY agents, in parallel | Both skipped | Both skipped |
 | **brainstorm** | CD-PILLARS, AD-CONCEPT-VISUAL, TD-FEASIBILITY, PR-SCOPE | All skipped | All skipped |
@@ -398,10 +398,10 @@ These skills run the same way at `full`, `lean` and `solo`. None of them takes a
 | Skill | What runs at every level |
 |-------|--------------------------|
 | **review-all-gdds** | Phase 2 consistency pass and Phase 3 design-theory pass, in parallel |
-| **architecture-review** | The primary engine specialist is consulted after the engine audit (recorded as NOT ASSESSED when no engine is configured) |
+| **architecture-review** | The primary engine specialist's look runs in-skill after the engine audit, from its lens (recorded as NOT ASSESSED when no engine is configured) |
 | **dev-story** | Core programmer routing, plus the engine specialist's check of every code story |
-| **code-review** | Language, shader and UI specialists when an engine is configured, plus `qa-tester` for Logic and Integration stories |
-| **security-audit** | `security-engineer` is spawned to run the audit |
+| **code-review** | At most one authorized fresh-context engine helper when tools/capacity permit; otherwise labeled parent engine-lens work; testability runs in-thread and missing independence is explicit |
+| **security-audit** | security-engineer expertise runs under the native execution contract |
 
 ---
 
@@ -431,7 +431,8 @@ pipeline's own review steps run in every mode.
   whoever ran still wins, and `$gs-gate-check` names the perspectives it skipped.
 - **art-bible** requires the professional expertise for every section in the
   chosen scope, regardless of review mode. The parent applies that expertise, or uses an authorized delegate.
-  Art-director expertise covers visual direction throughout; Section 7 also needs
+  Art-director expertise covers Sections 1–4 and 9; Sections 5–8 use the shipped
+  art/UX/technical lenses in the authoring thread. Section 7 also needs
   UX expertise and Section 8 technical-art expertise. `review_mode` controls only
   the final AD-ART-BIBLE assessment: required in full, skipped with a recorded
   reason in lean/solo. Parent authorship and assessment must be labelled as parent
@@ -446,13 +447,13 @@ pipeline's own review steps run in every mode.
   Per-section user approval and immediate write-to-file remain required on both paths.
   Call counts, single briefs and delegation batching apply only when user authorization, actual host tools and capacity permit delegation.
   On that path, use a separate Section 1 brief, then one brief for Sections 2–4
-  and one for Sections 5–6 within the chosen scope. Sharing a brief avoids
+  within the chosen scope; Sections 5–6 share an in-thread draft under the lenses. Sharing inputs avoids
   repeated context while retaining each section's review, approval and write.
   The parent path must cover the same professional work without requiring calls.
 - **dev-story** core programmer routing (gameplay-programmer, ui-programmer, etc.)
   always runs regardless of mode — only the optional engine-specialist escalation
   for HIGH risk stories is gated.
-- **hotfix** and **day-one-patch** are exempt — all agents always run.
+- **hotfix** and **day-one-patch** are exempt — all required professional responsibilities are covered.
 - When a gate is skipped, skills emit: `"[GATE-ID] skipped — [mode] mode."` before
   proceeding. This is consistent across all skills.
 
@@ -466,7 +467,7 @@ pipeline's own review steps run in every mode.
 **Default:** `minimal` — see the rationale block above `_yaml_helper_defaults`
 in `.game-studio/runtime/studio.py config`. Short version: the heavier tier cost several
 times more to reach working code without producing a better result.
-**Set by:** `$gs-start` (Phase 3d), `$gs-settings`
+**Set by:** `$gs-start` (Phase 3d), `$gs-project-settings`
 **Read by:** nothing directly — it is read *through* the six knobs it supplies
 
 **Priority chain:** `modes.rigor` in `project.yaml` → hardcoded default `minimal`
@@ -521,7 +522,7 @@ for anyone who had not also set the sub-knob.
 
 Derived values report their source as `rigor:<level>`, so the vocabulary is
 `{project.local.yaml, project.yaml, <legacy path>, rigor:<level>, default,
-unset}`. `$gs-settings` renders this as `(derived from rigor: standard)` and
+unset}`. `$gs-project-settings` renders this as `(derived from rigor: standard)` and
 force-appends the five to its view-all list — none of them is a leaf of either
 YAML file, so enumerating file leaves alone would hide exactly the settings the
 user just chose.
@@ -535,7 +536,7 @@ the tradeoff between token/time cost of documentation and speed of reaching
 working code
 **Values:** `full` | `standard` | `minimal`
 **Default:** *none* — supplied by `modes.rigor` (`minimal`, the default, yields `minimal`; `standard` yields `standard`; `full` yields `full`)
-**Set by:** `$gs-start` (via `modes.rigor`), `$gs-settings`
+**Set by:** `$gs-start` (via `modes.rigor`), `$gs-project-settings`
 **Read by:** See skill tables below
 
 **Priority chain:** `modes.workflow` in `project.yaml` → `modes.rigor` expansion → *(no hardcoded default)*
@@ -698,7 +699,7 @@ never softens a verdict — the strictest verdict from whoever ran still wins, a
 
 ### Workflow change mid-project
 
-When `workflow` changes via `$gs-settings`, the skill emits an informational note:
+When `workflow` changes via `$gs-project-settings`, the skill emits an informational note:
 
 > "Workflow changed from [old] to [new]. Run `$gs-content-audit` to see what's now
 > required or extra. No automatic migration — existing files stay in place."
@@ -714,7 +715,7 @@ No documents are auto-deleted, auto-generated, or blocked. The setting only affe
 **Location:** **top level of `project.yaml`** — a sibling of `modes:`, *not* a child of it
 **Values:** object with sub-flags (see below)
 **Default:** all false / empty
-**Set by:** `$gs-settings`
+**Set by:** `$gs-project-settings`
 **Read by:** `$gs-design-system`, `$gs-design-review`, `$gs-art-bible`, `$gs-gate-check`, `$gs-review-all-gdds`, `$gs-qa-plan`
 
 > **Why the location is called out.** `explicit config command` reads
@@ -805,7 +806,7 @@ or another agent's message supplies no new human consent.
 **Controls:** How big each story is and how many stories per epic/sprint
 **Values:** `coarse` | `balanced` | `fine`
 **Default:** *none* — supplied by `modes.rigor` (`minimal`, the default, yields `coarse`; `standard` yields `balanced`; `full` yields `fine`)
-**Set by:** `$gs-start` (via `modes.rigor`), `$gs-settings`
+**Set by:** `$gs-start` (via `modes.rigor`), `$gs-project-settings`
 **Read by:** `$gs-create-stories`, `$gs-sprint-plan`, `$gs-sprint-status`, `$gs-story-readiness`
 
 **Priority chain:** `modes.story_granularity` in `project.yaml` → `modes.rigor` expansion → *(no hardcoded default)*
@@ -837,7 +838,7 @@ or another agent's message supplies no new human consent.
 **Controls:** How deep each section in authored docs goes — independent of which sections are required
 **Values:** `terse` | `balanced` | `thorough`
 **Default:** *none* — supplied by `modes.rigor` (`minimal`, the default, yields `terse`; `standard` yields `balanced`; `full` yields `thorough`)
-**Set by:** `$gs-start` (via `modes.rigor`), `$gs-settings`
+**Set by:** `$gs-start` (via `modes.rigor`), `$gs-project-settings`
 **Read by:** `$gs-design-system`, `$gs-art-bible`, `$gs-create-architecture`, `$gs-ux-design`, `$gs-map-systems`, `$gs-brainstorm`
 
 **Priority chain:** `docs.density` in `project.yaml` → `modes.rigor` expansion → *(no hardcoded default)*
@@ -890,7 +891,7 @@ or another agent's message supplies no new human consent.
 **Controls:** Which test framework the project uses — drives test-runner commands and per-engine assumptions in CI
 **Values:** engine-specific (see table)
 **Default:** auto-populated by `$gs-setup-engine` based on engine choice
-**Set by:** `$gs-setup-engine`, `$gs-settings`
+**Set by:** `$gs-setup-engine`, `$gs-project-settings`
 **Read by:** `$gs-test-helpers` — the only skill that references it. `$gs-qa-plan`, `$gs-dev-story`, `$gs-regression-suite`, `$gs-test-setup` and `$gs-smoke-check` do **not** name the key, despite being plausible readers.
   *(Derived by grep. A helper-based read such as `session_state_enabled()` would not show up, so treat this list as the verified floor, not a ceiling.)*
 
@@ -928,7 +929,7 @@ or another agent's message supplies no new human consent.
 closing, or produces a warning and lets work continue — per test type
 **Values:** map of `{logic, integration, visual, ui, config}` → `true | false`
 **Default:** `{logic: true, integration: true, visual: true, ui: true, config: false}`
-**Set by:** `$gs-settings`
+**Set by:** `$gs-project-settings`
 **Read by:** `story-done`, `story-readiness`, `gate-check`, `smoke-check`, `dev-story`, `test-evidence-review`
 
 > **Per-type, not a single bool.** A global `testing.strict: true|false` forces
@@ -981,7 +982,7 @@ closing, or produces a warning and lets work continue — per test type
 **Controls:** What test evidence is required to mark stories Done
 **Values:** `minimal` | `standard` | `full`
 **Default:** *none* — supplied by `modes.rigor` (`minimal`, the default, yields `minimal`; `standard` yields `standard`; `full` yields `full`)
-**Set by:** `$gs-start` (via `modes.rigor`), `$gs-settings`
+**Set by:** `$gs-start` (via `modes.rigor`), `$gs-project-settings`
 **Read by:** `$gs-story-done`, `$gs-story-readiness`, `$gs-dev-story`, `$gs-smoke-check`, `$gs-gate-check`, `$gs-qa-plan`, `$gs-regression-suite`, `$gs-team-qa`, `$gs-test-evidence-review`, `$gs-create-stories`, `$gs-retrospective`, `$gs-test-setup`
 
 **Priority chain:** `qa.level` in `project.yaml` → `modes.rigor` expansion → *(no hardcoded default)*
@@ -1030,7 +1031,7 @@ closing, or produces a warning and lets work continue — per test type
 **Controls:** Minimum code coverage percentage enforced at `qa.level: full`
 **Values:** integer 0–100, or `null` for unset
 **Default:** `null`
-**Set by:** `$gs-settings`
+**Set by:** `$gs-project-settings`
 **Read by:** `$gs-gate-check` only. `$gs-story-done` does not reference the key, and no CI runner reads it.
   *(Derived by grep. A helper-based read such as `session_state_enabled()` would not show up, so treat this list as the verified floor, not a ceiling.)*
 
@@ -1044,7 +1045,7 @@ closing, or produces a warning and lets work continue — per test type
 > - Godot: gdunit4 coverage report (markdown export)
 > - Unity: Unity Test Framework coverage (xml export)
 > - Unreal: gcov-style coverage from clang flags
-> CCGS does not unify these — gate-check reads the engine-appropriate report.
+> Claude Code Game Studios does not unify these — gate-check reads the engine-appropriate report.
 
 ---
 
@@ -1060,7 +1061,7 @@ closing, or produces a warning and lets work continue — per test type
 **Controls:** Whether phase gate failures block stage transition or just warn
 **Values:** `true` | `false`
 **Default:** `true`
-**Set by:** `$gs-settings`
+**Set by:** `$gs-project-settings`
 **Read by:** nothing yet (intended reader: `$gs-gate-check`)
 
 **Priority chain:** `strict_gate_checks` in `project.yaml` → hardcoded default of `true`
@@ -1093,12 +1094,12 @@ closing, or produces a warning and lets work continue — per test type
 **Controls:** Which agents are active by default — solo devs shouldn't get studio-grade gating on every change
 **Values:** `individual` | `small` | `studio`
 **Default:** *none* — supplied by `modes.rigor` (`minimal`/`standard` yield `individual`, `full` yields `studio`)
-**Set by:** `$gs-start` (via `modes.rigor`), `$gs-settings`
+**Set by:** `$gs-start` (via `modes.rigor`), `$gs-project-settings`
 **Read by:** All `team-*` skills, `$gs-gate-check`, all skills that spawn agents via native delegation when authorized
 
 **Priority chain:** `team.size` in `project.local.yaml` → `project.yaml` → the `modes.rigor` expansion (`full` → `studio`, else `individual`) → no terminal default. Locally overridable — it is a personal-experience knob, not an on-disk artifact.
 
-> **`individual` at `minimal`/`standard`, `studio` at `full`.** CCGS's audience is
+> **`individual` at `minimal`/`standard`, `studio` at `full`.** Claude Code Game Studios' audience is
 > overwhelmingly solo indie developers, so the two lighter rigor tiers resolve
 > `team.size` to `individual` — a `minimal` (default) or `standard` project gets one active agent
 > per role, not 15 (directors and leads included). Only `rigor: full` opts into the
@@ -1154,10 +1155,10 @@ closing, or produces a warning and lets work continue — per test type
 which specialists are routed and which architecture sections are required
 **Values:** `true` | `false`
 **Default:** none — unset is not `false`
-**Set by:** `$gs-settings`
+**Set by:** `$gs-project-settings`
 **Read by:** `security-audit`, `team-release` (and the `security-engineer` agent)
 
-**Priority chain:** `platform.multiplayer` in `project.yaml` → unset (`platform.*` is locked to `project.yaml`, so `project.local.yaml` cannot set it). Nothing writes it except `$gs-settings`, so on most projects it is unset: `$gs-security-audit` and `$gs-team-release` ask whether the game is multiplayer rather than reading unset as `false`.
+**Priority chain:** `platform.multiplayer` in `project.yaml` → unset (`platform.*` is locked to `project.yaml`, so `project.local.yaml` cannot set it). Nothing writes it except `$gs-project-settings`, so on most projects it is unset: `$gs-security-audit` and `$gs-team-release` ask whether the game is multiplayer rather than reading unset as `false`.
 
 > **Distinct from `platform.online`.** `multiplayer` is *real-time multiplayer
 > specifically* (network specialist, netcode review, replication architecture).
@@ -1196,10 +1197,10 @@ decide networking scope from the story, GDD or architecture in front of them.
 **Controls:** Whether the project has any online features (leaderboards, cloud saves, telemetry, IAP)
 **Values:** `true` | `false`
 **Default:** none — unset is not `false`
-**Set by:** `$gs-settings`
+**Set by:** `$gs-project-settings`
 **Read by:** `security-audit`, `team-release` (and the `security-engineer` agent)
 
-**Priority chain:** `platform.online` in `project.yaml` → unset (`platform.*` is locked to `project.yaml`, so `project.local.yaml` cannot set it). Nothing writes it except `$gs-settings`: `$gs-security-audit` and `$gs-team-release` ask rather than reading unset as `false`.
+**Priority chain:** `platform.online` in `project.yaml` → unset (`platform.*` is locked to `project.yaml`, so `project.local.yaml` cannot set it). Nothing writes it except `$gs-project-settings`: `$gs-security-audit` and `$gs-team-release` ask rather than reading unset as `false`.
 
 > **Independent of `platform.multiplayer`.** A single-player game with Steam
 > Cloud and leaderboards is `online: true, multiplayer: false`. The two settings
@@ -1240,7 +1241,7 @@ and `$gs-gate-check` decide online scope from the documents in front of them.
 **Controls:** Certification target — scopes what `$gs-launch-checklist` asks for
 **Values:** `none` | `itch` | `steam` | `console`
 **Default:** *none* — unset stays unset, so the skills ask
-**Set by:** `$gs-settings` — nothing else writes it, so it stays unset (and the skills ask) until you set it
+**Set by:** `$gs-project-settings` — nothing else writes it, so it stays unset (and the skills ask) until you set it
 **Read by:** `$gs-launch-checklist`, `$gs-release-checklist`
 
 **Priority chain:** `platform.cert_tier` in `project.yaml` → unset (no default is
@@ -1285,15 +1286,15 @@ must tell them apart)
 **Controls:** Accessibility commitment level — routes accessibility specialist and gates audit requirements
 **Values:** `none` | `standard` | `aaa`
 **Default:** `none`
-**Set by:** `$gs-settings`
+**Set by:** `$gs-project-settings`
 **Read by:** nothing yet (intended readers: `$gs-team-ui`, `$gs-team-level`, `$gs-team-polish`, `$gs-gate-check`)
 
 **Priority chain:** `accessibility.target` in `project.yaml` → hardcoded default of `none`
 
-> **Default is `none`, not `standard`.** Most CCGS users are solo devs and jam-game
+> **Default is `none`, not `standard`.** Most Claude Code Game Studios users are solo devs and jam-game
 > makers — defaulting to `standard` would auto-spawn the accessibility specialist
 > for projects where it's overhead. `$gs-start` does not ask about it; you set it with
-> `$gs-settings`.
+> `$gs-project-settings`.
 
 ---
 
@@ -1332,7 +1333,7 @@ must tell them apart)
 - `sprint_length`: `1w` | `2w` | `3w` | `4w` | `none`
 - `milestone_length`: `4w` | `6w` | `8w` | `12w`
 **Defaults:** `sprint_length: 2w`, `milestone_length: 8w`
-**Set by:** `$gs-settings`
+**Set by:** `$gs-project-settings`
 **Read by:** nothing yet (intended readers: `$gs-sprint-plan`, `$gs-milestone-review`, `$gs-sprint-status`, future velocity tracking)
 
 **Priority chain:** `cadence.*` in `project.yaml` → hardcoded defaults
@@ -1359,7 +1360,7 @@ must tell them apart)
 **Controls:** The frame-rate target and its per-frame millisecond budget
 **Values:** integers (e.g. `60`, `16.67`)
 **Default:** none — unset means no budget was ever committed to
-**Set by:** the user, by hand or via `$gs-settings`
+**Set by:** the user, by hand or via `$gs-project-settings`
 **Read by:** `$gs-perf-profile`, `$gs-gate-check`, `$gs-team-polish`
 
 ## performance.draw_call_limit and performance.memory_ceiling_mb
@@ -1367,7 +1368,7 @@ must tell them apart)
 **Controls:** Per-frame draw-call ceiling and total memory ceiling
 **Values:** integers
 **Default:** none — unset means no budget was ever committed to
-**Set by:** the user, by hand or via `$gs-settings`
+**Set by:** the user, by hand or via `$gs-project-settings`
 **Read by:** `$gs-perf-profile`, `$gs-gate-check`, `$gs-team-polish`
 
 > **Every setting needs its own `## ` heading in this file, not just a table
@@ -1388,12 +1389,12 @@ must tell them apart)
 **Controls:** Whether performance budget violations warn or block
 **Values:** `warn` | `block` | `off`
 **Default:** `warn`
-**Set by:** `$gs-settings`
+**Set by:** `$gs-project-settings`
 **Read by:** `$gs-perf-profile`, `$gs-gate-check`, CI runner
 
 **Priority chain:** `performance.enforce` in `project.local.yaml` → `project.yaml` → hardcoded default of `warn`, resolved by `explicit config command --keys performance.enforce`
 
-> **Read it from the resolved block, never from `project.yaml` directly.** The key is on the `$gs-settings --local` whitelist. `$gs-perf-profile` Phase 0 and `$gs-gate-check` Section 3 are the two readers the table above promises — a key that is enum-validated, accepted and displayed while nothing reads it is exactly the failure this warning guards against.
+> **Read it from the resolved block, never from `project.yaml` directly.** The key is on the `$gs-project-settings --local` whitelist. `$gs-perf-profile` Phase 0 and `$gs-gate-check` Section 3 are the two readers the table above promises — a key that is enum-validated, accepted and displayed while nothing reads it is exactly the failure this warning guards against.
 
 > **Mirrors the `testing.strict` pattern.** Defines what happens when a budget
 > defined in `performance.target_framerate`, `frame_budget_ms`, `draw_call_limit`,
@@ -1465,6 +1466,25 @@ required at `standard` and `minimal` levels.
 
 ---
 
+## project.goal
+
+**Controls:** What the person wants from the game: a jam entry, something to learn on, a hobby,
+a portfolio piece, or a game to sell\
+**Values:** `jam` | `learn` | `hobby` | `portfolio` | `sell` | `early_access` | `publisher` | `mobile` | `other`\
+**Default:** none. A reader with no value guesses from the person's words, otherwise `hobby`\
+**Set by:** `$gs-start`, which guesses it from the person's answers, shows it on the assumptions card
+where they can change it, and writes it only on `Save them`; `$gs-project-settings`; `$gs-cut`, only
+when the person changes the goal on its screen\
+**Read by:** `prototype` (the one-shot card's Your goal line, and the handover's note when a
+reference game's name or art would ship with a selling goal); `cut` (`sell`, `early_access` and
+`publisher` are asked a target date and offered a freeze date; the other goals get no date)
+
+> **A project attribute, not a mode.** It changes no gate and no required artifact. It is never
+> asked as a question of its own: `$gs-start` shows its guess on the card, and a project without the
+> key works as before.
+
+---
+
 ## project.kind
 
 > ### RESERVED - NOT IMPLEMENTED
@@ -1477,10 +1497,9 @@ required at `standard` and `minimal` levels.
 **Controls:** What type of project this is — routes skill subsets
 **Values:** `game` | `tool` | `engine` | `mod` | `library`
 **Default:** `game`
-**Set by:** `$gs-start`, `$gs-setup-engine`
-**Read by:** Many skills (advisory routing — see below)
+**Set by:** nothing (reserved)
+**Read by:** nothing; tables below describe unimplemented design
 
-**Priority chain:** `project.kind` in `project.yaml` → hardcoded default of `game`
 
 ---
 
@@ -1488,7 +1507,7 @@ required at `standard` and `minimal` levels.
 
 | Value | Meaning | What's deactivated |
 |-------|---------|-------------------|
-| `game` | Default. Full CCGS framework applies. | Nothing |
+| `game` | Default. Full Claude Code Game Studios framework applies. | Nothing |
 | `tool` | Developer tool, not a game | Skip art bible, narrative, level design, playtesting |
 | `engine` | Custom engine or library underneath games | Skip game-specific concerns entirely (narrative, art, playtest) |
 | `mod` | Mod for an existing game | Skip engine setup; assume parent engine; reduce architecture scope |
@@ -1508,19 +1527,62 @@ required at `standard` and `minimal` levels.
 
 ---
 
+## engine.code_root
+
+**Controls:** The folder that holds the game's code, when it is not the engine's
+usual one (Godot `src/`, Unity `Assets/`, Unreal `Source/`, Web `src/`; the engine table,
+`.game-studio/resources/engines/engines.tsv`)
+**Values:** a folder path relative to the project root, with `/`, such as
+`scripts` or `Source/MyGame`; `.` for the project root itself (a flat web game)
+**Default:** unset — the engine's folder (`.game-studio/resources/docs/code-root-resolution.md`)
+**Set by:** hand, or `$gs-project-settings engine.code_root=<folder>`. `project.yaml` only:
+like every `engine.*` key it is shared by the team, never read from
+`project.local.yaml`
+**Read by:** native config/observations and installed helpers; optional trusted hooks use the same effective facts
+
+A value that cannot be used — no such folder, different capitals on disk, `..`,
+an absolute path, or a framework folder (`.agents`, `.codex`, `.game-studio`, `.git`, `production`,
+`design`, `docs`, `tests`, `studio-tests`, `prototypes`) — makes the code root
+**invalid**, and every code check reports NOT ASSESSED with the reason. It never
+falls back to the engine's folder: a typo that read `src/` instead would scan
+nothing and look clean.
+
+---
+
+Legacy shared top-level `code_root`/`test_root` remains compatible. The nested
+engine key wins when both are configured; invalid explicit values do not fall back.
+
+## engine.test_root
+
+**Controls:** The folder that holds the tests, when it is not the engine's usual
+one (Godot and Web `tests/`, Unity `Assets/Tests/`, Unreal
+`Source/<Module>/Private/Tests/`; the engine table, `.game-studio/resources/engines/engines.tsv`)
+**Values:** a folder path relative to the project root, with `/`, such as `spec`;
+the code root itself for a project whose tests sit beside its code
+**Default:** unset — the engine's row decides
+**Set by:** hand, or `$gs-project-settings engine.test_root=<folder>`. `project.yaml` only,
+like every `engine.*` key
+**Read by:** native config/observations and installed helpers; optional trusted hooks use the same effective facts
+
+The checks are `engine.code_root`'s, except that it may name `tests`: a bad value
+is **invalid** with the reason, and never falls back to the engine's folder.
+
+---
+
+Legacy shared top-level `code_root`/`test_root` remains compatible. The nested
+engine key wins when both are configured; invalid explicit values do not fall back.
+
 ## engine.name and specialists
 
 **Controls:** Which engine-specific specialist agents are routed to for code
 implementation, review, and architecture validation
-**Values:** any nonempty project engine name; built-in reference/specialist families: `Godot`, `Unity`, `Unreal`
+**Values:** any nonempty project engine name; built-in families: `Godot`, `Unity`, `Unreal`, `Web`
 **Default:** `[UNSET]` — must be configured via `$gs-setup-engine`
-**Set by:** `$gs-setup-engine`
+**Set by:** `$gs-setup-engine`; one-shot Grow records Web only when no different engine is configured
 **Read by:** `dev-story`, `code-review`, `architecture-decision`, `create-architecture`, `team-combat`, `team-ui`, `team-audio`
 
-> **Currently stored in `technical-preferences.md`**, not `project.yaml`. After
-> YAML expansion, `engine.name` and the specialist routing table move to
-> `project.yaml specialists` block. Skill behavior is unchanged — only the
-> source file changes.
+> Engine and specialist facts resolve from shared `project.yaml`, with the documented
+> legacy fallback. Web uses `gs-lead-programmer`; custom engine names remain preserved.
 
 > **This is a project attribute, not a mode.** Engine choice drives specialist
 > routing the same way `platform.multiplayer` drives network routing — skills
@@ -1535,6 +1597,7 @@ implementation, review, and architecture validation
 | **Godot** | `godot-gdscript-specialist` (GDScript) or `godot-csharp-specialist` (C#) — driven by `engine.language` | `godot-shader-specialist` | `godot-specialist` | `godot-gdextension-specialist` |
 | **Unity** | `unity-specialist` | `unity-shader-specialist` | `unity-ui-specialist` | `unity-addressables-specialist`, `unity-dots-specialist` |
 | **Unreal** | `unreal-specialist` | `unreal-specialist` | `ue-umg-specialist` | `ue-gas-specialist`, `ue-blueprint-specialist`, `ue-replication-specialist` |
+| **Web** | `lead-programmer` (no web specialist agent; engine checks go against `docs/engine-reference/web/`) | `lead-programmer` | `lead-programmer` | None |
 | **[UNSET]** | No specialist spawned — warning emitted | No specialist spawned | No specialist spawned | None |
 
 ---
@@ -1563,13 +1626,13 @@ implementation, review, and architecture validation
 **Controls:** Explicit shell commands to build, test, run, and smoke-test the project
 **Values:** strings — shell-executable commands
 **Default:** `[UNSET]` — populated by `$gs-setup-engine` with engine-typical defaults
-**Set by:** `$gs-setup-engine`, `$gs-settings`
-**Written by:** `$gs-setup-engine`, `$gs-settings`. **Read by:** `test` — `$gs-smoke-check`, `$gs-hotfix` (narrowed to the affected suite), `$gs-bug-report` (verify mode, narrowed to the affected suite), `$gs-day-one-patch` (targeted fix and, when set, the broader regression — NOT ASSESSED if unset), `$gs-dev-story` (Godot parse-check executable resolution), `$gs-test-setup` (the `<Project>.` filter root on Unreal), `coherence command`; `smoke` — `$gs-dev-story` (Unity parse check), `$gs-smoke-check` (build check when tests are WAIVED); `build` — `$gs-smoke-check` (build check when tests are WAIVED and `smoke` is unset), `coherence command`; `run` — `$gs-dev-story` (Phase 6 step 4, the run-and-observe step). `$gs-launch-checklist` and `$gs-regression-suite` name these commands but do not run them.
+**Set by:** `$gs-setup-engine`, `$gs-project-settings`
+**Written by:** `$gs-setup-engine`, `$gs-project-settings`. **Read by:** `test` — `$gs-smoke-check`, `$gs-hotfix` (narrowed to the affected suite), `$gs-bug-report` (verify mode, narrowed to the affected suite), `$gs-day-one-patch` (targeted fix and, when set, the broader regression — NOT ASSESSED if unset), `$gs-dev-story` (Godot parse-check executable resolution), `$gs-test-setup` (the `<Project>.` filter root on Unreal), `coherence command`; `smoke` — `$gs-dev-story` (Unity parse check), `$gs-smoke-check` (build check when tests are WAIVED); `build` — `$gs-smoke-check` (build check when tests are WAIVED and `smoke` is unset), `coherence command`; `run` — `$gs-dev-story` (Phase 6 step 4, the run-and-observe step). `$gs-launch-checklist` and `$gs-regression-suite` name these commands but do not run them.
   *(Derived by grep. A helper-based read would not show up, so treat this list as the verified floor, not a ceiling.)*
 
 **Priority chain:** `commands.*` in `project.yaml` → engine-typical default → no command available
 
-> **Why explicit:** Without this block, CCGS has to guess engine-typical conventions
+> **Why explicit:** Without this block, Claude Code Game Studios has to guess engine-typical conventions
 > for invoking the project. Better to be explicit per-project — covers cases where
 > projects customize their build (e.g., a Godot project using gdunit4 for tests but
 > a custom export script for builds).
@@ -1642,7 +1705,7 @@ engine reference in this repo can source it. See `$gs-setup-engine` `"The Godot
 
 The Unreal row is Windows'. `$gs-setup-engine` writes the Linux block (`Engine/Build/BatchFiles/RunUAT.sh`,
 `Engine/Binaries/Linux/UnrealEditor`) on Linux, and on macOS only `build`, leaving `test`, `run` and
-`smoke` unset, with a comment in `project.yaml` asking you to set them via `$gs-settings` — see
+`smoke` unset, with a comment in `project.yaml` asking you to set them via `$gs-project-settings` — see
 `.game-studio/resources/engine-reference/unreal/current-best-practices.md`, "Command Line".
 
 > **`<PRESET>` and `<TARGET>` are placeholders, not values to copy.** A Godot
@@ -1655,7 +1718,7 @@ The Unreal row is Windows'. `$gs-setup-engine` writes the Linux block (`Engine/B
 > `$gs-setup-engine` usually runs before the project has any — write
 > `[TO BE CONFIGURED]` rather than guessing a name.
 
-Users override per-project as needed via `$gs-settings commands.<field>=<value>` or by editing `project.yaml` directly.
+Users override per-project as needed via `$gs-project-settings commands.<field>=<value>` or by editing `project.yaml` directly.
 
 ---
 
@@ -1676,7 +1739,7 @@ Users override per-project as needed via `$gs-settings commands.<field>=<value>`
 **Controls:** Code naming conventions for the project
 **Values:** see field list below
 **Default:** engine-specific (auto-populated by `$gs-setup-engine`)
-**Set by:** `$gs-setup-engine`, `$gs-settings`
+**Set by:** `$gs-setup-engine`, `$gs-project-settings`
 **Read by:** `$gs-adopt`, `$gs-architecture-review`, `$gs-asset-spec`,
 `$gs-create-architecture`, `$gs-create-control-manifest`, `$gs-dev-story`,
 `$gs-vertical-slice` — each reads `naming.*` from `project.yaml` and feeds the
@@ -1709,14 +1772,14 @@ conventions into a brief, manifest or spec. **NOT by `$gs-code-review` and NOT b
 
 ### Fields
 
-| Field | Values | Godot default | Unity default | Unreal default |
-|-------|--------|---------------|---------------|----------------|
-| `classes` | `PascalCase` \| `snake_case` \| `camelCase` | PascalCase | PascalCase | PascalCase |
-| `variables` | `snake_case` \| `camelCase` | snake_case | camelCase | camelCase |
-| `constants` | `SCREAMING_SNAKE` \| `PascalCase` | SCREAMING_SNAKE | SCREAMING_SNAKE | SCREAMING_SNAKE |
-| `signals` (Godot) / `events` (Unity, Unreal) | `past_tense` \| `on_event_name` | past_tense | on_event_name | OnEventName |
-| `files` | `snake_case` \| `PascalCase` \| `kebab-case` | snake_case | PascalCase | PascalCase |
-| `scenes` / `prefabs` | `snake_case` \| `PascalCase` | snake_case | PascalCase | PascalCase |
+| Field | Values | Godot default | Unity default | Unreal default | Web default |
+|-------|--------|---------------|---------------|----------------|-------------|
+| `classes` | `PascalCase` \| `snake_case` \| `camelCase` | PascalCase | PascalCase | PascalCase | PascalCase |
+| `variables` | `snake_case` \| `camelCase` | snake_case | camelCase | camelCase | camelCase |
+| `constants` | `SCREAMING_SNAKE` \| `PascalCase` | SCREAMING_SNAKE | SCREAMING_SNAKE | SCREAMING_SNAKE | SCREAMING_SNAKE |
+| `signals` (Godot) / `events` (Unity, Unreal) | `past_tense` \| `on_event_name` | past_tense | on_event_name | OnEventName | on_event_name |
+| `files` | `snake_case` \| `PascalCase` \| `kebab-case` | snake_case | PascalCase | PascalCase | kebab-case |
+| `scenes` / `prefabs` | `snake_case` \| `PascalCase` | snake_case | PascalCase | PascalCase | snake_case |
 
 > **`signals` vs `events`:** Godot uses signals natively; Unity uses C# events
 > or UnityEvents; Unreal uses delegates and dynamic multicast. The field stays
@@ -1763,7 +1826,7 @@ infer work, scrape transcripts, rotate unseen state or complete a task. See
 **Controls:** Context usage threshold at which session warnings fire
 **Values:** float between 0.0 and 1.0
 **Default:** `0.7` (warn at 70%)
-**Set by:** `$gs-settings`
+**Set by:** `$gs-project-settings`
 **Read by:** nothing yet (intended readers: `session-start.sh`, `statusline.sh`)
 
 **Priority chain:** `features.token_budget_warn_at` in `project.yaml` → hardcoded default of `0.7`
@@ -1821,6 +1884,7 @@ project:
   version: "0.1.0"
   stage: Concept             # Concept | Systems Design | Technical Setup | Pre-Production | Production | Polish | Release
   kind: game                 # game | tool | engine | mod | library
+  goal: hobby                # jam | learn | hobby | portfolio | sell | early_access | publisher | mobile | other
 
 modes:
   review_mode: lean          # full | lean | solo

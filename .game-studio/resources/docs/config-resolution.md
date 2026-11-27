@@ -6,7 +6,7 @@ or per-skill permission grant. Pass the GDD stem as the optional system argument
 
 Precedence: whitelisted project.local.yaml leaves → project.yaml leaves → legacy
 review/stage text → rigor expansion → documented defaults. The runtime uses real YAML,
-rejects duplicate keys, malformed input and orphan local files, retains on/off strings,
+diagnoses duplicate keys, rejects malformed input and orphan local files, retains on/off strings,
 and reports invalid enums before falling back. It never guesses a neighboring root.
 
 Rigor minimal: minimal workflow/QA, terse docs, coarse stories, solo review, individual.
@@ -22,7 +22,7 @@ Other local settings are reported and ignored. Unknown optional project leaves a
 retained; per-type test requirements remain the calling skill's responsibility.
 Per-system tiers override workflow only. False section flags cannot relax full.
 
-Use `$gs-settings` for explicit edits; inspect the generated diff. The runtime does
+Use `$gs-project-settings` for explicit edits; inspect the generated diff. The runtime does
 not migrate old Markdown preferences automatically or choose an engine from examples.
 See workflow-modes.md, effects-map.md and native-runtime.md for policy and schema.
 
@@ -31,3 +31,12 @@ mapping blocks, using later values for overlapping leaves. This is inspection
 and repair evidence. Fix duplicates before writing configuration or executing
 commands; a dotted-path collision with nested settings is rejected.
 Use the project's actual tool commands and keep local overrides whitelisted.
+
+`engine_row` is an opt-in derived result of the native config command. Its engine
+folders and suggested run/build/test/smoke commands come from the shared
+`.game-studio/resources/engines/engines.tsv`. Explicit consumer command argv wins;
+table strings are never executed implicitly. Nested shared engine roots outrank
+compatible shared top-level roots. Invalid overrides remain invalid, not defaults.
+Web uses lead-programmer expertise. `project.goal` is shared and optional: start
+shows the inferred goal and saves it only on the accepted assumptions card; cut
+writes a changed goal only when the user chooses that change.

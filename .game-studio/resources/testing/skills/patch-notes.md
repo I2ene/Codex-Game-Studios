@@ -142,6 +142,6 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] No patch notes is generated or written on this provenance/no-history stop.
 - [ ] The "does not appear to belong to" provenance stop is NOT shown — an empty history is not a wrong history
-- [ ] Output contains "No changelog data found for v0.4.0" and recommends `$gs-changelog v0.4.0`
+- [ ] Output contains "No changelog data found for v0.4.0" and recommends `$gs-write-changelog v0.4.0`
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] Verdict is BLOCKED

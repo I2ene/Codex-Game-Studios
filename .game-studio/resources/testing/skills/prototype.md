@@ -56,7 +56,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 3: KILL — Soundness Check and Graveyard Entry
 
 **Fixture:**
-- An HTML prototype of `procedural-dialogue` has been debriefed
+- A browser sketch of `procedural-dialogue` inside a configured Godot project has been debriefed
 - User answers KILL; the debrief shows testers never understood the core
   action after 2 playtests, no fun moment was observed, and the concept only
   worked when the developer explained it
@@ -97,7 +97,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 5: Director Gate — CD-PLAYTEST by Review Mode and Pillars
 
 **Fixture:**
-- A concept prototype has been built and REPORT.md written with a PROCEED
+- In a configured non-Web engine project, a concept prototype has been built and REPORT.md written with a PROCEED
   recommendation
 - Run A: `--review full`, `design/gdd/game-concept.md` exists with pillars;
   `creative-director` returns REJECT — the core fantasy is not present; the user,
@@ -121,7 +121,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 6: NOT ASSESSED (Unplayed) and the `workflow: minimal` PROCEED Route
 
 **Fixture:**
-- Run A: the prototype was built this session but nobody has played it yet
+- Configured non-Web engine; Run A: the concept prototype was built this session but nobody has played it yet
 - Run B: a PROCEED recommendation, `project.yaml` has `modes.workflow: minimal`
 
 **Input:** `$gs-prototype [concept]`
@@ -150,6 +150,74 @@ active checkpoint. User answers YES to rope-physics spike.
 
 ---
 
+### Case 8: One-shot build preserves brief, data and evidence boundaries
+
+**Fixture:** No engine/brief/prototypes; browser available; user says you pick then accepts Build it and explicitly authorizes commit/tag.
+
+**Input:** $gs-prototype lighthouse keeper relighting beacons
+
+**Domain checks:**
+- [ ] Match only relevant genre sheets; ask one round for unanswered choices with defaults, no repeated questions. Card contains full brief, Look/First minute/Challenge, guessed/provisional/effort/engine/writes; no file before Build it.
+- [ ] Write source words exactly, unchecked Features and empty Keep. Build in isolated prototype folder with tuning config, seeded rng, offline assets/vendor provenance; tune panel is opt-in.
+- [ ] Retain all four small-check rows (boots, shot, brief words, emoji/outlines), the play screenshot and check-run/1 record. Respect explicitly requested visual choices; a failed row stays visible. Run finite scripted checks without a robot player or fabricated human review. Retain viewed screenshots and named brief-line outcomes, mark actually built Features in both briefs.
+- [ ] Commit/tag only agreed files under actual explicit authorization. Handover states Not yet played by a person and starts the applicable debrief. Do not pin the host model or effort.
+
+- [ ] Features and named-system coverage are assessed line by line as pass, missing, broken or not assessed; do not equate a file existing with a working promise. Autonomous skips questions only within already authorized scope; no-question-tool falls back to plain text.
+
+---
+
+### Case 9: Frozen-screen repair is bounded and failures remain visible
+
+**Fixture:** As one-shot case, first build stops changing after start while scripted keys continue. Variant: no supported browser.
+
+**Input:** $gs-prototype lighthouse keeper, then Build it
+
+**Domain checks:**
+- [ ] Run the small check and keep self-check rows/play screenshot. Fix once and recheck once; any remaining issue appears as Still broken, never a hidden pass.
+- [ ] No autonomous reviewer or robot player establishes fun. No-browser rows are individually NOT ASSESSED with reasons; later requested changes use only their relevant light check.
+
+- [ ] A check refuses a third run in the same repair round. Retain each outcome so a later requested change does not erase the earlier failure.
+
+---
+
+### Case 10: An engine preference is visible before a browser sketch is accepted
+
+**Fixture:** No configured engine; at the card the user says Godot is installed and asks whether to use it.
+
+**Input:** $gs-prototype lighthouse keeper
+
+**Domain checks:**
+- [ ] Explain Web now/Godot after play on the Engine and Next lines, and wait for acceptance of that concrete browser build. Do not setup/switch engines silently.
+- [ ] Keep missing promised pieces under Still to do. A browser sketch within an existing non-Web project returns to applicable concept-prototype debrief/review, not automatic Grow.
+
+---
+
+### Case 11: 3D and persistence checks retain actual results
+
+**Fixture:** Accepted 3D marble run remembering best time; browser available.
+
+**Input:** $gs-prototype a 3D marble run that remembers best time
+
+**Domain checks:**
+- [ ] Record actual WebGL renderer and saved storage key, screenshots and check-run/1 record. Unsupported sound/other rows are not assessed with reasons, never not-applicable or pass.
+- [ ] state.staged is set only for explicitly sourced staged-failure intent. Legitimate deterministic clock/manual/render hooks may aid observation but cannot change gameplay outcomes to make checks pass.
+
+---
+
+### Case 12: Named-game intent is clarified without copying protected expression
+
+**Fixture:** No engine or brief. User asks for a Pac-Man clone and same UI with explicit controls/rules. Variants: named-game reference with new ghost perspective; new label on same-copy request; an existing brainstorm brief.
+
+**Input:** $gs-prototype a maze-chase game
+
+**Domain checks:**
+- [ ] Ask only the unresolved original-in-genre versus own-twist choice, then build the accepted original direction. Preserve Avoid naming the referenced game's name/art/characters/UI; do not silently discard the user's gameplay requirements.
+- [ ] A reference alone needs no copy question; relabeling alone does not resolve exact-copy intent. Existing brief requires no repeated questions and Writes names only the prototype folder.
+
+---
+
 ## Applicable domain checks
 
-- [ ] If the concept is too vague to form a falsifiable hypothesis, stop before building and obtain the missing scope.
+- [ ] On the engine/paper route, if the concept is too vague to form a falsifiable hypothesis, stop before building and obtain the missing scope.
+
+- [ ] Retain route selection through resume: explicit engine/paper and spike select their procedures; HTML in a configured non-Web project is a browser sketch returning to Phases 6–9; the no-engine/Web one-shot uses its own handover without REPORT.md/index or concept gate.

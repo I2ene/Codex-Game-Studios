@@ -51,7 +51,7 @@ case's inputs, professional scope, artifact destinations and expected verdict.
 - [ ] Each agent is told its own named output file — parallel Phase 3 and Phase 4 agents never share one — and the orchestrator confirms the file exists before treating the phase as done
 - [ ] Phase 5 producer collects sign-offs from qa-lead, release-manager, devops-engineer and technical-director before declaring GO
 - [ ] Phase 6 deployment only begins after the user picks [A] in the Phase 6 `host input tool`
-- [ ] `$gs-changelog` is invoked by release-manager in Phase 6 (not written directly)
+- [ ] `$gs-write-changelog` is invoked by release-manager in Phase 6 (not written directly)
 - [ ] `$gs-patch-notes v1.0.0` is invoked by release-manager in Phase 6, and community-manager writes the announcement from its output — community-manager is never asked to run `$gs-patch-notes`
 - [ ] Phase 7 monitoring plan includes a 48-hour post-release monitoring commitment
 - [ ] No stop and no override question at the stage check, because `project.stage` reads `Release`; the skill writes neither `project.stage` nor `production/stage.txt`, and no post-launch stage value is invented

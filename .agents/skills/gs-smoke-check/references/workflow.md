@@ -42,7 +42,7 @@ Run `python .game-studio/runtime/studio.py config --root <project-root>` explici
 
 This skill is the gate between "implementation done" and "ready for QA
 hand-off". It runs the automated test suite, checks for test coverage gaps,
-batch-verifies critical paths with the developer, and produces a PASS/FAIL
+batch-verifies critical paths with the person, and produces a PASS/FAIL
 report.
 
 The rule is simple: **a build that fails smoke check does not go to QA.**
@@ -52,9 +52,9 @@ Handing a broken build to QA wastes their time and demoralises the team.
 
 ---
 
-Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
+Every question follows `.game-studio/resources/docs/automation-modes.md`
 (collaborative resolves open decisions · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+`automation_always_ask` categories require input outside existing authorization).
 
 **`qa.level`**: at `minimal`, smoke-check is **optional** — if
 run, a FAIL is advisory and never blocks hand-off, and a project with no game
@@ -115,7 +115,7 @@ Phase 5 outputs a per-platform verdict table in addition to the overall verdict.
 describe what collaborative mode requires, not universal behavior.
 
 - **Never treat NOT RUN as automatic FAIL** — record it as NOT RUN and let
-  the developer confirm status manually. Unconfirmed NOT RUN yields **NOT
+  the person confirm status manually. Unconfirmed NOT RUN yields **NOT
   ASSESSED**, not FAIL — and not a pass verdict either.
 - **Never auto-fix failures** — report them and state what must be resolved.
   Do not attempt to edit source code or test files.
@@ -123,6 +123,6 @@ describe what collaborative mode requires, not universal behavior.
   gaps for `$gs-story-done` to follow up on.
 - **`quick` argument** skips Phase 3 (coverage scan) and Phase 4 Batch 3.
   Use it for rapid re-checks after fixing a specific failure.
-- Use `ask the user` for all manual smoke check verification.
+- Ask with the question tool for all manual smoke check verification.
 - **Never write the report without asking** — Phase 6 requires explicit
   approval before any file is created.

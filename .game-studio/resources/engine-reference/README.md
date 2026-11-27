@@ -1,7 +1,7 @@
 # Historical engine reference library
 
-These upstream snapshots preserve professional engine knowledge for Godot, Unity
-and Unreal. Their version pins and verification dates are historical. They do not
+These upstream snapshots preserve professional engine knowledge for Godot, Unity,
+Unreal and the Web toolchain. Their version pins and verification dates are historical. They do not
 identify the consumer's installed engine or establish current API correctness.
 Read [project reference resolution](../docs/engine-reference-resolution.md) first.
 
@@ -22,3 +22,13 @@ notes focused, with correct/incorrect code examples and migration risks.
 
 Model knowledge may lag engine releases. Unknown or unverified facts remain unknown;
 a packaged example is not evidence that an engine build, test or export succeeded.
+
+## Web and snapshot scope
+The web reference covers the toolchain and library pages (threejs.md, phaser.md,
+pixijs.md) rather than a single editor. Existing projects retain their own versions.
+Engine subsystem pages have no fixed line limit: keep one subsystem per focused page.
+The upstream dates and measurements are historical source provenance, not this port's
+executed browser, package or engine evidence.
+
+Unity and Unreal also retain PLUGINS.md indexes and focused plugins/ pages. Read
+only the subsystem or plugin relevant to the project, then verify its actual version.

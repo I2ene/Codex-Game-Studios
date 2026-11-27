@@ -64,7 +64,7 @@ wrong internal format.
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
 `project.yaml` → default `collaborative`). Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
 (collaborative resolves open decisions · guided major-only · autonomous logs and proceeds;
-`automation_always_ask` categories always prompt).
+`automation_always_ask` categories require input outside existing authorization).
 
 **`workflow`** (per `.game-studio/resources/docs/workflow-modes.md`). It scopes the Phase 2 audit and
 Phase 3 severity: `full` audits all doc types at full structure; `standard` audits

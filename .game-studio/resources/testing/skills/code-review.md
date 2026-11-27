@@ -16,7 +16,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ### Case 1: Happy Path — Standards-compliant file that follows its ADR
 
 **Fixture:**
-- `project.yaml`: `engine.name: godot`, `specialists.code: godot-gdscript-specialist`, `specialists.shader: null`, `specialists.ui: null`
+- `project.yaml`: `engine.name: godot`, `specialists.code: godot-specialist`, `specialists.shader: null`, `specialists.ui: null`
 - `src/gameplay/health_component.gd` meets all six Phase 4 checks:
   - Doc comments (`##`) on every public method and the class
   - Every method under cyclomatic complexity 10 and under 40 lines
@@ -31,12 +31,17 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 **Domain checks:**
 - [ ] The ADR is read with a heading map and bounded reads of `## Decision` and `## Consequences`, not an unbounded full read
-- [ ] `godot-gdscript-specialist` is consulted for the `.gd` file; no agent named `null` is consulted
+- [ ] The Godot primary engine lens covers the `.gd` file, through the single supported helper or labeled parent fallback; no agent named `null` participates
 - [ ] Standards Compliance reads `6/6 passing` and ADR Compliance reads COMPLIANT
-- [ ] Testability reads `N/A — no story path given`; no `qa-tester` is consulted without a story
+- [ ] Testability reads `N/A — no story path given`; no qa-tester helper is used; testability is assessed by the caller
 - [ ] Positive Observations section is present
 - [ ] Verdict is APPROVED and Phase 9 offers `$gs-story-done` or stop
 - [ ] No file is written or edited
+- [ ] Variant: an empty or malformed helper result is rejected, then a completed parent assessment reads the applicable engine lens and supplies every required evidence field. With all checks clean the technical verdict is APPROVED, labeled parent assessment; the failed helper is never represented as a clean independent reviewer.
+- [ ] Variant: an incomplete parent assessment after helper failure leaves the engine check NOT ASSESSED and the technical verdict NOT ASSESSED; a verified required defect still takes precedence as CHANGES REQUIRED.
+- [ ] Variant: required independence remains unavailable after complete parent assessment. Report independence separately as NOT ASSESSED, retain the unmet requirement and grant no independent sign-off; do not erase the substantive technical result or fabricate participants.
+- [ ] Use at most one authorized fresh-context engine helper with the primary engine lens and applicable code/shader/UI blocks. Validate helper-result/1 structure before using findings; null roles never become participants.
+- [ ] If independent helper work is unavailable or unauthorized, label parent engine assessment and its lack of independence; do not manufacture a clean independent finding. Testability remains the caller's responsibility.
 
 ---
 

@@ -32,7 +32,17 @@ defaults in `.game-studio/resources/docs/config-resolution.md`.
 ## Phase 0: Parse Arguments and Context Check
 
 
-See `.game-studio/resources/docs/director-gates.md` for the full check pattern. Individual gate definitions live in `.game-studio/resources/docs/director-gates/[gate-id].md` — the actual reviewer reads its gate file; read it in the parent when applying the role yourself.
+See `.game-studio/resources/docs/director-gates.md` for the standard rules. This skill runs its one gate, AD-ART-BIBLE, itself (Phase 5) and reads `.game-studio/resources/docs/director-gates/ad-art-bible.md` as its checklist.
+
+**Who drafts what.** The parent applies art-director expertise or uses an authorized delegate for Sections 1–4 and 9. User authorization, actual host tools and capacity determine delegation. Sections 5–8 and sign-off apply the lenses in this conversation.
+
+**You draft Sections 5–8 yourself, through their lenses.** What the art-director,
+UX and technical-art specialists brought is in `references/`: read
+`.agents/skills/gs-art-bible/references/lens-art-director.md` before the first of those sections, and
+`lens-ux-designer.md` at Section 7 and `lens-technical-artist.md` at Section 8
+only. Read each once; it stays in context for the rest of the run. Outside
+Sections 7 and 8, do not load `.agents/skills/gs-art-bible/references/lens-ux-designer.md` or
+`.agents/skills/gs-art-bible/references/lens-technical-artist.md`.
 
 
 Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.md`
@@ -60,7 +70,7 @@ and limit. If neither exists, fail with:
 > "No game concept found. Run `$gs-brainstorm` first — the art bible is authored after the game concept is approved."
 
 Extract from game-concept.md (from the brief: working title, pitch, "Who it's for /
-what they feel" line and "Art & audio direction" line — it has no pillars, Visual
+what they feel" line and Label line, "Art & audio direction" in older briefs — it has no pillars, Visual
 Identity Anchor or platform):
 - Game title (working title)
 - Core fantasy and elevator pitch
@@ -147,7 +157,7 @@ Use `ask the user` with two tabs:
   delegation supported by actual host tools and capacity; coherent section briefs
   can share context without batching user approvals.
 - Tab **"References"** — "Do you have reference games, films, or art that define the visual direction?"
-  (Free text — let the user type specific titles. Do NOT preset options here.)
+  (Free text — let the user type specific titles. Do not preset options here.)
 
 If the game-concept.md has a Visual Identity Anchor section, note it:
 > "Found a visual identity anchor from brainstorm: '[anchor name] — [one-line rule]'. I'll use this as the foundation for the art bible."
@@ -264,43 +274,38 @@ These sections translate the visual identity into concrete production rules. The
 
 ### Section 5: Character Design Direction
 
-**Art-director expertise for Sections 5–6 — one coherent draft, prepared here.**
-Apply that expertise in the parent, or use one delegated brief when authorized and
-supported by actual host tools and capacity. Use sections 1–4 as shared context for both:
+**Sections 5–6 — one draft, made here.** Both sections build on the same
+input (sections 1–4 as shared context), so draft both now, under the lens:
 
-1. **Character design direction** — "Cover: visual archetype for the player character (if any), distinguishing feature rules per character type (how do players tell enemies/NPCs/allies apart at a glance?), expression/pose style targets (stiff/expressive/realistic/exaggerated), and LOD philosophy (how much detail is preserved at game camera distance?)."
-2. **Environment design language** — "Cover: architectural style and its relationship to the world's culture/history, texture philosophy (painted vs. PBR vs. stylized — why this choice for this game?), prop density rules (sparse/dense — what drives the choice per area type?), and environmental storytelling guidelines (what visual details should tell the story without text?)."
+1. **Character design direction** — cover: visual archetype for the player character (if any), distinguishing feature rules per character type (how do players tell enemies/NPCs/allies apart at a glance?), expression/pose style targets (stiff/expressive/realistic/exaggerated), and LOD philosophy (how much detail is preserved at game camera distance?).
+2. **Environment design language** — cover: architectural style and its relationship to the world's culture/history, texture philosophy (painted vs. PBR vs. stylized — why this choice for this game?), prop density rules (sparse/dense — what drives the choice per area type?), and environmental storytelling guidelines (what visual details should tell the story without text?).
 
 Require characters and environments to be **legible against each other** — a
 character silhouette must read against the environment texture density the same
-brief defines. Return two separately labelled blocks.
+draft defines. Hold two separately labelled blocks.
 
 Present **Section 5** first, approve, write to file, then Section 6.
 
 ### Section 6: Environment Design Language
 
-**Draft source**: the coherent Sections 5–6 draft prepared under Section 5 — use the
-environment block already prepared. A delegated path needs no additional call for this block.
+**Draft source**: the Sections 5–6 draft made under Section 5 — use its
+environment block. Do not draft again from scratch.
 
 Write the approved section to file.
 
 ### Section 7: UI/HUD Visual Direction
 
-**Professional expertise**: apply both disciplines in the parent, or delegate independent work concurrently when user authorization, actual host tools and capacity permit:
-- **`art-director`**: Visual style for UI — diegetic vs. screen-space HUD, typography direction (font personality, weight, size hierarchy), iconography style (flat/outlined/illustrated/photorealistic), animation feel for UI elements
-- **`ux-designer`**: UX alignment check — does the visual direction support the interaction patterns this game requires? Flag any conflicts between art direction and readability/accessibility needs.
+**Two views, written separately.** First draft the **art view** under the art lens: diegetic vs. screen-space HUD, typography direction (font personality, weight, size hierarchy), iconography style (flat/outlined/illustrated/photorealistic), animation feel for UI elements. Then read `.agents/skills/gs-art-bible/references/lens-ux-designer.md` and write the **UX view** as its own block: does the visual direction support the interaction patterns this game requires? Flag any conflict between the art direction and readability/accessibility needs.
 
-Collect both. If they conflict (e.g., art-director wants elaborate diegetic UI but ux-designer flags it would reduce combat readability), surface the conflict explicitly with both positions. Do NOT silently resolve — use `ask the user` to let the user decide.
+Show both blocks. If they conflict (e.g., the art view wants elaborate diegetic UI but the UX view finds it would reduce combat readability), surface the conflict explicitly with both positions. Do not silently resolve — use `ask the user` to let the user decide.
 
 Write the approved section to file.
 
 ### Section 8: Asset Standards
 
-**Professional expertise**: apply both disciplines in the parent, or delegate independent work concurrently when user authorization, actual host tools and capacity permit:
-- **`art-director`**: File format preferences, naming convention direction, texture resolution tiers, LOD level expectations, export settings philosophy
-- **`technical-artist`**: Engine-specific hard constraints — poly count budgets per asset category, texture memory limits, material slot counts, importer constraints, anything from the performance budgets (`performance.*` in `project.yaml`, falling back to `docs/project-reference/technical-preferences.md`)
+**Two views, written separately.** First draft the **art view** under the art lens: file format preferences, naming convention direction, texture resolution tiers, LOD level expectations, export settings philosophy. Then read `.agents/skills/gs-art-bible/references/lens-technical-artist.md` and write the **technical view** as its own block: engine-specific hard constraints — poly count budgets per asset category, texture memory limits, material slot counts, importer constraints, anything from the performance budgets (`performance.*` in `project.yaml`, falling back to `docs/project-reference/technical-preferences.md`).
 
-If any art preference conflicts with a technical constraint (e.g., art-director wants 4K textures but performance budget requires 2K for mobile), surface the conflict explicitly with both positions — the ideal and the constrained standard, and the tradeoff. Do NOT silently resolve it — use `ask the user` to let the user pick (options: the ideal standard, the constrained standard, or document both and let per-asset judgment apply). Ambiguity in asset standards is where production costs are born.
+If any art preference conflicts with a technical constraint (e.g., art-director wants 4K textures but performance budget requires 2K for mobile), surface the conflict explicitly with both positions — the ideal and the constrained standard, and the tradeoff. Do not silently resolve it — use `ask the user` to let the user pick (options: the ideal standard, the constrained standard, or document both and let per-asset judgment apply). Ambiguity in asset standards is where production costs are born.
 
 Write the approved section to file.
 
@@ -318,12 +323,12 @@ Write the approved section to file.
 
 ## Phase 5: Art Director Sign-Off
 
-**Review mode check** — apply before the AD-ART-BIBLE assessment:
+**Review mode check** — apply before running AD-ART-BIBLE:
 - `solo` → skip. Note: "AD-ART-BIBLE skipped — Solo mode." Then record the skip
   (below) and proceed to Phase 6.
 - `lean` → skip (not a PHASE-GATE). Note: "AD-ART-BIBLE skipped — Lean mode."
   Then record the skip (below) and proceed to Phase 6.
-- `full` → perform the required art-director assessment through the parent or an authorized delegate.
+- `full` → perform the required art-director assessment below.
 
 On either skip, ask "May I record the skipped sign-off in
 `design/art/art-bible.md`'s header?" and, on yes, replace the header's
@@ -331,21 +336,24 @@ On either skip, ask "May I record the skipped sign-off in
 `> **Art Director Sign-Off (AD-ART-BIBLE)**: SKIPPED [date] — [solo|lean] mode`
 — the gate accepts either form as a recorded sign-off.
 
-After all sections are complete (or the scoped set from Phase 1 is complete), the parent applies art-director expertise, or uses an authorized delegate when user authorization, actual host tools and capacity permit. Read and apply gate **AD-ART-BIBLE** (`.game-studio/resources/docs/director-gates/ad-art-bible.md`). Label a parent assessment as parent work, not an independent review or another person's sign-off; record the actual reviewer for a delegated assessment.
+The parent applies art-director expertise here; an authorized delegate is optional for other drafting phases. Label this parent assessment as not an independent review.
 
-Pass: the art bible path (`design/art/art-bible.md`); the game pillars and core
+After all sections are complete (or the scoped set from Phase 1 is complete), run gate **AD-ART-BIBLE** yourself, in this conversation — do not spawn `art-director` or any agent for it; the gate file's note that a spawned agent reads it, and director-gates.md's spawn steps, do not apply in this skill: read `.game-studio/resources/docs/director-gates/ad-art-bible.md` and apply its Prompt as a checklist to the bible as written on disk (re-read it by section; do not judge from memory of your drafts), with the sign-off rules in `.agents/skills/gs-art-bible/references/lens-art-director.md`. Name the section behind every finding. Look hardest for what is missing (a UI palette, a backup cue, a budget), not only at what is there.
+
+Its inputs: the art bible path (`design/art/art-bible.md`); the game pillars and core
 fantasy; the platform and performance constraints (`platform.*` and
 `performance.*` from `project.yaml`, falling back to
 `docs/project-reference/technical-preferences.md`); and the visual identity anchor. When
-Phase 0 read the one-page brief, pass its pitch and "what they feel" line as the
-pillars and fantasy, and its "Art & audio direction" line as the anchor.
+Phase 0 read the one-page brief, use its pitch and "what they feel" line as the
+pillars and fantasy, and its Label line ("Art & audio direction" in older briefs) as the anchor.
+Print the verdict token first, on its own line (`AD-ART-BIBLE: APPROVE`), then the findings.
 
 Handle verdict per standard rules in `director-gates.md`.
-On `Revise flagged items`, or to resolve a REJECT, apply the section's required
-expertise in the parent or through an authorized delegate — art-director, with
-ux-designer for Section 7 and technical-artist for Section 8. Re-draft each flagged
-section, then present, approve and write it like any other section before
-`REVISED [date]` is recorded.
+On `Revise flagged items`, or to resolve a REJECT, re-draft each flagged
+section the way it was first drafted — `art-director` for Sections 1–4 and 9; its
+lens for 5–8, plus the UX lens for Section 7 and the technical-art lens for
+Section 8, both views shown again — which is then presented, approved
+and written like any other section before `REVISED [date]` is recorded.
 A `NOT ASSESSED` answer is never an approval: name the missing input, then
 supply it and re-run the gate, or record `NOT ASSESSED`.
 Record the verdict in the art bible's status header:
@@ -395,12 +403,19 @@ Assign letters A, B, C… only to the options actually included. Mark the most l
 `autonomous` modes, see `.game-studio/resources/docs/automation-modes.md` — the rules below
 describe what collaborative mode requires, not universal behavior.
 
-Every section follows: **Question → Options → Decision → Draft (required specialist expertise) → Approval → Write to file**
+Every section follows: **Question → Options → Decision → Draft → Approval → Write to file**.
+The parent applies required specialist expertise, or uses an authorized delegate where the procedure permits; label parent work and actual participant work accurately.
+Surface disagreements between professional views to the user.
+Per-section approval and writing stay individual; existing explicit approval is not requested again.
 
-- The parent applies the required specialist expertise, or uses an authorized delegate with actual host tools. This includes drafting section bodies when delegation is unavailable; professional scope and user decisions still govern the draft.
-- Label parent work and record each actual participant accurately; parent-applied expertise is not an independent review or another person's sign-off.
-- Write each section to file immediately after approval — do not batch the writes or approvals. A coherent draft may cover sections 2–4 or 5–6, but the user reviews and approves each section separately. Existing authorization remains valid; resolve missing decisions rather than repeating consent already given.
-- Surface discipline disagreements to the user — never silently resolve conflicts between art-director and technical-artist
+- Never draft a section from taste alone — Sections 1–4 and 9 come from
+  `art-director`; Sections 5–8 are drafted under their lenses in `references/`
+  and pass those checks before they are shown. One draft may cover several
+  sections (2–4 share a call; 5–6 are drafted together).
+- Write each section to file immediately after approval — do not batch **the
+  writes or the approvals**. Batching applies only to the drafting; the
+  user still sees, approves and commits one section at a time.
+- Surface every conflict between views to the user — art vs UX at Section 7, art vs technical limits at Section 8 — never silently resolve one
 - The art bible is a constraint document: it restricts future decisions in exchange for visual coherence. Every section should feel like it narrows the solution space productively.
 
 ---

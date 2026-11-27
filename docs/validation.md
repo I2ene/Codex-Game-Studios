@@ -29,7 +29,7 @@ Record actual host, scope, participants and outputs when using them.
 
 ## Limits requiring separate evidence
 
-- Exhaustive inference behavior of all 74 skills and 49 roles is not established by metadata or discovery checks.
+- Exhaustive inference behavior of all 78 skill entries and 49 roles is not established by metadata or discovery checks.
 - Custom role loading/launch and trusted hook callback delivery need actual host capability tests. Direct handler fixtures only check handler I/O.
 - Engine APIs and packaged version examples need current official verification and project toolchain records. Unknown facts remain unknown.
 - Game balance, visuals, accessibility outcomes, playtests, performance, engine builds, platform certification and deployment need real consumer inputs and execution.
@@ -44,3 +44,5 @@ release readiness.
 The upstream alignment compares full input-to-result behavior separately from format.
 Static phase and evaluation checks are not model execution. Optional Bash fixtures
 exercise data utilities; they do not run game engines or install host permissions.
+
+The upstream 1.3.0 browser/Grow sample exercises installed helpers and a synthetic fixture. It does not certify model-authored games, all genre profiles, human playtest quality or real engine exports. Aliases share canonical evaluation guidance.

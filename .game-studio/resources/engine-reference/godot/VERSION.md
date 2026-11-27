@@ -6,13 +6,15 @@
 | Field | Value |
 |-------|-------|
 | **Engine Version** | Godot 4.7 |
-| **Installed at pin time** | NOT DETERMINED — `$gs-setup-engine` `3 probes the installed editor and records the result here. |
+| **Installed at pin time** | NOT DETERMINED — `$gs-setup-engine` `3 probes the installed editor and records the result in the project-owned VERSION.md. |
 | **Release Date** | June 2026 (latest patch: 4.7.2, August 2026) |
 | **Project Pinned** | 2026-10-17 |
-| **Last Docs Verified** | 2026-10-17 (release timeline and 4.7 changes); 2026-02-12 (4.4-4.6 content) |
+| **Last Docs Verified** | 2026-10-21 (Windows driver default and Compositor, against Godot source); 2026-10-17 (release timeline and 4.7 changes); 2026-02-12 (4.4-4.6 content) |
 | **LLM Knowledge Cutoff** | May 2025 |
 
 ## Knowledge Gap Warning
+
+The upstream snapshot used a May 2025 reference cutoff; the active model may differ. Project records and current official verification govern.
 
 The LLM's training data likely covers Godot up to ~4.3. Versions 4.5, 4.6
 and 4.7 were released after the cutoff and introduced significant changes that
@@ -33,7 +35,7 @@ version-qualified claim** — `NOT DETERMINED` means the gap is unknown, not abs
 | Version | Release | Risk Level | Key Theme |
 |---------|---------|------------|-----------|
 | 4.5 | Sep 2025 | HIGH | Accessibility (AccessKit), variadic args, @abstract, shader baker, SMAA |
-| 4.6 | Jan 2026 | HIGH | Jolt default, glow rework, D3D12 default on Windows, IK restored |
+| 4.6 | Jan 2026 | HIGH | Jolt default, glow rework, IK restored |
 | 4.7 | Jun 2026 | HIGH | AreaLight3D, HDR output, Asset Store replaces the Asset Library, VirtualJoystick, Jolt soft-body and world-boundary changes, typed-return overrides |
 
 ## Before the Cutoff

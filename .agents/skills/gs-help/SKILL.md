@@ -1,6 +1,6 @@
 ---
 name: gs-help
-description: "What should I do next? Use when stuck or you don't know what to do."
+description: "Compatibility alias. Use when the user invokes $gs-help; forwards the original request to $gs-next-step."
 ---
 
 # Help

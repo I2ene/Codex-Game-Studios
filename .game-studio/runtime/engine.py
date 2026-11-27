@@ -50,6 +50,40 @@ def references(root):
             'rule': 'Read project documents first. Missing project version/API evidence stays unknown; packaged versions never fill it. Verify current official sources and actual toolchain before version-qualified claims.'}
 
 
+
+def web_bundler(root):
+    """Read package metadata only; no package manager or project code executes."""
+    path = confined(root, "package.json")
+    if not path.is_file():
+        return {"package": None, "name": None, "installed": None, "reason": "No package.json"}
+    data = json.loads(path.read_text(encoding="utf-8-sig"))
+    if not isinstance(data, dict):
+        raise ValueError("package.json must be an object")
+    scripts = data.get("scripts", {})
+    dependencies = {**(data.get("dependencies") or {}), **(data.get("devDependencies") or {})}
+    candidates = [("vite", "Vite"), ("webpack", "webpack"), ("parcel", "Parcel"),
+                  ("rollup", "Rollup"), ("esbuild", "esbuild"), ("@angular/build", "Angular")]
+    commands = [scripts.get(key, "") for key in ("build", "dev", "start", "serve")] if isinstance(scripts, dict) else []
+    chosen = next(((package, name) for command in commands if isinstance(command, str)
+                   for package, name in candidates if re.search(r"(?<![\w-])" + re.escape(package) + r"(?![\w-])", command)), None)
+    chosen = chosen or next(((package, name) for package, name in candidates if package in dependencies), None)
+    if not chosen:
+        return {"package": None, "name": None, "installed": None, "reason": "No recognized bundler evidence"}
+    package, name = chosen
+    result = {"package": package, "name": name, "declared_range": dependencies.get(package), "installed": None}
+    try:
+        record = confined(root, "node_modules/" + package + "/package.json")
+        if not record.is_file():
+            raise ValueError("No installed bundler package metadata")
+        installed = json.loads(record.read_text(encoding="utf-8-sig"))
+        if not isinstance(installed, dict) or not isinstance(installed.get("version"), str):
+            raise ValueError("No installed bundler version")
+        result["installed"] = installed["version"]
+        result["source"] = record.relative_to(root).as_posix()
+    except (OSError, ValueError) as error:
+        result["reason"] = str(error)
+    return result
+
 def coherence(root, probe=False):
     from checks import files, run_command
     root = plain(root)
@@ -71,7 +105,14 @@ def coherence(root, probe=False):
             observe(check, 'MATCH' if wanted == observed_pin else 'DIFFERS', declared=expected, observed=actual,
                     comparison='Configured numeric pin precision; Unity 6000.N = 6.N; build suffix not compared', **facts)
 
-    compare('pinned-reference', declared, refs['project']['version_record'], source=refs['project']['documents'].get('VERSION.md'))
+    web = web_bundler(root) if isinstance(name, str) and name.casefold() == 'web' else None
+    if web and web['package'] != 'vite':
+        observe('pinned-reference', 'NOT ASSESSED', reason='The project bundler differs from the example Vite toolchain pin', package=web['package'])
+    else:
+        compare('pinned-reference', declared, refs['project']['version_record'], source=refs['project']['documents'].get('VERSION.md'))
+    if web:
+        compare('installed-bundler', declared, web.get('installed'), package=web['package'],
+                source=web.get('source'), note=web.get('reason', 'Static installed package metadata; no package code executed'))
     installed = refs['project']['installed_record']
     if installed and version(installed) and not re.search(r'NOT DETERMINED|NOT ASSESSED', installed, re.I):
         compare('installed-at-pin', declared, installed, note='Recorded historical probe, not current binary execution')
@@ -137,8 +178,9 @@ def coherence(root, probe=False):
         observe('rendering', ('MATCH' if desired == actual_rendering else 'DIFFERS') if desired and actual_rendering else 'NOT ASSESSED',
                 declared=values.get('engine.rendering'), observed=actual_rendering, reason=None if desired and actual_rendering else 'No declared/explicit project rendering method; defaults not guessed')
         physics = values.get('engine.physics')
-        code_rel = values.get('code_root', 'src')
-        code_root = confined(root, code_rel)
+        from engine_table import describe
+        code_rel = describe(settings)['code_root']['value']
+        code_root = confined(root, code_rel) if code_rel else confined(root, '__no_configured_code_root__')
         found_2d = [p.relative_to(root).as_posix() for pattern in ['**/*.gd', '**/*.tscn'] for p in files(code_root, pattern)
                     if re.search(r'\b(Node2D|CharacterBody2D|RigidBody2D|Area2D|StaticBody2D)\b', p.read_text(encoding='utf-8-sig'))] if code_root.is_dir() else []
         status = 'DIFFERS' if physics and 'jolt' in str(physics).lower() and found_2d else 'OBSERVED' if physics and code_root.is_dir() else 'NOT ASSESSED'

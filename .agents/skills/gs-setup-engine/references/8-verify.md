@@ -6,8 +6,8 @@
 
 ## 8. Verify project reference routing
 
-Confirm engine.name/version and engine.reference_root identify actual project
-records. Read them explicitly; there are no @ imports in native instructions.
+with `<engine>` the engine just configured. If there is no such line, or it still
+points at a different engine, Section 4 did not complete — go back and finish it rather than patching
 
 ## 8.5 Read Back What You Just Wrote
 

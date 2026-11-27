@@ -2,7 +2,7 @@
 
 Start with `$gs-start`, or use `$gs-adopt` to audit an existing project's artifacts
 and actual behavior. `$gs-project-stage-detect` observes what exists; adoption checks
-whether that work meets the applicable contracts. `$gs-help` recommends the next step.
+whether that work meets the applicable contracts. `$gs-next-step` recommends the next step.
 Keep game records in the game repository, separate from this framework source.
 
 ## Rigor and collaboration
@@ -20,16 +20,22 @@ user's vision, scope and budget explicit. Present material options and draft sec
 when decisions remain open; do not repeat approval prompts for already authorized work.
 See [automation modes](../.game-studio/resources/docs/automation-modes.md).
 
-## Minimal route
+## Main playable route
 
-1. `$gs-setup-engine` records the actual toolchain when applicable.
-2. `$gs-brainstorm` writes a one-page `design/game-brief.md`, including a build order.
-3. `$gs-create-stories` turns that build order into implementable stories.
-4. `$gs-dev-story` and `$gs-story-done` implement and close each story with its required evidence.
+1. `$gs-prototype` asks one genre-informed round, retains your words and writes the accepted brief.
+2. Build the browser playable, run bounded scripted/no-input checks and inspect screenshots against the brief; record assumptions, failures and unassessed items.
+3. Play it, ask for changes, tune or share it. Each accepted round keeps a recoverable authorized baseline and preserves unrelated edits.
+4. Choose Grow when appropriate, then add one feature per sitting with sampled replay/build/rules/smoke and a keep/revert decision.
+5. Use `$gs-cut` to choose scope cuts and polish from actual built facts. Removing implemented code is a separate choice.
 
-This route does not require an epic, sprint or phase gate. A UI or visual story still
-needs the evidence its contract requires. Use additional QA, design or architecture
-workflows when the task needs them; raise rigor as the project grows.
+No configured engine starts with the browser; an existing non-Web engine keeps
+engine/paper prototype paths. `$gs-prototype --spike` tests one mechanic. Stories
+are available when requested, or as part of studio mode: `$gs-create-stories`,
+`$gs-dev-story`, `$gs-story-done`. A deeper system first needs its applicable design.
+Minimal rigor keeps the brief rather than requiring the whole studio artifact ladder;
+required evidence and real authorization still apply.
+
+## Studio mode
 
 ## Seven phases
 

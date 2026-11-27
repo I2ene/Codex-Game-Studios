@@ -1,10 +1,16 @@
-# Project quick start
+# Quick start
 
-Install a reviewed release using tools/studio.py install --target <project-root>.
-Use the same command for upgrades; inspect --dry-run first. Existing project.yaml,
-Codex config, personal skills, engine files and project records are preserved.
+Install the framework into a separate game repository with the ownership-based
+installer, then open Codex in that consumer. See the [installation guide](https://github.com/I2ene/Codex-Game-Studios/blob/main/docs/install.md).
 
-Launch Codex in the consumer project. Use `$gs-start` to recover existing work or
-establish the concept, rigor and automation preference. `$gs-help` routes relevant
-steps; it does not require every stage for a small task. `$gs-adopt` audits existing
-work before proposing new records. Native runtime commands use an explicit --root.
+For a new idea, invoke `$gs-prototype` or say “make me a game”. Answer one quick
+genre-informed round, review the brief and accept Build it. The browser result is
+observed against the brief before handover; play it yourself, then ask for changes,
+tune, share or choose Grow to Web. `$gs-cut` helps choose scope cuts and polish.
+
+Use `$gs-start` for guided entry, `$gs-next-step` for the next appropriate action,
+`$gs-adopt` for existing artifacts and `$gs-setup-engine` for an existing or chosen
+engine. Existing engine/paper routes and all professional studio workflows remain.
+Raise rigor with `$gs-project-settings` when the project's needs justify its gates.
+Read the [full workflow guide](https://github.com/I2ene/Codex-Game-Studios/blob/main/docs/workflow.md), [skill catalog](skills-reference.md)
+and [roles](agent-roster.md). Missing tools/evidence stay NOT ASSESSED.

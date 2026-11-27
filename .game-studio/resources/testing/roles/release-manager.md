@@ -62,3 +62,6 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - Keeps the pipeline order and every step — Build → Test → Cert → Submit → Verify → Launch, "No step may be skipped" — and schedules backward from the release date rather than compressing or dropping a step to fit
 - Plans for at least one certification iteration (Cert is "Submit to platform certification, track feedback, iterate") and flags that a single rejection would consume the remaining buffer
 - Recommends an order but hands the schedule call to `producer` — it reports to producer for scheduling and prioritization, and cutting scope is producer's ("Decide what features to include or exclude (escalate to producer)")
+
+## Canonical release route
+Use $gs-write-changelog for the internal release changelog, followed by $gs-patch-notes; aliases redirect once and do not create a second release record.

@@ -53,7 +53,7 @@ at `balanced` (`rigor: standard`), **AC-sized** at `fine`.
     build order is the plan and the story files carry it. Report progress
     through it instead, then stop:
     Run `python .game-studio/runtime/studio.py stories --root <project-root>` now.
-    Read .game-studio/resources/docs/story-routing.md. Print `Build order: complete of count stories complete`
+    Read `.game-studio/resources/docs/story-routing.md`. Print `Build order: complete of count stories complete`
     using the JSON fields, then next.action/path. For story-done/dev-story recommend
     that exact skill/path; for COMPLETE offer play/add stories/raise rigor; for NO
     STORIES require the brief then create-stories; for BLOCKED/REVIEW STATUS name

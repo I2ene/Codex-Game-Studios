@@ -1,8 +1,8 @@
-# Evaluation scenarios: gs-help
+# Evaluation scenarios: gs-next-step
 
 Professional scenarios adapted from Donchitos' upstream testing guidance; see
 [source attribution](../../../NOTICE.md). These are evaluation inputs and domain
-checks, not executed results. Read `.agents/skills/gs-help/SKILL.md` and its current procedure first.
+checks, not executed results. Read `.agents/skills/gs-next-step/SKILL.md` and its current procedure first.
 Use [evaluation policy](../README.md) and [category rubric](../quality-rubric.md).
 
 Resolve current config and project engine records. Apply review-mode discipline
@@ -24,7 +24,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
   `blocker` field
 - `production/session-state/active.md` has a STATUS block naming the in-progress story
 
-**Input:** `$gs-help`
+**Input:** `$gs-next-step`
 
 **Domain checks:**
 - [ ] Heading reads `## Where You Are: Production`
@@ -35,7 +35,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Verdict is COMPLETE
 - [ ] No files are written
 
----
+- [ ] The standard/full heading identifies studio mode once, explaining its fit for a team, long project or desired paperwork without changing applicable steps.
 
 ### Case 2: Concept Stage — engine configured, no concept document
 
@@ -47,7 +47,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - No `design/gdd/game-concept.md`, no `design/art/art-bible.md`, no
   `design/gdd/systems-index.md`, no sprint files
 
-**Input:** `$gs-help`
+**Input:** `$gs-next-step`
 
 **Domain checks:**
 - [ ] Heading reads `## Where You Are: Concept`
@@ -67,7 +67,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - `design/gdd/game-concept.md` and `design/gdd/systems-index.md` exist
 - No `docs/architecture/adr-*.md`, no `production/epics/**/story-*.md`, code root empty
 
-**Input:** `$gs-help`
+**Input:** `$gs-next-step`
 
 **Domain checks:**
 - [ ] Skill does not stop or error when no stage is recorded
@@ -88,13 +88,13 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - No `design/gdd/gdd-cross-review-*.md`
 - The catalog's `design-review` step has no artifact check (`NO_CHECK`)
 
-**Input:** `$gs-help just finished design-review, not sure what's next`
+**Input:** `$gs-next-step just finished design-review, not sure what's next`
 
 **Domain checks:**
 - [ ] Per-System Design Review is treated as done because the user named it
 - [ ] `→ Next up` is Cross-GDD Review via `$gs-review-all-gdds`
 - [ ] Escalation block lists `$gs-project-stage-detect`, `$gs-gate-check` and `$gs-start`
-- [ ] No `$gs-settings` rigor-change line appears
+- [ ] No `$gs-project-settings` rigor-change line appears
 - [ ] Verdict is COMPLETE
 
 ---
@@ -111,7 +111,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
   **Next step:** `$gs-dev-story` on it) nor the git log (no commit mentions
   story-002) says story-002's implementation is written
 
-**Input:** `$gs-help`
+**Input:** `$gs-next-step`
 
 **Domain checks:**
 - [ ] Heading reads `Minimal path — 1 of 3 stories complete`
@@ -132,7 +132,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
   **Next step:** `$gs-story-done production/epics/core/story-002.md` (what
   `$gs-dev-story` writes when it finishes a story)
 
-**Input:** `$gs-help`
+**Input:** `$gs-next-step`
 
 **Domain checks:**
 - [ ] `→ Next up` is story-002 via `$gs-story-done`, not `$gs-dev-story`
@@ -147,7 +147,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - As Case 5, except `story-002.md` is `Status: Blocked` (its file says it waits
   on the art for the player sprite) and `story-003.md` is `Status: Draft`
 
-**Input:** `$gs-help I'm stuck`
+**Input:** `$gs-next-step I'm stuck`
 
 **Domain checks:**
 - [ ] story-002 is named with its blocker; story-003 is named with status `Draft`
@@ -164,7 +164,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Fixture:** Godot config with no modes block; no brief, concept or stories. A: resolved `src/` has 12 source
 files and already holds a game. B: 3 files of early experiments with no existing game.
 
-**Input:** `$gs-help`
+**Input:** `$gs-next-step`
 
 **Domain checks:**
 - [ ] Use the observed minimal route; A recommends `$gs-reverse-document design src/`, B
@@ -175,6 +175,30 @@ files and already holds a game. B: 3 files of early experiments with no existing
 - [ ] For the native routing heuristic, compare otherwise equivalent fixtures at 9 and 10 source
   files in the known root. The boundary changes the recommendation only, never the assessed
   stage.
+
+---
+
+### Case 9: No-engine minimal route distinguishes a playable from a codebase
+
+**Fixture:** Minimal, no engine. A: no prototype or code. B: prototypes/flood-racer/index.html exists. C: no prototype but an existing 12-file codebase.
+
+**Input:** $gs-next-step
+
+**Domain checks:**
+- [ ] A recommends prototype first; B says play/change the existing build then recommends setup-engine to Grow; C recommends setup-engine rather than replacing the codebase.
+- [ ] No writes, gate or studio-mode requirement; directory presence is routing evidence, not proof that a playable passed.
+
+---
+
+### Case 10: Engine minimal route distinguishes no build, prototype and grown code
+
+**Fixture:** Minimal Godot, no brief, two source files. A: no prototype. B: existing engine concept prototype. C: 12-file existing game.
+
+**Input:** $gs-next-step
+
+**Domain checks:**
+- [ ] A recommends a quick throwaway prototype, with brainstorm available when no idea exists. B recommends brainstorm for the brief instead of another prototype.
+- [ ] C preserves reverse-document design src routing. Never auto-invoke or write state for this advisory request.
 
 ---
 

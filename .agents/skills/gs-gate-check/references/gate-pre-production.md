@@ -1,4 +1,4 @@
-> Gate definition, loaded by `$gs-gate-check` for the TARGET PHASE ONLY.
+> Gate definition, loaded by `$gs-gate-check` for the target stage only.
 > Never load the other five — one gate applies per invocation.
 
 
@@ -11,8 +11,8 @@
 - [ ] Art bible exists at `design/art/art-bible.md` with at least Sections 1–4 (Visual Identity Foundation)
 - [ ] At least 3 Architecture Decision Records in `docs/architecture/` covering
       Foundation-layer systems (scene management, event architecture, save/load)
-- [ ] Engine reference docs exist in `<project-engine-reference>/`
-- [ ] Test framework initialized: the engine's test root exists — `tests/unit/` and `tests/integration/` (Godot), `Assets/Tests/EditMode/` and `Assets/Tests/PlayMode/` (Unity), or `Source/<Module>/Private/Tests/` (Unreal); see `.game-studio/resources/docs/directory-structure.md`
+- [ ] Engine reference docs exist in `docs/engine-reference/[engine]/`
+- [ ] Test framework initialized: the engine's test root exists — `tests/unit/` and `tests/integration/` (Godot, Web), `Assets/Tests/EditMode/` and `Assets/Tests/PlayMode/` (Unity), or `Source/<Module>/Private/Tests/` (Unreal); see `.game-studio/resources/docs/directory-structure.md`
 - [ ] CI/CD test workflow exists at `.github/workflows/tests.yml` (or equivalent)
 - [ ] At least one example test file exists to confirm the framework is functional
 - [ ] Master architecture document exists at `docs/architecture/architecture.md`

@@ -21,6 +21,7 @@ ENUMS = {
     'performance.enforce': ['warn', 'block', 'off'],
     'platform.cert_tier': ['none', 'itch', 'steam', 'console'],
     'accessibility.target': ['none', 'standard', 'aaa'],
+    'project.goal': ['jam', 'learn', 'hobby', 'portfolio', 'sell', 'early_access', 'publisher', 'mobile', 'other'],
     'project.stage': ['Concept', 'Systems Design', 'Technical Setup', 'Pre-Production', 'Production', 'Polish', 'Release'],
     'features.session_state': ['on', 'off'],
     'features.read_guard': ['on', 'off', True, False],
@@ -197,7 +198,7 @@ def resolve(root, system=None, *, require_clean=False):
     return {'root': str(root), 'values': values, 'sources': sources, 'notes': notes, 'duplicate_keys': duplicate_keys}
 
 
-DERIVED_KEYS = {"gate_level", "engine_values", "specialists", "review_gate", "input_methods", "perf_budgets"}
+DERIVED_KEYS = {"gate_level", "engine_values", "specialists", "review_gate", "input_methods", "perf_budgets", "engine_row"}
 
 
 def derived(resolved, wanted=None):
@@ -209,6 +210,9 @@ def derived(resolved, wanted=None):
     def field(key):
         return {"value": values.get(key), "source": sources.get(key, "unset")}
 
+    if "engine_row" in wanted:
+        from engine_table import describe
+        result["engine_row"] = describe(resolved)
     if "gate_level" in wanted:
         levels = {}
         for kind in ("logic", "integration", "visual", "ui", "config"):
@@ -225,7 +229,7 @@ def derived(resolved, wanted=None):
     if "specialists" in wanted:
         family = str(values.get("engine.name") or "").casefold()
         primary = {"godot": "gs-godot-specialist", "unity": "gs-unity-specialist",
-                   "unreal": "gs-unreal-specialist"}.get(family)
+                   "unreal": "gs-unreal-specialist", "web": "gs-lead-programmer"}.get(family)
         roles = {"primary": {"value": primary, "source": "engine.name" if primary else "unset"}}
 
         def native_role(value):

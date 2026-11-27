@@ -30,9 +30,9 @@ later) while the resolved `modes.workflow` is `minimal` (the `rigor: minimal`
 posture, from the config block above), add one line:
 
 > "You're entering [stage] on `rigor: minimal` — most projects this size run
-> `standard`. Revisit with `$gs-settings modes.rigor=standard`?"
+> `standard`. Revisit with `$gs-project-settings modes.rigor=standard`?"
 
-Offer it **once**, here at the gate. Route to `$gs-settings` — never change the
+Offer it **once**, here at the gate. Route to `$gs-project-settings` — never change the
 setting yourself.
 
 ---

@@ -245,7 +245,7 @@ The `full` column of the file-check table has its own STOP rule, so the
 
 **Domain checks:**
 - [ ] No "Implementation Complete" and no `Status:` change past `In Progress`
-- [ ] The checkpoint's **Next step** is `$gs-dev-story [story-path]` to resume — never `$gs-story-done`, which `$gs-help` reads as "the work is written"
+- [ ] The checkpoint's **Next step** is `$gs-dev-story [story-path]` to resume — never `$gs-story-done`, which `$gs-next-step` reads as "the work is written"
 
 ---
 

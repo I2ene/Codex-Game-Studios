@@ -41,9 +41,10 @@ skills:
   category: utility
   priority: low
 - name: gs-changelog
-  spec: skills/changelog.md
+  spec: skills/write-changelog.md
   category: sprint
   priority: low
+  alias_of: gs-write-changelog
 - name: gs-code-review
   spec: skills/code-review.md
   category: analysis
@@ -72,6 +73,10 @@ skills:
   spec: skills/create-stories.md
   category: pipeline
   priority: high
+- name: gs-cut
+  spec: skills/cut.md
+  category: utility
+  priority: low
 - name: gs-day-one-patch
   spec: skills/day-one-patch.md
   category: utility
@@ -97,9 +102,10 @@ skills:
   category: gate
   priority: critical
 - name: gs-help
-  spec: skills/help.md
+  spec: skills/next-step.md
   category: utility
   priority: low
+  alias_of: gs-next-step
 - name: gs-hotfix
   spec: skills/hotfix.md
   category: utility
@@ -120,6 +126,10 @@ skills:
   spec: skills/milestone-review.md
   category: sprint
   priority: low
+- name: gs-next-step
+  spec: skills/next-step.md
+  category: utility
+  priority: low
 - name: gs-onboard
   spec: skills/onboard.md
   category: utility
@@ -136,6 +146,10 @@ skills:
   spec: skills/playtest-report.md
   category: utility
   priority: low
+- name: gs-project-settings
+  spec: skills/project-settings.md
+  category: utility
+  priority: high
 - name: gs-project-stage-detect
   spec: skills/project-stage-detect.md
   category: utility
@@ -185,9 +199,10 @@ skills:
   category: analysis
   priority: low
 - name: gs-settings
-  spec: skills/settings.md
+  spec: skills/project-settings.md
   category: utility
   priority: high
+  alias_of: gs-project-settings
 - name: gs-setup-engine
   spec: skills/setup-engine.md
   category: utility
@@ -296,6 +311,10 @@ skills:
   spec: skills/vertical-slice.md
   category: pipeline
   priority: high
+- name: gs-write-changelog
+  spec: skills/write-changelog.md
+  category: sprint
+  priority: low
 roles:
 - name: gs-accessibility-specialist
   spec: roles/accessibility-specialist.md

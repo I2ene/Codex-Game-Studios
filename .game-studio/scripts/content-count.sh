@@ -22,8 +22,8 @@
 #                   entities.yaml's entities and items sections, read through
 #                   registry.sh, deprecated ones left out
 #   found [--engine E] [--files]
-#                   content files on disk for the engine (godot, unity or
-#                   unreal; default: engine.name as project-state.sh reads it)
+#                   content files on disk for the engine (godot, unity,
+#                   unreal or web; default: engine.name as project-state.sh reads it)
 #   band FOUND SPECIFIED
 #                   the percentage and status band of one pair
 #   gap             rows `system<TAB>type<TAB>specified<TAB>found` on stdin:
@@ -113,6 +113,7 @@ LC_ALL=C
 export LC_ALL
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
+. "$HERE/native-runtime.sh"
 usage() { echo "content-count: $1 (try --help)" >&2; exit 2; }
 TAB=$(printf '\t')
 
@@ -278,31 +279,45 @@ if [ -z "$RAW" ] || [ "$RAW" = "-" ]; then
   exit 3
 fi
 LOW=$(printf '%s' "$RAW" | tr '[:upper:]' '[:lower:]')
+# cell COLUMN -- the engine's cell of the engine table (engine-row.awk), empty for `-`.
+ETAB="$HERE/../resources/engines/engines.tsv"
+[ -f "$ETAB" ] && [ -f "$HERE/engine-row.awk" ] || { echo "content-count: the engine table $ETAB or engine-row.awk is missing" >&2; exit 1; }
+cell() { awk -F'\t' -v engine="$RAW" -v col="$1" -f "$HERE/engine-row.awk" "$ETAB"; }
+# The rules below differ per engine, so the engine keeps its own case.
 case "$LOW" in
-  godot) ENG=godot; ROOTS="assets src" ;;
-  unity) ENG=unity; ROOTS="assets Assets" ;;
-  unreal*) ENG=unreal; ROOTS="assets Content" ;;
+  godot) ENG=godot ;;
+  unity) ENG=unity ;;
+  unreal*) ENG=unreal ;;
+  web) ENG=web ;;
   *)
-    if [ "$ESRC" = flag ]; then usage "--engine takes godot, unity or unreal, got $RAW"; fi
+    if [ "$ESRC" = flag ]; then usage "--engine takes godot, unity, unreal or web, got $RAW"; fi
     printf 'engine\t%s\t%s\n' "$RAW" "$ESRC"
-    echo "content-count: engine $RAW has no content rules here (godot, unity or unreal)" >&2
+    echo "content-count: engine $RAW has no content rules here (godot, unity, unreal or web)" >&2
     exit 3 ;;
 esac
-printf 'engine\t%s\t%s\n' "$ENG" "$ESRC"
-
-PRESENT=""; NPRES=0
-for r in $ROOTS; do
-  # The exact name, from the listing: -d would say yes to Assets for a
-  # directory called assets on a case-insensitive disk.
-  if [ -n "$(find . -maxdepth 1 -type d -name "$r" 2>/dev/null)" ]; then
+# The roots, from the engine table: assets/, then the engine's asset root
+# (Unity Assets/, Unreal Content/), or its code root where that asset root is
+# assets/ itself (Godot src/, Web src/). Web's data files sit in data/.
+AROOT=$(cell asset_root); CROOT=$(cell code_root)
+_effective=$(gs_get code_root) || exit 2
+[ -z "$_effective" ] || CROOT="$_effective"
+if [ "$AROOT" = assets ]; then ROOTS=$(printf '%s\n' assets "$CROOT"); else ROOTS=$(printf '%s\n' assets "$AROOT"); fi
+[ "$ENG" = web ] && ROOTS=$(printf '%s\n' assets data "$CROOT")
+PRESENT=""; NPRES=0; LIST=""
+while IFS= read -r r; do
+  [ -n "$r" ] || continue
+  if [ "$r" = "$CROOT" ] && [ -d "$r" ] || [ -n "$(find . -maxdepth 1 -type d -name "$r" 2>/dev/null)" ]; then
     printf 'root\t%s\tpresent\n' "$r"; PRESENT="$PRESENT $r"; NPRES=$((NPRES + 1))
+    _found=$(gs_native list-files "$r" --root "$PWD") || exit 2
+    LIST="$LIST
+$_found"
   else
     printf 'root\t%s\tabsent\n' "$r"
   fi
-done
-LIST=""
-# shellcheck disable=SC2086
-[ -z "$PRESENT" ] || LIST=$(find $PRESENT -type f 2>/dev/null | sort)
+done <<EOF
+$ROOTS
+EOF
+LIST=$(printf '%s\n' "$LIST" | sed '/^$/d' | sort -u)
 
 printf '%s\n' "$LIST" | ENG="$ENG" SHOWFILES="$SHOWFILES" awk '
   BEGIN {
@@ -343,7 +358,8 @@ printf '%s\n' "$LIST" | ENG="$ENG" SHOWFILES="$SHOWFILES" awk '
     srcroot = (eng == "godot" && root == "src")
     for (gi = 1; gi <= ng; gi++) {
       g = G[gi]; hit = 0; nh = 0
-      if (g == "levels") {
+      # Web has no scene files: its levels are data files in a levels/ folder.
+      if (g == "levels" && eng != "web") {
         sceneext = (eng == "godot") ? "tscn" : ((eng == "unity") ? "unity" : "umap")
         if (ext != sceneext) continue
         hit = 1

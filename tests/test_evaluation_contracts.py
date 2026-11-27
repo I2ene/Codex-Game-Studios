@@ -125,9 +125,21 @@ class EvaluationContractTests(unittest.TestCase):
 
     def test_non_team_contracts_allow_labeled_parent_expertise(self):
         for name, number, clauses in [
-            ("art-bible", 1, {"all sections": r"Every section[^\n]*parent[^\n]*authorized delegate",
-                              "coherent batch": r"Sections 2.*4[^\n]*coherent[^\n]*one section at a time"}),
-            ("art-bible", 2, {"revision ownership": r"flagged section[^\n]*parent[^\n]*authorized delegate"}),
+            ("art-bible", 1, {
+                "all sections keep owning expertise and actual contributors": r"Every section[^\n]*owning expertise[^\n]*actual contributors",
+                "foundation/reference helper or parent": r"sections 1–4 and 9[^\n]*authorized art-director helper[^\n]*labeled parent fallback",
+                "in-thread specialist sections": r"sections 5–8[^\n]*in.conversation",
+                "helper authorization and capacity": r"sections 1–4 and 9 only[^\n]*authorization[^\n]*tools[^\n]*capacity[^\n]*5–8 never launch helpers",
+                "coherent foundation separately approved": r"Sections 2.*4[^\n]*coherent[^\n]*approved and written one section at a time",
+                "complete bible before actual parent gate": r"AD-ART-BIBLE[^\n]*all nine sections[^\n]*labelled parent assessment",
+                "dual discipline lenses": r"Section 7[^\n]*art direction and UX[^\n]*Section 8[^\n]*technical constraints",
+            }),
+            ("art-bible", 2, {
+                "revision follows owning lens": r"flagged section[^\n]*re-drafted[^\n]*owning lens",
+                "limited optional revision helper": r"authorized art-director helper[^\n]*optional[^\n]*1–4/9[^\n]*5–8 stay in conversation",
+                "approval precedes revision write": r"approved before[^\n]*written[^\n]*REVISED",
+                "missing evidence cannot approve": r"NOT ASSESSED[^\n]*missing input[^\n]*not as an approval",
+            }),
             ("create-architecture", 1, {"both reviews": r"TD-ARCHITECTURE[^\n]*LP-FEASIBILITY[^\n]*parent[^\n]*authorized delegate",
                                        "parent gate inputs": r"parent[^\n]*gate definition[^\n]*context"}),
         ]:

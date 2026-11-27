@@ -332,6 +332,6 @@ If yes, write the file, creating the directory if needed.
 
 ## Phase 6: Next Steps
 
-- Draft the changelog or patch notes (`$gs-changelog`, `$gs-patch-notes`) if not done — the release gate checks them.
+- Draft the changelog or patch notes (`$gs-write-changelog`, `$gs-patch-notes`) if not done — the release gate checks them.
 - Run `$gs-gate-check release` — the Polish → Release gate reads this checklist.
 - After a PASS: `$gs-launch-checklist`, then coordinate the release via `$gs-team-release`.

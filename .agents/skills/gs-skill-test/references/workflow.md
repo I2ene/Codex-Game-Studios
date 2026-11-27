@@ -26,3 +26,7 @@ launch the skill. Check unverified host APIs, mistaken permissions, description
 collisions, missing phase/verdict/next-step requirements and a role instructed
 to ask the user itself. Use isolated planted-defect fixtures. Report findings
 separately from evidence that an actual workflow ran.
+
+An explicit alias name is still a target: `$gs-skill-test spec help` validates the
+compatibility alias and its exactly-once forwarding to `$gs-next-step`; report the
+canonical procedure separately. Do not reinterpret the argument as a help request.

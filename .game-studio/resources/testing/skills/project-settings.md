@@ -1,4 +1,4 @@
-# Evaluation scenarios: gs-settings
+# Evaluation scenarios: gs-project-settings
 
 Use the [evaluation policy](../README.md), current native skill and configuration contract.
 
@@ -32,7 +32,7 @@ the selected scope and preserves other project facts; no global Codex changes.
 **Fixture:** Root YAML selects full rigor and collaborative automation, sets Godot and explicit
 `docs.density: terse`. Local YAML sets automation autonomous.
 
-**Input:** `$gs-settings` (view all)
+**Input:** `$gs-project-settings` (view all)
 
 **Domain checks:**
 - [ ] Resolve the root with native `config`. Show workflow, QA, story granularity, review and
@@ -47,7 +47,7 @@ the selected scope and preserves other project facts; no global Codex changes.
 
 **Fixture:** Root sets standard rigor with no `qa.level` and no local override.
 
-**Input:** `$gs-settings qa.level`
+**Input:** `$gs-project-settings qa.level`
 
 **Domain checks:**
 - [ ] From native config, show effective standard and its rigor provenance. Explain how an
@@ -61,7 +61,7 @@ the selected scope and preserves other project facts; no global Codex changes.
 **Fixture:** Root YAML has minimal rigor, collaborative automation and explicit thorough density. User
 authorizes changing rigor to standard.
 
-**Input:** `$gs-settings modes.rigor=standard`
+**Input:** `$gs-project-settings modes.rigor=standard`
 
 **Domain checks:**
 - [ ] Preview/validate the intended shared edit with the native contract and apply only that
@@ -76,7 +76,7 @@ authorizes changing rigor to standard.
 
 **Fixture:** Root YAML sets `modes.review_mode: lean`.
 
-**Input:** `$gs-settings modes.review_mode=chaotic`
+**Input:** `$gs-project-settings modes.review_mode=chaotic`
 
 **Domain checks:**
 - [ ] Report the invalid assignment and the allowed review modes; do not ask approval for or
@@ -88,7 +88,7 @@ authorizes changing rigor to standard.
 
 **Fixture:** Root sets `engine.name: Godot`; no local YAML.
 
-**Input:** `$gs-settings --local engine.name=Unity`
+**Input:** `$gs-project-settings --local engine.name=Unity`
 
 **Domain checks:**
 - [ ] Explain that engine.name is project-wide. If the user intends an engine change, direct
@@ -101,7 +101,7 @@ authorizes changing rigor to standard.
 
 **Fixture:** Root exists with collaborative automation; no local YAML. User authorizes the personal override.
 
-**Input:** `$gs-settings --local modes.automation=autonomous`
+**Input:** `$gs-project-settings --local modes.automation=autonomous`
 
 **Domain checks:**
 - [ ] Validate the permitted assignment, then create `project.local.yaml` with `automation`
@@ -115,7 +115,7 @@ authorizes changing rigor to standard.
 **Fixture:** The native effects map marks `accessibility.target` reserved; the key is unset and the user
 authorizes a shared assignment. Use a documented nonreserved key as a contrast.
 
-**Input:** `$gs-settings accessibility.target=standard`; then inspect all and inspect the key
+**Input:** `$gs-project-settings accessibility.target=standard`; then inspect all and inspect the key
 
 **Domain checks:**
 - [ ] Before the authorized write, distinguish stored preference from an implemented effect.
@@ -131,7 +131,7 @@ authorizes a shared assignment. Use a documented nonreserved key as a contrast.
 **Fixture:** Root review lean and automation autonomous; allowed local review override solo. User explicitly
 authorizes setting shared review to full.
 
-**Input:** `$gs-settings modes.review_mode=full`
+**Input:** `$gs-project-settings modes.review_mode=full`
 
 **Domain checks:**
 - [ ] Report the solo shadow and unchanged effective value before writing. Automation does not
@@ -145,7 +145,7 @@ authorizes setting shared review to full.
 
 **Fixture:** Root YAML exists. Test an empty value and an empty key separately.
 
-**Input:** `$gs-settings --local modes.automation=`; separately `$gs-settings =full`
+**Input:** `$gs-project-settings --local modes.automation=`; separately `$gs-project-settings =full`
 
 **Domain checks:**
 - [ ] Explain the rejected syntax/value and show the applicable assignment form. Both calls

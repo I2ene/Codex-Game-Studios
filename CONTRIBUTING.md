@@ -65,3 +65,10 @@ document the narrow native differences. Keep the upstream commits as ancestors o
 the integration commit. Preserve that ancestry when integrating a synchronization
 PR; do not squash or rebase away its upstream parent. See the
 [compatibility map](docs/upstream-compatibility.md).
+
+
+When a change explicitly uses [Spec Kit](.specify/README.md), retain its reviewed,
+generic specification, plan, contracts and checked implementation tasks under
+specs/. Keep machine-local tooling and execution logs ignored. These maintainer
+artifacts are outside consumer packaging; they do not add a game workflow or an
+installation dependency. The constitution records this repository's existing rules.

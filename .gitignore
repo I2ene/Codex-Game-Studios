@@ -46,3 +46,8 @@ production/qa/evidence/**/*.wav
 !.specify/memory/constitution.md
 !.specify/README.md
 .agents/skills/speckit-*/
+
+# Explicit Web/browser development output
+node_modules/
+playwright-report/
+test-results/

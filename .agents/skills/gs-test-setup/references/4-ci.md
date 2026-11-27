@@ -10,6 +10,7 @@
 - Godot 4
 - Unity
 - Unreal Engine
+- Web
 
 ### Godot 4
 
@@ -179,5 +180,65 @@ editor target in `Source/[ProjectName]Editor.Target.cs`. `actions/checkout@v7`
 and `actions/upload-artifact@v7` run on Node.js 24, which needs Actions Runner
 2.327.1 or newer: update the self-hosted runner before the first run
 (https://github.com/actions/checkout/blob/v7.0.1/README.md).
+
+### Web
+
+The native `studio.py test-scaffold web --root <project-root>` helper leaves an
+absent CI workflow SKIPPED (`needs` includes `ci_adapter`); it does not write this
+example. Authoring `.github/workflows/tests.yml` is a separate user-authorized step.
+Inspect the actual package scripts, lockfile, runtime/browser requirements and
+installed framework paths; adapt the example to that reviewed runner. Present the
+concrete file and resolve any missing authorization before writing it. Preserve
+an existing workflow; propose a targeted change only when it is in scope. If this
+step is not authorized or cannot be verified, report CI NOT ASSESSED / not created.
+
+Reviewed starting example (not proof that CI has run):
+
+```yaml
+name: Automated Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run Vitest and Playwright Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      # npm ci installs exactly what package-lock.json pins.
+      - name: Install
+        run: npm ci
+
+      # Playwright launches the runner's Chrome, the browser
+      # .game-studio/scripts/page-shot.sh finds, so no browser is downloaded.
+      - name: Run Tests
+        run: npm test
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results
+          path: test-results/
+          if-no-files-found: ignore
+```
+
+`npm test` exits non-zero when either half fails, so the job fails with it.
+GitHub's `ubuntu-latest` image has Google Chrome on the `PATH`, which is what
+`page-shot.sh --which` finds there; `.game-studio/` must be in the repository, as it
+is in every Codex Game Studios project. `test-results/` holds Playwright's traces and
+screenshots of a failing test, and is empty when every test passed.
 
 ---

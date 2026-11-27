@@ -1,8 +1,8 @@
-# Evaluation scenarios: gs-changelog
+# Evaluation scenarios: gs-write-changelog
 
 Professional scenarios adapted from Donchitos' upstream testing guidance; see
 [source attribution](../../../NOTICE.md). These are evaluation inputs and domain
-checks, not executed results. Read `.agents/skills/gs-changelog/SKILL.md` and its current procedure first.
+checks, not executed results. Read `.agents/skills/gs-write-changelog/SKILL.md` and its current procedure first.
 Use [evaluation policy](../README.md) and [category rubric](../quality-rubric.md).
 
 Resolve current config and project engine records. Apply review-mode discipline
@@ -23,7 +23,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
   stories whose task IDs appear in the commit messages
 - `docs/CHANGELOG.md` does not yet exist
 
-**Input:** `$gs-changelog`
+**Input:** `$gs-write-changelog`
 
 **Domain checks:**
 - [ ] Present both the internal and player-facing changelog before saving.
@@ -42,7 +42,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - The injected tag list is empty
 - `docs/CHANGELOG.md` does not exist
 
-**Input:** `$gs-changelog`
+**Input:** `$gs-write-changelog`
 
 **Domain checks:**
 - [ ] Skill does not error when no git tags exist
@@ -62,7 +62,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
   "fix player clipping through ledge", "add footstep sounds", "level tweaks",
   "combat cleanup"
 
-**Input:** `$gs-changelog`
+**Input:** `$gs-write-changelog`
 
 **Domain checks:**
 - [ ] Commits are categorized by content with or without a task ID — the untagged "tweak dash cooldown 0.8 -> 0.6" lands in Balance Changes, not in a separate no-ID group
@@ -79,7 +79,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - `docs/CHANGELOG.md` already exists with sections for `v0.2.0` and `v0.3.0`
 - New Game commits exist since the `v0.3.0` tag
 
-**Input:** `$gs-changelog`
+**Input:** `$gs-write-changelog`
 
 **Domain checks:**
 - [ ] Skill checks whether `docs/CHANGELOG.md` exists before asking, and recommends [A] append because it does
@@ -95,7 +95,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - Git history has Game commits since the last tag
 - `project.yaml` sets `modes.review_mode: full`
 
-**Input:** `$gs-changelog`
+**Input:** `$gs-write-changelog`
 
 **Domain checks:**
 - [ ] No director gate is invoked regardless of review mode
@@ -113,7 +113,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
   runner" — and none names a game system in `design/` or the code root
 - `docs/CHANGELOG.md` does not exist
 
-**Input:** `$gs-changelog`
+**Input:** `$gs-write-changelog`
 
 **Domain checks:**
 - [ ] No changelog is generated or written on this provenance/no-history stop.
@@ -131,7 +131,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
   blocks are empty
 - `docs/CHANGELOG.md` does not exist
 
-**Input:** `$gs-changelog`
+**Input:** `$gs-write-changelog`
 
 **Domain checks:**
 - [ ] No changelog is generated or written on this provenance/no-history stop.

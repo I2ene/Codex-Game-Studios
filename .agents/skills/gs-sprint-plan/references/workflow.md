@@ -63,8 +63,8 @@ smaller than the range is planned whole — never padded with invented stories.
   expansion, and the legacy file sits *above* that expansion, so either write
   would freeze director-review depth for good. `--review` covers a one-off. If
   the user wants a different depth to persist, point them to changing
-  `modes.rigor` (`$gs-settings modes.rigor=<minimal|standard|full>`), or to pinning
-  it on purpose with `$gs-settings --local modes.review_mode=<full|lean|solo>` (a
+  `modes.rigor` (`$gs-project-settings modes.rigor=<minimal|standard|full>`), or to pinning
+  it on purpose with `$gs-project-settings --local modes.review_mode=<full|lean|solo>` (a
   personal override in `project.local.yaml`).
 
 ---
@@ -124,7 +124,7 @@ smaller than the range is planned whole — never padded with invented stories.
 
 For `new`:
 
-**Generate a sprint plan** following this format and present it to the user. Do NOT ask to write yet — the gate phases run first and may require revisions before the file is written: the producer feasibility gate (Phase 4, spawned only in `full` review mode — skipped in `lean`/`solo`) and the QA plan check (Phase 5, all modes).
+**Generate a sprint plan** following this format and present it to the user. Do not ask to write yet — the gate phases run first and may require revisions before the file is written: the producer feasibility gate (Phase 4, spawned only in `full` review mode — skipped in `lean`/`solo`) and the QA plan check (Phase 5, all modes).
 
 ```markdown
 # Sprint [N] — [Start Date] to [End Date]
@@ -270,7 +270,7 @@ For `status`:
 
 After generating a new sprint plan, also prepare the `production/sprint-status.yaml` content.
 This is the machine-readable source of truth for story status — read by
-`$gs-sprint-status`, `$gs-story-done`, and `$gs-help` without markdown parsing.
+`$gs-sprint-status`, `$gs-story-done`, and `$gs-next-step` without markdown parsing.
 
 **Do not write the yaml yet** — hold it in context. The producer feasibility gate (Phase 4, `full` review mode only) may revise the story list; the QA plan check (Phase 5) runs in every mode. Both files are written together after Phase 5 in a single write approval.
 
