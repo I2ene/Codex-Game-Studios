@@ -43,6 +43,45 @@ class V13RuntimeTests(unittest.TestCase):
         self.assertIsNone(result["commands"]["test"]["argv"])
         self.assertTrue(any("code_root" in note for note in result["notes"]))
 
+    def test_unset_nested_roots_fall_through_legacy_then_table(self):
+        for kind, default, legacy in (("code_root", "src", "scripts"),
+                                      ("test_root", "tests", "checks")):
+            self.write(default + "/.gitkeep", "")
+            self.write(legacy + "/.gitkeep", "")
+            for unset in ("", "   ", "[TO BE CONFIGURED]", "null", "~", None):
+                for fallback in ("legacy", "table", "unset-legacy"):
+                    settings = {"engine": {"name": "Web", kind: unset}}
+                    if fallback == "legacy":
+                        settings[kind] = legacy
+                    elif fallback == "unset-legacy":
+                        settings[kind] = unset
+                    self.write("project.yaml", json.dumps(settings))
+                    with self.subTest(kind=kind, unset=unset, fallback=fallback):
+                        row = config.derived(config.resolve(self.root), ["engine_row"])["engine_row"]
+                        value = row[kind]
+                        self.assertEqual(value["value"], legacy if fallback == "legacy" else default)
+                        self.assertEqual(value["source"], kind if fallback == "legacy" else "engine.name")
+                        self.assertEqual(value["status"], "VALID")
+                        self.assertFalse(any(kind in note for note in row["notes"]))
+
+    def test_invalid_explicit_roots_stop_unset_fallback_chain(self):
+        for kind, default, legacy in (("code_root", "src", "scripts"),
+                                      ("test_root", "tests", "checks")):
+            self.write(default + "/.gitkeep", "")
+            self.write(legacy + "/.gitkeep", "")
+            for nested, top in (("missing", legacy), ("missing", None),
+                                ("", "missing"), (None, "missing")):
+                settings = {"engine": {"name": "Web", kind: nested}}
+                if top is not None:
+                    settings[kind] = top
+                self.write("project.yaml", json.dumps(settings))
+                with self.subTest(kind=kind, nested=nested, legacy=top):
+                    row = config.derived(config.resolve(self.root), ["engine_row"])["engine_row"][kind]
+                    self.assertEqual(row["status"], "INVALID")
+                    self.assertIsNone(row["value"])
+                    self.assertIn("no directory", row["reason"])
+                    self.assertEqual(row["source"], "engine." + kind if nested == "missing" else kind)
+
     def test_invalid_explicit_root_never_scans_default_or_wrong_case(self):
         self.write("src/should-not-count.ts", "// default fallback")
         self.write("Scripts/also-not-count.ts", "// actual spelling")

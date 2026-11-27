@@ -39,9 +39,14 @@ def lookup(name):
     return table().get(family)
 
 
+def _root_unset(value):
+    return value is None or (isinstance(value, str) and
+                             (not value.strip() or value.startswith("[") or value in {"null", "~"}))
+
+
 def root_value(root, value, key, *, explicit=False, kind=None):
     result = {"value": None, "source": key, "status": "UNSET", "reason": None}
-    if value is None or isinstance(value, str) and (not value.strip() or value.startswith("[") or value in {"null", "~"}):
+    if _root_unset(value):
         return result
     try:
         if not isinstance(value, str):
@@ -84,7 +89,7 @@ def describe(resolved):
     roots = {}
     for kind in ("code_root", "test_root"):
         nested, legacy = "engine." + kind, kind
-        supplied = [key for key in (nested, legacy) if values.get(key) is not None]
+        supplied = [key for key in (nested, legacy) if not _root_unset(values.get(key))]
         if len(supplied) == 2 and values[nested] != values[legacy]:
             notes.append(f"{nested} takes priority over legacy {legacy}")
         selected = supplied[0] if supplied else None

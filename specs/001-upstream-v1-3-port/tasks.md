@@ -58,3 +58,8 @@ Deliver the entire bounded release, testing the first-playable story first as an
 ## Phase 9: Convergence
 
 - [X] T031 Canonicalize tool-created temporary directories before native path checks in .game-studio/scripts/cut-apply.sh and the associated browser/Grow internal call chain; preserve rejection of caller-supplied links, and add OS temporary-alias regression in tests/test_v13_helpers.py per FR-005/FR-008 and US2/AC4 (partial).
+
+
+## Phase 10: Convergence
+
+- [X] T032 Make empty/placeholder nested engine roots continue to compatible legacy keys or table defaults in .game-studio/runtime/engine_table.py, while invalid explicit values still stop fallback; regress code/test roots and actual derived output in tests/test_v13_runtime.py per FR-005/FR-008 and US3/AC1 (partial).
