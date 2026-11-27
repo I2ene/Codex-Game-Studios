@@ -13,6 +13,10 @@ runtime behavior with targeted unittest checks. Run tools/validate.py for conten
 document links, evaluation catalog and release integrity. After reviewed payload
 changes, run tools/build_release.py, then validate again. See CONTRIBUTING.md.
 
+Prepare every upstream port for a public checkout. Before the first push or PR
+edit, apply the [public contribution review](CONTRIBUTING.md#public-contribution-review)
+to the outgoing history, files and material that will appear on GitHub.
+
 Consumer packaging consists of .agents/skills/gs-*, .codex/agents/gs-* and .game-studio.
 Installer changes must preserve user files, reject unsafe paths and record ownership.
 Never ship model/permission pins, global configuration changes or hook-trust bypasses.
