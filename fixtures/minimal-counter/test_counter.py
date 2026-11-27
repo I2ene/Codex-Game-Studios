@@ -12,13 +12,16 @@ class CounterTests(unittest.TestCase):
         self.assertEqual(increment(2, 4), 3)
         self.assertEqual(increment(4, 4), 4)
         self.assertEqual(increment(0, 0), 0)
+        self.assertEqual(increment(2, 5), 3)
+        self.assertEqual(increment(5, 5), 5)
 
     def test_reject_invalid_inputs(self):
         for value, limit in [(-1, 2), (3, 2), (0, -1)]:
             with self.assertRaises(ValueError):
                 increment(value, limit)
-        with self.assertRaises(TypeError):
-            increment(True, 2)
+        for value, limit in [(True, 2), (0, True), (1.5, 2), (0, "2")]:
+            with self.subTest(value=value, limit=limit), self.assertRaises(TypeError):
+                increment(value, limit)
 
 
 if __name__ == '__main__':

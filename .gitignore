@@ -176,3 +176,6 @@ $RECYCLE.BIN/
 # the project root. Anchored so a reports/ folder elsewhere stays tracked.
 /reports/
 /test-results/
+
+# Local maintainer output; never tracked release evidence.
+.scratch/
