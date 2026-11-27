@@ -239,6 +239,6 @@ A summary report covering: performance before/after metrics, visual polish chang
 
 - If READY FOR RELEASE: run `$gs-release-checklist` for the final pre-release validation.
 - If NEEDS MORE WORK: schedule remaining issues in `$gs-sprint-plan update` (at `workflow: minimal`, which has no sprints, add them to the brief's build order) and re-run `$gs-team-polish` after fixes.
-- If NOT ASSESSED: supply what was missing — commit the unset `performance.*` budgets in `project.yaml` (`$gs-settings`), or run the phases that did not run (raise `team.size`) — then re-run `$gs-team-polish`. Do not treat the area as release-ready.
+- If NOT ASSESSED: supply what was missing — commit the unset `performance.*` budgets in `project.yaml` (`$gs-project-settings`), or run the phases that did not run (raise `team.size`) — then re-run `$gs-team-polish`. Do not treat the area as release-ready.
 - If the report handed an optimisation list to `$gs-dev-story`: implement those items there, then re-run `$gs-team-polish` to measure the gain.
 - Run `$gs-gate-check` for a formal phase gate verdict before handing off to release.

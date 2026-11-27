@@ -186,7 +186,7 @@ table, [Y] in prose only)."
 ## Phase 5: Impact analysis
 
 For each ADR in **M**, read its Context, Decision and Consequences sections with
-`md-section.sh extract`: whether a decision still holds needs its reasoning, never
+`python .game-studio/runtime/studio.py markdown extract <file> <heading> --root <project-root>`: whether a decision still holds needs its reasoning, never
 only its table row. Then, for each requirement it lists from the changed GDD:
 
 1. Does the requirement still exist in the current GDD?

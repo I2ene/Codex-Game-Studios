@@ -1,6 +1,6 @@
 ---
 name: gs-gate-check
-description: "Ready to advance between development phases? PASS/CONCERNS/NOT ASSESSED/FAIL with blockers and required artifacts. 'Can we move to production?'"
+description: "Ready to advance between development stages? PASS/CONCERNS/NOT ASSESSED/FAIL with blockers and required artifacts. 'Can we move to production?'"
 ---
 
 # Gate Check

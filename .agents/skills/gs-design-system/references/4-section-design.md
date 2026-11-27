@@ -43,14 +43,13 @@ Context  ->  Questions  ->  Options  ->  Decision  ->  Draft  ->  Approval  ->  
    (`.game-studio/resources/docs/automation-modes.md`):
 
    **In `collaborative` mode**: Immediately after the draft — in the SAME
-   response — use `ask the user`. **NEVER use plain text. NEVER skip
-   this step.**
+   response — use `ask the user`, not plain text, and do not skip
+   this step: a plain-text ask is easy to miss.
    - Prompt: "Approve the [Section Name] section?"
    - Options: `[A] Approve — write it to file` / `[B] Make changes — describe what to fix` / `[C] Start over`
 
-   **The draft and the approval widget MUST appear together in one response.
-   If the draft appears without the widget, the user is left at a blank prompt
-   with no path forward — this is a protocol violation in collaborative mode.**
+   The draft and the approval widget go together in one response: a draft
+   without the widget leaves the user at a blank prompt with no path forward.
 
    **In `guided` mode**: Write the section immediately after the draft with
    a brief one-line summary of what was decided. Skip the per-section widget;
@@ -61,7 +60,7 @@ Context  ->  Questions  ->  Options  ->  Decision  ->  Draft  ->  Approval  ->  
    `Chosen: [A] Approve`, `Category: minor`.
 
 7. **Write**: Use the Edit tool to replace the placeholder with the approved content.
-   **CRITICAL**: Always include the section heading in the `old_string` to ensure
+   Always include the section heading in the `old_string` to ensure
    uniqueness — never match `[To be designed]` alone, as multiple sections use the
    same placeholder and the Edit tool requires a unique match. Use this pattern:
    ```
@@ -88,9 +87,11 @@ is still saved in the GDD.
 
 ### Section-Specific Guidance
 
-Each section has unique design considerations and may benefit from specialist agents:
+Each section has unique design considerations, and some run a specialist step: you
+look at the section through a specialist's lens (`references/lens-*.md`), in this
+conversation. **No step here spawns an agent.**
 
-**Every skipped spawn is announced.** When a section's review-mode check below
+**Every skipped specialist step is announced.** When a section's review-mode check below
 skips its specialist — in `lean` as well as `solo` — print that section's note
 with the mode it ran in, e.g. "`creative-director` not consulted — Lean mode.
 Review manually before production." A section drafted without its specialist
@@ -114,7 +115,7 @@ Append `(Recommended)` to the appropriate option text in each tab.
 - Tab "ADR ref" — "Should the overview reference the existing ADR for this system?" Options: `[A] Yes — cite the ADR for implementation details` / `[B] No — keep the GDD at pure design level`
 - Tab "Fantasy" — "Does this system have a player fantasy worth stating?" Options: `[A] Yes — players feel it directly` / `[B] No — pure infrastructure, players feel what it enables`
 
-Use the answers to shape the draft. **In `collaborative` mode, do NOT answer
+Use the answers to shape the draft. **In `collaborative` mode, do not answer
 these questions yourself and auto-draft** — the widget must appear. In `guided`
 and `autonomous`, this is a MINOR framing decision: select the recommended
 option derived above, state it in one line, and proceed (that is the whole
@@ -157,7 +158,7 @@ Append `(Recommended)` to the appropriate option text.
 - Prompt: "Is this system something the player engages with directly, or infrastructure they experience indirectly?"
 - Options: `[A] Direct — player actively uses or feels this system` / `[B] Indirect — player experiences the effects, not the system` / `[C] Both — has a direct interaction layer and infrastructure beneath it`
 
-Use the answer to frame the Player Fantasy section appropriately. Do NOT assume the answer.
+Use the answer to frame the Player Fantasy section appropriately. Do not assume the answer.
 
 **Questions to ask**:
 - What emotion or power fantasy does this serve?
@@ -167,18 +168,21 @@ Use the answer to frame the Player Fantasy section appropriately. Do NOT assume 
 **Cross-reference**: Must align with the game pillars. If the system serves a pillar,
 quote the relevant pillar text.
 
-**Review mode check** (apply before spawning):
-- `solo` → skip this agent spawn. Draft the section without the specialist. Add a note: "`creative-director` not consulted — Solo mode. Review manually before production."
-- `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without the agent.
-- `full` → spawn as described below.
+**Review mode check** (apply before the specialist step):
+- `solo` → skip the specialist step. Draft the section without it. Add a note: "`creative-director` not consulted — Solo mode. Review manually before production."
+- `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without it.
+- `full` → run it as described below.
 
-**Professional expertise review (required; delegation optional)**: After the framing answer is given but before drafting,
-spawn `creative-director` via native delegation when authorized:
-- Provide: system name, framing answer (direct/indirect/both), game pillars, any reference games the user mentioned, the game concept summary
-- Ask: "Shape the Player Fantasy for this system. What emotion or power fantasy should it serve? What player moment should we anchor to? What tone and language fits the game's established feeling? Be specific — give me 2-3 candidate framings."
-- Collect the creative-director's framings and present them to the user alongside the draft.
+**Specialist step (MANDATORY in `full`)**: After the framing answer is given but before
+drafting, read `.agents/skills/gs-design-system/references/lens-creative-director.md` and, from the system name, the
+framing answer, the game pillars, any reference games the user mentioned and the
+concept summary, write 2-3 candidate Player Fantasy framings under it: each anchored
+to one player moment and a quoted pillar, in the game's established tone. Present
+them to the user alongside the draft; the user picks.
 
-**Do NOT draft Section B before its applicable creative-director expertise review, performed by the parent or an authorized delegate.** Apply the section's review-mode check first; when skipped, retain the named skip note. The framing answer sets the kind of fantasy; this review shapes tone, language and the player moment to anchor to.
+**Do NOT draft Section B without applying the applicable specialist expertise in the parent or through an authorized delegate.** The framing answer tells us *what kind*
+of fantasy it is; the lens shapes *how it's described* — tone, language, the specific
+player moment to anchor to.
 
 ---
 
@@ -200,20 +204,20 @@ This is usually the largest section. Break it into sub-sections:
 - What are the decision points the player faces?
 - What can the player NOT do? (Constraints are as important as capabilities)
 
-**Review mode check** (apply before spawning):
-- `solo` → skip this agent spawn. Draft the section without the specialist. Add a note naming them: "`[the Section 6 routing table's Primary and Supporting Agents for this category]` not consulted — Solo mode. Review manually before production."
-- `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without the agent.
-- `full` → spawn as described below.
+**Review mode check** (apply before the specialist step):
+- `solo` → skip the specialist step. Draft the section without it. Add a note naming them: "`[the Section 6 routing table's Primary and Supporting Agents for this category]` not consulted — Solo mode. Review manually before production."
+- `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without it.
+- `full` → run it as described below.
 
-**Professional expertise review (required; delegation optional)**: Before drafting Section C, apply relevant specialist expertise in the parent, or delegate independent reviews only when authorized and available:
-- Look up the system category in the routing table (Section 6 of this skill)
-- Cover the primary and supporting expertise listed for this category in the parent, or through authorized delegation with available tools and capacity
-- Provide each agent: system name, game concept summary, pillar set, dependency GDD excerpts, the specific section being worked on
-- Collect their findings before drafting
-- Surface any disagreements between agents to the user via `ask the user`
-- Draft only after receiving specialist input
+**Specialist step (MANDATORY in `full`)**: Before drafting Section C:
+- Look up the system category in the routing table (Section 6 of this skill) and take its Primary and Supporting roles
+- Read `.agents/skills/gs-design-system/references/lens-specialists.md` and look at the system name, concept summary, pillar set and dependency GDD excerpts through each picked role in turn
+- Show one short block per role (its additions and warnings), named by role, before the draft
+- Surface any disagreement between roles, or between the user's idea and a pillar or a dependency GDD, to the user via `ask the user`, both positions as options
+- Draft only after that
 
-**Do NOT draft Section C before its applicable routing-table expertise review, performed by the parent or authorized delegates.** Apply the section's review-mode check first and retain explicit skip notes. Cover both primary and supporting responsibilities, collect their findings and surface disagreements before drafting; label parent analysis accurately.
+**Do NOT draft Section C without applying the applicable specialist expertise in the parent or through an authorized delegate.** Rules seen from one angle miss the gaps
+the other roles catch.
 
 **Cross-reference**: For each interaction listed, verify it matches what the
 dependency GDD specifies. If a dependency defines a value or formula and this
@@ -242,7 +246,7 @@ The [formula_name] formula is defined as:
 **Example:** [worked example with real numbers]
 ```
 
-Do NOT write `[Formula TBD]` or describe a formula in prose without the variable
+Do not write `[Formula TBD]` or describe a formula in prose without the variable
 table. A formula without defined variables cannot be implemented without guesswork.
 
 > **These columns must match `templates/guidance/game-design-document-guide.md` exactly.** They
@@ -260,17 +264,17 @@ table. A formula without defined variables cannot be implemented without guesswo
 - Should scaling be linear, logarithmic, or stepped?
 - What should the output ranges be at early/mid/late game?
 
-**Review mode check** (apply before spawning):
-- `solo` → skip this agent spawn. Draft the section without the specialist. Add a note: "`systems-designer` not consulted — Solo mode. Review manually before production."
-- `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without the agent.
-- `full` → spawn as described below.
+**Review mode check** (apply before the specialist step):
+- `solo` → skip the specialist step. Draft the section without it. Add a note: "`systems-designer` not consulted — Solo mode. Review manually before production."
+- `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without it.
+- `full` → run it as described below.
 
-**Professional expertise review (required; delegation optional)**: Before proposing any formulas or balance values, apply relevant specialist expertise in the parent, or delegate independent reviews only when authorized and available:
-- **Apply systems-designer expertise**: provide Core Rules from Section C, tuning goals from user, balance context from dependency GDDs. Ask them to propose formulas with variable tables and output ranges.
-- **For economy/cost systems, add economy-designer expertise**: provide placement costs, upgrade cost intent, and progression goals. Ask them to validate cost curves and ratios.
-- Present the specialists' proposals to the user for review via `ask the user`
-- The user decides; the main session writes to file
-- **Do NOT invent formula values or balance numbers without specialist input.** A user without balance design expertise cannot evaluate raw numbers — they need the specialists' reasoning.
+**Specialist step (MANDATORY outside `solo`)**: Before proposing any formulas or balance values, read `.agents/skills/gs-design-system/references/lens-systems-designer.md`:
+- **Always apply its Section D checks**: from Core Rules (Section C), the user's tuning goals and the dependency GDDs' balance context, propose formulas with variable tables and output ranges, and work every variable at its minimum, its maximum and 0 to find values the system cannot use.
+- **For economy/cost systems, also apply its costs checks**: cost curves and ratios against progression.
+- Present the proposals, and any boundary problem found, to the user for review via `ask the user`
+- The user decides; you write to file
+- **Do not offer formula values or balance numbers without the reasoning behind them.** A user without balance design expertise cannot evaluate raw numbers.
 
 **Cross-reference**: If a dependency GDD defines a formula whose output feeds into
 this system, reference it explicitly. Don't reinvent — connect.
@@ -288,7 +292,7 @@ Example (adapt terminology to the game's domain):
 - **If [resource] reaches 0 while [protective condition] is active**: hold at minimum until condition ends, then apply consequence.
 - **If two [triggers/events] fire simultaneously**: resolve in [defined priority order]; ties use [defined tiebreak rule].
 
-Do NOT write vague entries like "handle appropriately" — each must name the exact
+Do not write vague entries like "handle appropriately" — each must name the exact
 condition and the exact resolution. An edge case without a resolution is an open
 design question, not a specification.
 
@@ -297,12 +301,12 @@ design question, not a specification.
 - What happens when two rules apply at the same time?
 - What happens if a player finds an unintended interaction? (Identify degenerate strategies)
 
-**Review mode check** (apply before spawning):
-- `solo` → skip this agent spawn. Draft the section without the specialist. Add a note: "`systems-designer` not consulted — Solo mode. Review manually before production."
-- `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without the agent.
-- `full` → spawn as described below.
+**Review mode check** (apply before the specialist step):
+- `solo` → skip the specialist step. Draft the section without it. Add a note: "`systems-designer` not consulted — Solo mode. Review manually before production."
+- `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without it.
+- `full` → run it as described below.
 
-**Professional expertise review (required; delegation optional)**: Spawn `systems-designer` via native delegation when authorized before finalising edge cases. Provide: the completed Sections C and D, and ask them to identify edge cases from the formula and rule space that the main session may have missed. For narrative systems, also apply narrative-director expertise. Present their findings and ask the user which to include.
+**Specialist step (MANDATORY in `full`)**: Before finalising edge cases, apply the Section E checks in `.agents/skills/gs-design-system/references/lens-systems-designer.md` to the completed Sections C and D (re-read them from the file), looking for edge cases in the formula and rule space your first draft missed. For narrative systems, also apply the narrative-director row of `.agents/skills/gs-design-system/references/lens-specialists.md`. Present the findings and ask the user which to include.
 
 **Cross-reference**: Check edge cases against dependency GDDs. If a dependency
 defines a floor, cap, or resolution rule that this system could violate, flag it.
@@ -335,17 +339,17 @@ system]". Flag any one-directional dependencies for correction.
 - For each knob, what breaks if it's set too high? Too low?
 - Which knobs interact with each other? (Changing A makes B irrelevant)
 
-**Review mode check** (apply before spawning):
-- `solo` → skip this agent spawn. Derive the knobs from Section D's variable table yourself. Add a note: "`systems-designer` not consulted — Solo mode. Review manually before production."
+**Review mode check** (apply before the specialist step):
+- `solo` → skip the specialist step. Derive the knobs from Section D's variable table yourself. Add a note: "`systems-designer` not consulted — Solo mode. Review manually before production."
 - `lean` → skip unless Section D defines a formula whose knobs interact (changing one makes another inert).
-- `full` → delegate as described below.
+- `full` → run it as described below.
 
-**Agent delegation**: If formulas are complex, delegate to `systems-designer`
-to derive tuning knobs from the formula variables.
+**Specialist step**: If formulas are complex, apply the Section G checks in
+`.agents/skills/gs-design-system/references/lens-systems-designer.md` to derive tuning knobs from the formula
+variables.
 
-> The guard above was missing here while Sections B, C, D, E and H all carried
-> one — and this delegation names `systems-designer`, the same agent Section D's
-> guard has already told a `solo` run to skip. Read without it, `solo` skips the
+> This step uses the `systems-designer` lens, the same one Section D's guard
+> already tells a `solo` run to skip. Without the guard above, `solo` skips the
 > specialist for the formulas and then consults it for the knobs derived from
 > those same formulas.
 
@@ -366,7 +370,7 @@ Example (adapt terminology to the game's domain):
 - **GIVEN** [a constraint is active], **WHEN** [player attempts an action], **THEN** [feedback shown and action result].
 
 Include at least: one criterion per core rule from Section C, and one per formula
-from Section D. Do NOT write "the system works as designed" — every criterion must
+from Section D. Do not write "the system works as designed" — every criterion must
 be independently verifiable by a QA tester without reading the GDD.
 
 > **When Section D was not authored** (Formulas optional at this tier because the
@@ -387,12 +391,12 @@ be independently verifiable by a QA tester without reading the GDD.
 > without this scope, the two rules contradict each other for any `minimal`
 > system that defines a rate — which is most of them.
 
-**Review mode check** (apply before spawning):
-- `solo` → skip this agent spawn. Draft the section without the specialist. Add a note: "`qa-lead` not consulted — Solo mode. Review manually before production."
-- `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without the agent.
-- `full` → spawn as described below.
+**Review mode check** (apply before the specialist step):
+- `solo` → skip the specialist step. Draft the section without it. Add a note: "`qa-lead` not consulted — Solo mode. Review manually before production."
+- `lean` → skip unless this is a section with HIGH implementation risk (Sections D and H only). For other sections, draft without it.
+- `full` → run it as described below.
 
-**Professional expertise review (required; delegation optional)**: Spawn `qa-lead` via native delegation when authorized before finalising acceptance criteria. Provide: the completed GDD sections C, D, E, and ask them to validate that the criteria are independently testable and cover all core rules and formulas. Surface any gaps or untestable criteria to the user.
+**Specialist step (MANDATORY outside `solo`)**: Before finalising acceptance criteria, read `.agents/skills/gs-design-system/references/lens-qa-lead.md` and check the criteria against the completed sections C, D and E (re-read them from the file): independently testable, covering every core rule and formula. Surface any gaps or untestable criteria to the user.
 
 **Questions to ask**:
 - What's the minimum set of tests that prove this works?
@@ -431,19 +435,17 @@ exactly once, so nothing falls through:
 > below, the skill has no defined behaviour for it and the author has to guess.
 > All nine categories must be covered between the two lists.
 
-For required systems: **spawn `art-director` via native delegation when authorized** before drafting this section. Provide: system name, game concept, game pillars, art bible sections 1–4 if they exist. Ask them to specify: (1) VFX and visual feedback requirements for this system's events, (2) any animation or visual style constraints, (3) which art bible principles most directly apply to this system. Present their output; do NOT leave this section as `[To be designed]` for visual systems.
+For required systems: **run the art-director step** before drafting this section: read the Visual/Audio part of `.agents/skills/gs-design-system/references/lens-specialists.md` and, from the system name, game concept, game pillars and art bible sections 1–4 if they exist, specify: (1) VFX and visual feedback requirements for this system's events, (2) any animation or visual style constraints, (3) which art bible principles most directly apply to this system. Present it; do not leave this section as `[To be designed]` for visual systems.
 
-**Review mode check** (apply before spawning):
-- `solo` → skip this agent spawn. Draft the section without the specialist. Add a note: "`art-director` not consulted — Solo mode. Review manually before production."
-- `lean` → skip unless this system's visual feedback is central to it (a `Gameplay` or `UI` system whose events the player reads to play). Otherwise draft without the agent.
-- `full` → spawn as described above.
+**Review mode check** (apply before the specialist step):
+- `solo` → skip the specialist step. Draft the section without it. Add a note: "`art-director` not consulted — Solo mode. Review manually before production."
+- `lean` → skip unless this system's visual feedback is central to it (a `Gameplay` or `UI` system whose events the player reads to play). Otherwise draft without it.
+- `full` → run it as described above.
 
-> Sections B, C, D, E and H each carry this block and this spawn did not, while
-> being worded as mandatory (*"do NOT leave this section as `[To be designed]`"*).
-> Two agents in `solo` skipped it anyway, on the strength of the other five, and
-> both flagged the guess. `director-gates.md`'s *"solo → no director gates
-> anywhere"* governs director **gates**, not specialist spawns, so it did not
-> settle it — this block does.
+> This block applies even though the step above is worded as mandatory (*"do
+> NOT leave this section as `[To be designed]`"*). `director-gates.md`'s *"solo
+> → no director gates anywhere"* governs director **gates**, not specialist
+> steps, so it does not settle this step — this block does.
 
 **Game Feel is REQUIRED (mandatory — do not offer to skip) for `Gameplay` and
 `UI`** — the categories whose systems the player directly operates, where

@@ -15,3 +15,6 @@ Verify runtime dependencies and actual command adapters when execution is reques
 Run a small in-scope task and record actual evidence; recommend missing setup without
 silently installing engines/tools or changing global settings. Use gs-start for first
 project setup and gs-adopt for an existing project audit.
+
+
+- Run `$gs-next-step` if the contributor needs guidance on what to work on next.

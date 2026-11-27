@@ -88,8 +88,8 @@ and its gate's own context; the parent reads gate files when performing the revi
   `workflow: minimal`, pass the Build order in `design/game-brief.md` as the plan — that
   tier has no sprint plan.
 - **AD-PHASE-GATE**: the art and visual artifacts present, the Visual Identity
-  Anchor (from `design/gdd/game-concept.md`, else the "Art & audio direction"
-  line of `design/game-brief.md`), and the art bible path.
+  Anchor (from `design/gdd/game-concept.md`, else the Label line of
+  `design/game-brief.md`, "Art & audio direction" in older briefs), and the art bible path.
 
 Tell each director to read any GDD, ADR or the art bible by section: find the
 headings with the Grep tool (pattern `^#`, content mode) and Read those

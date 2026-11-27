@@ -1,6 +1,6 @@
 ## Codex Game Studios
 
-Use `$gs-start` to establish or resume project state; `$gs-help` routes the lifecycle.
+Use `$gs-start` to establish or resume project state; `$gs-next-step` routes the lifecycle.
 Skills live in `.agents/skills/gs-*`; roles in `.codex/agents/gs-*` supply expertise.
 Read only relevant references. Professional standards and templates are in
 `.game-studio/resources`. For code/design/narrative/data changes consult the matching

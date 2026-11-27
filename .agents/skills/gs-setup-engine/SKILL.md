@@ -1,6 +1,6 @@
 ---
 name: gs-setup-engine
-description: "Configure engine and version. Pins it in AGENTS.md; WebSearch fills reference docs when the version is beyond LLM training data."
+description: "Sets up and pins the engine version: web for a new project unless Godot, Unity or Unreal is named. Use to choose or upgrade it."
 ---
 
 # Setup Engine

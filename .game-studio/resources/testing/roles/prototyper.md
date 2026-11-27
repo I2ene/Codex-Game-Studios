@@ -14,14 +14,15 @@ The linked native procedure governs command arguments, output schemas, receipts,
 context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 ### Case 1: In-domain request — prototype a card-drawing mechanic
+**Input context**: For the throwaway variant the user selects Paper after the scope proposal; the separate browser variant below follows an accepted one-shot brief.
 **Input**: "Prototype a card-drawing mechanic in 2 hours. The core question: does drawing 3 cards per turn with hand-size limit of 7 feel good? I need something to test in a playtest today."
 **Domain checks**:
 - States the falsifiable hypothesis ("If the player draws 3 cards per turn with a hand limit of 7, they will feel [Y] — evidenced by [Z]") and the riskiest assumption before building
-- Recommends a prototype path with rationale — a card mechanic where timing precision is not the question points to the HTML or Paper path, not the Engine path
+- Recommends a prototype path with rationale — a card mechanic where timing precision is not the question points to the Paper or browser path, not the Engine path
 - Proposes scope in 3–5 bullets (deck, draw N, hand limit 7, a minimal state display) and gets confirmation before building
-- Output goes to `prototypes/card-draw-concept/` (e.g., a single self-contained `prototype.html` that opens by double-click, or `rules.md` + `play-log.md` on the Paper path); every code file starts with the `PROTOTYPE - NOT FOR PRODUCTION` header naming the question and date
-- Code prioritizes speed over correctness: no unit tests, no doc comments required, global state is acceptable; no menus or polish
-- Does NOT implement production patterns (dependency injection, signals, data-driven config) unless they take less time than not using them
+- The selected Paper output goes to `prototypes/card-draw-concept/rules.md` and `play-log.md`; every comment-capable prototype file carries the `PROTOTYPE - NOT FOR PRODUCTION` header naming the question and date. The browser variant uses its own one-shot folder, index.html, config.js and provenance instead.
+- Engine/paper prototype prioritizes the hypothesis: no unit-test/doc-comment requirement and globals allowed. Browser one-shot still follows its accepted brief, tuning data and handover checks.
+- Does NOT implement production patterns (dependency injection or signals) unless they take less time than not using them
 - [ ] Preserve unresolved human decisions and declines; perform routine writes already authorized and ask only for missing decisions or scope.
 
 ---
@@ -69,4 +70,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - Does NOT apply production coding standards (no required test coverage, no doc comments, global state acceptable)
 - Writes the output to `prototypes/grid-movement-concept/` not to `src/`
 - After writing, hands control back: asks the user to run the project and paste any errors or describe what they observe, rather than assuming it worked
-- If a Godot 4.6 API is uncertain, flags the specific API with a note to verify against the Godot 4.6 docs — `<project-engine-reference>/godot/VERSION.md` reaches the agent through `AGENTS.md`'s import, and its Knowledge Gap Warning says to cross-reference that directory before suggesting Godot API calls
+- If a Godot 4.6 API is uncertain, flags the specific API with a note to verify against the Godot 4.6 docs — explicitly resolve the project-owned engine-reference records and read the actual applicable VERSION and API pages before suggesting Godot API calls; no automatic AGENTS.md import is presumed
+
+## Browser variant
+Keep browser tuning in config.js and build in the authorized one-shot folder; paper retains rules.md and play-log.md. Original throwaway engine/paper production-redirect rules are unchanged.

@@ -29,8 +29,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] Every section draft is followed in the same response by the "Approve the [Section Name] section?" widget
 - [ ] Each section is written individually, immediately after its approval, by an Edit anchored on its heading
-- [ ] Section C's specialists come from the routing table's Combat row and are consulted before drafting, using parent work or authorized parallel delegation
-- [ ] CD-GDD-ALIGN consults once, after all sections and the Summary are written — not per section
+- [ ] Section C shows one in-conversation lens view per role in the Combat routing row before drafting; no specialist agent is launched
+- [ ] CD-GDD-ALIGN runs once in conversation, after all sections and the Summary are written — not per section
 - [ ] Before completion, read back the GDD from file and verify Summary and Quick reference are populated; Layer/Priority come from the index and Key deps from the completed design.
 - [ ] The verdict is recorded as `> **Creative Director Review (CD-GDD-ALIGN)**: APPROVED [date]`
 - [ ] `$gs-design-review` is directed to a fresh session and never offered inline
@@ -81,6 +81,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The Status header records `REVISED [date]` or `CONCERNS (accepted) [date]` to match the user's choice
 - [ ] (b) After a REJECT, no later step (5b registry, 5d systems index) runs until the flagged section has been revised
 - [ ] (c) NOT ASSESSED is never recorded or reported as an approval
+- [ ] Apply CD-GDD-ALIGN's checklist to the saved GDD in conversation, not through a delegate; retain all CONCERNS/REJECT/NOT ASSESSED branches.
 
 ---
 
@@ -102,6 +103,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] (b) In solo mode no agent is consulted, and each skipped specialist leaves a "not consulted — Solo mode" note
 - [ ] (b) The skip note reads "CD-GDD-ALIGN skipped — Solo mode."
 - [ ] Per-section user approval is required in both modes
+- [ ] Applicable per-section expertise is shown through lens blocks without launches: lean retains D/H, interactive G and central gameplay/UI visual feedback; solo skips these steps with their named notes.
 
 ---
 

@@ -6,13 +6,15 @@
 | Field | Value |
 |-------|-------|
 | **Engine Version** | Unreal Engine 5.8 |
-| **Installed at pin time** | NOT DETERMINED — `$gs-setup-engine` `3 probes the installed editor and records the result here. |
+| **Installed at pin time** | NOT DETERMINED — `$gs-setup-engine` `3 probes the installed editor and records the result in the project-owned VERSION.md. |
 | **Release Date** | June 2026 (5.8.0); latest hotfix 5.8.3, September 2026 |
 | **Project Pinned** | 2026-10-17 |
-| **Last Docs Verified** | 2026-10-17 (release timeline, 5.8 release notes, and the 5.8 changes recorded in this directory); 2026-02-13 (rest of directory, written against 5.7) |
+| **Last Docs Verified** | 2026-10-18 (Iris status in `modules/networking.md`, MegaLights in `modules/rendering.md`); 2026-10-17 (release timeline, 5.8 release notes, and the 5.8 changes recorded in this directory); 2026-02-13 (rest of directory, written against 5.7) |
 | **LLM Knowledge Cutoff** | May 2025 |
 
 ## Knowledge Gap Warning
+
+The upstream snapshot used a May 2025 reference cutoff; the active model may differ. Project records and current official verification govern.
 
 The LLM's training data likely covers Unreal Engine up to ~5.3. Versions 5.4
 through 5.8 introduced significant changes that the model does NOT know about

@@ -69,3 +69,46 @@ sections. `replace` and `insert-before` read a body from stdin or `--body-file`;
 `set-field` accepts a single value. Confined explicit writes do not grant
 authorization. `project-state` reports facts and source, not a gate. Derived
 configuration observations are available through `config --keys`.
+
+
+## Browser, Grow and scope helpers
+
+The new helpers retain upstream implementations and distinguish observations from
+writes. Read each installed `--help` before invocation; these are actual script
+interfaces, not inferred permissions. Use `GAME_STUDIO_PYTHON` for a Python 3.11+
+interpreter with requirements when Bash cannot find that environment. On Windows,
+`GAME_STUDIO_BASH` may name Git for Windows Bash for spawned Web tests; it is a
+process/project tool choice, not a global configuration change.
+
+| Action | Helpers and effects |
+| --- | --- |
+| Inspect | engine-row, web-detect, game-read, cut-read; one-shot-check `--keep`/`--checklist` report without runs or writes. Web scaffold `--list` previews. |
+| Author/copy | one-shot-new, web-scaffold, door-in (preview first), references-save, tuning and selected cut-apply write explicit project files. Import reads original sources only; original byte checks remain separate. |
+| Observe in browser | page-shot, one-shot-run, default one-shot-check and Grow replay run a real browser, use temporary copies and write evidence. `--record` validates and writes the selected check results; it is not `--keep`. Missing tooling is NOT ASSESSED. |
+| Grow/recover | guard reads prerequisites; copy preserves the prototype, record writes native engine facts only as applicable, replay compares sampled evidence and accept updates its comparison baseline. Git commits/tags and undo follow the workflow's actual authorization and agreed files. |
+| Deliver/network | one-shot-share and itch-zip write delivery output. vendor-three explicitly downloads pinned dependencies; authorized Grow/setup installs Web dependencies. None publishes automatically. |
+
+Accessible explicit user files are the references-save input; no private host
+transcript is scraped. If an attachment cannot be obtained as a file, request that
+input and report the unavailable evidence. New browser TSV/YAML/image evidence has
+prototype consumers; existing linked SHA-256 JSON report receipts retain theirs.
+
+## Engine test preparation
+
+`test-run.sh` runs reviewed `commands.test` argv. Required Godot import and Unreal
+editor build use explicit shared `commands.test_import` and `commands.test_build`
+argv respectively. When required preparation is absent or fails, no engine test pass
+is claimed. Supply real project-specific executable/arguments; installing the
+framework does not create or run them. `--no-build` explicitly opts out of Unreal
+build; `--prepared` delegates preparation to the reviewed test adapter itself and
+reports that fact, without claiming a separate external build was observed.
+
+```yaml
+commands:
+  test_import: ["<godot-executable>", "--headless", "--path", ".", "--import"]
+  test_build: ["<Unreal-build-executable>", "<project-specific-editor-build-arguments>"]
+  test: ["<test-executable>", "<project-specific-test-arguments>"]
+```
+
+The table's shell command strings remain suggestions. They are not converted to
+execution authorization or silently substituted for explicit consumer argv.

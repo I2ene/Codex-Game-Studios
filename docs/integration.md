@@ -6,7 +6,7 @@ layout and professional records. The framework supplies expertise and templates;
 it does not force every stage for a small task or supply a ready-made game.
 
 Configuration facts belong in project.yaml. Leave rigor-derived knobs absent unless
-you intentionally override them. Custom layouts use code_root/test_root; engine.name,
+you intentionally override them. Custom layouts use engine.code_root/engine.test_root (old top-level keys remain compatible); engine.name,
 engine.version and optional engine.reference_root identify actual toolchain/reference
 records. Packaged engine examples need current official verification. Local overrides
 follow the documented whitelist; neither configuration file configures Codex permissions.
@@ -16,8 +16,10 @@ schema_version: 1
 modes:
   rigor: standard
   automation: guided
-code_root: src
-test_root: tests
+engine:
+  name: Web
+  code_root: src
+  test_root: tests
 commands:
   test: ["<test-executable>", "<argument>"]
   build: ["<build-executable>", "<argument>"]

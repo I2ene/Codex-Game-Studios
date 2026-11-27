@@ -50,3 +50,10 @@ verdict, participants and remaining limitations in the consumer or PR review evi
 Do not commit private game records or per-run evaluation logs into this framework.
 
 [Source attribution](../../NOTICE.md) applies to the adapted scenario knowledge.
+
+## Canonical routes and aliases
+The catalog maps 75 canonical skill procedures and 49 roles. Three old skill names
+share the canonical scenario through alias_of; evaluate that guidance once, and separately
+check one rename notice and original-argument forwarding. Source scenarios and inherited
+measurements are not Codex results. The one-shot check's rows and a viewed screenshot
+support only their observed scope, never human fun, device or network validation.

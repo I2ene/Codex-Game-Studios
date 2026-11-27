@@ -25,18 +25,20 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 **Domain checks:**
 - [ ] The Scope tab marks "Full bible — all 9 sections" as Recommended and says why
-- [ ] Every section applies its required specialist expertise through labeled parent work or an authorized delegate; actual contributors are recorded.
+- [ ] Every section applies its owning expertise and records actual contributors: sections 1–4 and 9 may use an authorized art-director helper or labeled parent fallback; sections 5–8 stay in conversation.
 - [ ] In collaborative mode with delegation unavailable, the parent drafts the required section bodies and records their specialist basis; Phase 2, the art-bible effects-map note and the Collaborative Protocol all permit that work, with each section's approval and write, without requiring calls or inventing independent review.
 - [ ] Section 1 is approved and written before drafting Sections 2–4; an already complete locked foundation is reused without rewriting.
 - [ ] Sections 2–4 form one coherent art-director draft, applied by the parent or requested in a single authorized delegated brief; they are presented, approved and written one section at a time.
 - [ ] Sections 5–6 share the completed sections 1–4, keep characters and environments legible against each other, and retain separate approval and write steps.
-- [ ] Call counts, single delegated briefs and batching apply only with user authorization, actual host tools and capacity; no calls are required on the parent path.
-- [ ] Section 7 covers art direction and UX, Section 8 art direction and technical constraints, Section 9 reference direction, and the full-mode AD-ART-BIBLE assessment remains required through parent expertise or an authorized delegate; authorship and review sources are accurate.
+- [ ] For sections 1–4 and 9 only, any helper brief requires user authorization, actual tools and capacity; sections 5–8 never launch helpers. No calls are required on the parent path.
+- [ ] Section 7 covers art direction and UX, Section 8 art direction and technical constraints, Section 9 reference direction, and the full-mode AD-ART-BIBLE assessment remains required in conversation through parent expertise; authorship and review sources are accurate.
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
-- [ ] AD-ART-BIBLE runs only after all nine sections are written, applying the art-director gate definition through a labelled parent assessment or an authorized delegate.
+- [ ] AD-ART-BIBLE runs only after all nine sections are written, applying the art-director gate definition through a labelled parent assessment.
 - [ ] AD-ART-BIBLE is passed all four context items: the art bible path, the pillars and core fantasy, the platform and performance constraints, and the visual identity anchor
 - [ ] The APPROVE verdict is recorded in the art bible's status header line
 - [ ] The closing options include `$gs-create-architecture` and "Stop here"
+- [ ] Sections 1–4 and 9 retain art-director expertise (parent fallback when necessary); sections 5–8 use the in-conversation lenses, with separate art/UX or art/technical blocks for 7/8 and no extra helpers.
+- [ ] AD-ART-BIBLE runs in conversation against the written artifact and all four inputs; print the actual verdict first. One section's approval/write is not batched with another's.
 
 ---
 
@@ -53,9 +55,10 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks:**
 - [ ] (a) CONCERNS are shown to the user with the three standard options, not auto-accepted
 - [ ] (a) "Accept and proceed" records `CONCERNS (accepted) [date]` in the status header
-- [ ] (a) The flagged section is re-drafted with the relevant specialist expertise by the parent or an authorized delegate, and approved before it is written; the header records `REVISED [date]`.
+- [ ] (a) The flagged section is re-drafted with its owning lens (an authorized art-director helper is optional for sections 1–4/9; sections 5–8 stay in conversation), and approved before it is written; the header records `REVISED [date]`.
 - [ ] (b) NOT ASSESSED is recorded as such, naming the missing input — not as an approval
 - [ ] Phase 6 next steps are not presented before the verdict is recorded
+- [ ] Redraft flagged sections using their owning lens. Missing inputs stay NOT ASSESSED; accepted concerns and revised status remain distinct.
 
 ---
 
@@ -114,7 +117,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] (a) AD-ART-BIBLE is not consulted; the skip note reads "AD-ART-BIBLE skipped — Solo mode.", and the header records the SKIPPED sign-off line with the mode and date
 - [ ] (a) The Phase 6 option pool is the `workflow: minimal` set, not the `standard`/`full` GDD pool
 - [ ] (b) The skill stops with the `$gs-brainstorm` message and writes nothing
-
+- [ ] Read Look and references from a new brief, or Label/Art & audio direction from an older one; minimal scope and missing-concept stops remain unchanged.
 
 ## Applicable domain checks
 

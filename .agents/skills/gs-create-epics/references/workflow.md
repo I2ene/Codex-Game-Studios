@@ -103,14 +103,15 @@ by design.
 Report first, word for word:
 
 ```
-Loaded: design/game-brief.md · engine [name version from the engine_values line]
+Loaded: design/game-brief.md · engine [name version from the effective native config]
 At minimal this step is optional: $gs-create-stories builds the epic from the brief by itself.
 ```
 
-The epics come from the brief's MVP feature list, in its **Build order**. A short
+The epics come from the brief's Features list (MVP in older briefs), in its
+**Build order**. A short
 brief is one epic, slugged from the brief's working title (the slug `$gs-create-stories`
 uses when nothing is typed). When the user asks for the work grouped, make one epic
-per group of MVP features that ship together. Every epic names its slug, since
+per group of features that ship together. Every epic names its slug, since
 `$gs-create-stories` needs it typed.
 
 ### `standard` and `full`: the design and the architecture
@@ -141,7 +142,7 @@ per group of MVP features that ship together. Every epic names its slug, since
 Report before defining anything, with the real state:
 
 ```
-Loaded: [N] system GDDs, [n] in scope ([names]) · [M] ADRs ([A] Accepted, [P] Proposed) · manifest v[date | absent] · engine [name version from the engine_values line]
+Loaded: [N] system GDDs, [n] in scope ([names]) · [M] ADRs ([A] Accepted, [P] Proposed) · manifest v[date | absent] · engine [name version from the effective native config]
 ```
 
 At `full`, every in-scope GDD needs all 8 sections and Approved status, and the TR
@@ -169,7 +170,7 @@ Foundation-layer requirements at `standard`; any other untraced requirement at
 ```
 ## Epic: [System Name]
 **Layer**: [Foundation | Core | Feature | Presentation]
-**GDD**: design/gdd/[file].md   (at minimal: design/game-brief.md, MVP features [list])
+**GDD**: design/gdd/[file].md   (at minimal: design/game-brief.md, Features [list])
 **Architecture Module**: [module]
 **Governing ADRs**: [Accepted ADRs, or "none"]
 **Engine Risk**: [LOW | MEDIUM | HIGH — the highest among governing ADRs, else VERSION.md's]
@@ -250,8 +251,8 @@ whole at every density.
 ```
 
 At `minimal`, the GDD line names `design/game-brief.md`, the Governing ADRs and GDD
-Requirements tables are left out, and a **Scope** list holds the epic's MVP
-features in Build order.
+Requirements tables are left out, and a **Scope** list holds the epic's
+Features items in Build order.
 
 **`production/epics/index.md`:** one row per epic. An epic that already has a row
 keeps it: update it in place, never add a second row, never reset its Stories cell.

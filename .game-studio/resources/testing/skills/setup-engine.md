@@ -29,7 +29,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Routing table includes `.gd`, `.gdshader`, and `.tscn` entries; `specialists.code` is `godot-gdscript-specialist`
 - [ ] The rendering/physics shape is asked, not inferred from the engine name
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
-- [ ] Knowledge Risk is HIGH — the Section 6 table's cutoff is May 2025 and its Godot row ~4.3, as in the shipped VERSION.md
+- [ ] Knowledge Risk is HIGH for this historical fixture relative to its recorded reference baseline; the active model's knowledge is not asserted by the packaged May 2025 snapshot
 - [ ] Verdict is COMPLETE
 
 ---
@@ -44,6 +44,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 **Domain checks:**
 - [ ] Engine field is set to Unity and Language to C#
+- [ ] The setup summary uses the engine pin, resolved reference directory and documents read back by the native command; file-change fields reflect actual writes
 - [ ] Naming conventions reflect C# conventions
 - [ ] Routing table includes `.cs` and `.unity` entries
 - [ ] No project-shape question is asked for Unity
@@ -160,6 +161,44 @@ headless or unattended run where no answer can be supplied.
 
 ---
 
+### Case 9: Adopt an existing Web project without scaffolding over it
+
+**Fixture:** Existing npm lockfile project: JavaScript, webpack build script, Jest test script, Phaser dependency, no hook/node_modules. Variant: package workspaces.
+
+**Input:** $gs-setup-engine web
+
+**Domain checks:**
+- [ ] Detect and present the project's own scripts, package manager, bundler version, JavaScript, roots, test runner/library and absent hook. Preserve all game-owned files and existing lockfile.
+- [ ] Write only authorized project records and argv commands, without invented rendering/physics. Dependency install and hook insertion require applicable separate scope; hook default is Not now.
+- [ ] If execution is authorized, retain actual build/test outcomes and screenshot evidence; template pins do not describe this project. Workspaces variant stops before writes as unsupported.
+
+---
+
+### Case 10: Offer Web first only when no project engine exists
+
+**Fixture:** Fresh project without engine markers or package. Variant: brief targets console.
+
+**Input:** $gs-setup-engine
+
+**Domain checks:**
+- [ ] Explain engine tradeoffs before listing Web first and recommended, followed by supported engines; wait for the missing engine choice before writing.
+- [ ] Console variant keeps Web visible but recommends an appropriate engine from that brief instead. Apply the chosen engine procedure, not an inferred choice.
+
+---
+
+### Case 11: An existing project retains its engine
+
+**Fixture:** A: configured Godot 4.7. B: no engine config but root project.godot.
+
+**Input:** $gs-setup-engine
+
+**Domain checks:**
+- [ ] Report the source of the detected engine and continue Godot setup without offering an unsolicited switch to Web. Preserve explicit engine facts and unrelated files.
+
+---
+
 ## Applicable domain checks
 
 - [ ] Use the selected Godot export preset and Unity build target; never invent a default for an unresolved preset or target.
+
+- [ ] The closing list follows next-step order: prototype first when no game exists, retaining the studio ladder at standard/full. No setup success alone establishes a running game.

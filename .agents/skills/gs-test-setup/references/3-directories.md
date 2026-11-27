@@ -248,4 +248,55 @@ test reusing a class name fails to link
 Test name: "<Project>.[System].[Scenario]"
 ```
 
+#### Web (`Engine: Web`)
+
+**Run the native helper; do not recreate its template files by hand.** Preview
+in Phase 2, then apply under existing user authorization with these exact commands:
+
+```bash
+python .game-studio/runtime/studio.py test-scaffold web --root <project-root> --dry-run
+python .game-studio/runtime/studio.py test-scaffold web --root <project-root>
+```
+
+Consume JSON `mode`, `status`, `files` and `needs`. Each `files` item has `path`
+and `status`: WOULD_CREATE in preview, CREATED when written, EXISTS when preserved,
+or SKIPPED with a reason. Preview writes nothing. The default missing-file layout is:
+
+- `tests/README.md`
+- `production/qa/evidence/.gitkeep`
+- `tests/unit/.gitkeep`
+- `tests/integration/.gitkeep`
+- `playwright.config.ts` (the shipped Web scaffold template)
+- `tests/smoke/critical-paths.md` (Phase 5 fills the actual game paths)
+
+A configured `engine.test_root` (or compatible `test_root`) must name an existing
+confined directory; invalid roots stop without writes. A valid root relocates the `tests/`
+paths and the new Playwright integration path; use the returned paths as authority.
+Existing files are never overwritten, including a user-owned Playwright config.
+The helper leaves `.github/workflows/tests.yml` SKIPPED when absent because it
+requires a reviewed CI adapter; an existing workflow is EXISTS and remains unchanged.
+Phase 4 is a separate authorized authoring step, not helper-generated CI.
+
+Report the structured `needs` entries: `test_runner`, `ci_adapter`, and
+`engine_version` when the version is missing. These are follow-up requirements,
+not test results. This helper does not detect `package.json` or `node_modules`,
+install npm packages, or run tests. Inspect those separately; absent setup routes
+to `$gs-setup-engine web`, and unavailable execution remains NOT ASSESSED.
+
+The two test tools are kept apart. Vitest runs `tests/unit/**/*.test.ts` (the
+rules in `src/game/`, in Node, no browser); Playwright runs `tests/integration/`
+against `dist-single/index.html`, opened from disk, with the browser
+`.game-studio/scripts/page-shot.sh --which` prints. The commands:
+
+```bash
+npm test              # Vitest, then Playwright
+npm run smoke         # build:single, then the @boot test
+bash .game-studio/scripts/test-run.sh web   # both halves, each run and read apart
+```
+
+Each half exits 0 when every test passed and non-zero when one failed. A half
+with no test file exits 1: Vitest prints `No test files found` and Playwright
+`No tests found`. That is not a failing test and not a pass: report it as not
+assessed, no tests found.
+
 ---

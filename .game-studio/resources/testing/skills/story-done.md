@@ -46,6 +46,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Each criterion is listed with its status (`auto-verified` / `confirmed` / `FAILS` / `DEFERRED`) and appears in a Criterion | Test | Status traceability table
 - [ ] Test evidence is reported as present, without claiming the tests pass
 - [ ] In `lean` mode the skill asks whether `$gs-code-review` was run, and records the answer in the Completion Notes `Code Review:` line
+- [ ] Full-mode variant: LP-CODE-REVIEW performed in the parent records `parent assessment (lead-programmer lens); no independent review` consistently in the report, Completion Notes and closing Review line; running a role's gate does not create an independent participant.
+- [ ] Full-mode authorized-delegate variant: Reviewed by records the actual participant ID or observed identity together with `role: lead-programmer` and its verdict. A missing or unperformed gate is NOT ASSESSED, never a fabricated approval or identity.
 - [ ] The traceability table maps each of AC-1..AC-3 to its test function, with no UNTESTED row
 - [ ] The `Run result:` line is read from the checkpoint (whose **Current task** names this story) and noted with its retained path
 - [ ] Verdict is COMPLETE — every criterion maps to a test, the run was observed and retained, and no deviations exist
@@ -56,24 +58,50 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 
 ### Case 2: Criteria needing manual or playtest verification
 
-**Fixture:**
-- As Case 1, plus two more criteria:
-  - (a) "Player sees correct animation on pickup" — no automated test; a frame of
-    the animation is retained at `production/qa/evidence/story-light-pickup/02-pickup-anim.png`
-  - (b) "Pickup state persists across a full level run" — needs a full game build
-- 1 of the 5 criteria ends up with no covering test
+**Input (all subscenarios):** `$gs-story-done production/epics/core/story-light-pickup.md`
 
-**Input:** `$gs-story-done production/epics/core/story-light-pickup.md`
+**Case 2a — retained animation evidence and genuinely human-only feel:**
 
-**Domain checks:**
-- [ ] Skill asks the user about the unverifiable criterion rather than assuming it passes, batching up to 4 such questions per call — a behaviour criterion is never marked verified from reading the code
-- [ ] Before the report says what `02-pickup-anim.png` shows, the image is opened with `Read`; the checkpoint's `Run result:` text is quoted as `$gs-dev-story`'s description, never restated as the skill's own observation
-- [ ] The playtest-only criterion is marked `DEFERRED — requires playtest session`
-- [ ] Verdict is COMPLETE WITH NOTES, and the report lists the DEFERRED criterion — neither BLOCKED nor NOT ASSESSED, since a DEFERRED criterion does not block and does not fire the NOT ASSESSED trigger
-- [ ] The deferred criterion is named in the Completion Notes `Criteria:` line, with the untested-criteria recommendation
-- [ ] Variant — if the user answers `No — fails` for (a), the criterion is `FAILS`, the verdict is BLOCKED, and the skill does not proceed to Phase 7 on its own
-- [ ] Variant — no image for this story is retained under `production/qa/evidence/` and the checkpoint carries no `Run result:` line: the user's `Yes — passes` for (a) is an assertion, not evidence, so the missing observation is flagged at the Logic gate level (BLOCKING by default) and the verdict is BLOCKED — never COMPLETE WITH NOTES on the confirmation alone
-- [ ] Skill still asks via `host input tool` before updating the story file
+**Fixture (2a):**
+- Case 1's three implemented criteria and observed run still apply.
+- AC-4: "Player sees the correct pickup animation"; no automated test, but a frame is retained at `production/qa/evidence/story-light-pickup/02-pickup-anim.png`.
+- AC-5: "Pickup feedback feels satisfying after sustained human play"; this subjective feel has not been playtested and has no automated test.
+
+**Domain checks (2a):**
+- [ ] Ask about unverifiable criteria, batching at most four questions; reading behavior code never verifies runtime behavior.
+- [ ] Open `02-pickup-anim.png` before describing it. Quote the checkpoint's Run result as the dev-story author's description, not this reviewer's own observation.
+- [ ] Only the genuinely human-playtest-only AC-5 is `DEFERRED — requires playtest session`; the observed animation and other criteria retain their actual evidence.
+- [ ] COMPLETE WITH NOTES is permitted for these inputs, listing the deferred feel criterion and its human-playtest recommendation.
+- [ ] Preserve the explicit close decision before updating the story; no independent participant or sign-off is invented.
+
+**Case 2b — testable persistence has not run:**
+
+**Fixture (2b):**
+- Case 1's Logic story and standard QA apply.
+- Add "Pickup state persists across a full level run"; the required build/run has not happened, with no covering test execution or retained evidence. The user says "I'll check it when I play".
+
+**Domain checks (2b):**
+- [ ] Persistence is testable behavior: mark it UNTESTED, never DEFERRED merely because it needs a full build or a later play session.
+- [ ] Apply the actual evidence gate. At the default blocking Logic gate the required evidence gap is BLOCKED; with an explicit advisory gate, the unassessed criterion still keeps the verdict at best NOT ASSESSED, never COMPLETE WITH NOTES.
+- [ ] Name the build/test/run and retained evidence needed to settle the criterion; do not manufacture an observed result from code or the user's future intent.
+- [ ] Recommend not closing until settled; any explicit override is recorded as such, without converting the missing evidence to a pass.
+
+**Case 2c — observed/manual criterion fails:**
+
+**Fixture (2c):**
+- Use 2a, but the user answers `No — fails` for the animation criterion.
+
+**Domain checks (2c):**
+- [ ] Mark that criterion FAILS and the verdict BLOCKED, regardless of the separately deferred feel item; do not proceed to close on the reviewer's own initiative.
+
+**Case 2d — claimed animation pass without observation:**
+
+**Fixture (2d):**
+- Use 2a, but no image is retained for this story and the checkpoint has no Run result. The user answers `Yes — passes` for the animation.
+
+**Domain checks (2d):**
+- [ ] The answer is an assertion, not retained observation. Flag missing evidence at the Logic gate level (blocking by default): BLOCKED, never COMPLETE WITH NOTES solely on that confirmation.
+- [ ] Require the actual unresolved close decision before any story write; preserve already-authorized routine work without inventing approval.
 
 ---
 

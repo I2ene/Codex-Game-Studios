@@ -1,6 +1,6 @@
 ---
 name: gs-settings
-description: "View or change project config — effective merged values, or set locally in project.local.yaml."
+description: "Compatibility alias. Use when the user invokes $gs-settings; forwards the original request to $gs-project-settings."
 ---
 
 # Settings

@@ -76,8 +76,8 @@ Read `project.yaml` to determine the following, falling back to `docs/project-re
 
   > **ABSENT DOES NOT MEAN `false`.** These keys have a reader —
   > this skill — and **no writer in the setup flow**: neither
-  > `$gs-setup-engine` nor `$gs-start` emits a `platform:` block, and only `$gs-settings`
-  > sets them, when someone runs it, so on most CCGS projects both keys are
+  > `$gs-setup-engine` nor `$gs-start` emits a `platform:` block, and only `$gs-project-settings`
+  > sets them, when someone runs it, so on most Codex Game Studios projects both keys are
   > absent. Defaulting them to `false` would skip **Category 2 (Network and
   > Multiplayer Security) on every project, genuinely multiplayer ones
   > included** — a security category failing open on a value nothing sets.
@@ -86,14 +86,14 @@ Read `project.yaml` to determine the following, falling back to `docs/project-re
   > skip Category 2.** Ask the user whether the game has multiplayer or online
   > features. If you cannot ask, run Category 2 anyway and mark it
   > `NOT ASSESSED — multiplayer scope unconfirmed (platform.multiplayer unset —
-  > set it with $gs-settings)`, which makes `CLEAR TO SHIP` unreachable per Phase 5.
+  > set it with $gs-project-settings)`, which makes `CLEAR TO SHIP` unreachable per Phase 5.
   > While the scope is unconfirmed, rate severity as for a multiplayer game — an
   > open HIGH is then DO NOT SHIP — and say in the report that the rating assumed
   > multiplayer, as `security-engineer` does.
   > Over-scanning a single-player game costs a few minutes; under-scanning a
   > multiplayer one ships the category unrun.
   >
-  > Set them explicitly with `$gs-settings platform.multiplayer=true` (they are
+  > Set them explicitly with `$gs-project-settings platform.multiplayer=true` (they are
   > project-wide, so `--local` is refused). Recording it in `project.yaml` is the
   > fix; this rule is the guard for until someone does.
 
@@ -435,7 +435,7 @@ If it is **NOT ASSESSED**:
 > but those categories stay unscanned until [the missing input] is supplied."
 >
 > Name the missing input for each category: `engine.name`, the code root, the
-> multiplayer scope (`$gs-settings platform.multiplayer=…`), or — for a category the
+> multiplayer scope (`$gs-project-settings platform.multiplayer=…`), or — for a category the
 > Phase 3 table marks NOT SOURCEABLE on this engine, the usual cause on Unity and
 > Unreal — a save/serialization module in `<project-engine-reference>/modules/`
 > (Phase 3), naming that category.

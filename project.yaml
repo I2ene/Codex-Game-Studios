@@ -2,7 +2,7 @@
 # Installation preserves an existing consumer project.yaml.
 schema_version: 1
 framework:
-  version: 2.1.0
+  version: 2.2.0
 
 # $gs-start records modes.rigor and modes.automation for the game project.
 # Leave derived leaves absent unless intentionally overriding rigor:
@@ -10,3 +10,6 @@ framework:
 # modes.story_granularity and team.size.
 # Local whitelisted preferences belong in project.local.yaml.
 # Schema: .game-studio/resources/docs/effects-map.md
+
+# $gs-project-settings edits shared values; --local only writes whitelisted personal preferences.
+# Shared engine.code_root/test_root take priority over compatible old top-level keys.

@@ -15,22 +15,22 @@ before it closes**, and the observation is a **retained screenshot** in
 `production/qa/evidence/`. Compiling proves the code loads. Tests prove the
 logic. Neither proves the text fits in the box.
 
-The agent can see images: Codex's `Read` tool renders a PNG. The whole
-problem is getting a picture out of the engine unattended, and every supported
-engine has a native way.
+Use the host's actual exposed image-viewing capability to inspect the retained PNG.
+If viewing is unavailable, leave the visual claim unassessed. Capture mechanisms
+for the supported engines are below.
 
 ## The procedure
 
 1. **Launch windowed** at a fixed resolution — `1280x720` unless the project
    says otherwise — using `commands.run` from `project.yaml`. Never the
-   headless / batch / null-RHI flag: those exist to *skip* rendering.
+   headless / batch / null-RHI flag for a game engine: those skip rendering. A browser's real headless renderer is the Web exception below.
 2. **Launch straight into the scene or map the story touched.** A feature that
    is only reachable through the main menu and three clicks is a feature the
    run will not reach. Stories should be written so their surface is reachable
    from a launch argument (a scene path, a map URL, a `--scene` flag).
 3. **Wait, capture, quit.** Let the engine render real frames — 60 is a safe
    floor — capture one, and exit. Each engine's mechanism is below.
-4. **Look.** `Read` the PNG. Compare what is on screen to the acceptance
+4. **Look.** View the PNG with the available image tool. Compare what is on screen to the acceptance
    criteria. Clipped text, an overflowing panel, a missing element, the wrong
    colour — these are defects, and this is the only step that finds them.
 5. **Retain.** Capture straight into the story's evidence folder, so nothing
@@ -53,6 +53,7 @@ engine has a native way.
 | Godot 4 | `godot --path . --windowed --resolution 1280x720 <scene>.tscn` | `--write-movie <path>.png --quit-after <N>` | beside the given path, `<name>00000000.png` … | `--headless` | **none** |
 | Unity 6 | built player `.exe -screen-width 1280 -screen-height 720 -screen-fullscreen 0 --scene <Name>` | `ScreenCapture.CaptureScreenshot(<abs path>)` from a bootstrap script | the absolute path you pass | `-batchmode`, `-nographics` | one MonoBehaviour |
 | Unreal 5 | `MSYS_NO_PATHCONV=1 "<UE root>/Engine/Binaries/Win64/UnrealEditor.exe" "$(pwd -W 2>/dev/null || pwd)/<Game>.uproject" <MapURL> -game -windowed -ResX=1280 -ResY=720` | `HighResShot 1280x720 filename=<abs path>` console command | the path you pass (else `Saved/Screenshots/WindowsEditor/`) | `-nullrhi`, `-unattended` alone | one actor or `-ExecCmds` |
+| Web | Build the authorized single-file output, then use page-shot.sh or an equivalent supported real browser renderer | Retained, viewed PNG and console result | Explicit evidence path | An indefinitely running dev server as the capture command | none |
 
 ### Godot 4 — zero scaffold
 
@@ -240,3 +241,41 @@ Godot ones again on 4.7.2 (gdUnit4 6.2.2), Unity
 Epic's documentation. `<project-engine-reference>/` is
 the project's pinned authority; check it before trusting a version-qualified
 claim here.*
+
+### Web — headless Chrome or Edge
+
+```
+bash .game-studio/scripts/page-shot.sh index.html production/qa/evidence/shop-panel/01-shop-open.png --query scene=shop --wait 2000
+```
+
+**A web project (`engine.name: Web`)** is shot from its single-file build, never
+from the dev server (`commands.run` never exits): `npm run build:single`, then
+`page-shot.sh dist-single/index.html <path>.png --query <state>`. A page opened
+from disk cannot load the folder build's module script; the single file has
+everything inlined. A one-shot is shot as it is, from its own `index.html`. An
+existing project with no `build:single` (`$gs-setup-engine web`, W1) is shot from
+its own build's `index.html` with `--file-access`, so its module scripts and its
+own image and data loads work from disk; a build that asks for files from the
+root (`/assets/…`, Vite's default `base`) still cannot run from disk, and that
+look is `NOT VERIFIED`.
+
+Headless is allowed here and only here: a headless browser draws the page with
+its real renderer, where an engine's headless mode swaps in a dummy one.
+`--wait` is page time before the picture, so 2000 is two seconds of play. The
+script prints the page's console and an `uncaught` count beside the picture;
+with no browser found it prints `not_assessed`, which is `NOT VERIFIED`.
+Reach the state with the address (`--query scene=shop`). The browser sets the
+window to its final size just before the picture: a page that draws only once
+must draw again on `resize`, or the picture is blank. WebGL uses the machine's
+GPU; `--software` draws it in software (SwiftShader), the same with a GPU or
+none, and is what the self-check's runs use. In software a 3D page that draws
+every frame is about forty times slower. `--profile <dir>` keeps the browser profile, so a second run finds what the
+page saved. A one-shot's small check plays a few scripted keys this way
+(`$gs-prototype`), a short run of minutes; how the game plays is the person's
+check, not headless's.
+
+## Host availability
+Use only authorized exposed browser/engine execution. A sandbox refusal is an
+unavailable observation, not a game defect and not permission to disable safeguards
+or install a browser. Report the actual failure and needed capability. Retain and
+view screenshots; taking a screenshot alone does not establish visual correctness.

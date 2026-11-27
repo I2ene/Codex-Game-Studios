@@ -162,7 +162,7 @@ Apply the `technical-artist` expertise in the parent, or delegate to an authoriz
 - Plan streaming vs preloaded asset strategy
 - Design any audio-reactive visual effects
 
-Apply the **primary engine specialist** expertise in the parent, or delegate when authorized and supported by host tools and capacity (`<engine>-specialist` derived from `engine.name` — Godot→`godot-specialist`, Unity→`unity-specialist`, Unreal→`unreal-specialist`; fall back to the Primary line of `## Engine Specialists` in `docs/project-reference/technical-preferences.md`) to validate the integration approach:
+Spawn the **primary engine specialist** in parallel (`<engine>-specialist` derived from `engine.name` — Godot→`godot-specialist`, Unity→`unity-specialist`, Unreal→`unreal-specialist`, Web→`lead-programmer`; fall back to the Primary line of `## Engine Specialists` in `docs/project-reference/technical-preferences.md`) to validate the integration approach:
 - Is the proposed audio middleware integration idiomatic for the engine? (e.g., Godot's built-in AudioStreamPlayer vs FMOD, Unity's Audio Mixer vs Wwise, Unreal's MetaSounds vs FMOD)
 - Any engine-specific audio node/component patterns that should be used?
 - Known audio system changes in the pinned engine version that affect the integration plan?

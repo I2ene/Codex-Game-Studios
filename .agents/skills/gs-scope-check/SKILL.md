@@ -1,6 +1,6 @@
 ---
 name: gs-scope-check
-description: "Scope creep check — current scope versus the original plan. Flags additions, quantifies bloat, recommends cuts. 'Any scope creep?'"
+description: "Scope creep check — current scope versus the original plan. Flags additions, quantifies bloat, recommends cuts. 'Any scope creep?' Finishing a game from its brief is $gs-cut's."
 ---
 
 # Scope Check

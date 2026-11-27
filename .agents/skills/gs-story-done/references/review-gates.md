@@ -45,7 +45,10 @@ Apply the expertise of the `lead-programmer` agent with gate **LP-CODE-REVIEW**.
 
 Act on the verdict:
 
-- **APPROVE:** Reviewed by is `lead-programmer`.
+- **APPROVE:** Reviewed by is `parent assessment (lead-programmer lens); no independent review`
+  when performed here. For a real authorized delegate, record the actual participant ID
+  or observed identity, `role: lead-programmer`, and its verdict. A role label alone
+  is not an actual participant and never proves independence.
 - **CONCERNS:** ask: "The lead programmer raised concerns. How do you want to go
   on?" Options: Revise the flagged issues / Accept and go on / Discuss further.
 - **REJECT:** no COMPLETE verdict until the issues are fixed.

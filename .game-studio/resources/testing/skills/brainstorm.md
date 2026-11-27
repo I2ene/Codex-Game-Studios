@@ -88,6 +88,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] Verdict is COMPLETE
 - [ ] Ask the user to choose or combine the brief concepts before refining the brief; this does
   not require a host-specific widget.
+- [ ] New brief uses Features with every item unchecked, empty Keep and explicit Avoid. Engine-known route keeps create-stories/dev-story and offers a browser sketch in one nonrecommended line.
 
 ---
 
@@ -124,3 +125,27 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] No delegated participant is required for any director
 - [ ] Preserve the case's unresolved human decisions and declines; perform routine writes already authorized, and ask only for missing decisions or scope.
 - [ ] Verdict is COMPLETE
+
+---
+
+### Case 7: No-engine brief preserves exact words and the single handoff
+
+**Fixture:** Minimal, no engine, no brief. User says lighthouse keeper in a storm, adds no combat, it should be calm, chooses a concept and delegates remaining choices.
+
+**Input:** $gs-brainstorm a lighthouse keeper in a storm
+
+**Domain checks:**
+- [ ] Retain the user's words verbatim in In your words, the chosen concept separately, and no combat under Avoid. Mark guessed Question/Hooks/Kill condition; Features begin unchecked and Keep empty.
+- [ ] With no engine or Web, name prototype as the next step. Do not turn onboarding alone into an unrequested build; honor an existing end-to-end request without requiring a manual reinvocation.
+
+---
+
+### Case 8: Market claims need sources or an explicit research gap
+
+**Fixture:** Standard/solo, no market search or figures, user has no engine preference. Variant: Godot explicitly selected.
+
+**Input:** $gs-brainstorm cozy farming
+
+**Domain checks:**
+- [ ] Each market reason, risk and number in the concepts and saved concept cites its actual source or says not researched. Do not invent sales or market size.
+- [ ] No-engine handoff places prototype before engine setup. Godot variant keeps its engine path and labels browser sketch optional and not recommended.

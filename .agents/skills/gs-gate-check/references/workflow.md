@@ -116,7 +116,7 @@ get `individual`).
 - **No argument**: Auto-detect current stage using the same heuristics as
   `$gs-project-stage-detect`, then **confirm with the user before running**:
 
-  Use `ask the user`:
+  Ask with the question tool:
   - Prompt: "Detected stage: **[current stage]**. Running gate for [Current] → [Next] transition. Is this correct?"
   - Options:
     - `[A] Yes — run this gate`
@@ -179,7 +179,7 @@ This skill follows the collaborative design principle:
    what to do next; only the stage write is bound to it (Section 6)
 5. **Get approval**: "May I write this gate check report to production/gate-checks/?"
 6. **Never auto-fix**: If required artifacts are missing, report the FAIL verdict and
-   name the skill to run (e.g. "run `$gs-test-setup`"). Do NOT create missing files or
+   name the skill to run (e.g. "run `$gs-test-setup`"). Do not create missing files or
    re-run the gate automatically. Creating files to manufacture a PASS defeats the
    gate's purpose.
 

@@ -1,6 +1,6 @@
 ---
 name: gs-changelog
-description: "Auto-generate a changelog from git commits and sprint data. Internal and player-facing versions."
+description: "Compatibility alias. Use when the user invokes $gs-changelog; forwards the original request to $gs-write-changelog."
 ---
 
 # Changelog

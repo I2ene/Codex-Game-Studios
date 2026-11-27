@@ -79,7 +79,10 @@ class RuntimeTests(unittest.TestCase):
         self.assertTrue((self.root / 'AGENTS.md').read_text().startswith(original))
         self.assertEqual((self.root / 'project.yaml').read_text(), 'engine: {name: Unity}\n')
         self.assertEqual((self.root / '.codex/config.toml').read_text(), '# user settings\n')
-        self.assertEqual(len(list((self.root / '.agents/skills').glob('*/SKILL.md'))), 74)
+        contract = json.loads((self.root / '.game-studio/entrypoints.json').read_text(encoding='utf-8'))
+        self.assertEqual({p.parent.name for p in (self.root / '.agents/skills').glob('gs-*/SKILL.md')}, set(contract['skills']))
+        self.assertTrue({'gs-cut', 'gs-next-step', 'gs-project-settings', 'gs-write-changelog'} <= set(contract['skills']))
+        self.assertEqual(contract['aliases'], {'gs-help': 'gs-next-step', 'gs-settings': 'gs-project-settings', 'gs-changelog': 'gs-write-changelog'})
         installer.install(REPO, self.root)
         self.assertEqual((self.root / 'AGENTS.md').read_text().count('BEGIN CODEX GAME STUDIOS'), 1)
 

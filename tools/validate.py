@@ -12,12 +12,12 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 
 
-IGNORED = {'.git', '.venv', '.worktrees', '.scratch', '__pycache__', 'node_modules'}
+IGNORED = {'.git', '.venv', '.worktrees', '.scratch', '.specify', '__pycache__', 'node_modules'}
 
 
 def content_files(root):
     for p in root.rglob('*'):
-        if not any(part in IGNORED for part in p.relative_to(root).parts) and p.is_file():
+        if not any(part in IGNORED or part.startswith('speckit-') for part in p.relative_to(root).parts) and p.is_file():
             yield p
 
 
@@ -62,6 +62,19 @@ def document_errors(root):
     return errors
 
 
+def native_reference_errors(root):
+    """Literal installed helper references must resolve in the consumer payload."""
+    errors = []
+    for base in ['.agents/skills', '.codex/agents', '.game-studio']:
+        for p in content_files(root / base):
+            if p.suffix not in {'.md', '.toml', '.yaml', '.yml', '.ts'}:
+                continue
+            for target in set(re.findall(r'\.game-studio/scripts/[A-Za-z0-9_.-]+\.(?:sh|js|awk)', p.read_text(encoding='utf-8'))):
+                if not (root / target).is_file():
+                    errors.append(f'{p.relative_to(root).as_posix()}: missing installed helper {target}')
+    return errors
+
+
 def manifest_errors(root):
     errors = []
     try:
@@ -70,7 +83,7 @@ def manifest_errors(root):
         for base in ['.agents/skills', '.codex/agents', '.game-studio']:
             for p in content_files(root / base):
                 rel = p.relative_to(root).as_posix()
-                if p.suffix != '.pyc' and rel != '.game-studio/release.json':
+                if p.suffix != '.pyc' and rel != '.game-studio/release.json' and (rel.startswith('.game-studio/') or rel.startswith('.agents/skills/gs-') or rel.startswith('.codex/agents/gs-')):
                     actual[rel] = hashlib.sha256(p.read_bytes()).hexdigest()
         if release.get('schema') != 1 or release.get('files') != actual:
             errors.append('Release manifest does not match the complete native payload; run tools/build_release.py after review')
@@ -86,7 +99,7 @@ def test_catalog_errors(root):
     base = root / '.game-studio/resources/testing'
     try:
         catalog = yaml.safe_load((base / 'catalog.yaml').read_text(encoding='utf-8'))
-        for kind, entries in [('skills', (root / '.agents/skills').glob('*/SKILL.md')), ('roles', (root / '.codex/agents').glob('*.toml'))]:
+        for kind, entries in [('skills', (root / '.agents/skills').glob('gs-*/SKILL.md')), ('roles', (root / '.codex/agents').glob('*.toml'))]:
             expected = {p.parent.name if kind == 'skills' else p.stem for p in entries}
             rows = catalog[kind]
             names = [row['name'] for row in rows]
@@ -105,10 +118,17 @@ def test_catalog_errors(root):
 
 def validate(verify_release=True):
     errors = []
-    skills = list((ROOT / '.agents/skills').glob('*/SKILL.md'))
+    skills = list((ROOT / '.agents/skills').glob('gs-*/SKILL.md'))
     roles = list((ROOT / '.codex/agents').glob('*.toml'))
-    if len(skills) != 74 or len(roles) != 49:
-        errors.append('Expected 74 skills and 49 roles')
+    try:
+        contract = json.loads((ROOT / '.game-studio/entrypoints.json').read_text(encoding='utf-8'))
+        if contract.get('schema') != 1 or set(contract['skills']) != {p.parent.name for p in skills} or set(contract['roles']) != {p.stem for p in roles}:
+            errors.append('Discovered entry names differ from release contract')
+        for old, canonical in contract['aliases'].items():
+            if old not in contract['skills'] or canonical not in contract['skills'] or old == canonical:
+                errors.append('Invalid compatibility alias: ' + old)
+    except (KeyError, ValueError, OSError, TypeError) as e:
+        errors.append('Release entry contract: ' + str(e))
     for p in skills:
         text = p.read_text(encoding='utf-8')
         try:
@@ -151,6 +171,7 @@ def validate(verify_release=True):
         if p.name.upper().startswith('CLAUDE'):
             errors.append(str(p.relative_to(ROOT)) + ': retired host filename')
     errors.extend(document_errors(ROOT))
+    errors.extend(native_reference_errors(ROOT))
     errors.extend(test_catalog_errors(ROOT))
     if verify_release:
         errors.extend(manifest_errors(ROOT))

@@ -71,7 +71,7 @@ identical to no rule at all.
 
 ### 4. Never assert what you cannot source — and wire the gap to the verdict
 
-Where this repo pins external facts (`.game-studio/resources/engine-reference/**`), do not fill a
+Where the project pins external facts (`<project-engine-reference>/**`), do not fill a
 gap from training data. Write the gap down instead: `NOT SOURCEABLE — <what> is
 not covered by <path>`.
 
@@ -99,9 +99,7 @@ Two further gate rules:
   "unity" is satisfied by a file path, and case-insensitively by "community".
   Assert a distinctive token instead.
 - **A gate you have not watched fail is not a gate.** Break the thing it guards,
-  confirm it fails, restore. One mutation per tool invocation — a batch that
-  times out leaves the repo holding a broken file, and `trap … EXIT` does not
-  survive `SIGTERM`.
+  confirm it fails, then restore it.
 
 ## Evidence
 

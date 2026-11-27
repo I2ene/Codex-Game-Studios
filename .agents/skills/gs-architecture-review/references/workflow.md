@@ -70,6 +70,9 @@ covers all game design requirements, is internally consistent, and correctly tar
 the project's pinned engine version. It is the quality gate between Technical Setup
 and Pre-Production.
 
+**This skill spawns no agents.** Phase 5's engine specialist look runs here,
+from `.agents/skills/gs-architecture-review/references/lens-engine.md`.
+
 **Argument modes:**
 - **No argument / `full`**: Full review — all phases
 - **`coverage`**: Traceability only — which GDD requirements have no ADR
@@ -131,17 +134,13 @@ Every `ask the user` call follows `.game-studio/resources/docs/automation-modes.
 
 ## Error Recovery Protocol
 
-**First, verify the artifact.** If the return contract named a path, check the
+**First, verify the artifact.** When a phase names a file it writes, check the
 path exists before treating the phase as done — **a named artifact that is not
-on disk is a failed phase, however fluent the response reads.** An agent can
-burn a full phase and return a plausible preamble having written nothing, which
-is neither BLOCKED nor an error nor "fails to complete", so the trigger below
-never fires. Resume it naming the unmet contract; the context is
-usually still there.
+on disk is a failed phase, however fluent the response reads.**
 
-If any spawned agent returns BLOCKED, errors, or fails to complete: **surface it
-immediately, don't proceed past a dependency it blocks, and always produce a
-partial report** (retry scope here = fewer GDDs / single-system). Full procedure:
+If a phase is blocked or cannot finish: **surface it immediately, don't proceed
+past a dependency it blocks, and always produce a partial report** (retry scope
+here = fewer GDDs / single-system). Full procedure:
 `.game-studio/resources/docs/error-recovery-protocol.md`.
 
 ---

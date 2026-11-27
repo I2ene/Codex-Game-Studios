@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.2.0
+
+Integrates Donchitos' upstream 1.3.0 as a Codex-native release. The main route
+creates a genre-informed brief and browser playable, observes it against the
+brief, then supports requested iteration, tuning, import, sharing, Grow, feature
+sittings and selected cuts. Web joins engine configuration, scaffold and reference
+paths. Professional studio lenses, story Features/Own calls and lifecycle fixes
+follow upstream while preserving native authority and evidence boundaries.
+
+Adds gs-cut, gs-next-step, gs-project-settings and gs-write-changelog; the previous
+three command names remain thin aliases. Nested engine code/test roots take
+priority over compatible legacy keys. Explicit command argv, pins, consumer files,
+context recovery, checkpoints and ownership-based upgrades remain compatible.
+
+Genre references and scenarios are guidance; upstream playtest claims are source
+reports, not Codex execution. See [source compatibility](docs/upstream-compatibility.md),
+[upgrade notes](UPGRADING.md) and [validation boundaries](docs/validation.md).
+
+
 ## 2.1.0
 
 Integrates Donchitos' upstream 1.2.0 workflow, including the 1.1.3 changes.

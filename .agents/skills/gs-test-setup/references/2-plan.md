@@ -5,7 +5,11 @@
 
 ## Phase 2: Present Plan
 
-Based on the engine detected and the existing state, present a plan:
+Based on the engine detected and the existing state, present a plan. Use the native
+JSON `files` list to distinguish WOULD_CREATE, EXISTS and SKIPPED; show `needs`
+separately. The scaffold does not install tools or verify package dependencies.
+If CI is in scope, name its separate reviewed authoring step and obtain any user
+authorization still missing before writing that file:
 
 ```
 ## Test Setup Plan — [Engine]
@@ -13,10 +17,14 @@ Based on the engine detected and the existing state, present a plan:
 I will create the following (skipping any that already exist):
 
 tests/
-  unit/           — Isolated unit tests for formulas, state, and logic   (Godot only)
-  integration/    — Cross-system tests and save/load round-trips         (Godot only)
+  unit/           — Isolated unit tests for formulas, state, and logic   (Godot, Web)
+  integration/    — Cross-system tests and save/load round-trips         (Godot, Web)
   smoke/          — Critical path test list (15-minute manual gate)
   README.md       — Test framework documentation
+
+[Web: native `studio.py test-scaffold web --root <project-root> --dry-run`
+ previews missing layout files and playwright.config.ts as JSON. Phase 3 lists
+ the exact CLI and output. Existing files remain EXISTS; CI remains SKIPPED.]
 
 [Unity/Unreal: unit and integration tests go under the engine's test root
  instead — Unity Assets/Tests/EditMode|PlayMode/, Unreal
@@ -27,7 +35,8 @@ production/qa/
 
 [Engine-specific files — see per-engine details below]
 
-.github/workflows/tests.yml  — CI: run tests on every push to main
+.github/workflows/tests.yml  — separate reviewed CI proposal (Phase 4);
+                              the native scaffold does not create it
 
 Estimated time: ~5 minutes to create all files.
 ```

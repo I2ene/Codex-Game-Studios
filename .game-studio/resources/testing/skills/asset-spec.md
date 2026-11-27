@@ -132,3 +132,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 ## Applicable domain checks
 
 - [ ] Surface conflicting discipline recommendations to the user before choosing a direction; do not silently select a winner.
+
+## Brief heading compatibility
+
+- [ ] The minimal route reads Look and references from a new brief, or Label/Art & audio direction from an older one; both preserve the user's actual visual direction.

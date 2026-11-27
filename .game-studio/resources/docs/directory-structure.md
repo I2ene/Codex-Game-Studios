@@ -17,3 +17,12 @@ layout. Engine reference examples are packaged under .game-studio/resources/engi
 record current project engine verification separately, preserving packaged references
 for safe upgrades. Project metadata lives in project.yaml; local whitelisted settings
 and optional recovery interface are personal data and should be ignored by project Git.
+
+## Four-engine and prototype additions
+Web normally uses src/ and tests/unit/ (Vitest), tests/integration/ (Playwright);
+Vite follows index.html imports. Read the engine table in
+.game-studio/resources/engines/engines.tsv and effective project roots. Shared
+engine.code_root/engine.test_root override compatible old top-level keys and defaults.
+Invalid explicit paths stay invalid rather than selecting a fallback directory.
+Prototypes now include reusable one-shots as well as throwaway engine/paper tests;
+the two routes follow prototype-code.md, and sharing uses only a delivery copy.

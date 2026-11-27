@@ -1,7 +1,7 @@
 ---
 Need more detail?
 - `$gs-project-stage-detect` — full gap analysis with all missing artifacts listed
-- `$gs-gate-check` — formal readiness check for your next phase
+- `$gs-gate-check` — formal readiness check for your next stage
 - `$gs-start` — re-orient from scratch
 - `$gs-settings` — if the process feels mismatched to your project, adjust
   `modes.rigor`. Apply the change-triggers in

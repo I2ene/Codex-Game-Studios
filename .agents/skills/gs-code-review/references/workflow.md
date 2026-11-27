@@ -66,13 +66,13 @@ Read the target file(s) in full. Read AGENTS.md for project coding standards.
 
 Read the `specialists` block from `project.yaml`; if it is absent, fall back to the `## Engine Specialists` section of `docs/project-reference/technical-preferences.md`. Note:
 
-- The **Primary** specialist — `<engine>-specialist` derived from `engine.name` (Godot→`godot-specialist`, Unity→`unity-specialist`, Unreal→`unreal-specialist`); used for architecture and broad engine concerns
+- The **Primary** specialist — `<engine>-specialist` derived from `engine.name` (Godot→`godot-specialist`, Unity→`unity-specialist`, Unreal→`unreal-specialist`, Web→`lead-programmer`); used for architecture and broad engine concerns
 - The **Language/Code Specialist** — `specialists.code` — used when reviewing the project's primary language files
 - The **Shader Specialist** — `specialists.shader` — used when reviewing shader files
 - The **UI Specialist** — `specialists.ui` — used when reviewing UI code
 
 **A value of `null` means UNSET — treat that key as absent and skip its
-specialist. Never spawn it as an agent name.** The v1.0 migration writes `null`
+specialist. Never start it as an agent name.** The v1.0 migration writes `null`
 for any specialist the legacy file did not name, and it writes the whole block
 whenever *one* member is set — so a project that configured only its code
 specialist carries `shader: null` and `ui: null`. The config reader returns the
@@ -98,8 +98,8 @@ If no ADR references found, note: "No ADR references found — ADR compliance ch
 
 For each referenced ADR, load **only the sections this check needs — never an unbounded full read.** A substantial ADR exceeds the 25k-token `Read` cap, and a capped read's only recovery is paging the remainder — the most expensive way to read a file. Use the same pattern as `$gs-dev-story` and `$gs-create-stories`:
 
-1. **Map the headings** (cheap — line numbers only): `Grep pattern="^## " path="[adr-file]" output_mode="content" -n`
-2. **Bounded-read only `## Decision` and `## Consequences`**, using the line numbers to set `Read(offset, limit)` spans that end where the next heading begins. If the heading map is empty (a nonstandard ADR predating the template), fall back to one full `Read`; if that truncates at the cap, grep for the decision/consequence content directly rather than paging the remainder.
+1. **Map the headings** (cheap — line numbers only): grep the ADR for `^## ` with line numbers
+2. **Bounded-read only `## Decision` and `## Consequences`**, using the line numbers to set offset-and-limit read spans that end where the next heading begins. If the heading map is empty (a nonstandard ADR predating the template), fall back to one full read; if that truncates at the cap, grep for the decision/consequence content directly rather than paging the remainder.
 
 A referenced ADR whose file is missing, or that cannot be read, makes ADR
 Compliance `NOT ASSESSED — [ADR] could not be read`: name it. No reference at
@@ -154,55 +154,62 @@ Identify the system category (engine, gameplay, AI, networking, UI, tools) and e
 
 ---
 
-## Phase 7: Specialist Reviews (Parallel)
+## Phase 7: Engine Review and Testability
 
-Cover all applicable specialist reviews. With user authorization, available host tools and sufficient capacity, delegate independent reviews concurrently; otherwise apply and label the expertise in the parent. Do not omit a required review because delegation is unavailable.
+This phase starts **one** helper agent at most: the engine reviewer below.
+Testability is yours; never start `qa-tester` or a second specialist.
 
-> **Verify every specialist finding before reporting it. Do not pass findings
+### Engine review (at most one optional fresh-context helper)
+
+Without authorized delegation, the parent applies the same lens and reports its findings with the same evidence fields. Label it `parent assessment; no independent review`. Do not treat that label alone as a missing engine check. If independent review itself is required but unavailable, report that dimension NOT ASSESSED. Never spawn a second engine or QA helper.
+
+If an engine is configured and delegation is authorized and available, start **one** helper agent of the Primary
+specialist's type from Phase 2. It reviews in a context that did not write the
+code; that is why it stays a helper. Its brief names, as fields:
+
+- `files`: every file under review, each with its type (code, shader, UI, engine architecture)
+- `lens`: this skill's `.agents/skills/gs-code-review/references/lens-engine.md` as a full path (the base
+  directory this skill was started with, then that path), and the configured
+  specialists whose blocks apply (`specialists.code`, `.shader`, `.ui`; a `null`
+  one is left out and its files go to the Primary block). The helper reads the
+  lens file itself. In the parent fallback, read and apply that lens here
+- `engine`: `engine.name` and `engine.version`
+- `return`: `helper-result/1` — `status` (done / blocked / not_assessed),
+  `conclusion`, `evidence` (one entry per finding: file:line, quoted code,
+  why), `actions_taken` (empty: it writes nothing), `confidence`, `caveats`
+
+Check the result has those fields before reading it; an empty or malformed
+result means that delegated engine review did not run; report its missing evidence or apply the parent fallback explicitly.
+
+> **Verify every engine finding before reporting it. Do not pass findings
 > through unchecked.** For each finding, record in the report:
 >
 > - **File and line** it refers to.
 > - **Evidence** — the quoted code, or the concrete input/state that triggers it.
 > - **Confidence** — `VERIFIED` (you checked it yourself) or `UNVERIFIED —
->   specialist claim` (you could not).
+>   reviewer claim` (you could not).
 >
 > A finding you could not verify is reported as unverified or dropped, never
 > promoted to a defect on the strength of confident phrasing.
 >
-> **Why this is mandatory.** Agents are reliable when deriving and unreliable when
+> **Why this is mandatory.** Reviewers are reliable when deriving and unreliable when
 > diagnosing existing code: a **wrong** claim about a short function can be fluent
 > enough to pass a skim, and a claimed bug can fall apart once you enumerate the
-> inputs. Without this step the parent review is a laundering channel: a guess
-> enters as a specialist finding and leaves as a reviewed defect.
+> inputs.
 
-### Engine Specialists
+### Testability (you do this yourself)
 
-If an engine is configured, determine which specialist applies to each file and spawn in parallel:
-
-- Primary language files (`.gd`, `.cs`, `.cpp`) → Language/Code Specialist
-- Shader files (`.gdshader`, `.hlsl`, shader graph) → Shader Specialist
-- UI screen/widget code → UI Specialist
-- Cross-cutting or unclear → Primary Specialist
-
-Also spawn the **Primary Specialist** for any file touching engine architecture (scene structure, node hierarchy, lifecycle hooks).
-
-### QA Testability Review
-
-For Logic and Integration stories, also spawn `qa-tester` via native delegation when authorized in parallel with the engine specialists. Pass:
-- The implementation files being reviewed
-- The story's `## QA Test Cases` section (the pre-written test specs from qa-lead)
-- The story's `## Acceptance Criteria`
-
-Ask the qa-tester to evaluate:
-- [ ] Are all test hooks and interfaces exposed (not hidden behind private/internal access)?
-- [ ] Do the QA test cases from the story's `## QA Test Cases` section map to testable code paths?
+For Logic and Integration stories, check the implementation against the story's
+`## QA Test Cases` and `## Acceptance Criteria`:
+- [ ] Are all test hooks and interfaces exposed (not hidden behind private/internal access)? Name the method a test would need and where it is hidden.
+- [ ] Does each QA test case map to a testable code path? Name any that does not.
 - [ ] Are any acceptance criteria untestable as implemented (e.g., hardcoded values, no seam for injection)?
-- [ ] Does the implementation introduce any new edge cases not covered by the existing QA test cases?
-- [ ] Are there any observable side effects that should have a test but don't?
+- [ ] Does the implementation introduce edge cases the QA test cases do not cover?
+- [ ] Are there observable side effects that should have a test but don't?
 
-For Visual/Feel and UI stories: qa-tester reviews whether the manual verification steps in `## QA Test Cases` are achievable with the implementation as written — e.g., "is the state the manual checker needs to reach actually reachable?"
-
-Collect all specialist findings before producing output.
+For Visual/Feel and UI stories: check that the manual verification steps in
+`## QA Test Cases` are achievable with the implementation as written — for each
+step, is the state the manual checker needs to reach actually reachable, and how?
 
 ---
 
@@ -211,11 +218,14 @@ Collect all specialist findings before producing output.
 ```
 ## Code Review: [File/System Name]
 
-### Engine Specialist Findings: [N/A — no engine configured / CLEAN / ISSUES FOUND]
-[Findings from engine specialist(s), or "No engine configured." if skipped]
+### Engine Specialist Findings: [NOT ASSESSED / CLEAN / ISSUES FOUND]
+[Findings and actual assessment source: validated helper or completed parent assessment. Name missing inputs/checks.]
+
+### Independence: [actual independent participant / parent assessment; no independent review / NOT ASSESSED — required independent review unavailable]
+[Record a failed helper separately. A parent assessment provides no independent sign-off.]
 
 ### Testability: [N/A — no story path given / N/A — Visual/Feel or Config story / TESTABLE / GAPS / BLOCKING]
-[qa-tester findings: test hooks, coverage gaps, untestable paths, new edge cases]
+[Testability findings: test hooks, coverage gaps, untestable paths, new edge cases]
 [If BLOCKING: implementation must expose [X] before tests in ## QA Test Cases can run]
 
 ### ADR Compliance: [NOT ASSESSED / NO ADRS FOUND / COMPLIANT / DRIFT / VIOLATION]
@@ -245,19 +255,24 @@ Collect all specialist findings before producing output.
 ### Verdict: [NOT ASSESSED / APPROVED / APPROVED WITH SUGGESTIONS / CHANGES REQUIRED]
 ```
 
-Choose the verdict, first match wins:
-- **CHANGES REQUIRED** — anything under Required Changes
-- **NOT ASSESSED** — nothing to review (the no-data path above), the engine
-  specialist review did not run — no engine configured, or a specialist that
-  could not be spawned — or any report section reads `NOT ASSESSED` (ADR
-  Compliance with a referenced ADR that could not be read, Architecture, SOLID);
-  name which. NOT ASSESSED ranks below CHANGES REQUIRED, because a known
-  defect is more actionable than a skipped check, and above both approvals: a
-  review that skipped the engine check has not approved the code. (`NO ADRS
-  FOUND` is not NOT ASSESSED: with no ADR to check, it does not stop an
-  approval.)
-- **APPROVED WITH SUGGESTIONS** — only Suggestions
-- **APPROVED** — no required changes and no suggestions
+Choose the technical verdict from actual completed assessments, first match wins:
+- **CHANGES REQUIRED** — anything under Required Changes, even when another check
+  or required independent review is unavailable.
+- **NOT ASSESSED** — nothing to review, or a required substantive check remains
+  unassessed: no configured engine, an incomplete parent engine assessment after
+  helper failure, unreadable referenced ADR, Architecture or SOLID. Name the gap.
+  An empty or malformed helper result alone does not trigger this verdict when a
+  completed parent assessment has supplied the same required evidence and coverage.
+  `NO ADRS FOUND` is not an unreadable referenced ADR and does not block approval.
+- **APPROVED WITH SUGGESTIONS** — all required substantive checks completed and
+  only Suggestions remain.
+- **APPROVED** — all required substantive checks completed with no changes or suggestions.
+
+Independence is reported separately from the technical verdict. When independent
+review is required but unavailable, mark that dimension NOT ASSESSED and retain the
+unmet independent-review requirement; a completed parent assessment is not an
+independent approval and grants no independent sign-off. Never turn the failed
+helper's empty output into a clean assessment or conceal actual missing checks.
 
 This skill is read-only — no files are written.
 
@@ -265,7 +280,7 @@ This skill is read-only — no files are written.
 
 ## Phase 9: Next Steps
 
-Use `ask the user`:
+Ask:
 - Prompt: "Code review complete — verdict: [NOT ASSESSED / APPROVED / APPROVED WITH SUGGESTIONS / CHANGES REQUIRED]. How would you like to proceed?" (the Phase 8 verdict, word for word)
 - Options (adjust based on verdict):
   - If APPROVED:

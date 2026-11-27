@@ -1,6 +1,6 @@
 ---
 name: gs-start
-description: "First-time onboarding — asks where you are, then guides you to the right workflow."
+description: "Guides a first-time user through onboarding and picks the right workflow. Use when the user is new, just cloned or installed the studio, has no idea or engine yet, asks where to begin, or wants to bring in an existing game. A request for a game itself ('make me a game where...') is $gs-prototype's."
 ---
 
 # Start

@@ -33,6 +33,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] ADR-0003 is not read in full when its `Last Verified` matches the story's `ADR Version`
 - [ ] The In Progress ask names the story file; `Status:` becomes `In Progress` only after it and before any discipline review begins, and the sprint-status-absent line is printed
 - [ ] Primary is `gameplay-programmer`; secondary comes from `specialists.code`, not the roster table
+- [ ] The engine check uses the resolved project reference directory and documents in both the parent and authorized delegate paths; the summary names the actual participant or parent assessment and any missing evidence
 - [ ] The ADR guidance is passed inline, not as the ADR path
 - [ ] The brief names `tests/unit/combat/combat_damage_calc_test.gd` (`[system]_[feature]_test.gd`) and requires one test per acceptance criterion
 - [ ] The parse check's command and exit code are reported, and exactly one `Run result:` line appears
@@ -245,7 +246,7 @@ The `full` column of the file-check table has its own STOP rule, so the
 
 **Domain checks:**
 - [ ] No "Implementation Complete" and no `Status:` change past `In Progress`
-- [ ] The checkpoint's **Next step** is `$gs-dev-story [story-path]` to resume — never `$gs-story-done`, which `$gs-help` reads as "the work is written"
+- [ ] The checkpoint's **Next step** is `$gs-dev-story [story-path]` to resume — never `$gs-story-done`, which `$gs-next-step` reads as "the work is written"
 
 ---
 

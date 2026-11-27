@@ -166,6 +166,9 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Domain checks (an `EPIC.md` with no stories yet):**
 - [ ] Every section of the existing `EPIC.md` other than its Stories table is unchanged
 - [ ] The Step 5 ask says *update* `EPIC.md`
+- [ ] New brief variant: Features has built item 1 and unbuilt items 2 and 3. Generate only two stories referencing Brief MVP feature 2 and 3; report why item 1 needs no story. A later item 4 appends one story without renumbering or rewriting existing stories.
+- [ ] Legacy MVP entries without marks remain unbuilt. Retain the existing EPIC-with-no-stories and return-visit branches, risk NA and shared output authorization.
+- [ ] Your systems core/thin/deepen sequencing and Build step markers retain each named system; a deepen story needs its applicable deeper design before implementation.
 
 ---
 

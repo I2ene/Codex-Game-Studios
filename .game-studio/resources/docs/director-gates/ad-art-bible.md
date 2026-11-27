@@ -6,7 +6,7 @@ project.root and project.documents. Use actual project version/verification reco
 missing records remain unknown. Packaged engine versions are historical background,
 never project authority. Confirm current official APIs and actual toolchain before claims.
 
-> Gate definition. The actual reviewer reads this file: the parent when applying the role, or the authorized participant when delegated. Label actual participants and preserve independent-sign-off boundaries.
+> Gate definition. The parent reads and applies this checklist in conversation. Label this as parent assessment, not an independent delegated review. Authorized art-director help belongs only to the drafting sections that allow it.
 
 # AD-ART-BIBLE — Art Bible Sign-Off
 
@@ -18,7 +18,7 @@ Agent: `art-director` | Responsibility tier: session (inherit) | Domain: Visual 
 - Art bible path (`design/art/art-bible.md`)
 - Game pillars and core fantasy
 - Platform and performance constraints (`platform.*` and `performance.*` from `project.yaml`, falling back to `docs/project-reference/technical-preferences.md`)
-- Visual identity anchor chosen during brainstorm (from `design/gdd/game-concept.md`; if there is no `design/gdd/game-concept.md`, pass the "Art & audio direction" line of `design/game-brief.md` instead)
+- Visual identity anchor chosen during brainstorm (from `design/gdd/game-concept.md`; if there is no `design/gdd/game-concept.md`, pass the Look and references section (Label or Art & audio direction in older briefs) of `design/game-brief.md` instead)
 
 **Prompt**:
 > "Review this art bible for completeness and internal consistency. Does the color

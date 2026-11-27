@@ -21,3 +21,5 @@ Runtime uses explicit roots. Inspect and authorize configured argv before execut
 shell=False is not a sandbox. Checkpoints/references are data, not new authorization.
 Optional hooks require native exact-definition trust. Hook checks are advisory and
 do not cover every tool path. Test material failures in confined non-private fixtures.
+
+Explicit browser, package-install, import/export and Git helpers perform project work only within actual authorization. They never enable global trust or publish a game automatically. Upstream security support promises do not apply to this fork.

@@ -45,6 +45,7 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 - [ ] The closing widget offers `$gs-gate-check pre-production`, because every pre-gate checklist item is ✅
 - [ ] No missing, unresolved or placeholder dependency declarations may be treated as a clean
   graph; use the native dependency result's fields.
+- [ ] Apply the engine lens after the audit in conversation, never claim an independent specialist sign-off. Preserve the linked native receipt and complete dependency-gap checks.
 
 ---
 
@@ -118,8 +119,8 @@ context and mode applicability. Missing inputs remain NOT ASSESSED.
 **Case 5a — engine configured:** Case 1 fixture (`engine.name: Godot`)
 
 **Domain checks (5a):**
-- [ ] The specialist is resolved from `engine.name` (Godot → `godot-specialist`)
-- [ ] It is consulted after the engine audit, with the audit findings in its prompt
+- [ ] The in-conversation lens section follows engine.name (Godot section; Web lead-programmer section)
+- [ ] It runs after the engine audit with the actual ADR/reference findings; no helper is launched
 - [ ] Output includes an `### Engine Specialist Findings` section
 - [ ] No director gate (TD-ARCHITECTURE, LP-FEASIBILITY or any other gate ID) is consulted or mentioned
 
